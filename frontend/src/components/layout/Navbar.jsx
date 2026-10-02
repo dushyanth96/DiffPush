@@ -71,7 +71,7 @@ export function Navbar({ tracker, github, onPalette, onConnect }) {
             className="hidden sm:inline-flex items-center gap-1.5 px-2.5 h-7 rounded-md bg-surface hairline text-[12px] font-mono text-slate-300 hover:text-slate-100 hover:border-diff-amber/40 transition-colors"
           >
             <Github size={13} className="text-slate-400" />
-            <span>Star on GitHub</span>
+            <span>Star DiffPush on GitHub</span>
             <Star size={11} className="text-diff-amber" fill="currentColor" />
           </a>
           <a
@@ -92,8 +92,8 @@ export function Navbar({ tracker, github, onPalette, onConnect }) {
               {showProfile && (
                 <div className="absolute right-0 top-9 w-64 card !bg-popover p-3 z-50">
                   <p className="font-mono text-[13px] text-slate-100">@{github.profile.login}</p>
-                  <a href={github.repoUrl ?? `https://github.com/${github.profile.login}/builtdiff-solutions`} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-[12px] text-diff-emerald hover:underline mt-0.5">
-                    builtdiff-solutions <ExternalLink size={11} />
+                  <a href={github.repoUrl ?? `https://github.com/${github.profile.login}/diffpush-solutions`} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-[12px] text-diff-emerald hover:underline mt-0.5">
+                    diffpush-solutions <ExternalLink size={11} />
                   </a>
                   <p className="font-mono text-[10px] text-slate-500 mt-1">
                     {github.syncState === 'syncing' ? 'syncing…' : github.syncState === 'queued' ? 'offline — commits queued' : github.error ?? 'in sync'}

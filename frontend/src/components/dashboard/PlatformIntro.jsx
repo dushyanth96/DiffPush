@@ -11,11 +11,12 @@ export function PlatformIntro() {
       />
       <p className="relative font-mono text-[11px] tracking-wider text-diff-emerald">OPEN-SOURCE A2Z ENGINE</p>
       <h1 className="relative mt-1 text-[16px] font-bold tracking-tight text-slate-100">
-        A2Z DSA Sheet: Interactive Execution &amp; Tracker
+        DiffPush: A2Z DSA Algorithmic Roadmap
       </h1>
       <p className="relative mt-1 text-[13px] leading-relaxed text-slate-400 max-w-3xl">
-        The complete A2Z algorithmic curriculum with zero-latency browser execution, automated GitHub
-        commit syncing, and Leitner spaced repetition. 100% open-source and local-first.
+        The complete A2Z technical interview framework. Brush up in Step 0, master 369 core interview
+        patterns from Arrays through Dynamic Programming, and push every accepted solve straight to
+        your GitHub portfolio.
       </p>
       <div className="relative mt-2.5 flex gap-1.5 flex-wrap">
         {['A2Z Curriculum Complete', '100% Open Source (MIT)', 'Client-Side WASM'].map((label) => (

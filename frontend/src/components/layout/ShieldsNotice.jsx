@@ -32,7 +32,7 @@ export function ShieldsNotice() {
       <div className="flex items-start gap-2">
         <ShieldOff size={14} className="text-diff-amber shrink-0 mt-0.5" />
         <div className="min-w-0">
-          <p className="text-[12px] font-medium text-slate-200">Ads keep BuiltDiff free</p>
+          <p className="text-[12px] font-medium text-slate-200">Ads keep DiffPush free</p>
           <p className="text-[11px] text-slate-500 leading-snug mt-0.5">
             Ad blockers or restricted networks (Brave Shields, edu/corporate wifi) prevent our sponsor ads
             from loading. Allow ads on this site to support the platform — everything else works either way.

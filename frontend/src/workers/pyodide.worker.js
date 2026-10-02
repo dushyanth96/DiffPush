@@ -1,4 +1,4 @@
-/* BuiltDiff Pyodide WASM runner — classic Web Worker (no ESM imports: importScripts only).
+/* DiffPush Pyodide WASM runner — classic Web Worker (no ESM imports: importScripts only).
  * Bundled by Vite via `new Worker(new URL('./pyodide.worker.js', import.meta.url))`.
  * Contract in:  { type:'run', id, code, testCases, functionName }
  * Contract out: { type:'result', id, status, results, totalTimeMs, error }

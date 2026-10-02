@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.routers import auth, sync, rooms, chat
 
-app = FastAPI(title="BuiltDiff API", version="0.1.0")
+app = FastAPI(title="DiffPush API", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,4 +21,4 @@ app.include_router(chat.router)
 
 @app.get("/api/health")
 async def health():
-    return {"ok": True, "service": "builtdiff-backend"}
+    return {"ok": True, "service": "diffpush-backend"}

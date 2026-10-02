@@ -117,7 +117,7 @@ export async function askAI({ system, messages, maxTokens = 512 } = {}) {
       }),
     })
   } catch {
-    const e = new Error('PROVIDER_UNREACHABLE — could not reach the BuiltDiff server. Check connection and retry.')
+    const e = new Error('PROVIDER_UNREACHABLE — could not reach the DiffPush server. Check connection and retry.')
     e.action = 'reconnect'
     throw e
   }
@@ -137,7 +137,7 @@ export async function askAI({ system, messages, maxTokens = 512 } = {}) {
 // System prompt grounding the model as a DSA mentor for one problem.
 export function buildMentorSystem({ title, tags, hints, optimalTime, optimalSpace, language } = {}) {
   const lines = [
-    'You are Diff Mentor, a crisp DSA coach inside the BuiltDiff tracker.',
+    'You are Diff Mentor, a crisp DSA coach inside the DiffPush tracker.',
     'Rules: never reveal full solutions — give intuition, invariants, and Socratic nudges.',
     'Keep replies under 120 words, plain text, no heavy markdown.',
   ]

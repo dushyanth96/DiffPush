@@ -1,4 +1,4 @@
-"""GitHub REST client for the BuiltDiff commit-sync engine (httpx, async)."""
+"""GitHub REST client for the DiffPush commit-sync engine (httpx, async)."""
 import base64
 import json
 import re
@@ -8,7 +8,7 @@ import httpx
 GITHUB_API = "https://api.github.com"
 API_VERSION = "2022-11-28"
 TRACKER_PATH = ".builtdiff/tracker.json"
-DEFAULT_REPO = "builtdiff-solutions"
+DEFAULT_REPO = "diffpush-solutions"
 
 LANG_EXT = {"python": "py", "cpp": "cpp", "java": "java", "javascript": "js"}
 
@@ -83,7 +83,7 @@ async def get_or_create_repo(access_token: str, owner: str, repo_name: str = DEF
             f"{GITHUB_API}/user/repos",
             headers=headers,
             json={"name": repo_name, "private": False,
-                  "description": "Elite DSA solutions & telemetry powered by BuiltDiff",
+                  "description": "Elite DSA solutions & telemetry powered by DiffPush",
                   "auto_init": True},
         )
         _raise_for_rate_limit(create)
@@ -172,7 +172,7 @@ async def push_solution_commit(access_token: str, owner: str, repo_name: str,
         merged = merge_tracker_states(remote_state, commit_data["trackerState"])
         tracker_b64 = base64.b64encode(json.dumps(merged, indent=2).encode("utf-8")).decode()
         trk = await _put_file(client, headers, owner, repo_name, TRACKER_PATH, tracker_b64,
-                              "chore(sync): update BuiltDiff telemetry state", branch)
+                              "chore(sync): update DiffPush telemetry state", branch)
     return {
         "solutionCommitSha": (sol.get("commit") or {}).get("sha"),
         "solutionPath": sol_path,

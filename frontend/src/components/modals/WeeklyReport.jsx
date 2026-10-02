@@ -25,7 +25,7 @@ export function WeeklyReport({ tracker, onClose }) {
     weakest = rows[0] ?? null
   } catch { weakest = null }
 
-  const text = `My BuiltDiff week: ${solves} solves across ${active}/7 days, ${tracker.stats.currentStreak}-day streak, ${tracker.stats.diffScore.toLocaleString()} DIFF${weakest ? `. Next target: ${weakest.name}.` : '.'}`
+  const text = `My DiffPush week: ${solves} solves across ${active}/7 days, ${tracker.stats.currentStreak}-day streak, ${tracker.stats.diffScore.toLocaleString()} DIFF${weakest ? `. Next target: ${weakest.name}.` : '.'}`
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(text)

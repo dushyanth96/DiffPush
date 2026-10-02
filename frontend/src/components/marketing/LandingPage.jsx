@@ -32,7 +32,7 @@ export function LandingPage({ onConnect, onGuest }) {
           </a>
           <p className="eyebrow mt-4">369 problems · 16 topics · zero setup</p>
           <h1 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight text-slate-100 leading-[1.1]">
-            Master the A2Z DSA Sheet.<br />Farm Green Squares.
+            Master the A2Z DSA Sheet.<br />Diff your code, Push to GitHub.
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-slate-400 max-w-[600px] mx-auto">
             369 interview problems that run in your browser. Pass one, and the solution lands on your GitHub by itself.
@@ -61,7 +61,7 @@ export function LandingPage({ onConnect, onGuest }) {
             <pre className="p-4 font-mono text-[12px] leading-[1.7] text-slate-300 overflow-x-auto" aria-label="Example solve session">
               <span className="text-slate-600">▶ run — 3 cases, in your browser</span>{'\n'}
               <span className="text-diff-emerald">✓ case 1 · 0.31ms{'\n'}✓ case 2 · 0.28ms{'\n'}✓ case 3 · 0.35ms</span>{'\n'}
-              <span className="text-slate-200">→ committed <span className="text-diff-emerald">#a1b2c3d</span> to you/builtdiff-solutions</span>
+              <span className="text-slate-200">→ committed <span className="text-diff-emerald">#a1b2c3d</span> to you/diffpush-solutions</span>
             </pre>
           </div>
           <div className="card p-5 flex flex-col justify-center">
@@ -111,7 +111,7 @@ export function LandingPage({ onConnect, onGuest }) {
               <GitCommitHorizontal size={17} className="text-diff-emerald" />
             </span>
             <h2 className="mt-3 text-[15px] font-bold tracking-tight text-slate-100">Contribution Farming</h2>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-slate-400">Every solve pushes straight to <span className="font-mono text-slate-300">username/builtdiff-solutions</span>.</p>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-slate-400">Every solve pushes straight to <span className="font-mono text-slate-300">username/diffpush-solutions</span>.</p>
             <p className="mt-2 font-mono text-[12px] text-diff-emerald">feat(arrays): solve two-sum ✓ #a1b2c3d</p>
           </div>
           <div className="card p-5">
@@ -135,7 +135,7 @@ export function LandingPage({ onConnect, onGuest }) {
         <section className="card p-6 sm:p-8 mb-14 flex flex-col sm:flex-row items-center gap-4">
           <div className="text-center sm:text-left">
             <h2 className="text-[16px] font-bold tracking-tight text-slate-100">Free for every student, forever.</h2>
-            <p className="mt-1 text-[13px] text-slate-400">If BuiltDiff gets you placed, fuel the next all-nighter — chai via UPI in India.</p>
+            <p className="mt-1 text-[13px] text-slate-400">If DiffPush gets you placed, fuel the next all-nighter — chai via UPI in India.</p>
           </div>
           <div className="flex gap-2 sm:ml-auto shrink-0">
             <a

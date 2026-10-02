@@ -218,7 +218,7 @@ export function VictoryModal({ meta, totalMs, totalCases, commitInfo, github, xp
         {/* open-source star callout — peak dopamine moment */}
         <div className="mt-4 p-3 rounded-lg bg-surface hairline flex items-center justify-between gap-3">
           <p className="text-[12px] text-slate-400 leading-snug">
-            <span className="text-slate-100 font-medium">BuiltDiff is open-source.</span> Star the repo to support free, ad-free developer tools.
+            <span className="text-slate-100 font-medium">DiffPush is open-source.</span> Star the repo to support free, ad-free developer tools.
           </p>
           <a
             href={REPO_URL}
@@ -259,7 +259,7 @@ export function VictoryModal({ meta, totalMs, totalCases, commitInfo, github, xp
 
         <p className="mt-3 text-[12px] text-slate-400">
           {commitInfo?.sha
-            ? <>Committed to <span className="font-mono text-slate-200">@{github?.profile?.login}/builtdiff-solutions</span> — green square awarded.</>
+            ? <>Committed to <span className="font-mono text-slate-200">@{github?.profile?.login}/diffpush-solutions</span> — green square awarded.</>
             : commitInfo?.queued
               ? 'Offline — commit queued, pushes on reconnect.'
               : 'Connect GitHub to farm this solve as a contribution.'}

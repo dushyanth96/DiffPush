@@ -12,14 +12,14 @@ const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'frontend', 'dist');
 const PROBLEMS = path.join(ROOT, 'frontend', 'public', 'problems');
 const MANIFEST = path.join(ROOT, 'frontend', 'public', 'curriculum_manifest.json');
-const SITE = 'https://builtdiff.com';
+const SITE = 'https://diffpush.com';
 
 const esc = (s) => String(s ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;');
 
 function page(meta, full) {
-  const title = `${meta.canonicalTitle} | BuiltDiff`;
+  const title = `${meta.canonicalTitle} | DiffPush`;
   const desc = `${meta.title ?? ''} — ${meta.optimalTime ?? ''} time, ${meta.optimalSpace ?? ''} space. Solve in your browser, auto-commit to GitHub.`;
   const url = `${SITE}/solve/${meta.id}/`;
   const appUrl = `/#/solve/${meta.id}`;
@@ -43,7 +43,7 @@ function page(meta, full) {
 <style>body{background:#07090E;color:#E6EAF2;font-family:system-ui,sans-serif;max-width:720px;margin:0 auto;padding:32px 16px;line-height:1.6}a{color:#10B981}pre{background:#0D111A;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:12px;overflow-x:auto;font-size:13px}code{font-family:monospace}.cta{display:inline-block;background:#10B981;color:#fff;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;margin:16px 0}.pill{display:inline-block;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:2px 10px;font-size:12px;color:#94A3B8;margin-right:6px}</style>
 </head>
 <body>
-<p><a href="/">← BuiltDiff</a></p>
+  <p><a href="/">← DiffPush</a></p>
 <h1>${esc(full.canonical?.title ?? meta.canonicalTitle)}</h1>
 <p><span class="pill">${esc(meta.difficulty)}</span> <span class="pill">${esc(meta.topicName)} · ${esc(meta.levelName)}</span> <span class="pill">${esc(meta.optimalTime)} · ${esc(meta.optimalSpace)}</span></p>
 <h2>${esc(full.narrative?.title ?? '')}</h2>

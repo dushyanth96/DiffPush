@@ -60,7 +60,7 @@ function CertCard({ profile, tracker, username }) {
   return (
     <div className="card p-8 text-center border-diff-emerald/30">
       <BadgeCheck size={32} className="text-diff-emerald mx-auto" />
-      <p className="eyebrow mt-3">BuiltDiff certified record</p>
+      <p className="eyebrow mt-3">DiffPush certified record</p>
       <div className="mt-2 flex items-center justify-center gap-3">
         <img src={profile.avatar_url} alt={username} width={48} height={48} className="w-12 h-12 rounded-full object-cover hairline" />
         <p className="text-[20px] font-bold tracking-tight text-slate-100">@{username}</p>
@@ -81,8 +81,8 @@ function CertCard({ profile, tracker, username }) {
         <div className="h-full bg-diff-emerald rounded-full" style={{ width: `${pct}%` }} />
       </div>
       <p className="mt-3 font-mono text-[11px] text-slate-500">Verified live from the public repo — attach it to your resume.</p>
-      <a href={`https://github.com/${username}/builtdiff-solutions`} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-[13px] text-diff-emerald hover:underline">
-        builtdiff-solutions <ExternalLink size={12} />
+      <a href={`https://github.com/${username}/diffpush-solutions`} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-[13px] text-diff-emerald hover:underline">
+        diffpush-solutions <ExternalLink size={12} />
       </a>
     </div>
   )

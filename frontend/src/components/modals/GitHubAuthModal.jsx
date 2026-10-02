@@ -89,7 +89,7 @@ export function GitHubAuthModal({ github, onClose }) {
           <button onClick={onClose} className="ml-auto text-slate-500 hover:text-slate-200"><X size={16} /></button>
         </div>
         <p className="text-[13px] text-slate-400 mt-2 leading-relaxed">
-          Solves auto-commit to <span className="font-mono text-slate-200">your/builtdiff-solutions</span> — real green squares, plus cross-device sync via <span className="font-mono text-slate-200">.builtdiff/tracker.json</span>.
+          Solves auto-commit to <span className="font-mono text-slate-200">your/diffpush-solutions</span> — real green squares, plus cross-device sync via <span className="font-mono text-slate-200">.builtdiff/tracker.json</span>.
         </p>
         <button onClick={oauth} disabled={busy} className="btn-emerald w-full mt-4 h-10 rounded-md text-[14px] font-semibold disabled:opacity-60">
           {busy ? 'Waiting for GitHub…' : 'Authorize with GitHub'}

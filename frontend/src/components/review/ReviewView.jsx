@@ -188,7 +188,7 @@ function ReviewHeader({ pos, total, streak, onBack, practice }) {
       <button onClick={onBack} className="flex items-center gap-1 text-[13px] text-slate-400 hover:text-slate-100">
         <ArrowLeft size={15} /> Back to Hub <kbd className="font-mono text-[10px] text-slate-600 hidden sm:inline">[Esc]</kbd>
       </button>
-      <span className="font-mono text-[12px] text-slate-500">builtdiff // recall{practice ? ' // practice' : ''}</span>
+      <span className="font-mono text-[12px] text-slate-500">diffpush // recall{practice ? ' // practice' : ''}</span>
       <span className="font-mono text-[12px] text-slate-400 ml-auto">Card {pos} of {total}</span>
       <span className="pill flex items-center gap-1 px-2.5 h-7 text-[12px] bg-surface">
         <Flame size={13} className="text-diff-amber" /><span className="font-mono">{streak}</span>

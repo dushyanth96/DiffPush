@@ -98,7 +98,7 @@ export default function App() {
       const due = tracker.getDueCards().length
       if (due > 0) {
         sessionStorage.setItem('builtdiff:nudged', '1')
-        new Notification('BuiltDiff recall', { body: `${due} card${due === 1 ? '' : 's'} due — 5 minutes keeps the streak meaningful.` })
+        new Notification('DiffPush recall', { body: `${due} card${due === 1 ? '' : 's'} due — 5 minutes keeps the streak meaningful.` })
       }
     } catch {}
   }, [manifestReady, tracker.ready])
@@ -145,7 +145,7 @@ export default function App() {
     content = (resolving || !manifestReady) ? (
       <div className="min-h-screen bg-canvas text-slate-200 flex items-center justify-center">
         <p className="font-mono text-[13px] text-slate-500">
-          {manifestError ? `Manifest failed: ${manifestError}` : 'Loading BuiltDiff…'}
+          {manifestError ? `Manifest failed: ${manifestError}` : 'Loading DiffPush…'}
         </p>
       </div>
     ) : (

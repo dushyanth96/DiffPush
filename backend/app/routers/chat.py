@@ -231,6 +231,6 @@ async def complete(req: CompleteRequest, request: Request,
         out = await _complete_openai(base="https://openrouter.ai/api/v1/chat/completions",
                                      key=key, model=model, system=req.system, messages=req.messages,
                                      max_tokens=req.max_tokens,
-                                     extra_headers={"HTTP-Referer": "https://builtdiff.local", "X-Title": "BuiltDiff AI Coach"},
+                                     extra_headers={"HTTP-Referer": "https://diffpush.local", "X-Title": "DiffPush AI Coach"},
                                      provider="openrouter")
     return {"ok": True, "provider": provider, "model": model, **out}

@@ -78,7 +78,7 @@ function decodeB64(b64) {
 
 export async function fetchPeer(login) {
   const r = await fetch(`https://api.github.com/repos/${login}/builtdiff-solutions/contents/.builtdiff/tracker.json`)
-  if (!r.ok) throw new Error(r.status === 404 ? 'no BuiltDiff repo' : `GitHub ${r.status}`)
+  if (!r.ok) throw new Error(r.status === 404 ? 'no DiffPush repo' : `GitHub ${r.status}`)
   const j = await r.json()
   const t = JSON.parse(decodeB64(j.content))
   const today = new Date().toISOString().slice(0, 10)

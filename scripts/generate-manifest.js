@@ -10,7 +10,7 @@ const ROOT = path.resolve(__dirname, '..');
 const CURRICULUM_DIR = path.join(ROOT, 'curriculum');
 const OUT_FILE = path.join(ROOT, 'frontend', 'public', 'curriculum_manifest.json');
 
-const DIFFICULTY_LABEL = { Easy: 'Baseline', Medium: 'Standard Bar', Hard: 'BuiltDiff Tier' };
+  const DIFFICULTY_LABEL = { Easy: 'Baseline', Medium: 'Standard Bar', Hard: 'DiffPush Tier' };
 const DIFFICULTY_ORDER = { Easy: 0, Medium: 1, Hard: 2 };
 
 const pick = (obj, keys, fallback = null) => {

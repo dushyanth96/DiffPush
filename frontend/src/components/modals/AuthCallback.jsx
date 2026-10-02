@@ -49,7 +49,7 @@ export function AuthCallback() {
         )}
         {state.phase === 'done' && (
           <>
-            <p className="text-[14px] font-semibold text-diff-emerald">Signed in — back to BuiltDiff</p>
+            <p className="text-[14px] font-semibold text-diff-emerald">Signed in — back to DiffPush</p>
             <p className="text-[12px] text-slate-500 mt-1">This window didn't close itself.</p>
             <button onClick={() => window.close()} className="btn-emerald mt-4 px-5 h-10 rounded-md text-[14px] font-semibold">
               Close this window

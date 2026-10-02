@@ -53,7 +53,7 @@ export function RoomPage({ code, query, tracker, github, onBack }) {
           <button onClick={onBack} className="flex items-center gap-1 text-[13px] text-slate-400 hover:text-slate-100">
             <ArrowLeft size={15} /> Back to Hub
           </button>
-          <span className="font-mono text-[12px] text-slate-600">builtdiff // rooms</span>
+          <span className="font-mono text-[12px] text-slate-600">diffpush // rooms</span>
         </div>
         <div className="max-w-[520px] mx-auto px-4 py-10">
           <div className="card p-8 text-center">

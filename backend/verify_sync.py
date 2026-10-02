@@ -110,8 +110,8 @@ def test_commit_flow_mocked():
                 if ".builtdiff" in url:
                     return FakeResp(200, {"content": TRACKER_B64, "sha": "trk-sha"})
                 return FakeResp(404, {"message": "not found"})  # new solution file
-            if "/repos/octo/builtdiff-solutions" in url:
-                return FakeResp(200, {"html_url": "https://github.com/octo/builtdiff-solutions"})
+            if "/repos/octo/diffpush-solutions" in url:
+                return FakeResp(200, {"html_url": "https://github.com/octo/diffpush-solutions"})
             return FakeResp(404, {})
 
         async def put(self, url, headers=None, json=None):
