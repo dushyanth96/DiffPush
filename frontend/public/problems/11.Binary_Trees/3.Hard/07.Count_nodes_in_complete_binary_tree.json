@@ -1,0 +1,101 @@
+{
+  "id": "count-nodes-in-complete-binary-tree",
+  "index": 7,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Count Nodes in a Complete Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=count+complete+tree+nodes",
+    "sourceFilePath": "11. Binary Trees/3. Hard/07. Count nodes in complete binary tree.cpp"
+  },
+  "narrative": {
+    "title": "The Occupancy Census in the Parking Silo",
+    "scenario": "An automated parking silo stacks cars in a complete binary layout: every floor is fully occupied except possibly the last, whose cars hug the left ramp. The counter hardware broke, so the auditor must derive the exact car count from the layout map alone — and the audit SLA forbids walking every single bay. Exploit the guaranteed fullness instead.",
+    "inputFormat": "The root of a complete binary tree given as a level-order array (null marks a missing child).",
+    "outputFormat": "Return the total number of nodes in the tree.",
+    "constraints": [
+      "1 <= number of nodes <= 5 * 10^4",
+      "-10^4 <= node value <= 10^4",
+      "The tree is complete"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log^2 n)",
+    "optimalSpace": "O(log n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "expected": 6,
+      "isPublic": true,
+      "explanation": "Two full levels plus three nodes hugging the left on the last level."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "expected": 15,
+      "isPublic": true,
+      "explanation": "A perfect tree of four levels holds 2^4 - 1 = 15 nodes."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the node count without visiting every node.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the node count without visiting every node.\n    int solve(TreeNode* root);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the node count without visiting every node.\n    public int solve(TreeNode root) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "complete-tree",
+      "binary-search",
+      "count-nodes-in-complete-binary-tree"
+    ],
+    "hintLevels": [
+      "Level 1: A perfect tree's count is just 2^levels - 1 — try to prove big chunks are perfect before counting them one by one.",
+      "Level 2: Compare the left-edge depth and right-edge depth at each node; equality certifies a perfect subtree instantly.",
+      "Level 3: When the depths disagree, only one side can be imperfect — recurse there while the other side is closed-form."
+    ]
+  }
+}

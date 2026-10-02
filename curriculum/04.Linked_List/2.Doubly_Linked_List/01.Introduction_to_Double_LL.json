@@ -1,0 +1,60 @@
+{
+  "id": "introduction-to-double-ll",
+  "index": 1,
+  "topic": "04.Linked_List",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Introduction to Double LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Reverse%20doubly%20linked%20list",
+    "sourceFilePath": "04.Linked List/2.Doubly Linked List/01.Introduction_to_Double_LL.cpp"
+  },
+  "narrative": {
+    "title": "Walking the Corridor Backwards",
+    "scenario": "A maintenance robot patrols a two-way corridor where every checkpoint knows both its neighbours. The evening routine sends it out the far end and requires the checkpoint sequence to be relabelled from that direction: each checkpoint's two link registers swap roles, and the last checkpoint of the original corridor becomes the new entrance. Produce the corridor as seen from its new entrance.",
+    "inputFormat": "An array arr of n node values representing the doubly linked list.",
+    "outputFormat": "The list after reversal, read from the new head.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= arr[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [3, 4, 5] },
+      "expected": [5, 4, 3],
+      "isPublic": true,
+      "explanation": "Three checkpoints relabelled from the far end read 5, 4, 3."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [75, 122, 59, 196] },
+      "expected": [196, 59, 122, 75],
+      "isPublic": true,
+      "explanation": "The far checkpoint (196) becomes the new entrance."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [7] },
+      "expected": [7],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Node:\n    def __init__(self, data, prev=None, next=None):\n        self.data = data\n        self.prev = prev\n        self.next = next\n\nclass Solution:\n    def reverseDLL(self, arr: list[int]) -> list[int]:\n        # TODO: return the doubly linked list's values after reversal.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node *prev, *next;\n    Node(int d) : data(d), prev(nullptr), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    Node* reverseDLL(Node* head) {\n        // TODO: reverse the doubly linked list in place and return the new head.\n    }\n};",
+    "java": "class Node {\n    int data;\n    Node prev, next;\n    Node(int data) { this.data = data; }\n}\n\nclass Solution {\n    public int[] reverseDLL(int[] arr) {\n        // TODO: return the doubly linked list's values after reversal.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "doubly-linked-list", "reversal", "introduction-to-double-ll"],
+    "hintLevels": [
+      "Level 1: In a two-way chain, reversing means every node's two links trade places, and the tail becomes the head.",
+      "Level 2: Sweep once: park the node's next, swap its next and prev, then advance along the (swapped) prev pointer.",
+      "Level 3: After the swap, prev being null marks the original tail — that node is the new head; note the upstream source for this entry actually implements reversal, which is what the checks above follow."
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "id": "rat-in-maze",
+  "index": 3,
+  "topic": "05.Recursion",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Rat in maze",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Rat%20in%20maze",
+    "sourceFilePath": "05.Recursion/3.Try Out All Combos/03.Rat in maze.cpp"
+  },
+  "narrative": {
+    "title": "Charting Every Sweep Route Through the Warehouse Grid",
+    "scenario": "A cleaning robot starts in the top-left bay of a square warehouse and must reach the bottom-right bay, where some bays are walled off. The robot may step up, down, left, or right into open bays, never visiting a bay twice on one route. Route control wants the complete catalogue of possible sweeps, each written as the sequence of moves taken.",
+    "inputFormat": "An n x n binary matrix m (1 = open bay, 0 = blocked) and its size n.",
+    "outputFormat": "Every path string of moves (U/D/L/R) from (0,0) to (n-1,n-1), sorted lexicographically by the verifier.",
+    "constraints": [
+      "2 <= n <= 10",
+      "m[0][0] = 1 and m[n-1][n-1] = 1 for solvable grids"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(3^(n^2)) worst case — each open bay branches to at most three new directions",
+    "optimalSpace": "O(n^2) recursion depth and visited marking"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "n": 4,
+        "m": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ]
+      },
+      "expected": [
+        "DDRDRR",
+        "DRDDRR"
+      ],
+      "isPublic": true,
+      "explanation": "Exactly two sweeps exist: one cutting right early, one running down first."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "n": 2,
+        "m": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "expected": [
+        "DR",
+        "RD"
+      ],
+      "isPublic": true,
+      "explanation": "A fully open 2x2 admits the two obvious two-step routes."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "n": 3,
+        "m": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      "expected": [],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findPath(self, m: list[list[int]], n: int) -> list[str]:\n        # TODO: DFS four directions, marking cells 0 before and restoring after.\n        pass",
+    "cpp": "#include <string>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<string> findPath(vector<vector<int>>& m, int n) {\n        // TODO: recurse over L/R/U/D; mark the cell blocked while inside it.\n    }\n};",
+    "java": "class Solution {\n    public java.util.List<String> findPath(int[][] m, int n) {\n        // TODO: DFS four directions, marking cells 0 before and restoring after.\n        return new java.util.ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "grid-dfs",
+      "rat-in-maze"
+    ],
+    "hintLevels": [
+      "Level 1: The robot's only memory is the grid itself — mark the current bay blocked so a sweep can never loop back on its own trail.",
+      "Level 2: At each bay try all four moves in a fixed order, appending the direction letter; restore the bay to open when the recursion unwinds.",
+      "Level 3: The visit-mark also serves as the validity check: a move is legal only if it lands inside the grid on an open (1) bay — which automatically excludes cells on the current trail."
+    ]
+  }
+}

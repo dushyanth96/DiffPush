@@ -1,0 +1,61 @@
+{
+  "id": "implement-min-heap",
+  "index": 1,
+  "topic": "09.Heaps",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Implement Min Heap",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=implement+min+heap",
+    "sourceFilePath": "09. Heaps/1. Learning/01. Implement min heap.cpp"
+  },
+  "narrative": {
+    "title": "The ER Triage Board",
+    "scenario": "An emergency room keeps a triage board where the most critical patient is always at the top. New arrivals slot in without breaking that rule, and discharging the top patient promotes exactly one successor. The board supports three moves: admit a patient, discharge the most critical one, and peek at who is next. Build the board so every operation stays logarithmic.",
+    "inputFormat": "A list of operations: [\"insert\", value], [\"removeMin\"], or [\"minElement\"].",
+    "outputFormat": "Return the list of values produced by every minElement operation, in order; a peek on an empty heap yields -1.",
+    "constraints": [
+      "1 <= number of operations <= 10^5",
+      "-10^9 <= values <= 10^9",
+      "insert, removeMin: O(log n); minElement: O(1)"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n) insert/remove, O(1) peek",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "operations": [["insert", 5], ["insert", 3], ["insert", 8], ["minElement"], ["removeMin"], ["minElement"]] },
+      "expected": [3, 5],
+      "isPublic": true,
+      "explanation": "3 bubbles to the top; after discharging it, 5 becomes the new minimum."
+    },
+    {
+      "id": "tc-2",
+      "input": { "operations": [["minElement"], ["insert", -2], ["minElement"]] },
+      "expected": [-1, -2],
+      "isPublic": true,
+      "explanation": "Peeking an empty board returns -1 before any patient arrives."
+    },
+    {
+      "id": "tc-3",
+      "input": { "operations": [["insert", 7], ["removeMin"], ["minElement"]] },
+      "expected": [-1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\nclass MinHeap:\n    def __init__(self):\n        self.pq = []\n\n    def insert(self, val):\n        heapq.heappush(self.pq, val)\n\n    def remove_min(self):\n        if self.pq:\n            heapq.heappop(self.pq)\n\n    def min_element(self):\n        return self.pq[0] if self.pq else -1",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass MinHeap {\npublic:\n    vector<int> pq;\n\n    void heapify(int node) {\n        int left = 2 * node + 1, right = 2 * node + 2, smallest = node;\n        if (left < (int)pq.size() && pq[left] < pq[smallest]) smallest = left;\n        if (right < (int)pq.size() && pq[right] < pq[smallest]) smallest = right;\n        if (smallest != node) { swap(pq[node], pq[smallest]); heapify(smallest); }\n    }\n    void bottomUpHeapify(int node) {\n        int parent = (node - 1) / 2;\n        if (parent >= 0 && pq[parent] > pq[node]) {\n            swap(pq[parent], pq[node]);\n            bottomUpHeapify(parent);\n        }\n    }\n    void insert(int val) { pq.push_back(val); bottomUpHeapify(pq.size() - 1); }\n    void removeMin() { pq[0] = pq.back(); pq.pop_back(); heapify(0); }\n    int minElement() { return pq.empty() ? -1 : pq[0]; }\n};",
+    "java": "import java.util.PriorityQueue;\n\nclass MinHeap {\n    private PriorityQueue<Integer> pq = new PriorityQueue<>();\n\n    public void insert(int val) { pq.offer(val); }\n    public void removeMin() { pq.poll(); }\n    public int minElement() { return pq.isEmpty() ? -1 : pq.peek(); }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["heap", "design", "min-heap", "implement-min-heap"],
+    "hintLevels": [
+      "Level 1: The heap is a complete tree flattened into an array — parent i has children 2i+1 and 2i+2.",
+      "Level 2: Insert bubbles the new value up; remove swaps the last element to the root and sifts it down.",
+      "Level 3: Sift-down always swaps with the SMALLER child — swapping with the wrong one breaks the invariant."
+    ]
+  }
+}

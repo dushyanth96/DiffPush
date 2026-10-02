@@ -1,0 +1,87 @@
+{
+  "id": "buy-and-sell-stocks-with-cooldown",
+  "index": 5,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Best Time to Buy and Sell Stock with Cooldown",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=best+time+to+buy+and+sell+stock+with+cooldown",
+    "sourceFilePath": "14. Dynamic Programming/6. DP on Stocks/05. Buy and sell stocks with cooldown.cpp"
+  },
+  "narrative": {
+    "title": "The Cooling-Down Cargo Bay",
+    "scenario": "After every release, the broker's cargo bay must pass a one-hour safety inspection before another lock can open — a mandatory cooldown. Trades remain unlimited otherwise. Dispatch needs the schedule that still maximizes total spread while respecting the forced stand-down hour after each sale.",
+    "inputFormat": "An array prices where prices[i] is the fee on hour i.",
+    "outputFormat": "Return the maximum total profit with unlimited transactions and a one-hour cooldown after every sell.",
+    "constraints": [
+      "1 <= len(prices) <= 5000",
+      "0 <= prices[i] <= 1000"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "prices": [
+          1,
+          2,
+          3,
+          0,
+          2
+        ]
+      },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Lock at 1, release at 2, stand down at 0, lock at 0, release at 2 — total 3."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "prices": [
+          1,
+          2,
+          4
+        ]
+      },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "A single lock at 1 and release at 4 clears the cooldown for free."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "prices": [
+          2,
+          1,
+          4,
+          3,
+          6
+        ]
+      },
+      "expected": 5,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, prices):\n        # Return the max profit with a one-hour cooldown after each sell.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the max profit with a one-hour cooldown after each sell.\n    int solve(std::vector<int>& prices);\n};",
+    "java": "class Solution {\n    // Return the max profit with a one-hour cooldown after each sell.\n    public int solve(int[] prices) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "stocks",
+      "state-machine",
+      "cooldown"
+    ],
+    "hintLevels": [
+      "Level 1: The only change from unlimited trades is what a sell does to the clock — it skips an extra hour.",
+      "Level 2: After selling at hour i, the next legal buy is hour i+2; encode that by jumping two days in the sell branch.",
+      "Level 3: Three states — holding, resting, just-sold — make the transition table explicit and bug-resistant."
+    ]
+  }
+}

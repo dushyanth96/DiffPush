@@ -1,0 +1,60 @@
+{
+  "id": "check-for-palindrome-ll",
+  "index": 6,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Check for palindrome LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Palindrome%20linked%20list",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/06.Check_for_palindrome_LL.cpp"
+  },
+  "narrative": {
+    "title": "The Gate Reader That Must Not Duplicate Memory",
+    "scenario": "A secure gate reads a one-way access chain and must confirm the code is a palindrome before opening — but the controller is too small to hold a second copy of the code. The trick: split the chain at its middle, flip the rear half in place, and then compare the two halves node by node as they march in lockstep.",
+    "inputFormat": "An array head of node values representing the linked list.",
+    "outputFormat": "true when the list reads the same forwards and backwards, false otherwise.",
+    "constraints": [
+      "1 <= list length <= 10^5",
+      "-10^9 <= node value <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [1, 2, 2, 1] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Front half 1-2 matches the flipped rear half 2-1 station for station."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [1, 2] },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "The halves disagree at the very first comparison."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [1, 2, 3, 2, 1] },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def isPalindrome(self, head: list[int]) -> bool:\n        # TODO: return True when the list is a palindrome.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int v) : val(v), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    bool isPalindrome(ListNode* head) {\n        // TODO: return true when the list is a palindrome.\n    }\n};",
+    "java": "class Solution {\n    public boolean isPalindrome(int[] head) {\n        // TODO: return true when the list is a palindrome.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "palindrome", "in-place-reversal", "check-for-palindrome-ll"],
+    "hintLevels": [
+      "Level 1: A palindrome is two mirror halves — find the middle and compare outward-inward.",
+      "Level 2: Slow/fast pointers find the middle, reverse everything from there, then walk both halves together checking values.",
+      "Level 3: Reversing the rear half (not the front) lets the front pointer simply walk to the middle while the flipped half walks to meet it; odd-length tails compare harmlessly because the flipped half is the shorter one."
+    ]
+  }
+}

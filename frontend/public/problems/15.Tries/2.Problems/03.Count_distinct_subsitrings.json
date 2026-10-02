@@ -1,0 +1,71 @@
+{
+  "id": "count-distinct-subsitrings",
+  "index": 3,
+  "topic": "15.Tries",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Count Distinct Substrings",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=count+distinct+substrings+of+a+string",
+    "sourceFilePath": "15. Tries/2. Problems/03. Count distinct subsitrings.cpp"
+  },
+  "narrative": {
+    "title": "The Rally Chant Census",
+    "scenario": "A stadium anthem archive studies crowd chants. Analysts slice a chant recording into every contiguous syllable run and want to know how many unique runs exist — duplicates collapse into one. The empty run counts too. Two runs are the same only when their syllables match exactly.",
+    "inputFormat": "A string s of lowercase letters.",
+    "outputFormat": "Return the number of distinct substrings of s, including the empty substring.",
+    "constraints": [
+      "1 <= len(s) <= 1000",
+      "s uses lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n^2)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "s": "abab"
+      },
+      "expected": 8,
+      "isPublic": true,
+      "explanation": "Distinct non-empty runs: a, b, ab, ba, aba, bab, abab — 7 of them; the canonical count adds the empty run for 8."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "s": "aaa"
+      },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "a, aa, aaa plus the empty run."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "s": "abc"
+      },
+      "expected": 7,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, s):\n        # Return the number of distinct substrings of s (empty included).\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the number of distinct substrings of s (empty included).\n    int solve(std::string s);\n};",
+    "java": "class Solution {\n    // Return the number of distinct substrings of s (empty included).\n    public int solve(String s) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "tries",
+      "substrings",
+      "counting",
+      "suffix-trie"
+    ],
+    "hintLevels": [
+      "Level 1: Every substring is a prefix of some suffix — feed all suffixes into one trie.",
+      "Level 2: Each newly created trie node during the suffix insertions is one new distinct substring.",
+      "Level 3: Count node creations and add 1 for the empty string; no dedup structure beyond the trie is needed."
+    ]
+  }
+}

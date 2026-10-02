@@ -1,0 +1,61 @@
+{
+  "id": "ceil-in-bst",
+  "index": 1,
+  "topic": "12.Binary_Search_Trees",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Ceil in a Binary Search Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=ceil+in+bst",
+    "sourceFilePath": "12. Binary Search Trees/2. Practice Problems/01. Ceil in BST.cpp"
+  },
+  "narrative": {
+    "title": "The Next-Available Slot Finder",
+    "scenario": "A clinic's booking system files slot durations in a sorted tree. A walk-in needs the earliest slot that fits their procedure — the smallest filed duration that is at least as long as the request. The scheduler descends the tree once: whenever the current slot is long enough it is remembered as a candidate and the search tries smaller ones on the left; otherwise it goes right. No candidate after the whole descent means no slot qualifies.",
+    "inputFormat": "A binary search tree as a level-order array (null marks a missing child) and an integer x — the requested duration.",
+    "outputFormat": "Return the smallest tree value greater than or equal to x, or -1 if no such value exists.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^9 <= node value, x <= 10^9",
+      "All node values are unique"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(h)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [5, 1, 7, null, 2, null, null, null, 3], "x": 3 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "3 exists in the tree, so the ceil of 3 is 3 itself."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [5, 1, 7, null, 2, null, null, null, 3], "x": 4 },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Values at least 4 are 5 and 7; the smallest qualifying one is 5."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [5, 1, 7], "x": 8 },
+      "expected": -1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root, x):\n        # Return the smallest value >= x, or -1.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the smallest value >= x, or -1.\n    int solve(TreeNode* root, int x);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the smallest value >= x, or -1.\n    public int solve(TreeNode root, int x) {\n        // TODO\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bst", "ceil", "binary-search", "tree-traversal", "ceil-in-bst"],
+    "hintLevels": [
+      "Level 1: You want the smallest value that doesn't fall short of x — remember candidates, never settle early.",
+      "Level 2: Current node too small? Everything left is smaller too — go right. Node qualifies? Log it, then hunt for smaller qualifiers on the left.",
+      "Level 3: An exact match short-circuits the walk; otherwise the last logged candidate along one descent is the ceil."
+    ]
+  }
+}

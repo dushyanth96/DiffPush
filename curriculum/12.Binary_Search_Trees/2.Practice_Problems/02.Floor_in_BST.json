@@ -1,0 +1,61 @@
+{
+  "id": "floor-in-bst",
+  "index": 2,
+  "topic": "12.Binary_Search_Trees",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Floor in a Binary Search Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=floor+in+bst",
+    "sourceFilePath": "12. Binary Search Trees/2. Practice Problems/02. Floor in BST.cpp"
+  },
+  "narrative": {
+    "title": "The Best-Fit Locker Lookup",
+    "scenario": "A sports warehouse shelves gear by size in a sorted tree, and a customer asks for the largest stocked size that still fits their frame — nothing bigger than the measurement. One descent answers it: whenever the current shelf fits, it becomes the running best and the clerk probes for an even better fit on the right; an oversized shelf sends the search left. Running out of tree without any fit means nothing qualifies.",
+    "inputFormat": "A binary search tree as a level-order array (null marks a missing child) and an integer x — the measurement.",
+    "outputFormat": "Return the greatest tree value less than or equal to x, or -1 if every stocked value is bigger.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^9 <= node value, x <= 10^9",
+      "All node values are unique"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(h)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [10, 5, 15, 2, 7], "x": 6 },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Values at most 6 are 2 and 5 (7 overshoots), so the best fit is 5."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [10, 5, 15, 2, 7], "x": 13 },
+      "expected": 10,
+      "isPublic": true,
+      "explanation": "The largest value not exceeding 13 is 10."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [10, 5, 15], "x": 1 },
+      "expected": -1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root, x):\n        # Return the greatest value <= x, or -1.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the greatest value <= x, or -1.\n    int solve(TreeNode* root, int x);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the greatest value <= x, or -1.\n    public int solve(TreeNode root, int x) {\n        // TODO\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bst", "floor", "binary-search", "tree-traversal", "floor-in-bst"],
+    "hintLevels": [
+      "Level 1: You want the largest value that doesn't overshoot x — a mirror image of the ceil hunt.",
+      "Level 2: Node fits? Log it and try to beat it on the right. Node too big? Its right wing can only be worse — go left.",
+      "Level 3: An exact match ends the search; otherwise the last logged value on one descent is the floor."
+    ]
+  }
+}

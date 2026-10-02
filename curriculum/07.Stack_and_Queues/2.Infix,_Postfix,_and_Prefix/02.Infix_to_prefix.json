@@ -1,0 +1,61 @@
+{
+  "id": "infix-to-prefix",
+  "index": 2,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Infix to Prefix Conversion",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=infix+to+prefix+conversion",
+    "sourceFilePath": "07.Stack and Queues/2. Infix, Postfix, and Prefix/02. Infix to prefix.cpp"
+  },
+  "narrative": {
+    "title": "The Reverse-Reading Billing Parser",
+    "scenario": "A billing engine feeds expressions to a mainframe whose dialect writes operators *before* their operands (`+ a b` instead of `a + b`). The conversion desk has a trick: read the expression right-to-left, swap the parenthesis roles, and let the same precedence machinery run — then flip the assembled result to restore reading order. Implement that desk.",
+    "inputFormat": "A string expression in infix form using single alphanumeric operands, the operators + - * / ^, and parentheses.",
+    "outputFormat": "Return the equivalent prefix (Polish) expression as a string.",
+    "constraints": [
+      "1 <= expression.length <= 10^5",
+      "Operands are single letters or digits",
+      "Precedence order: ^ > * = / > + = -"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "expression": "((A-(B/C))*((A/K)-L))" },
+      "expected": "*-A/BC-/AKL",
+      "isPublic": true,
+      "explanation": "The fully parenthesized input converts unambiguously; reading backwards then reversing produces the operator-first form."
+    },
+    {
+      "id": "tc-2",
+      "input": { "expression": "A+B*C" },
+      "expected": "+A*BC",
+      "isPublic": true,
+      "explanation": "Multiplication binds tighter, so the addition ends up as the outermost operator."
+    },
+    {
+      "id": "tc-3",
+      "input": { "expression": "(a-b)/c" },
+      "expected": "/-abc",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def infix_to_prefix(expression: str) -> str:\n    prec = {'^': 3, '*': 2, '/': 2, '+': 1, '-': 1}\n    out, stack = [], []\n    for ch in reversed(expression):\n        if ch.isalnum():\n            out.append(ch)\n        elif ch == ')':\n            stack.append(ch)\n        elif ch == '(':\n            while stack and stack[-1] != ')':\n                out.append(stack.pop())\n            stack.pop()  # discard ')'\n        else:\n            while stack and stack[-1] != ')' and prec[stack[-1]] >= prec[ch]:\n                out.append(stack.pop())\n            stack.append(ch)\n    while stack:\n        out.append(stack.pop())\n    return ''.join(reversed(out))",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstring infixToPrefix(string s) {\n    unordered_map<char, int> prec{{'^', 3}, {'*', 2}, {'/', 2}, {'+', 1}, {'-', 1}};\n    string ans;\n    stack<char> st;\n    for (int i = (int)s.size() - 1; i >= 0; --i) {\n        char c = s[i];\n        if (isalnum((unsigned char)c)) ans.push_back(c);\n        else if (c == ')') st.push(c);\n        else if (c == '(') {\n            while (!st.empty() && st.top() != ')') { ans.push_back(st.top()); st.pop(); }\n            st.pop();\n        } else {\n            while (!st.empty() && st.top() != ')' && prec[st.top()] >= prec[c]) {\n                ans.push_back(st.top()); st.pop();\n            }\n            st.push(c);\n        }\n    }\n    while (!st.empty()) { ans.push_back(st.top()); st.pop(); }\n    reverse(ans.begin(), ans.end());\n    return ans;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\nimport java.util.Map;\n\nclass Solution {\n    public String infixToPrefix(String s) {\n        Map<Character, Integer> prec = Map.of('^', 3, '*', 2, '/', 2, '+', 1, '-', 1);\n        StringBuilder out = new StringBuilder();\n        Deque<Character> stack = new ArrayDeque<>();\n        for (int i = s.length() - 1; i >= 0; --i) {\n            char c = s.charAt(i);\n            if (Character.isLetterOrDigit(c)) out.append(c);\n            else if (c == ')') stack.push(c);\n            else if (c == '(') {\n                while (!stack.isEmpty() && stack.peek() != ')') out.append(stack.pop());\n                stack.pop();\n            } else {\n                while (!stack.isEmpty() && stack.peek() != ')' &&\n                       prec.get(stack.peek()) >= prec.get(c)) out.append(stack.pop());\n                stack.push(c);\n            }\n        }\n        while (!stack.isEmpty()) out.append(stack.pop());\n        return out.reverse().toString();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["stack", "string-parsing", "expression-conversion", "infix-to-prefix"],
+    "hintLevels": [
+      "Level 1: Prefix is what you get when the postfix pipeline runs on a mirrored expression.",
+      "Level 2: Scan right-to-left, treat ')' as the opener and '(' as the closer, then reverse the output.",
+      "Level 3: Watch operator ties — with equal-precedence popping the reversed scan changes which occurrence settles first."
+    ]
+  }
+}

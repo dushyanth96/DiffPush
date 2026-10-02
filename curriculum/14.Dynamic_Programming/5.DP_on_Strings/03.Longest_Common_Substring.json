@@ -1,0 +1,60 @@
+{
+  "id": "longest-common-substring",
+  "index": 3,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Longest Common Substring",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=longest+common+substring",
+    "sourceFilePath": "14. Dynamic Programming/5. DP on Strings/03. Longest Common Substring.cpp"
+  },
+  "narrative": {
+    "title": "The Barcode Segment Matcher",
+    "scenario": "A scanner vendor validates label formats by finding the longest block of glyphs that appears contiguously in two barcode strips. Contiguity is the whole point — a scattered overlap is worthless for calibrating the reader. The calibration utility reports the length of that longest continuous shared block.",
+    "inputFormat": "Integers n and m, plus strings S1 and S2 of lengths n and m.",
+    "outputFormat": "Return the length of the longest string that occurs contiguously in both S1 and S2.",
+    "constraints": [
+      "1 <= n, m <= 1000",
+      "strings consist of uppercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*m)",
+    "optimalSpace": "O(min(n, m))"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 6, "m": 6, "S1": "ABCDGH", "S2": "ACDGHR" },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The block \"CDGH\" runs contiguously through both strings."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 4, "m": 4, "S1": "abcjklp", "S2": "acjkp" },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "\"cjk\" is the longest unbroken shared run."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 3, "m": 3, "S1": "xyz", "S2": "abc" },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, m, s1, s2):\n        # Return the length of the longest common contiguous block.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the length of the longest common contiguous block.\n    int solve(int n, int m, std::string s1, std::string s2);\n};",
+    "java": "class Solution {\n    // Return the length of the longest common contiguous block.\n    public int solve(int n, int m, String s1, String s2) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "strings", "substring", "lcs-variant"],
+    "hintLevels": [
+      "Level 1: A shared run must be unbroken, so a mismatch resets the streak to zero instead of inheriting neighbors.",
+      "Level 2: dp[i][j] = dp[i-1][j-1] + 1 on a match, else 0; the answer is the max over the whole table.",
+      "Level 3: Track the running maximum during the fill; a single rolling row suffices."
+    ]
+  }
+}

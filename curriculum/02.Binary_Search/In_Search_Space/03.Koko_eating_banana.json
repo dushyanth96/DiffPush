@@ -1,0 +1,61 @@
+{
+  "id": "koko-eating-banana",
+  "index": 3,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Koko eating banana",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Koko%20eating%20banana",
+    "sourceFilePath": "02.Binary Search/In Search Space/03.Koko_eating_banana.cpp"
+  },
+  "narrative": {
+    "title": "Pacing a Robotic Picker Before the Shift Ends",
+    "scenario": "A warehouse robot must clear several part bins before the maintenance crew returns in h minutes. Each minute it works on one bin at a fixed pick rate; a smaller bin finishes early and the robot idles for the rest of that minute. Choose the slowest rate that still empties every bin in time.",
+    "inputFormat": "An array piles of n positive integers and an integer h, the deadline in hours.",
+    "outputFormat": "The minimum integer eating speed k such that all piles are finished within h hours.",
+    "constraints": [
+      "1 <= n <= 10^4",
+      "n <= h <= 10^9",
+      "1 <= piles[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log M), where M is the largest pile",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "piles": [3, 6, 7, 11], "h": 8 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "At rate 4 the bins take 1, 2, 2 and 3 minutes for a total of 8; rate 3 would need 9."
+    },
+    {
+      "id": "tc-2",
+      "input": { "piles": [30, 11, 23, 4, 20], "h": 5 },
+      "expected": 30,
+      "isPublic": true,
+      "explanation": "With only five minutes and five bins, one bin must go per minute, so the rate must cover the largest bin."
+    },
+    {
+      "id": "tc-3",
+      "input": { "piles": [5], "h": 5 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def minEatingSpeed(self, piles: list[int], h: int) -> int:\n        # TODO: find the slowest rate that still meets the deadline.\n        pass",
+    "cpp": "#include <vector>\n#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    int minEatingSpeed(vector<int>& piles, int h) {\n        // TODO: find the slowest rate that still meets the deadline.\n    }\n};",
+    "java": "class Solution {\n    public int minEatingSpeed(int[] piles, int h) {\n        // TODO: find the slowest rate that still meets the deadline.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "answer-space", "feasibility-check", "minimize-rate", "koko-eating-banana"],
+    "hintLevels": [
+      "Level 1: Instead of searching the piles, search the rate - feasibility is monotonic in the rate.",
+      "Level 2: For a candidate rate, sum ceil(pile / rate) over all piles and compare against the deadline; search the rate range from 1 to the largest pile.",
+      "Level 3: A partially finished bin still consumes its own minute, so the per-bin cost is a ceiling division, and the deadline is guaranteed to be at least the bin count so an answer always exists."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "sum-of-beauty-of-all-substrings",
+  "index": 7,
+  "topic": "03.Strings",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Sum of beauty of all substrings",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Sum%20of%20beauty%20of%20all%20substrings",
+    "sourceFilePath": "03.Strings/2.Medium/07.Sum_of_beauty_of_all_substrings.cpp"
+  },
+  "narrative": {
+    "title": "Spread Score Across Every Listening Window",
+    "scenario": "A station manager audits a broadcast day stored as one string of jingle codes. Every contiguous window gets a spread score: the count of the most-repeated jingle inside the window minus the count of the least-repeated one, so windows where everything appears equally score zero. The audit totals the spread over every window of the day.",
+    "inputFormat": "A string s of lowercase English letters.",
+    "outputFormat": "The sum of (maximum character frequency minus minimum character frequency) over all substrings of s; substrings with a single distinct character contribute 0.",
+    "constraints": [
+      "1 <= s.length <= 500",
+      "s consists of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "aabcb" },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Only \"aab\", \"aabc\", \"aabcb\", \"abcb\" and \"bcb\" carry a spread of 1; every other window is single-character or perfectly balanced."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "aabcbaa" },
+      "expected": 17,
+      "isPublic": true,
+      "explanation": "Longer windows accumulate bigger spreads — the tail windows dominated by a's push the total to 17."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "abcde" },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def beautySum(self, s: str) -> int:\n        # TODO: return the total beauty of every substring of s.\n        pass",
+    "cpp": "#include <string>\n#include <vector>\n#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    int beautySum(string s) {\n        // TODO: return the total beauty of every substring of s.\n    }\n};",
+    "java": "class Solution {\n    public int beautySum(String s) {\n        // TODO: return the total beauty of every substring of s.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "brute-force-enumeration", "frequency-array", "sum-of-beauty-of-all-substrings"],
+    "hintLevels": [
+      "Level 1: Beauty only becomes non-zero once some letter appears more often than another letter inside the same window.",
+      "Level 2: Fix a left end, grow the right end while maintaining a 26-slot tally, and add max-minus-min at every step.",
+      "Level 3: Update the tally incrementally as the window grows so each step costs O(26), and note windows shorter than length 2 always score 0."
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "id": "search-insert-position",
+  "index": 4,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Search insert position",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Search%20insert%20position",
+    "sourceFilePath": "02.Binary Search/1D Arrays/04.Search_insert_position.cpp"
+  },
+  "narrative": {
+    "title": "Slotting a Job Into the Duration Ledger",
+    "scenario": "A batch scheduler keeps pending jobs in a ledger sorted by estimated duration and a new job has just arrived. The dispatcher either finds the ledger entry matching the new job's duration or determines which slot it would occupy so the ledger stays sorted after insertion. Report that position.",
+    "inputFormat": "An array nums of n distinct integers sorted in ascending order, and an integer target.",
+    "outputFormat": "The index of target if present, otherwise the index where target should be inserted to keep nums sorted.",
+    "constraints": [
+      "1 <= n <= 10^4",
+      "-10^4 <= nums[i] <= 10^4",
+      "nums contains distinct values sorted in ascending order",
+      "An O(log n) algorithm is required"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 3, 5, 6], "target": 5 },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "The job duration 5 already occupies slot 2, so the dispatcher reports that index directly."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1, 3, 5, 6], "target": 2 },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "Duration 2 lands between 1 and 3, so it would be inserted at index 1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1, 3, 5, 6], "target": 7 },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def searchInsert(self, nums: list[int], target: int) -> int:\n        # TODO: return the match index or the slot that keeps the ledger sorted.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int searchInsert(vector<int>& nums, int target) {\n        // TODO: return the match index or the slot that keeps the ledger sorted.\n    }\n};",
+    "java": "class Solution {\n    public int searchInsert(int[] nums, int target) {\n        // TODO: return the match index or the slot that keeps the ledger sorted.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "lower-bound", "insertion-point", "search-insert-position"],
+    "hintLevels": [
+      "Level 1: Missing targets are not failures here - the point where the search space collapses is exactly the insertion slot.",
+      "Level 2: Run the standard halving search but never stop early on inequality; keep narrowing until the bounds cross, then the left bound is the answer.",
+      "Level 3: A target beyond every entry must resolve to n (the position just past the last slot), and the loop has to survive that final state without reading out of range."
+    ]
+  }
+}

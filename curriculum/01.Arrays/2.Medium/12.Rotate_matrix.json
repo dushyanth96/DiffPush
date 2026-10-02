@@ -1,0 +1,61 @@
+{
+  "id": "rotate-matrix",
+  "index": 12,
+  "topic": "01.Arrays",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Rotate matrix",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Rotate%20matrix",
+    "sourceFilePath": "01.Arrays/2.Medium/12.Rotate_matrix.cpp"
+  },
+  "narrative": {
+    "title": "Rotating a Frame Buffer in Place",
+    "scenario": "A camera pipeline holds one square frame in a fixed memory buffer and must present it turned a quarter turn clockwise. There is no spare buffer available at that moment, so the pixel grid must be rewritten in place. After the rewrite, column order and row order both shift as the image turns.",
+    "inputFormat": "An n x n matrix of integers representing the current frame.",
+    "outputFormat": "The same matrix rotated 90 degrees clockwise, modified in place.",
+    "constraints": [
+      "1 <= n <= 20",
+      "-1000 <= matrix[i][j] <= 1000",
+      "The rotation must be done in place"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "matrix": [[1, 2, 3], [4, 5, 6], [7, 8, 9]] },
+      "expected": [[7, 4, 1], [8, 5, 2], [9, 6, 3]],
+      "isPublic": true,
+      "explanation": "The bottom-left corner 7 travels to the top-left, and the rest follow the same quarter-turn mapping."
+    },
+    {
+      "id": "tc-2",
+      "input": { "matrix": [[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]] },
+      "expected": [[15, 13, 2, 5], [14, 3, 4, 1], [12, 6, 8, 9], [16, 7, 10, 11]],
+      "isPublic": true,
+      "explanation": "The 4x4 frame turns as a whole, so the last row of the input becomes the first column of the output."
+    },
+    {
+      "id": "tc-3",
+      "input": { "matrix": [[1, 2], [3, 4]] },
+      "expected": [[3, 1], [4, 2]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def rotate(self, matrix: list[list[int]]) -> None:\n        # TODO: rotate the square frame 90 degrees clockwise in place.\n        pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    void rotate(vector<vector<int>>& matrix) {\n        // TODO: rotate the square frame 90 degrees clockwise in place.\n    }\n};",
+    "java": "class Solution {\n    public void rotate(int[][] matrix) {\n        // TODO: rotate the square frame 90 degrees clockwise in place.\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "matrix-rotation", "transpose", "in-place"],
+    "hintLevels": [
+      "Level 1: A quarter turn can be built out of two simpler grid operations that are each easy to do in place.",
+      "Level 2: Swap every cell above the main diagonal with its mirror below it, then reverse each row.",
+      "Level 3: The transpose must only touch cells where the row index is greater than the column index, otherwise every pair gets swapped back; keep the running index below the row index when reversing."
+    ]
+  }
+}

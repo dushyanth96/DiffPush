@@ -1,0 +1,61 @@
+{
+  "id": "delete-nodes-from-dll",
+  "index": 1,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Delete nodes from dll",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Delete%20nodes%20from%20dll",
+    "sourceFilePath": "04.Linked List/4.Medium Problems of DLL/01.Delete_nodes_from_dll.cpp"
+  },
+  "narrative": {
+    "title": "Purging Recalled Batches from the Two-Way Sorter",
+    "scenario": "A distribution center's two-way sorter tracks bins of medication batches, and a recall notice flags one batch ID. Every bin carrying that ID must be pulled from the belt without disturbing the order of the rest — whether the bin sits at the intake end, the discharge end, or anywhere between. Because each station knows both neighbours, a pulled bin's two neighbours can re-link to each other directly.",
+    "inputFormat": "An array arr of n node values forming the doubly linked list, and an integer key.",
+    "outputFormat": "The values of the list after every node equal to key is unlinked, read from the new head.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= arr[i] <= 10^9",
+      "-10^9 <= key <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [2, 2, 10, 8, 4, 2, 5, 2], "key": 2 },
+      "expected": [10, 8, 4, 5],
+      "isPublic": true,
+      "explanation": "Every station carrying the recalled batch 2 is pulled; the four clean stations keep their relative order."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [4, 4, 6], "key": 4 },
+      "expected": [6],
+      "isPublic": true,
+      "explanation": "Removals at the intake end reassign the head itself — after both 4s are pulled, 6 is the new entry point."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [1, 2, 3], "key": 9 },
+      "expected": [1, 2, 3],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def deleteAllOccurOfX(self, arr: list[int], key: int) -> list[int]:\n        # TODO: unlink every node equal to key and return the surviving values.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node *prev, *next;\n    Node(int d) : data(d), prev(nullptr), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    void deleteAllOccurOfX(Node** head_ref, int x) {\n        // TODO: unlink every node with data == x, updating *head_ref when needed.\n    }\n};",
+    "java": "class Solution {\n    public int[] deleteAllOccurOfX(int[] arr, int key) {\n        // TODO: unlink every node equal to key and return the surviving values.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "doubly-linked-list", "deletion", "delete-nodes-from-dll"],
+    "hintLevels": [
+      "Level 1: One traversal is enough — at each station you only need to decide whether it stays on the belt.",
+      "Level 2: When a node matches, re-wire its two neighbours to each other; when the match is the current head, move the head forward first.",
+      "Level 3: Guard every neighbour access — a match at the tail has no next, and the head pointer must survive even if every node is deleted."
+    ]
+  }
+}

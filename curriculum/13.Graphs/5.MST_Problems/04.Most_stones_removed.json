@@ -1,0 +1,61 @@
+{
+  "id": "most-stones-removed",
+  "index": 4,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Most Stones Removed with Same Row or Column",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=most+stones+removed+with+same+row+or+column",
+    "sourceFilePath": "13. Graphs/5. MST Problems/04. Most stones removed.cpp"
+  },
+  "narrative": {
+    "title": "Clearing the Pallet Grid One Clutch at a Time",
+    "scenario": "A robotic crane works over a floor where pallets sit on integer grid coordinates. A pallet is liftable whenever another pallet shares its row or its column. The foreman wants to clear as many pallets as possible through legal single lifts, leaving only pallets that share no line with a survivor. The count of liftables is exactly the total minus the number of row/column-connected clutches that must each leave one behind.",
+    "inputFormat": "A list stones where stones[i] = [x, y] is the coordinate of a pallet; coordinates are unique.",
+    "outputFormat": "Return the maximum number of pallets that can be removed.",
+    "constraints": [
+      "1 <= stones.length <= 10^3",
+      "0 <= x, y <= 10^4",
+      "No two stones share a coordinate"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n α(n))",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "stones": [[0, 0], [0, 1], [1, 0], [1, 2], [2, 1], [2, 2]] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "All six pallets form one connected clutch, so only one anchor must remain."
+    },
+    {
+      "id": "tc-2",
+      "input": { "stones": [[0, 0], [0, 2], [1, 1], [2, 0], [2, 2]] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The four corner pallets chain by rows and columns; the centre pallet is on no shared line."
+    },
+    {
+      "id": "tc-3",
+      "input": { "stones": [[0, 0]] },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, stones):\n        # Return the maximum number of stones that can be removed.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the maximum number of stones that can be removed.\n    int solve(std::vector<std::vector<int>>& stones);\n};",
+    "java": "class Solution {\n    // Return the maximum number of stones that can be removed.\n    public int solve(int[][] stones) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "disjoint-set", "components", "matrix-transform", "most-stones-removed"],
+    "hintLevels": [
+      "Level 1: Every removal keeps at least one stone per connected clutch — the rest can always be lifted.",
+      "Level 2: Treat each row and each column as a node; a stone unions its row to its column.",
+      "Level 3: Offset column ids past the row range to avoid collisions; answer is n minus the component count."
+    ]
+  }
+}

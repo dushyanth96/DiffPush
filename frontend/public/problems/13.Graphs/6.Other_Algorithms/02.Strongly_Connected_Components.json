@@ -1,0 +1,60 @@
+{
+  "id": "strongly-connected-components",
+  "index": 2,
+  "topic": "13.Graphs",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Strongly Connected Components — Kosaraju's Algorithm",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=strongly+connected+components",
+    "sourceFilePath": "13. Graphs/6. Other Algorithms/02. Strongly Connected Components.cpp"
+  },
+  "narrative": {
+    "title": "Counting the Closed Courier Loops",
+    "scenario": "A courier's one-way route map hides closed guilds: sets of hubs where every hub can reach every other by following the arrows. Management wants the number of such mutually-reachable guilds. Two passes do it — log when each hub finishes its exploration, then replay the map with every arrow reversed, popping hubs in decreasing finish order and counting each fresh exploration as one guild.",
+    "inputFormat": "An integer V (vertices 0..V-1) and an adjacency list adj where adj[i] lists the destinations of vertex i's one-way edges.",
+    "outputFormat": "Return the number of strongly connected components.",
+    "constraints": [
+      "1 <= V <= 10^5",
+      "0 <= number of edges <= 2 * 10^5"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(V + E)",
+    "optimalSpace": "O(V + E)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "V": 5, "adj": [[1], [2], [0, 3], [4], []] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "0, 1, 2 cycle among themselves; 3 and 4 stand outside as singletons."
+    },
+    {
+      "id": "tc-2",
+      "input": { "V": 4, "adj": [[1], [2], [3], [0]] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "A single grand cycle makes all four vertices one component."
+    },
+    {
+      "id": "tc-3",
+      "input": { "V": 3, "adj": [[1], [2], []] },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import sys\nsys.setrecursionlimit(10**6)\n\nclass Solution:\n    def solve(self, V, adj):\n        # Return the number of strongly connected components.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the number of strongly connected components.\n    int solve(int V, std::vector<std::vector<int>>& adj);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return the number of strongly connected components.\n    public int solve(int V, List<List<Integer>> adj) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "kosaraju", "scc", "dfs", "strongly-connected-components"],
+    "hintLevels": [
+      "Level 1: Within a guild every arrow round-trips; between guilds the arrows only flow one way.",
+      "Level 2: Finish-time order + edge reversal collapses each guild while separating the flow between them.",
+      "Level 3: Second-pass DFS roots in decreasing finish order — every new root is one more SCC."
+    ]
+  }
+}

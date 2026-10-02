@@ -1,0 +1,62 @@
+{
+  "id": "gas-station",
+  "index": 11,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Gas station",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Gas%20station",
+    "sourceFilePath": "02.Binary Search/In Search Space/12.Gas_station.cpp"
+  },
+  "narrative": {
+    "title": "Densifying a Toll Gantry Corridor",
+    "scenario": "A highway authority places k additional toll gantries between existing ones, at any positions along the corridor, to shrink the longest stretch a driver travels without passing a gantry. Choose the k placements to minimize that longest stretch. Report the optimized distance to two decimal places.",
+    "inputFormat": "An integer N, an array stations of N sorted positions, and an integer K, the number of new stations to add.",
+    "outputFormat": "The smallest achievable maximum distance between adjacent stations, rounded to two decimal places.",
+    "constraints": [
+      "1 <= N <= 10^5",
+      "0 <= K <= 10^5",
+      "0 <= stations[i] <= 10^9",
+      "positions are given in strictly increasing order"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N log M), where M is the initial maximum gap",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "N": 10, "stations": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "K": 9 },
+      "expected": 0.5,
+      "isPublic": true,
+      "explanation": "Nine new stations slot one between each existing pair, halving every unit gap to 0.50."
+    },
+    {
+      "id": "tc-2",
+      "input": { "N": 10, "stations": [3, 6, 12, 19, 33, 44, 67, 72, 89, 95], "K": 2 },
+      "expected": 14.0,
+      "isPublic": true,
+      "explanation": "The widest initial stretches are 23 and 24; two well-placed stations pull the worst stretch down to 14."
+    },
+    {
+      "id": "tc-3",
+      "input": { "N": 2, "stations": [1, 10], "K": 1 },
+      "expected": 4.5,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findSmallestMaxDist(self, stations: list[int], K: int) -> float:\n        # TODO: binary search the gap size; answer to two decimals.\n        pass",
+    "cpp": "#include <vector>\n#include <cmath>\nusing namespace std;\n\nclass Solution {\npublic:\n    double findSmallestMaxDist(vector<int>& stations, int K) {\n        // TODO: binary search the gap size; answer to two decimals.\n    }\n};",
+    "java": "class Solution {\n    public double findSmallestMaxDist(int[] stations, int K) {\n        // TODO: binary search the gap size; answer to two decimals.\n        return 0.0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "answer-space", "real-valued-search", "minimize-maximum", "gas-station"],
+    "hintLevels": [
+      "Level 1: The question 'with a max allowed gap of d, do K stations suffice' is monotonic in d, and d is a real number here.",
+      "Level 2: For a candidate d, each existing stretch of length L needs floor(L / d) new stations; sum them and compare with K.",
+      "Level 3: This is a continuous search: shrink the bracket on a fixed epsilon instead of integer bounds, and the floor-based counting already handles placements that serve two stretches at once."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "spiral-traversal",
+  "index": 13,
+  "topic": "01.Arrays",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Spiral traversal",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Spiral%20traversal",
+    "sourceFilePath": "01.Arrays/2.Medium/13.Spiral_traversal.cpp"
+  },
+  "narrative": {
+    "title": "Reading a Wafer Map in a Spiral Sweep",
+    "scenario": "An inspection head sweeps a rectangular wafer map starting at the top-left die and spirals inward clockwise, reporting each die it passes. The control software needs the same die sequence that the physical sweep would produce. The map is not necessarily square.",
+    "inputFormat": "An m x n matrix of integers.",
+    "outputFormat": "All elements of the matrix in clockwise spiral order, beginning with the top-left element.",
+    "constraints": [
+      "1 <= m, n <= 10",
+      "-100 <= matrix[i][j] <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m * n)",
+    "optimalSpace": "O(1) auxiliary (excluding the output)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "matrix": [[1, 2, 3], [4, 5, 6], [7, 8, 9]] },
+      "expected": [1, 2, 3, 6, 9, 8, 7, 4, 5],
+      "isPublic": true,
+      "explanation": "The sweep runs along the top, down the right, back along the bottom, up the left, and finishes at the centre."
+    },
+    {
+      "id": "tc-2",
+      "input": { "matrix": [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]] },
+      "expected": [1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7],
+      "isPublic": true,
+      "explanation": "With more columns than rows the inner ring degenerates into a single row, which is reported left to right."
+    },
+    {
+      "id": "tc-3",
+      "input": { "matrix": [[1, 2, 3]] },
+      "expected": [1, 2, 3],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def spiralOrder(self, matrix: list[list[int]]) -> list[int]:\n        # TODO: return all elements in clockwise spiral order.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> spiralOrder(vector<vector<int>>& matrix) {\n        // TODO: return all elements in clockwise spiral order.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public List<Integer> spiralOrder(int[][] matrix) {\n        // TODO: return all elements in clockwise spiral order.\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "matrix", "boundary-shrinking", "spiral-order"],
+    "hintLevels": [
+      "Level 1: Think of four moving walls that start at the map edges and close in as each side is consumed.",
+      "Level 2: Walk the top row left to right, the right column downward, the bottom row right to left and the left column upward, tightening the corresponding wall after each leg.",
+      "Level 3: On a non-square map the last two legs can revisit already-consumed cells, so guard them with a re-check of the remaining walls before walking."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "sort-ll",
+  "index": 10,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Sort LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Sort%20list",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/10.Sort_LL.cpp"
+  },
+  "narrative": {
+    "title": "Re-ranking the Entire Work Queue",
+    "scenario": "A job scheduler's queue is a one-way chain whose entries landed in arbitrary priority order, and the dispatcher needs the whole chain ascending without exporting it to an array — memory is reserved for the chain itself. The viable strategy is merge sort: split the chain at the middle, sort each half the same way, then zip two already-sorted chains together.",
+    "inputFormat": "An array head of node values representing the linked list.",
+    "outputFormat": "The values of the list sorted in ascending order.",
+    "constraints": [
+      "0 <= list length <= 10^5",
+      "-10^9 <= node value <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N log N)",
+    "optimalSpace": "O(log N)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [4, 2, 1, 3] },
+      "expected": [1, 2, 3, 4],
+      "isPublic": true,
+      "explanation": "Four scrambled entries come out fully ascending after the split-sort-merge rounds."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [-1, 5, 3, 4, 0] },
+      "expected": [-1, 0, 3, 4, 5],
+      "isPublic": true,
+      "explanation": "Negatives and zero rank below the positives in the merged chain."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [2, 2, 1, 1] },
+      "expected": [1, 1, 2, 2],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def sortList(self, head: list[int]) -> list[int]:\n        # TODO: return the values sorted ascending.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int v) : val(v), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    ListNode* sortList(ListNode* head) {\n        // TODO: merge-sort the chain in place and return its head.\n    }\n};",
+    "java": "class Solution {\n    public int[] sortList(int[] head) {\n        // TODO: return the values sorted ascending.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "merge-sort", "divide-and-conquer", "sort-ll"],
+    "hintLevels": [
+      "Level 1: Sorting a chain you cannot index means divide-and-conquer with relinking, not element swapping.",
+      "Level 2: Cut the chain at the middle (slow/fast), sort both halves recursively, then merge two sorted chains by always advancing the smaller head.",
+      "Level 3: The split must terminate recursion — after finding the middle, sever it (middle.next = null) or the halves never shrink; the recursive stack is the only extra memory, hence O(log n)."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "task-scheduler",
+  "index": 6,
+  "topic": "09.Heaps",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Task Scheduler",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=task+scheduler",
+    "sourceFilePath": "09. Heaps/2. Medium Problems/06. Task Scheduler.cpp"
+  },
+  "narrative": {
+    "title": "The Broadcast TowerCooldown Plan",
+    "scenario": "A broadcast tower must air a batch of announcements; airing the same announcement twice without n cooling slots in between would violate regulator spacing rules. Each airing takes one slot, and idle slots are permitted. The programming chief wants the minimum number of slots to clear the whole batch legally.",
+    "inputFormat": "A string tasks where each character is a task type, and an integer n, the cooldown gap between identical tasks.",
+    "outputFormat": "Return the minimum total number of slots (including idles) needed to run every task.",
+    "constraints": [
+      "1 <= tasks.length <= 10^4",
+      "tasks consists of uppercase English letters",
+      "0 <= n <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tasks": "AAABBB", "n": 2 },
+      "expected": 8,
+      "isPublic": true,
+      "explanation": "Two max-frequency tasks fill the cooldown frames: (3-1)*3 + 2 = 8 slots."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tasks": "A", "n": 2 },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "A single task needs one slot and no cooldown follows."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tasks": "AAABBBCC", "n": 2 },
+      "expected": 8,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def least_interval(tasks: str, n: int) -> int:\n    if not tasks:\n        return 0\n    freq = {}\n    for ch in tasks:\n        freq[ch] = freq.get(ch, 0) + 1\n    maxfreq = max(freq.values())\n    maxfreq_count = sum(1 for v in freq.values() if v == maxfreq)\n    return max(len(tasks), (maxfreq - 1) * (n + 1) + maxfreq_count)",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint leastInterval(vector<char>& tasks, int n) {\n    unordered_map<char, int> freq;\n    for (char t : tasks) ++freq[t];\n    int maxfreq = 0;\n    for (auto& [t, c] : freq) maxfreq = max(maxfreq, c);\n    int maxcount = 0;\n    for (auto& [t, c] : freq) if (c == maxfreq) ++maxcount;\n    return max((int)tasks.size(), (maxfreq - 1) * (n + 1) + maxcount);\n}",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int leastInterval(char[] tasks, int n) {\n        Map<Character, Integer> freq = new HashMap<>();\n        for (char t : tasks) freq.merge(t, 1, Integer::sum);\n        int maxfreq = Collections.max(freq.values());\n        int maxcount = 0;\n        for (int v : freq.values()) if (v == maxfreq) ++maxcount;\n        return Math.max(tasks.length, (maxfreq - 1) * (n + 1) + maxcount);\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["heap", "greedy", "scheduling", "task-scheduler"],
+    "hintLevels": [
+      "Level 1: The rarest task never forces idles — only the most frequent task dictates the frame.",
+      "Level 2: The tightest schedule is (maxfreq-1) cooldown frames of size n+1, plus one slot per max-frequency task.",
+      "Level 3: If enough other tasks exist to fill every gap, the answer collapses to the task count."
+    ]
+  }
+}

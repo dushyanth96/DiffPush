@@ -1,0 +1,97 @@
+{
+  "id": "morris-inorder-traversal",
+  "index": 11,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Morris Inorder Traversal (O(1) Space)",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=inorder+traversal+binary+tree",
+    "sourceFilePath": "11. Binary Trees/3. Hard/12. Morris Inorder Traversal.cpp"
+  },
+  "narrative": {
+    "title": "The Thread-Backed Shelf Reconciliation",
+    "scenario": "An inventory drone must list every shelf of a tree-layout aisle in left-to-right order while forbidden from carrying a routing table. Its trick: whenever it steps into a left branch, it first strings a temporary return-thread from that branch's rightmost shelf up to the current junction. The thread tells it when the branch is exhausted; it snips the thread on the way out, restoring the aisle byte for byte.",
+    "inputFormat": "A binary tree as a level-order array (null marks a missing child).",
+    "outputFormat": "Return the node values in inorder (left subtree, root, right subtree).",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^4 <= node value <= 10^4",
+      "Expected extra space: O(1) — Morris threading, no stack or queue"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          null,
+          6
+        ]
+      },
+      "expected": [
+        4,
+        2,
+        5,
+        1,
+        3,
+        6
+      ],
+      "isPublic": true,
+      "explanation": "The left wing reads 4-2-5, then the root 1, then 3 with its right child 6."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          null,
+          2,
+          3
+        ]
+      },
+      "expected": [
+        1,
+        3,
+        2
+      ],
+      "isPublic": true,
+      "explanation": "The root has no left subtree, so 1 leads; node 2's left child 3 precedes it."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": []
+      },
+      "expected": [],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Inorder using Morris threading; O(1) extra space.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Inorder using Morris threading; O(1) extra space.\n    std::vector<int> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Inorder using Morris threading; O(1) extra space.\n    public List<Integer> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "morris-traversal",
+      "constant-space",
+      "morris-inorder-traversal"
+    ],
+    "hintLevels": [
+      "Level 1: Inorder means 'finish the left, then log me' — you need a cheap way to know when a left walk is done.",
+      "Level 2: Thread the left subtree's rightmost node back to the current root; arriving via the thread means the left is complete.",
+      "Level 3: Record the value when the thread already exists (or there is no left child), then cut the thread and step right."
+    ]
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "id": "root-to-node-path-binary-tree",
+  "index": 1,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Path from Root to Given Node",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=path+from+root+to+node+binary+tree",
+    "sourceFilePath": "11. Binary Trees/3. Hard/01. All root to leaf paths.cpp"
+  },
+  "narrative": {
+    "title": "The Escalation Trail Lookup",
+    "scenario": "A support org chart is stored as a binary tree of team leads, and when a ticket lands on a specific lead, the audit needs the full escalation trail — every supervisor between the chief and that lead, in order from the top. If the lead id doesn't exist in the chart, the trail comes back empty rather than guessed.",
+    "inputFormat": "A binary tree as a level-order array (null marks a missing child) and an integer target — the value of the destination node.",
+    "outputFormat": "Return the array of values on the route from root to the target node, root first. Return an empty array if the target is absent.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^4 <= node value <= 10^4",
+      "Node values are unique"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          null,
+          6
+        ],
+        "target": 6
+      },
+      "expected": [
+        1,
+        3,
+        6
+      ],
+      "isPublic": true,
+      "explanation": "The route descends root -> right child 3 -> leaf 6."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          null,
+          6
+        ],
+        "target": 5
+      },
+      "expected": [
+        1,
+        2,
+        5
+      ],
+      "isPublic": true,
+      "explanation": "This time the trail bends left: root -> 2 -> 5."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3
+        ],
+        "target": 9
+      },
+      "expected": [],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root, target):\n        # Return the root-to-target path values, or [] if absent.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the root-to-target path values, or {} if absent.\n    std::vector<int> solve(TreeNode* root, int target);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the root-to-target path values, or an empty list if absent.\n    public List<Integer> solve(TreeNode root, int target) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "backtracking",
+      "path",
+      "root-to-node-path-binary-tree"
+    ],
+    "hintLevels": [
+      "Level 1: Explore root-first and keep a breadcrumb trail of the nodes currently on your descent.",
+      "Level 2: On a match, freeze the trail and unwind with success; on a dead end, pop the breadcrumb and back up.",
+      "Level 3: The OR of the two subtree probes decides success — the first branch that finds the target fixes the final trail."
+    ]
+  }
+}

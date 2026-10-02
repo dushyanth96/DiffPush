@@ -1,0 +1,60 @@
+{
+  "id": "implement-atoi",
+  "index": 4,
+  "topic": "03.Strings",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Implement atoi",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Implement%20atoi",
+    "sourceFilePath": "03.Strings/2.Medium/04.Implement_atoi.cpp"
+  },
+  "narrative": {
+    "title": "Field Parser on a Noisy Boot Bus",
+    "scenario": "An embedded controller reads configuration tokens off a serial bus where sensor firmware appends free-form annotations around the numeric fields. The parser must behave like the C library: skip leading blanks, honour one sign character, consume the digit run, ignore everything after it, and saturate at the 32-bit register bounds instead of wrapping. A field that never reaches a digit yields zero.",
+    "inputFormat": "A string s that may contain leading spaces, an optional '+' or '-' sign, digits, and arbitrary trailing characters.",
+    "outputFormat": "The parsed 32-bit signed integer: digits read with their sign, clamped to [-2^31, 2^31 - 1] on overflow, or 0 when no digits are read.",
+    "constraints": [
+      "0 <= s.length <= 200",
+      "s consists of English letters, digits, the space ' ', and the characters '+', '-', '.'"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "42" },
+      "expected": 42,
+      "isPublic": true,
+      "explanation": "No blanks, no sign — the digit run is read straight through."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": " -42" },
+      "expected": -42,
+      "isPublic": true,
+      "explanation": "The leading blank is skipped and the '-' fixes the sign before the digits are consumed."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "91283472332" },
+      "expected": 2147483647,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def myAtoi(self, s: str) -> int:\n        # TODO: parse s under the atoi rules, clamping to 32-bit signed range.\n        pass",
+    "cpp": "#include <string>\n#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    int myAtoi(string s) {\n        // TODO: parse s under the atoi rules, clamping to 32-bit signed range.\n    }\n};",
+    "java": "class Solution {\n    public int myAtoi(String s) {\n        // TODO: parse s under the atoi rules, clamping to 32-bit signed range.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "state-machine", "overflow-clamping", "implement-atoi"],
+    "hintLevels": [
+      "Level 1: Four phases in strict order — blanks, one optional sign, the digit run, then stop reading entirely.",
+      "Level 2: Accumulate into a wider container than the answer type so overflow is detected as it happens, not after the value wraps.",
+      "Level 3: Clamp direction matters: a positive run past the cap returns 2^31 - 1 while a negative one returns -2^31 — and a sign not followed by digits means 0."
+    ]
+  }
+}

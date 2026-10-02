@@ -1,0 +1,60 @@
+{
+  "id": "assign-cookies",
+  "index": 1,
+  "topic": "10.Greedy_Approach",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Assign Cookies",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=assign+cookies",
+    "sourceFilePath": "10. Greedy Approach/1. Easy/01. Assign Cookies.cpp"
+  },
+  "narrative": {
+    "title": "The Hardware Token Allocator",
+    "scenario": "A compute cluster hands out GPU tokens to queued jobs: each job states the minimum token strength it will accept, and each token has a fixed strength. A job accepts at most one token, and a token serves at most one job. The scheduler wants to satisfy as many jobs as possible, matching the weakest acceptable token to each waiting job.",
+    "inputFormat": "Two integer arrays: g (each job's minimum acceptable strength) and s (each token's strength).",
+    "outputFormat": "Return the maximum number of jobs that can be satisfied.",
+    "constraints": [
+      "1 <= g.length, s.length <= 2 * 10^4",
+      "1 <= g[i], s[j] <= 2^31 - 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "g": [1, 2, 3], "s": [1, 1] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "Both tokens are strength 1, so only the greediest-of-three's weakest demand can be met."
+    },
+    {
+      "id": "tc-2",
+      "input": { "g": [1, 2], "s": [1, 2, 3] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Tokens 1 and 2 cover both jobs; the spare token sits unused."
+    },
+    {
+      "id": "tc-3",
+      "input": { "g": [2, 2, 2], "s": [1, 2, 3] },
+      "expected": 2,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def find_content_children(g, s):\n    g.sort()\n    s.sort()\n    child = 0\n    for token in s:\n        if child < len(g) and token >= g[child]:\n            child += 1\n    return child",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint findContentChildren(vector<int>& g, vector<int>& s) {\n    sort(g.begin(), g.end());\n    sort(s.begin(), s.end());\n    int child = 0;\n    for (int i = 0; i < (int)s.size() && child < (int)g.size(); ++i)\n        if (s[i] >= g[child]) ++child;\n    return child;\n}",
+    "java": "import java.util.Arrays;\n\nclass Solution {\n    public int findContentChildren(int[] g, int[] s) {\n        Arrays.sort(g);\n        Arrays.sort(s);\n        int child = 0;\n        for (int token : s) {\n            if (child < g.length && token >= g[child]) ++child;\n        }\n        return child;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["greedy", "sorting", "two-pointer", "assign-cookies"],
+    "hintLevels": [
+      "Level 1: Waste the smallest acceptable resource on the easiest demand — never over-spend a big token early.",
+      "Level 2: Sort both arrays; walk tokens left to right, advancing the job pointer on each match.",
+      "Level 3: The job pointer only moves forward on success, so tokens too weak for the current job are useless for it and everyone after."
+    ]
+  }
+}

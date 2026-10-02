@@ -1,0 +1,61 @@
+{
+  "id": "two-sum-in-bst",
+  "index": 10,
+  "topic": "12.Binary_Search_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Two Sum IV — Pair in a BST",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=two+sum+iv+input+is+a+bst",
+    "sourceFilePath": "12. Binary Search Trees/2. Practice Problems/10. Two Sum in BST.cpp"
+  },
+  "narrative": {
+    "title": "The Two-Clamp Balance Check",
+    "scenario": "A treasury terminal holds account balances in a sorted tree and must verify whether any two distinct accounts can settle an invoice exactly — their balances summing to the target. Instead of dumping the tree into a list, the terminal clamps from both ends simultaneously: the smallest candidate climbs up while the largest climbs down, adjusting whichever side overshoots until they meet or cross.",
+    "inputFormat": "A binary search tree as a level-order array (null marks a missing child) and an integer k — the target sum.",
+    "outputFormat": "Return true if two distinct nodes hold values summing to k, otherwise false.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^9 <= node value, k <= 10^9",
+      "All node values are unique"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [5, 3, 6, 2, 4, null, 7], "k": 9 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The pair 2 + 7 (or 3 + 6) hits the target exactly."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [5, 3, 6, 2, 4, null, 7], "k": 28 },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "The two largest values 6 and 7 already sum to only 13."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [1], "k": 2 },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root, k):\n        # Return True if two distinct nodes sum to k.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return True if two distinct nodes sum to k.\n    bool solve(TreeNode* root, int k);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return true if two distinct nodes sum to k.\n    public boolean solve(TreeNode root, int k) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bst", "two-pointer", "iterator", "search", "two-sum-in-bst"],
+    "hintLevels": [
+      "Level 1: Flattening to an array works, but two live cursors can walk the sorted order without it.",
+      "Level 2: One stack feeds the next-smallest, another the next-largest — the classic two-pointer sweep on a stream.",
+      "Level 3: Sum too small advances the low cursor; too big retreats the high one; cursors crossing means no pair exists."
+    ]
+  }
+}

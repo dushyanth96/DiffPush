@@ -1,0 +1,61 @@
+{
+  "id": "sliding-window-maximum",
+  "index": 1,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Sliding Window Maximum",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=sliding+window+maximum",
+    "sourceFilePath": "07.Stack and Queues/4. Implementation/01. Sliding window maximum.cpp"
+  },
+  "narrative": {
+    "title": "The Web Farm Load Sampler",
+    "scenario": "An ops dashboard samples a server farm's request counters once per second and reports the peak load over every rolling 10-second window. Recomputing each window from scratch would double-count nearly everything, so the sampler keeps a shortlist of only the candidates that could still become a window peak — evicting any older sample a newer one has overshadowed.",
+    "inputFormat": "An integer array nums and a window size k.",
+    "outputFormat": "Return the maximum of each window as it slides from left to right.",
+    "constraints": [
+      "1 <= nums.length <= 10^5",
+      "1 <= k <= nums.length",
+      "-10^4 <= nums[i] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(k)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 3, -1, -3, 5, 3, 6, 7], "k": 3 },
+      "expected": [3, 3, 5, 5, 6, 7],
+      "isPublic": true,
+      "explanation": "Each of the six windows reports its own peak as the frame advances one step at a time."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [9, 8, 7, 6], "k": 2 },
+      "expected": [9, 8, 7],
+      "isPublic": true,
+      "explanation": "A strictly falling sequence: each window's peak is simply its first element."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [-7, -8, -9], "k": 3 },
+      "expected": [-7],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\ndef max_sliding_window(nums, k):\n    dq = deque()  # indices, values non-increasing\n    ans = []\n    for i, x in enumerate(nums):\n        if dq and dq[0] <= i - k:\n            dq.popleft()               # expired index\n        while dq and nums[dq[-1]] <= x:\n            dq.pop()                   # dominated candidates\n        dq.append(i)\n        if i >= k - 1:\n            ans.append(nums[dq[0]])\n    return ans",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> maxSlidingWindow(vector<int>& nums, int k) {\n    deque<int> dq;  // indices with non-increasing values\n    vector<int> ans;\n    for (int i = 0; i < (int)nums.size(); ++i) {\n        if (!dq.empty() && dq.front() <= i - k) dq.pop_front();\n        while (!dq.empty() && nums[dq.back()] <= nums[i]) dq.pop_back();\n        dq.push_back(i);\n        if (i >= k - 1) ans.push_back(nums[dq.front()]);\n    }\n    return ans;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int[] maxSlidingWindow(int[] nums, int k) {\n        int n = nums.length;\n        int[] ans = new int[n - k + 1];\n        Deque<Integer> dq = new ArrayDeque<>();  // indices, values non-increasing\n        for (int i = 0; i < n; ++i) {\n            if (!dq.isEmpty() && dq.peekFirst() <= i - k) dq.pollFirst();\n            while (!dq.isEmpty() && nums[dq.peekLast()] <= nums[i]) dq.pollLast();\n            dq.addLast(i);\n            if (i >= k - 1) ans[i - k + 1] = nums[dq.peekFirst()];\n        }\n        return ans;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["monotonic-deque", "sliding-window", "sliding-window-maximum"],
+    "hintLevels": [
+      "Level 1: A brute force recomputes every window — the waste is re-scanning elements still in frame.",
+      "Level 2: Keep candidate indices in a deque whose values only decrease; the front is always the current max.",
+      "Level 3: Two evictions per step: an expired front (index out of the window) and dominated tails (values <= incoming)."
+    ]
+  }
+}

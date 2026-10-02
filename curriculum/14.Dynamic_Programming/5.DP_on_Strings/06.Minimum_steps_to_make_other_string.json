@@ -1,0 +1,74 @@
+{
+  "id": "minimum-steps-to-make-other-string",
+  "index": 6,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Delete Operation for Two Strings",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=delete+operation+for+two+strings",
+    "sourceFilePath": "14. Dynamic Programming/5. DP on Strings/06. Minimum steps to make other string.cpp"
+  },
+  "narrative": {
+    "title": "The Twin Ledger Reconciliation",
+    "scenario": "An auditor holds two transaction ledgers that must end up character-for-character identical. The only legal correction is deleting one entry from either ledger at a time. Finance wants the smallest number of deletions that reconciles both books, so the reconciliation engine measures how much of the two ledgers already agrees.",
+    "inputFormat": "Two strings word1 and word2.",
+    "outputFormat": "Return how many single-character deletions (from either string) are needed to make the two strings equal.",
+    "constraints": [
+      "1 <= len(word1), len(word2) <= 500",
+      "strings consist of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*m)",
+    "optimalSpace": "O(min(n, m))"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "word1": "sea",
+        "word2": "eat"
+      },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Delete 's' from \"sea\" and 't' from \"eat\" — both become \"ea\" in two steps."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "word1": "leetcode",
+        "word2": "etco"
+      },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The shared anchor \"etco\" survives; the four surrounding characters get deleted."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "word1": "abc",
+        "word2": "xyz"
+      },
+      "expected": 6,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, word1, word2):\n        # Return the minimum deletions to make word1 and word2 equal.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the minimum deletions to make word1 and word2 equal.\n    int solve(std::string word1, std::string word2);\n};",
+    "java": "class Solution {\n    // Return the minimum deletions to make word1 and word2 equal.\n    public int solve(String word1, String word2) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "strings",
+      "lcs",
+      "edit-distance-variant"
+    ],
+    "hintLevels": [
+      "Level 1: Whatever the two strings share in order can stay; everything else must be deleted.",
+      "Level 2: The answer is len1 + len2 - 2 * LCS(word1, word2).",
+      "Level 3: Deriving it directly also works: dp = 1 + min of the two delete options on mismatch."
+    ]
+  }
+}

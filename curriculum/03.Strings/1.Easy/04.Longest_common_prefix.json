@@ -1,0 +1,61 @@
+{
+  "id": "longest-common-prefix",
+  "index": 4,
+  "topic": "03.Strings",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Longest common prefix",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Longest%20common%20prefix",
+    "sourceFilePath": "03.Strings/1.Easy/04.Longest_common_prefix.cpp"
+  },
+  "narrative": {
+    "title": "Shared Root of the Wing Access Codes",
+    "scenario": "A facility issues door-access codes in families, where every code in a family begins with the same leading segment that routes the request to the right wing. The panel firmware receives a batch of candidate codes and must display their common opening segment for the operator. When the codes share nothing up front, the display simply stays blank.",
+    "inputFormat": "An array of strings strs.",
+    "outputFormat": "The longest string that is a prefix of every string in strs, or \"\" when no common prefix exists.",
+    "constraints": [
+      "1 <= strs.length <= 200",
+      "0 <= strs[i].length <= 200",
+      "strs[i] consists of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N*M*log(N))",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "strs": ["flower", "flow", "flight"] },
+      "expected": "fl",
+      "isPublic": true,
+      "explanation": "All three codes open with f followed by l; the third character already differs across the batch."
+    },
+    {
+      "id": "tc-2",
+      "input": { "strs": ["dog", "racecar", "car"] },
+      "expected": "",
+      "isPublic": true,
+      "explanation": "The first characters disagree immediately, so the batch has no shared opening segment."
+    },
+    {
+      "id": "tc-3",
+      "input": { "strs": ["alone"] },
+      "expected": "alone",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def longestCommonPrefix(self, strs: list[str]) -> str:\n        # TODO: return the longest prefix shared by every string in strs.\n        pass",
+    "cpp": "#include <string>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    string longestCommonPrefix(vector<string>& strs) {\n        // TODO: return the longest prefix shared by every string in strs.\n    }\n};",
+    "java": "class Solution {\n    public String longestCommonPrefix(String[] strs) {\n        // TODO: return the longest prefix shared by every string in strs.\n        return \"\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "sorting", "comparison", "longest-common-prefix"],
+    "hintLevels": [
+      "Level 1: The common prefix of the whole batch equals the common prefix of just two extreme members — the smallest and largest strings in sort order.",
+      "Level 2: Sort the batch (or just find min and max); then compare the first and last strings character by character until they diverge.",
+      "Level 3: Handle the degenerate cases — a single-string batch returns itself, an empty-string member forces an empty answer, and a full match of the shorter string ends the comparison at its length."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "sort-0-1-2",
+  "index": 2,
+  "topic": "01.Arrays",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Sort 0 1 2",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Sort%200%201%202",
+    "sourceFilePath": "01.Arrays/2.Medium/02.Sort_0_1_2.cpp"
+  },
+  "narrative": {
+    "title": "Triaging a Packet Queue by Priority Class",
+    "scenario": "A router holds packets tagged with one of three priority classes, encoded as 0, 1 and 2. The scheduler must rewrite the queue so class 0 comes first, then class 1, then class 2, with no queue-sized scratch buffer and no library sort. Reorder the queue in place in a single pass.",
+    "inputFormat": "An array nums of n integers where each value is 0, 1 or 2.",
+    "outputFormat": "The same array reordered so all 0s come first, followed by all 1s and then all 2s.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "nums[i] is 0, 1 or 2"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [2, 0, 2, 1, 1, 0] },
+      "expected": [0, 0, 1, 1, 2, 2],
+      "isPublic": true,
+      "explanation": "Both zeros are pulled to the front, both twos to the back, and the ones settle in the middle."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [2, 0, 1] },
+      "expected": [0, 1, 2],
+      "isPublic": true,
+      "explanation": "Only three packets, but each class still has to land in its own band."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [2, 0] },
+      "expected": [0, 2],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def sortColors(self, nums: list[int]) -> None:\n        # TODO: band the queue into 0s, 1s and 2s in place, in one pass.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    void sortColors(vector<int>& nums) {\n        // TODO: band the queue into 0s, 1s and 2s in place, in one pass.\n    }\n};",
+    "java": "class Solution {\n    public void sortColors(int[] nums) {\n        // TODO: band the queue into 0s, 1s and 2s in place, in one pass.\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "dutch-national-flag", "three-pointers", "in-place", "sort-0-1-2"],
+    "hintLevels": [
+      "Level 1: Counting the classes would work, but it needs two passes; consider maintaining three regions that grow towards each other.",
+      "Level 2: Keep a low boundary, a middle scanner and a high boundary: swapping into the low side advances both low and the scanner, a class-1 packet just advances the scanner, and a class-2 packet swaps with the high side.",
+      "Level 3: When you swap with the high boundary the value you receive has never been inspected, so the scanner must NOT advance there; the walk ends once the scanner passes the high boundary."
+    ]
+  }
+}

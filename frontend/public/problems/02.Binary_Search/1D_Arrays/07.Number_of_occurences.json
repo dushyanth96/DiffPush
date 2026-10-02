@@ -1,0 +1,62 @@
+{
+  "id": "number-of-occurences",
+  "index": 7,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Number of occurences",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Number%20of%20occurences",
+    "sourceFilePath": "02.Binary Search/1D Arrays/07.Number_of_occurences.cpp"
+  },
+  "narrative": {
+    "title": "Counting Alarm Codes in a Sorted Trace",
+    "scenario": "A device trace stores alarm codes in non-decreasing order, and reliability engineers need to know how many times one code fired. Because equal codes sit next to each other, the count is simply the width of that block. Measure the block without scanning the whole trace.",
+    "inputFormat": "An integer N, an array Arr of N integers sorted in non-decreasing order, and an integer X.",
+    "outputFormat": "The number of times X appears in Arr.",
+    "constraints": [
+      "1 <= N <= 10^5",
+      "1 <= Arr[i] <= 10^9",
+      "1 <= X <= 10^9",
+      "Arr is sorted in non-decreasing order"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "N": 7, "Arr": [1, 1, 2, 2, 2, 2, 3], "X": 2 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "Code 2 forms a block of four consecutive entries."
+    },
+    {
+      "id": "tc-2",
+      "input": { "N": 7, "Arr": [1, 1, 2, 2, 2, 2, 3], "X": 4 },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "Code 4 never fired, so the block width is zero."
+    },
+    {
+      "id": "tc-3",
+      "input": { "N": 6, "Arr": [4, 4, 4, 4, 4, 4], "X": 4 },
+      "expected": 6,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def countOccurrences(self, arr: list[int], n: int, x: int) -> int:\n        # TODO: return the width of the block of x values.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int countOccurrences(int arr[], int n, int x) {\n        // TODO: return the width of the block of x values.\n    }\n};",
+    "java": "class Solution {\n    public int countOccurrences(int[] arr, int n, int x) {\n        // TODO: return the width of the block of x values.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "lower-bound", "upper-bound", "frequency-count", "number-of-occurences"],
+    "hintLevels": [
+      "Level 1: In sorted order, every copy of the code is contiguous, so a count is a subtraction between two boundary positions.",
+      "Level 2: Find the first index holding the code and the first index past its block; the difference is the count.",
+      "Level 3: When the code is absent, the first probe lands on a different value or past the end, and the count must be zero rather than a bogus subtraction."
+    ]
+  }
+}

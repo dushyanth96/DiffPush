@@ -1,0 +1,60 @@
+{
+  "id": "find-mid-of-ll",
+  "index": 1,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Find mid of LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Middle%20of%20the%20linked%20list",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/01.Find_mid_of_LL.cpp"
+  },
+  "narrative": {
+    "title": "Halving the Inspection Line at the Right Checkpoint",
+    "scenario": "A plant inspection line is a one-way chain of stations, and the QA lead wants a second team dispatched from the exact midpoint to halve the work. The line has no length posted, and with an even station count the tie goes to the later of the two central stations. Send back the remaining chain that starts at that station.",
+    "inputFormat": "An array head of node values representing the linked list.",
+    "outputFormat": "The values of the list starting at the middle node; with two middles, start at the second one.",
+    "constraints": [
+      "1 <= list length <= 10^5",
+      "-10^9 <= node value <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [1, 2, 3, 4, 5] },
+      "expected": [3, 4, 5],
+      "isPublic": true,
+      "explanation": "Five stations split at the third — the sole middle node."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [1, 2, 3, 4, 5, 6] },
+      "expected": [4, 5, 6],
+      "isPublic": true,
+      "explanation": "Six stations have two middles (3 and 4); the later one wins the split."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [10, 20, 30, 40] },
+      "expected": [30, 40],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def middleNode(self, head: list[int]) -> list[int]:\n        # TODO: return the values starting at the middle node.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int v) : val(v), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    ListNode* middleNode(ListNode* head) {\n        // TODO: return the middle node (second of two middles).\n    }\n};",
+    "java": "class Solution {\n    public int[] middleNode(int[] head) {\n        // TODO: return the values starting at the middle node.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "two-pointers", "slow-fast", "find-mid-of-ll"],
+    "hintLevels": [
+      "Level 1: You cannot know the length in advance without walking — but a second walker moving twice as fast finds the balance point for you.",
+      "Level 2: Advance slow by one and fast by two; when fast can no longer move, slow sits on the middle.",
+      "Level 3: The loop condition (fast and fast.next both alive) makes slow land on the first middle for even lengths, which is exactly why the second middle is the answer — no extra counting pass needed."
+    ]
+  }
+}

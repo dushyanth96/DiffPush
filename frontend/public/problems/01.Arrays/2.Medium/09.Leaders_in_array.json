@@ -1,0 +1,60 @@
+{
+  "id": "leaders-in-array",
+  "index": 9,
+  "topic": "01.Arrays",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Leaders in array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Leaders%20in%20array",
+    "sourceFilePath": "01.Arrays/2.Medium/09.Leaders_in_array.cpp"
+  },
+  "narrative": {
+    "title": "Dominant Peaks in a Terrain Elevation Profile",
+    "scenario": "A survey drone records the elevation of each waypoint along a ridge as a list of positive integers. Waypoints that are higher than or equal to every waypoint after them act as visible vantage points and must be reported. The list of vantage points is expected in the same left-to-right order as the ridge.",
+    "inputFormat": "An integer n followed by an array A of n positive integers.",
+    "outputFormat": "The values that are greater than or equal to every element to their right, in the original left-to-right order. The last element always qualifies.",
+    "constraints": [
+      "1 <= n <= 10^6",
+      "1 <= A[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1) auxiliary (excluding the output)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 6, "A": [16, 17, 4, 3, 5, 2] },
+      "expected": [17, 5, 2],
+      "isPublic": true,
+      "explanation": "17 dominates everything to its right, 5 beats 2, and the final waypoint is always a vantage point."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 4, "A": [5, 4, 3, 2] },
+      "expected": [5, 4, 3, 2],
+      "isPublic": true,
+      "explanation": "The ridge descends the whole way, so every waypoint is at least as high as all the ones after it."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 1, "A": [7] },
+      "expected": [7],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def leaders(self, a: list[int], n: int) -> list[int]:\n        # TODO: return the leaders in original left-to-right order.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> leaders(int a[], int n) {\n        // TODO: return the leaders in original left-to-right order.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public List<Integer> leaders(int[] a, int n) {\n        // TODO: return the leaders in original left-to-right order.\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "right-to-left-scan", "running-maximum", "leaders"],
+    "hintLevels": [
+      "Level 1: A waypoint's qualification depends only on what lies to its right, so walking from the right makes that information available immediately.",
+      "Level 2: Carry the highest elevation seen so far while scanning backwards; every waypoint at least that high is a vantage point and becomes the new ceiling.",
+      "Level 3: Scanning backwards collects the answers in reverse, so the result needs a final flip, and the last waypoint has to be seeded as a leader before the loop begins."
+    ]
+  }
+}

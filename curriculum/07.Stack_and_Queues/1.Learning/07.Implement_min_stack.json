@@ -1,0 +1,62 @@
+{
+  "id": "implement-min-stack",
+  "index": 7,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Min Stack",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=min+stack",
+    "sourceFilePath": "07.Stack and Queues/1. Learning/07. Implement min stack.cpp"
+  },
+  "narrative": {
+    "title": "The Vault's Lowest Alarm Gauge",
+    "scenario": "A security vault stacks sealed boxes, and the control panel must flash the smallest serial number currently inside at any moment — without scanning the pile. Each panel action either drops a box, lifts the top box, reads the top serial, or flashes the minimum serial across the whole pile. Design the panel so every action answers instantly.",
+    "inputFormat": "A list of operations over one stack: [\"push\", value], [\"pop\"], [\"top\"], or [\"getMin\"].",
+    "outputFormat": "Return the list of values produced by every top and getMin operation, in order (push and pop produce no output).",
+    "constraints": [
+      "1 <= number of operations <= 3 * 10^4",
+      "-2^31 <= values <= 2^31 - 1",
+      "pop, top and getMin are always called on a non-empty stack",
+      "Each operation must run in O(1)"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1) per operation",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "operations": [["push", -2], ["push", 0], ["push", -3], ["getMin"], ["pop"], ["top"], ["getMin"]] },
+      "expected": [-3, 0, -2],
+      "isPublic": true,
+      "explanation": "The pile bottoms out at -3; after lifting it, the top is 0 and the minimum rises to -2."
+    },
+    {
+      "id": "tc-2",
+      "input": { "operations": [["push", 1], ["push", 2], ["top"], ["getMin"], ["pop"], ["getMin"]] },
+      "expected": [2, 1, 1],
+      "isPublic": true,
+      "explanation": "Two pushes; the minimum never changes because 1 stays below 2 the whole time."
+    },
+    {
+      "id": "tc-3",
+      "input": { "operations": [["push", 5], ["push", 3], ["push", 7], ["getMin"], ["pop"], ["getMin"], ["pop"], ["getMin"], ["top"]] },
+      "expected": [3, 3, 5, 5],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class MinStack:\n    def __init__(self):\n        self.stack = []          # (value, min_below_including_self)\n\n    def push(self, val: int) -> None:\n        current_min = min(val, self.stack[-1][1]) if self.stack else val\n        self.stack.append((val, current_min))\n\n    def pop(self) -> None:\n        self.stack.pop()\n\n    def top(self) -> int:\n        return self.stack[-1][0]\n\n    def getMin(self) -> int:\n        return self.stack[-1][1]",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass MinStack {\nprivate:\n    stack<long long> st;\n    long long mini;\npublic:\n    MinStack() : mini(-1) {}\n    void push(int val) {\n        if (st.empty()) { st.push(0); mini = val; }\n        else { st.push((long long)val - mini); mini = min((long long)val, mini); }\n    }\n    void pop() {\n        if (st.top() < 0) mini = mini - st.top();\n        st.pop();\n    }\n    int top() { return st.top() < 0 ? (int)mini : (int)(mini + st.top()); }\n    int getMin() { return (int)mini; }\n};",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass MinStack {\n    private Deque<long[]> stack = new ArrayDeque<>();  // {value, minSoFar}\n\n    public void push(int val) {\n        long minSoFar = stack.isEmpty() ? val : Math.min(val, stack.peek()[1]);\n        stack.push(new long[]{val, minSoFar});\n    }\n    public void pop() { stack.pop(); }\n    public int top() { return (int) stack.peek()[0]; }\n    public int getMin() { return (int) stack.peek()[1]; }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["stack", "design", "minimum-tracking", "implement-min-stack"],
+    "hintLevels": [
+      "Level 1: A running minimum must be restorable when the element that set it is popped.",
+      "Level 2: Cache the minimum-so-far alongside each pushed value (or push deltas against the current minimum).",
+      "Level 3: Popping is only special when the removed element was itself the minimum — the cached pair restores the previous minimum automatically."
+    ]
+  }
+}

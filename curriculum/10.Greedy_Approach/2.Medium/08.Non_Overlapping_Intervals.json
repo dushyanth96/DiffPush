@@ -1,0 +1,61 @@
+{
+  "id": "non-overlapping-intervals",
+  "index": 8,
+  "topic": "10.Greedy_Approach",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Non-overlapping Intervals",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=non+overlapping+intervals",
+    "sourceFilePath": "10. Greedy Approach/2. Medium/08. Non Overlapping Intervals.cpp"
+  },
+  "narrative": {
+    "title": "The Broadcast Slot Deconfliction",
+    "scenario": "A station received more program submissions than its day can hold; submissions are half-open time blocks that may overlap each other. Producers must pull the fewest submissions so the survivors never overlap. Ranking by earliest finish and keeping every submission that starts at or after the last kept finish does exactly that — everything culled is the minimum cut.",
+    "inputFormat": "A list of intervals [start, end].",
+    "outputFormat": "Return the minimum number of intervals to remove so the rest are pairwise non-overlapping.",
+    "constraints": [
+      "1 <= intervals.length <= 10^5",
+      "intervals[i].length == 2",
+      "-5 * 10^4 <= start < end <= 5 * 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "intervals": [[1, 2], [2, 3], [3, 4], [1, 3]] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "Dropping [1,3] leaves the chain [1,2], [2,3], [3,4], where touching endpoints don't count as overlap."
+    },
+    {
+      "id": "tc-2",
+      "input": { "intervals": [[1, 2], [1, 2], [1, 2]] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Three identical blocks: two must go."
+    },
+    {
+      "id": "tc-3",
+      "input": { "intervals": [[1, 100], [2, 3], [3, 4]] },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def erase_overlap_intervals(intervals):\n    intervals.sort(key=lambda iv: iv[1])   # earliest finish first\n    removed = 0\n    last_end = float(\"-inf\")\n    for start, end in intervals:\n        if start < last_end:\n            removed += 1                   # overlap: drop this one\n        else:\n            last_end = end\n    return removed",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint eraseOverlapIntervals(vector<vector<int>>& intervals) {\n    sort(intervals.begin(), intervals.end(),\n         [](auto& a, auto& b) { return a[1] < b[1]; });\n    int removed = 0;\n    long long lastEnd = LLONG_MIN;\n    for (auto& iv : intervals) {\n        if (iv[0] < lastEnd) ++removed;\n        else lastEnd = iv[1];\n    }\n    return removed;\n}",
+    "java": "import java.util.Arrays;\n\nclass Solution {\n    public int eraseOverlapIntervals(int[][] intervals) {\n        Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));\n        int removed = 0;\n        long lastEnd = Long.MIN_VALUE;\n        for (int[] iv : intervals) {\n            if (iv[0] < lastEnd) ++removed;\n            else lastEnd = iv[1];\n        }\n        return removed;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["greedy", "interval-scheduling", "sorting", "non-overlapping-intervals"],
+    "hintLevels": [
+      "Level 1: Removing fewest = keeping the maximum non-overlapping set — the activity-selection dual.",
+      "Level 2: Sort by end time; keep an interval only when it starts at or after the kept frontier.",
+      "Level 3: Overlap means start < lastEnd strictly — touching endpoints are legal."
+    ]
+  }
+}

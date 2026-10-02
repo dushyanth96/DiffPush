@@ -1,0 +1,106 @@
+{
+  "id": "lowest-common-ancestor-binary-tree",
+  "index": 2,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Lowest Common Ancestor of Two Nodes",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=lowest+common+ancestor+of+a+binary+tree",
+    "sourceFilePath": "11. Binary Trees/3. Hard/02. Lowest Common Ancestor.cpp"
+  },
+  "narrative": {
+    "title": "The Nearest Shared Manager Ruling",
+    "scenario": "An HR system stores reporting lines as a binary tree and must settle which manager is the closest common supervisor of two employees. Company policy allows an employee to supervise themselves in this lookup, so if one of the pair reports up through the other, the deeper one's chain wins at their meeting point. The system returns that junction's id for every dispute.",
+    "inputFormat": "A binary tree as a level-order array (null marks a missing child) plus two integers p and q — the values of the two nodes. Node values are unique.",
+    "outputFormat": "Return the value of the lowest common ancestor of p and q.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^4 <= node value <= 10^4",
+      "Both p and q exist in the tree"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          3,
+          5,
+          1,
+          6,
+          2,
+          0,
+          8,
+          null,
+          null,
+          7,
+          4
+        ],
+        "p": 5,
+        "q": 1
+      },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "5 sits in the left wing and 1 in the right, so the root 3 is their meeting point."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          3,
+          5,
+          1,
+          6,
+          2,
+          0,
+          8,
+          null,
+          null,
+          7,
+          4
+        ],
+        "p": 5,
+        "q": 4
+      },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "4 descends from 5, and a node counts as its own ancestor."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1,
+          2
+        ],
+        "p": 1,
+        "q": 2
+      },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root, p, q):\n        # Return the value of the lowest common ancestor of p and q.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the value of the lowest common ancestor of p and q.\n    int solve(TreeNode* root, int p, int q);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the value of the lowest common ancestor of p and q.\n    public int solve(TreeNode root, int p, int q) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "recursion",
+      "lca",
+      "lowest-common-ancestor-binary-tree"
+    ],
+    "hintLevels": [
+      "Level 1: Search from the top; the first node that splits the two targets onto different branches is the answer.",
+      "Level 2: A node matching either target short-circuits as the witness — that covers the self-ancestor case for free.",
+      "Level 3: Bubble non-null results upward: hits on both sides make the current node the LCA; a single side propagates it."
+    ]
+  }
+}

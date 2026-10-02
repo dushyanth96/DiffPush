@@ -1,0 +1,62 @@
+{
+  "id": "recover-bst",
+  "index": 11,
+  "topic": "12.Binary_Search_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Recover Binary Search Tree (Two Swapped Nodes)",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=recover+binary+search+tree",
+    "sourceFilePath": "12. Binary Search Trees/2. Practice Problems/11. Recover BST.cpp"
+  },
+  "narrative": {
+    "title": "The Two Misfiled Bins Swap-Back",
+    "scenario": "Overnight, exactly two bins in a size-sorted storage tree were swapped by a forklift mix-up. The floor plan is intact — only the size labels on those two bins are wrong. A checker walks the shelves in sorted order, flags the first and last spots where the rising sequence dips, and re-prints those two labels to restore perfect order without touching a single shelf.",
+    "inputFormat": "A binary search tree as a level-order array (null marks a missing child) in which exactly two node values have been swapped.",
+    "outputFormat": "Return the repaired tree serialized as a level-order array with trailing nulls trimmed — structure unchanged, the two swapped values restored.",
+    "constraints": [
+      "2 <= number of nodes <= 10^5",
+      "-2^31 <= node value <= 2^31 - 1",
+      "Exactly two values are out of place; a solution exists",
+      "Follow-up: O(1) extra space is possible with Morris traversal"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [1, 3, null, null, 2] },
+      "expected": [3, 1, null, null, 2],
+      "isPublic": true,
+      "explanation": "The inorder walk 3, 1, 2 dips once; swapping 3 and 1 restores the BST."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [3, 1, 4, null, null, 2] },
+      "expected": [2, 1, 4, null, null, 3],
+      "isPublic": true,
+      "explanation": "The walk 1, 3, 2, 4 dips at 3→2; swapping 3 and 2 repairs the order."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [9, 3, 5, 1, 7, null, 10] },
+      "expected": [5, 3, 9, 1, 7, null, 10],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Swap the two misplaced values back; return the repaired root.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Swap the two misplaced values back; return the repaired root.\n    TreeNode* solve(TreeNode* root);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Swap the two misplaced values back; return the repaired root.\n    public TreeNode solve(TreeNode root) {\n        // TODO\n        return root;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bst", "inorder", "swapped-nodes", "tree-repair", "recover-bst"],
+    "hintLevels": [
+      "Level 1: Read the tree in sorted order; a broken BST shows up as dips in that reading.",
+      "Level 2: Track the previous visited node — record 'first' at the first dip and keep updating 'last' at every later dip.",
+      "Level 3: Adjacent swaps produce one dip, far-apart swaps two — swapping first.previous with last fixes both patterns."
+    ]
+  }
+}

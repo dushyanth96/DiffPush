@@ -1,0 +1,65 @@
+{
+  "id": "bst-iterator",
+  "index": 9,
+  "topic": "12.Binary_Search_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Binary Search Tree Iterator",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=binary+search+tree+iterator",
+    "sourceFilePath": "12. Binary Search Trees/2. Practice Problems/09. BST Iterator.cpp"
+  },
+  "narrative": {
+    "title": "The Paging Ticket Dispenser for a Sorted Archive",
+    "scenario": "An audit terminal must stream a sorted archive one record at a time without ever loading it all into memory. The dispenser keeps only the leftmost unvisited spine of the filing tree on a small stack: each 'next' pops the smallest pending record and quietly loads that record's right wing's spine for later. 'hasNext' just peeks whether any spine remains.",
+    "inputFormat": "A binary search tree as a level-order array (null marks a missing child) and a list of calls, each 'next' or 'hasNext'. The first call sequence starts after initialization.",
+    "outputFormat": "Return the list of results for the calls in order — an integer for each 'next' and a boolean for each 'hasNext'.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^9 <= node value <= 10^9",
+      "next() and hasNext() run in amortized O(1); the stack may hold O(h) nodes",
+      "All calls are legal: next() is never called when hasNext() is false"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1) amortized per operation",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [7, 3, 15, null, null, 9, 20],
+        "calls": ["next", "next", "hasNext", "next", "hasNext", "next", "next", "hasNext"]
+      },
+      "expected": [3, 7, true, 9, true, 15, 20, false],
+      "isPublic": true,
+      "explanation": "The dispenser streams the inorder sequence 3, 7, 9, 15, 20 and then runs dry."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [1], "calls": ["next", "hasNext"] },
+      "expected": [1, false],
+      "isPublic": true,
+      "explanation": "A one-node archive yields its single record and immediately reports exhaustion."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [4, 2, 6, 1, 3, 5, 7], "calls": ["next", "next", "next", "hasNext"] },
+      "expected": [1, 2, 3, true],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root, calls):\n        # Drive a controlled BSTIterator; return each call's result in order.\n        pass",
+    "cpp": "#include <vector>\n#include <string>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Drive a controlled BSTIterator; return each call's result in order.\n    std::vector<int> solve(TreeNode* root, std::vector<std::string>& calls);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Drive a controlled BSTIterator; return each call's result in order.\n    public List<Object> solve(TreeNode root, List<String> calls) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bst", "iterator", "design", "stack", "bst-iterator"],
+    "hintLevels": [
+      "Level 1: You need sorted output on demand without flattening the tree up front.",
+      "Level 2: A stack of the leftmost spine simulates the recursion — pop the smallest, then seed the stack from its right child.",
+      "Level 3: Amortized O(1): every node is pushed and popped exactly once across the whole iteration."
+    ]
+  }
+}

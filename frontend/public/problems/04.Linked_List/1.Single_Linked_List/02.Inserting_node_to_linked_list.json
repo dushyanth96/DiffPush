@@ -1,0 +1,61 @@
+{
+  "id": "inserting-node-to-linked-list",
+  "index": 2,
+  "topic": "04.Linked_List",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Inserting node to linked list",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Insert%20node%20in%20linked%20list",
+    "sourceFilePath": "04.Linked List/1. Single Linked List/02.Inserting_node_to_linked_list.cpp"
+  },
+  "narrative": {
+    "title": "Express Lane or Back of the Queue",
+    "scenario": "A print spooler processes a stream of jobs, and every job arrives with a priority flag: flag 1 joins the back of the queue, flag 0 cuts straight to the front. The spool is a linked list, so front insertion rewires one pointer while back insertion must walk to the tail first. After the whole stream is processed, the spool order is reported.",
+    "inputFormat": "A sequence of pairs (value, indicator) where indicator 1 appends value to the end of the list and indicator 0 prepends it to the front; the list starts empty.",
+    "outputFormat": "The contents of the linked list after every operation, read front to back.",
+    "constraints": [
+      "1 <= number of pairs <= 10^5",
+      "-10^9 <= value <= 10^9",
+      "indicator is 0 or 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "pairs": [[9, 0], [5, 1], [6, 1], [2, 0], [5, 0]] },
+      "expected": [5, 2, 9, 5, 6],
+      "isPublic": true,
+      "explanation": "Each flag-0 job jumps the queue, so the two front insertions end up in reverse arrival order ahead of the appended jobs."
+    },
+    {
+      "id": "tc-2",
+      "input": { "pairs": [[5, 1], [6, 1], [9, 1]] },
+      "expected": [5, 6, 9],
+      "isPublic": true,
+      "explanation": "All flags are 1, so arrival order and final order coincide."
+    },
+    {
+      "id": "tc-3",
+      "input": { "pairs": [[3, 0], [7, 0], [1, 1]] },
+      "expected": [7, 3, 1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Node:\n    def __init__(self, data, next=None):\n        self.data = data\n        self.next = next\n\nclass Solution:\n    def buildList(self, pairs: list[list[int]]) -> list[int]:\n        # TODO: process (value, indicator) pairs; return the final list front to back.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node* next;\n    Node(int d) : data(d), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    Node* insertAtBegining(Node* head, int x);\n    Node* insertAtEnd(Node* head, int x);\n    // TODO: apply each (value, indicator) pair to an initially empty list.\n};",
+    "java": "class Node {\n    int data;\n    Node next;\n    Node(int data) { this.data = data; }\n}\n\nclass Solution {\n    public Node insertAtBegining(Node head, int x) { return null; }\n    public Node insertAtEnd(Node head, int x) { return null; }\n    // TODO: apply each (value, indicator) pair to an initially empty list.\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "insertion", "front-vs-back", "inserting-node-to-linked-list"],
+    "hintLevels": [
+      "Level 1: Two insertion flavors — front insertion makes the new node the head; back insertion finds the tail and hangs the node after it.",
+      "Level 2: Front insertion is O(1): point the new node at the current head and return it. Back insertion walks to the last node whose next is null.",
+      "Level 3: The subtle bug is order-dependent flags — front insertions applied later end up earlier in the list, which is exactly what the sample's 5,2 prefix shows; also guard the empty-list case for back insertion."
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "id": "xor-of-numbers-from-l-to-r",
+  "index": 3,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "XOR of numbers from L to R",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=XOR%20of%20numbers%20from%20L%20to%20R",
+    "sourceFilePath": "06.Bit Manipulation/2. Interview Problems/03. XOR of numbers from L to R.cpp"
+  },
+  "narrative": {
+    "title": "Merging Beacon Ranges Without Reading Every Vessel",
+    "scenario": "Fleet beacons broadcast IDs in binary, and the merge controller needs the combined XOR of every ID in a contiguous range. Reading millions of beacons one by one is wasteful: the running XOR of 1..n follows a strict four-step rhythm depending on n modulo 4, so the controller computes the rhythm at the range's two ends and cancels the prefix it does not need.",
+    "inputFormat": "Two integers L and R defining the inclusive range.",
+    "outputFormat": "The XOR of all integers from L through R.",
+    "constraints": [
+      "1 <= L <= R <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "l": 4, "r": 8 },
+      "expected": 8,
+      "isPublic": true,
+      "explanation": "4 ^ 5 ^ 6 ^ 7 ^ 8 collapses to 8 without reading any beacon twice."
+    },
+    {
+      "id": "tc-2",
+      "input": { "l": 1, "r": 3 },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "1 ^ 2 ^ 3 = 3 ^ 3 = 0 — a perfectly canceling range."
+    },
+    {
+      "id": "tc-3",
+      "input": { "l": 5, "r": 5 },
+      "expected": 5,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findXOR(self, l: int, r: int) -> int:\n        # TODO: prefix rhythm at r minus the rhythm at l - 1, via XOR.\n        pass",
+    "cpp": "#include <cstdint>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findXOR(int l, int r) {\n        // TODO: f(r) ^ f(l - 1) where f follows the n % 4 pattern.\n    }\n};",
+    "java": "class Solution {\n    public int findXOR(int l, int r) {\n        // TODO: prefix rhythm at r minus the rhythm at l - 1, via XOR.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "xor", "range-query", "xor-of-numbers-from-l-to-r"],
+    "hintLevels": [
+      "Level 1: The XOR of 1..n repeats with period 4 — learn the pattern once, never loop.",
+      "Level 2: f(n) is n, 1, n + 1, 0 as n % 4 cycles through 0, 1, 2, 3.",
+      "Level 3: Range [L, R] equals f(R) ^ f(L - 1): the shared prefix cancels because XOR is self-inverse."
+    ]
+  }
+}

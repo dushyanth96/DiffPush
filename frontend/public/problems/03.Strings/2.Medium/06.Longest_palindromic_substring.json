@@ -1,0 +1,60 @@
+{
+  "id": "longest-palindromic-substring",
+  "index": 6,
+  "topic": "03.Strings",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Longest palindromic substring",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Longest%20palindromic%20substring",
+    "sourceFilePath": "03.Strings/2.Medium/06.Longest_palindromic_substring.cpp"
+  },
+  "narrative": {
+    "title": "The Loom's Longest Mirror Run",
+    "scenario": "A textile QC scanner reads a fabric's thread pattern as one long string of colour codes and certifies the bolt by pointing at the longest run that reads the same forwards and backwards — the mirror-symmetric motif the designer can feature. Runs of odd and even length hide around different centres, so the scanner treats every position as a potential centre and stretches outward while the colours agree.",
+    "inputFormat": "A string s.",
+    "outputFormat": "The longest substring of s that is a palindrome; when several share the maximum length, any one of them is a correct answer (or \"\" when s is empty).",
+    "constraints": [
+      "0 <= s.length <= 1000",
+      "s consists of digits and English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "babad" },
+      "expected": "bab",
+      "isPublic": true,
+      "explanation": "\"bab\" and \"aba\" both qualify; the canonical centre-expansion sweep returns the first maximum it meets."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "cbbd" },
+      "expected": "bb",
+      "isPublic": true,
+      "explanation": "The even-length palindrome spanning the two middle b's beats every single character."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "forgeeksskeegfor" },
+      "expected": "geeksskeeg",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def longestPalindrome(self, s: str) -> str:\n        # TODO: return the longest palindromic substring of s.\n        pass",
+    "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string longestPalindrome(string s) {\n        // TODO: return the longest palindromic substring of s.\n    }\n};",
+    "java": "class Solution {\n    public String longestPalindrome(String s) {\n        // TODO: return the longest palindromic substring of s.\n        return \"\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "palindrome", "centre-expansion", "longest-palindromic-substring"],
+    "hintLevels": [
+      "Level 1: Every palindrome has a centre — a single character for odd lengths, a gap between two equal characters for even lengths.",
+      "Level 2: Treat each of the 2n-1 centres as a seed and stretch outward while the endpoints agree, tracking the longest span seen.",
+      "Level 3: Probe the odd and even centre for each index separately; keeping the first maximum found makes the answer deterministic (\"babad\" yields \"bab\", not \"aba\")."
+    ]
+  }
+}

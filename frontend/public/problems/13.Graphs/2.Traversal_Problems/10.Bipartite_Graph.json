@@ -1,0 +1,61 @@
+{
+  "id": "bipartite-graph",
+  "index": 10,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Is Graph Bipartite?",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=is+graph+bipartite",
+    "sourceFilePath": "13. Graphs/2. Traversal Problems/11. Bipartite Graph.cpp"
+  },
+  "narrative": {
+    "title": "The Two-Shift Staffing Feasibility Check",
+    "scenario": "A hospital roster treats staff as nodes and every conflicting duty pair as an edge. The scheduler wants to split everyone into exactly two shifts so that no conflicting pair lands on the same shift. That split exists precisely when a two-colouring of the conflict graph never paints linked people alike; one odd-length conflict ring ruins the whole roster.",
+    "inputFormat": "An adjacency list graph where graph[u] lists every node adjacent to u (undirected, no self-loops, possibly disconnected).",
+    "outputFormat": "Return true if the nodes can be split into two independent sets with every edge crossing between them, otherwise false.",
+    "constraints": [
+      "1 <= graph.length <= 100",
+      "0 <= graph[u].length < graph.length",
+      "No self-edges or parallel edges"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(V + E)",
+    "optimalSpace": "O(V)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "graph": [[1, 2, 3], [0, 2], [0, 1], [0]] },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Nodes 0, 1 and 2 form a triangle — three people in a ring cannot share two shifts."
+    },
+    {
+      "id": "tc-2",
+      "input": { "graph": [[1, 3], [0, 2], [1, 3], [0, 2]] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The four-cycle colours alternately with no conflict."
+    },
+    {
+      "id": "tc-3",
+      "input": { "graph": [[]] },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import sys\nsys.setrecursionlimit(10**6)\n\nclass Solution:\n    def solve(self, graph):\n        # Return True if the graph is bipartite.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return true if the graph is bipartite.\n    bool solve(std::vector<std::vector<int>>& graph);\n};",
+    "java": "class Solution {\n    // Return true if the graph is bipartite.\n    public boolean solve(int[][] graph) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dfs", "coloring", "bipartite-check", "bipartite-graph"],
+    "hintLevels": [
+      "Level 1: Equivalent question: does the graph contain any odd-length cycle?",
+      "Level 2: Colour a start node, then flip the colour at every hop; a neighbour wearing your colour breaks the split.",
+      "Level 3: Disconnected graphs need a fresh two-colouring attempt from every unvisited component root."
+    ]
+  }
+}

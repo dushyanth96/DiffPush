@@ -1,0 +1,61 @@
+{
+  "id": "maximum-product-subarray",
+  "index": 12,
+  "topic": "01.Arrays",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Maximum product subarray",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Maximum%20product%20subarray",
+    "sourceFilePath": "01.Arrays/3.Hard/12.Maximum_product_subarray.cpp"
+  },
+  "narrative": {
+    "title": "Best Compounding Run in a Yield Series",
+    "scenario": "A portfolio system stores a multiplier per period, where a negative multiplier means the position was inverted. The risk desk wants the contiguous run of periods whose multipliers compound to the largest product. A run must be non-empty, and zeros reset the compounding entirely.",
+    "inputFormat": "An array nums of n integers, one multiplier per period.",
+    "outputFormat": "The largest product obtainable from a non-empty contiguous run of nums.",
+    "constraints": [
+      "1 <= n <= 2 * 10^4",
+      "-10 <= nums[i] <= 10",
+      "The answer fits in a 32-bit signed integer"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [2, 3, -2, 4] },
+      "expected": 6,
+      "isPublic": true,
+      "explanation": "The opening pair compounds to 6, which beats any run that includes the negative multiplier."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [-2, 0, -1] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "The zero splits the series, and a single negative multiplier yields less than zero, so nothing beats 0."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [-2, 3, -4] },
+      "expected": 24,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def maxProduct(self, nums: list[int]) -> int:\n        # TODO: return the largest product of a non-empty contiguous run.\n        pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxProduct(vector<int>& nums) {\n        // TODO: return the largest product of a non-empty contiguous run.\n    }\n};",
+    "java": "class Solution {\n    public int maxProduct(int[] nums) {\n        // TODO: return the largest product of a non-empty contiguous run.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "running-product", "kadane-variant", "sign-handling", "maximum-product"],
+    "hintLevels": [
+      "Level 1: A negative multiplier can turn the worst run into the best one, so a single running value is not enough information.",
+      "Level 2: Carry both the maximum and the minimum product ending at the current position, and form each new pair by combining the incoming multiplier with both of them.",
+      "Level 3: A zero resets the running products to the incoming value rather than leaving a stale product behind, and a sweep from the other direction is a reliable way to avoid the parity trap created by an odd number of negatives."
+    ]
+  }
+}

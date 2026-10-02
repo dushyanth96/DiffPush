@@ -1,0 +1,59 @@
+{
+  "id": "count-set-bit-from-numbers-1-to-n",
+  "index": 8,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Count set bit from numbers 1 to n",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Count%20set%20bit%20from%20numbers%201%20to%20n",
+    "sourceFilePath": "06.Bit Manipulation/1. Learn Bit Manipulation/08.Count set bit from numbers 1 to n.cpp"
+  },
+  "narrative": {
+    "title": "Totaling the Beacon Flashes Across the Fleet",
+    "scenario": "Every fleet vessel broadcasts its ID in binary beacon pulses, one pulse per set bit. Control wants the total pulse count across IDs 1 through n. Counting vessel by vessel is too slow, so dispatch exploits the block structure of binary numbers: below the highest power of two, each bit position holds a predictable share of pulses, and the remainder above it is one more block of the same shape.",
+    "inputFormat": "An integer n.",
+    "outputFormat": "The total number of set bits across all integers from 1 to n inclusive.",
+    "constraints": [
+      "1 <= n <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n) — one recursive block per set bit of n",
+    "optimalSpace": "O(log n) recursion depth"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4 },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "IDs 1..4 flash 1 + 1 + 2 + 1 = 5 pulses in total."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 7 },
+      "expected": 12,
+      "isPublic": true,
+      "explanation": "Across 1..7 every bit position below 8 turns on exactly four times: 3 * 4 = 12."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 1 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def countSetBits(self, n: int) -> int:\n        # TODO: split at the largest power of two; recurse on the remainder.\n        pass",
+    "cpp": "#include <cmath>\nusing namespace std;\n\nclass Solution {\npublic:\n    int countSetBits(int n) {\n        // TODO: largest 2^x <= n, then block sum + MSB run + recurse(n - 2^x).\n    }\n};",
+    "java": "class Solution {\n    public int countSetBits(int n) {\n        // TODO: split at the largest power of two; recurse on the remainder.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "counting-bits", "block-decomposition", "count-set-bit-from-numbers-1-to-n"],
+    "hintLevels": [
+      "Level 1: Bits form repeating patterns — you can count them per position rather than per number.",
+      "Level 2: Below 2^x, each of the x positions carries 2^(x-1) set bits; from 2^x to n the top bit adds n - 2^x + 1 more.",
+      "Level 3: Recurse on n - 2^x with the same rule — each call peels the highest set bit, so only O(log n) calls run."
+    ]
+  }
+}

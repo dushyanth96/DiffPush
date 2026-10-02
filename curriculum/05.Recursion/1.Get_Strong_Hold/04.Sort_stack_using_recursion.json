@@ -1,0 +1,60 @@
+{
+  "id": "sort-stack-using-recursion",
+  "index": 4,
+  "topic": "05.Recursion",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Sort stack using recursion",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Sort%20stack%20using%20recursion",
+    "sourceFilePath": "05.Recursion/1.Get Strong Hold/04.Sort_stack_using_recursion.cpp"
+  },
+  "narrative": {
+    "title": "Ranking the Clinic's Triage Trays",
+    "scenario": "A clinic's urgent-case tray only exposes its top folder, and the night shift must leave it ordered so the highest-priority case (largest number) sits on top. The same one-hand rule applies: hold one folder at a time, no side tables. The shift sorts the tray by always holding the top folder aside, sorting the remainder, then letting the held folder sink down to its correct slot from the top.",
+    "inputFormat": "An array stack representing the tray from bottom to top (the last element is the top).",
+    "outputFormat": "The array after the stack is sorted so the largest value is on top.",
+    "constraints": [
+      "1 <= N <= 10^4",
+      "-10^9 <= stack[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n) recursion stack"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "stack": [11, 2, 32, 3, 41] },
+      "expected": [2, 3, 11, 32, 41],
+      "isPublic": true,
+      "explanation": "Read bottom-to-top, the sorted tray ascends toward the top where 41 (the largest) sits."
+    },
+    {
+      "id": "tc-2",
+      "input": { "stack": [3, 2, 1] },
+      "expected": [1, 2, 3],
+      "isPublic": true,
+      "explanation": "Already in ascending order bottom-to-top, so sorting leaves the tray as it is."
+    },
+    {
+      "id": "tc-3",
+      "input": { "stack": [5, 5, 1] },
+      "expected": [1, 5, 5],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def sortStack(self, stack: list[int]) -> list[int]:\n        # TODO: sort so the largest value ends on top, recursion only.\n        pass",
+    "cpp": "#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    void sortSt(stack<int>& st) {\n        // TODO: hold the top, sort the rest, insert the held element at its slot.\n    }\n};",
+    "java": "class Solution {\n    public void sortStack(java.util.Deque<Integer> stack) {\n        // TODO: sort so the largest value ends on top, recursion only.\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["recursion", "stack", "sorting", "sort-stack-using-recursion"],
+    "hintLevels": [
+      "Level 1: Identical skeleton to stack reversal — only the burial rule changes.",
+      "Level 2: Pop the top, sort the remainder, then insert the popped element so the stack reads ascending from bottom to top.",
+      "Level 3: The insertion helper stops as soon as the top is no longer smaller than the held element — ties and larger values above it stay put."
+    ]
+  }
+}

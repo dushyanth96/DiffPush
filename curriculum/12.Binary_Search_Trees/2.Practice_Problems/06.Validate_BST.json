@@ -1,0 +1,60 @@
+{
+  "id": "validate-bst",
+  "index": 6,
+  "topic": "12.Binary_Search_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Validate Binary Search Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=validate+binary+search+tree",
+    "sourceFilePath": "12. Binary Search Trees/2. Practice Problems/06. Validate BST.cpp"
+  },
+  "narrative": {
+    "title": "The Range-Pass Audit of the Sort Racks",
+    "scenario": "A warehouse's sort racks claim the strict smaller-left, larger-right layout, but a recent retrofit may have wedged crates into the wrong aisles. The auditor walks each station carrying a permissible value window: entering a left aisle tightens the ceiling, entering a right aisle raises the floor. Any crate outside its inherited window fails the audit on the spot.",
+    "inputFormat": "A binary tree as a level-order array (null marks a missing child) — not guaranteed to be a BST.",
+    "outputFormat": "Return true if the tree satisfies the BST property for every node, otherwise false. Duplicate values are not allowed.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-2^31 <= node value <= 2^31 - 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [5, 1, 4, null, null, 3, 6] },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Node 4 sits in the right wing of 5 but holds a smaller value — the window check rejects it."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [2, 1, 3] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Every node stays inside the window its ancestors carved out."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [2, 2, 2] },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return True if the tree is a valid BST.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return true if the tree is a valid BST.\n    bool solve(TreeNode* root);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return true if the tree is a valid BST.\n    public boolean solve(TreeNode root) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bst", "validation", "recursion", "range-check", "validate-bst"],
+    "hintLevels": [
+      "Level 1: Checking only each parent-child pair is a trap — a violation can hide two levels down.",
+      "Level 2: Thread (low, high) bounds through the recursion: left children inherit a tighter ceiling, right children a tighter floor.",
+      "Level 3: Use wide integer sentinels (or longs) so boundary values like 2^31-1 don't fall outside every window."
+    ]
+  }
+}

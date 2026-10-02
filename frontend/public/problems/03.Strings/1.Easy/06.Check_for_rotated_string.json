@@ -1,0 +1,60 @@
+{
+  "id": "check-for-rotated-string",
+  "index": 6,
+  "topic": "03.Strings",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Check for rotated string",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Check%20for%20rotated%20string",
+    "sourceFilePath": "03.Strings/1.Easy/06.Check_for_rotated_string.cpp"
+  },
+  "narrative": {
+    "title": "Carousel Alignment Check",
+    "scenario": "A museum display carousel steps leftward one item at a time, and curators photograph its arrangement at random moments. An archivist must confirm whether a photographed arrangement is just the reference lineup after some number of steps — the same items, same cyclic order, different starting point. Different lengths or a genuinely different cyclic order mean the photo shows something else entirely.",
+    "inputFormat": "Two strings s (the reference lineup) and goal (the photographed arrangement).",
+    "outputFormat": "true when goal can be reached from s by repeatedly taking its first character and appending it to the end, false otherwise.",
+    "constraints": [
+      "1 <= s.length, goal.length <= 100",
+      "s and goal consist of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N^2)",
+    "optimalSpace": "O(N)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "abcde", "goal": "cdeab" },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Shifting a, b off the front and onto the back lands exactly on the photographed arrangement."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "abcde", "goal": "abced" },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Same length, same letters, but no rotation reproduces the swapped tail."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "abab", "goal": "baba" },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def rotateString(self, s: str, goal: str) -> bool:\n        # TODO: return True when goal is some rotation of s.\n        pass",
+    "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool rotateString(string s, string goal) {\n        // TODO: return true when goal is some rotation of s.\n    }\n};",
+    "java": "class Solution {\n    public boolean rotateString(String s, String goal) {\n        // TODO: return true when goal is some rotation of s.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "rotation", "substring-search", "check-for-rotated-string"],
+    "hintLevels": [
+      "Level 1: Every rotation of s is hiding inside s glued to itself — the doubled string is a ring unrolled onto a line.",
+      "Level 2: If the lengths differ, refuse immediately; otherwise concatenate s with itself and search for goal as a substring.",
+      "Level 3: Watch length equality separately — the doubled-string trick would happily find a short goal anywhere in s + s, so the length gate must come first."
+    ]
+  }
+}

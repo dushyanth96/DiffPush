@@ -1,0 +1,101 @@
+{
+  "id": "morris-preorder-traversal",
+  "index": 10,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Morris Preorder Traversal (O(1) Space)",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=preorder+traversal+binary+tree",
+    "sourceFilePath": "11. Binary Trees/3. Hard/11. Morris Preorder Traversal.cpp"
+  },
+  "narrative": {
+    "title": "The Chalk-Mark Warehouse Walk",
+    "scenario": "A night inspector must verify every bay of a tree-shaped storage aisle and is under a strict rule: carry nothing — no clipboard stack, no breadcrumbs. Her trick is temporary chalk arrows: before descending into a branch she chalks the exit thread from its last bay back up to the current junction, erases the chalk on the way back, and leaves the aisle exactly as she found it, all bays visited hub-first.",
+    "inputFormat": "A binary tree as a level-order array (null marks a missing child).",
+    "outputFormat": "Return the node values in preorder (root, left subtree, right subtree).",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^4 <= node value <= 10^4",
+      "Expected extra space: O(1) — Morris threading, no stack or queue"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          null,
+          6
+        ]
+      },
+      "expected": [
+        1,
+        2,
+        4,
+        5,
+        3,
+        6
+      ],
+      "isPublic": true,
+      "explanation": "Root first, then the whole left wing 2-4-5, then 3 and its lone child 6."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          null,
+          2,
+          3
+        ]
+      },
+      "expected": [
+        1,
+        2,
+        3
+      ],
+      "isPublic": true,
+      "explanation": "No left child at the root, so the walk drops straight down the right spine."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1
+        ]
+      },
+      "expected": [
+        1
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Preorder using Morris threading; O(1) extra space.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Preorder using Morris threading; O(1) extra space.\n    std::vector<int> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Preorder using Morris threading; O(1) extra space.\n    public List<Integer> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "morris-traversal",
+      "constant-space",
+      "morris-preorder-traversal"
+    ],
+    "hintLevels": [
+      "Level 1: You need recursion's order without recursion's stack — borrow the tree's own null pointers as your memory.",
+      "Level 2: Find the rightmost node of the left subtree and thread it back to the current root before stepping down.",
+      "Level 3: Preorder records the root when the thread is FIRST created and skips it when the thread is followed a second time."
+    ]
+  }
+}

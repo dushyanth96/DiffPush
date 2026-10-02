@@ -1,0 +1,62 @@
+{
+  "id": "find-how-many-times-array-is-rotated",
+  "index": 13,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Find how many times array is rotated",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Find%20how%20many%20times%20array%20is%20rotated",
+    "sourceFilePath": "02.Binary Search/1D Arrays/13.Find_how_many_times_array_is_rotated.cpp"
+  },
+  "narrative": {
+    "title": "Recovering the Carousel Offset",
+    "scenario": "A circular parts carousel was advanced an unknown number of right steps, and the control software must recover that offset to re-sync its slot numbering. The offset equals how far the smallest part code has travelled from the head of the display. Determine it with logarithmic probes over the wrapped ascending sequence.",
+    "inputFormat": "An integer N and an array Arr of N distinct integers, originally ascending and then right-rotated K times.",
+    "outputFormat": "The value of K, the number of right rotations applied.",
+    "constraints": [
+      "1 <= N <= 10^5",
+      "1 <= Arr[i] <= 10^7",
+      "All values are distinct",
+      "An O(log N) algorithm is required"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "N": 5, "Arr": [5, 1, 2, 3, 4] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "The ascending order 1,2,3,4,5 was advanced one step, leaving 5 stranded at the head."
+    },
+    {
+      "id": "tc-2",
+      "input": { "N": 5, "Arr": [1, 2, 3, 4, 5] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "The carousel was never advanced, so the offset is zero."
+    },
+    {
+      "id": "tc-3",
+      "input": { "N": 6, "Arr": [66, 67, 7, 8, 9, 23] },
+      "expected": 2,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findKRotation(self, arr: list[int], n: int) -> int:\n        # TODO: return the number of right rotations applied.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findKRotation(int arr[], int n) {\n        // TODO: return the number of right rotations applied.\n    }\n};",
+    "java": "class Solution {\n    public int findKRotation(int[] arr, int n) {\n        // TODO: return the number of right rotations applied.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "rotated-array", "rotation-count", "minimum-index", "find-how-many-times-array-is-rotated"],
+    "hintLevels": [
+      "Level 1: The rotation count equals the index of the minimum element, so this is a positional cousin of finding the wrapped minimum.",
+      "Level 2: Use the last element as the reference: any probe larger than it belongs to the pre-wrap block, so move right; otherwise the restart point is at or left of the probe.",
+      "Level 3: Converge the bounds until they meet and return that index; a zero rotation is the case where the probe never exceeds the last element and the answer collapses to index 0."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "repeating-and-missing-numbers",
+  "index": 9,
+  "topic": "01.Arrays",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Repeating and missing numbers",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Repeating%20and%20missing%20numbers",
+    "sourceFilePath": "01.Arrays/3.Hard/09.Repeating_and_missing_numbers.cpp"
+  },
+  "narrative": {
+    "title": "Reconciling a Duplicate and a Gap in a Parcel Manifest",
+    "scenario": "A warehouse manifest should list tracking numbers 1 through N exactly once, but one number was scanned twice and another was skipped entirely. The scanner can no longer produce a clean list, so reconciliation must recover both the duplicated number and the missing one from the dirty manifest.",
+    "inputFormat": "An integer N and an array Arr of N integers taking values in [1, N].",
+    "outputFormat": "Two values: the number that occurs twice, followed by the number that never occurs.",
+    "constraints": [
+      "2 <= N <= 10^5",
+      "1 <= Arr[i] <= N",
+      "Sums may exceed 32-bit range"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "N": 2, "Arr": [2, 2] },
+      "expected": [2, 1],
+      "isPublic": true,
+      "explanation": "The manifest repeats 2, which forces 1 to be the number that was never scanned."
+    },
+    {
+      "id": "tc-2",
+      "input": { "N": 4, "Arr": [1, 2, 2, 4] },
+      "expected": [2, 3],
+      "isPublic": true,
+      "explanation": "Everything matches the clean manifest except the duplicated 2 and the absent 3."
+    },
+    {
+      "id": "tc-3",
+      "input": { "N": 5, "Arr": [1, 1, 2, 3, 4] },
+      "expected": [1, 5],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findTwoElement(self, arr: list[int], N: int) -> list[int]:\n        # TODO: return [repeating, missing].\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> findTwoElement(vector<int> arr, int N) {\n        // TODO: return {repeating, missing}.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public List<Integer> findTwoElement(int[] arr, int N) {\n        // TODO: return [repeating, missing].\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "sum-and-sum-of-squares", "duplicate-detection", "missing-value", "overflow-safety"],
+    "hintLevels": [
+      "Level 1: The clean manifest has a known total, so comparing totals exposes how the duplicate and the gap relate to each other.",
+      "Level 2: The difference of the two sums gives missing minus duplicate, and the difference of the sum of squares factors into the missing plus duplicate, which solves both unknowns.",
+      "Level 3: Squares grow quickly, so accumulate them in a wide integer type, and be careful that the derived sum pair is split in the right order because the expected output is duplicate first."
+    ]
+  }
+}

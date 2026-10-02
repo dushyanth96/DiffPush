@@ -1,0 +1,59 @@
+{
+  "id": "minimum-bit-flips",
+  "index": 1,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Minimum bit flips",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Minimum%20bit%20flips",
+    "sourceFilePath": "06.Bit Manipulation/2. Interview Problems/01. Minimum bit flips.cpp"
+  },
+  "narrative": {
+    "title": "Re-Programming the Robot's Mode Register",
+    "scenario": "A warehouse robot's mode register must change from its current setting to a goal setting, and each reprogramming run flips exactly one bit. The maintenance log wants the minimum number of flip runs. XOR-ing the two registers leaves a 1 in every position that disagrees, so the answer is simply how many 1s survive that comparison.",
+    "inputFormat": "Two integers start and goal.",
+    "outputFormat": "The minimum number of bit flips to turn start into goal.",
+    "constraints": [
+      "0 <= start, goal <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n) — one pass over the differing bits (fixed 32 in the source)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "start": 10, "goal": 7 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "1010 vs 0111 differ in three positions, so three flips are both necessary and sufficient."
+    },
+    {
+      "id": "tc-2",
+      "input": { "start": 3, "goal": 4 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "011 vs 100 disagree everywhere — every bit must be flipped."
+    },
+    {
+      "id": "tc-3",
+      "input": { "start": 0, "goal": 0 },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def minBitFlips(self, start: int, goal: int) -> int:\n        # TODO: XOR the registers, then count surviving 1s.\n        pass",
+    "cpp": "#include <cstdint>\nusing namespace std;\n\nclass Solution {\npublic:\n    int minBitFlips(int start, int goal) {\n        // TODO: count set bits of start ^ goal.\n    }\n};",
+    "java": "class Solution {\n    public int minBitFlips(int start, int goal) {\n        // TODO: XOR the registers, then count surviving 1s.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "xor", "popcount", "minimum-bit-flips"],
+    "hintLevels": [
+      "Level 1: A flip only matters where the two registers disagree — find those positions first.",
+      "Level 2: start ^ goal lights exactly the mismatched bits; the answer is its popcount.",
+      "Level 3: Repeatedly clear the lowest set bit (x &= x - 1) to count without scanning all 32 slots."
+    ]
+  }
+}

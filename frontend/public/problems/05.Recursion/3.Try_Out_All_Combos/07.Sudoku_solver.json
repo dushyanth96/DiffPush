@@ -1,0 +1,472 @@
+{
+  "id": "sudoku-solver",
+  "index": 7,
+  "topic": "05.Recursion",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Sudoku solver",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Sudoku%20solver",
+    "sourceFilePath": "05.Recursion/3.Try Out All Combos/07.Sudoku solver.cpp"
+  },
+  "narrative": {
+    "title": "Filling the Server Room's Access Matrix",
+    "scenario": "A data center encodes its rack access schedule as a 9x9 matrix where each row, column, and 3x3 zone must contain every clearance digit 1-9 exactly once; scheduled cells are fixed and blank cells must be completed. The auditor scans for the next blank, trials each digit that violates no zone, and locks it in before recursing — reverting on contradiction until the matrix fills.",
+    "inputFormat": "A 9x9 grid of characters, '1'-'9' for filled cells and '.' for blanks; the test input uses 0 for blanks.",
+    "outputFormat": "The completed grid: a 9x9 character matrix satisfying all three all-different rules.",
+    "constraints": [
+      "the given grid is 9 x 9",
+      "exactly one solution exists for the stored test cases",
+      "board values are digits '1'-'9' or blanks ('0' in the test encoding)"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(9^m) where m is the blank count",
+    "optimalSpace": "O(1) auxiliary; the board is modified in place (recursion depth <= 81)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "board": [
+          [
+            5,
+            3,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            6,
+            0,
+            0,
+            1,
+            9,
+            5,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            9,
+            8,
+            0,
+            0,
+            0,
+            0,
+            6,
+            0
+          ],
+          [
+            8,
+            0,
+            0,
+            0,
+            6,
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            4,
+            0,
+            0,
+            8,
+            0,
+            3,
+            0,
+            0,
+            1
+          ],
+          [
+            7,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            6,
+            0,
+            0,
+            0,
+            0,
+            2,
+            8,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            4,
+            1,
+            9,
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            8,
+            0,
+            0,
+            7,
+            9
+          ]
+        ]
+      },
+      "expected": [
+        [
+          5,
+          3,
+          4,
+          6,
+          7,
+          8,
+          9,
+          1,
+          2
+        ],
+        [
+          6,
+          7,
+          2,
+          1,
+          9,
+          5,
+          3,
+          4,
+          8
+        ],
+        [
+          1,
+          9,
+          8,
+          3,
+          4,
+          2,
+          5,
+          6,
+          7
+        ],
+        [
+          8,
+          5,
+          9,
+          7,
+          6,
+          1,
+          4,
+          2,
+          3
+        ],
+        [
+          4,
+          2,
+          6,
+          8,
+          5,
+          3,
+          7,
+          9,
+          1
+        ],
+        [
+          7,
+          1,
+          3,
+          9,
+          2,
+          4,
+          8,
+          5,
+          6
+        ],
+        [
+          9,
+          6,
+          1,
+          5,
+          3,
+          7,
+          2,
+          8,
+          4
+        ],
+        [
+          2,
+          8,
+          7,
+          4,
+          1,
+          9,
+          6,
+          3,
+          5
+        ],
+        [
+          3,
+          4,
+          5,
+          2,
+          8,
+          6,
+          1,
+          7,
+          9
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "A lightly-blanked board whose completion the verifier re-checks cell by cell against all three rules and the given cells."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "board": [
+          [
+            5,
+            3,
+            4,
+            6,
+            7,
+            8,
+            9,
+            1,
+            2
+          ],
+          [
+            6,
+            7,
+            2,
+            1,
+            9,
+            5,
+            3,
+            4,
+            8
+          ],
+          [
+            1,
+            9,
+            8,
+            3,
+            4,
+            2,
+            5,
+            6,
+            7
+          ],
+          [
+            8,
+            5,
+            9,
+            7,
+            6,
+            1,
+            4,
+            2,
+            3
+          ],
+          [
+            4,
+            0,
+            0,
+            8,
+            5,
+            3,
+            0,
+            0,
+            1
+          ],
+          [
+            7,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            6,
+            0,
+            0,
+            0,
+            0,
+            2,
+            8,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            4,
+            1,
+            9,
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            8,
+            0,
+            0,
+            7,
+            9
+          ]
+        ]
+      },
+      "expected": "VALID",
+      "isPublic": true,
+      "explanation": "The verifier checks the returned board against all three Sudoku rules plus the original givens, rather than trusting a stored grid."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "board": [
+          [
+            0,
+            3,
+            4,
+            6,
+            7,
+            8,
+            9,
+            1,
+            2
+          ],
+          [
+            6,
+            7,
+            2,
+            1,
+            9,
+            5,
+            3,
+            4,
+            8
+          ],
+          [
+            1,
+            9,
+            8,
+            3,
+            4,
+            2,
+            5,
+            6,
+            7
+          ],
+          [
+            8,
+            5,
+            9,
+            7,
+            6,
+            1,
+            4,
+            2,
+            3
+          ],
+          [
+            4,
+            2,
+            6,
+            8,
+            5,
+            3,
+            7,
+            9,
+            1
+          ],
+          [
+            7,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            6
+          ],
+          [
+            9,
+            6,
+            1,
+            5,
+            3,
+            7,
+            2,
+            8,
+            4
+          ],
+          [
+            2,
+            8,
+            7,
+            4,
+            1,
+            9,
+            6,
+            3,
+            5
+          ],
+          [
+            3,
+            4,
+            5,
+            2,
+            8,
+            6,
+            1,
+            7,
+            9
+          ]
+        ]
+      },
+      "expected": "VALID",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solveSudoku(self, board: list[list[str]]) -> list[list[str]]:\n        # TODO: find the next blank, trial digits 1-9, recurse and revert.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    void solveSudoku(vector<vector<char>>& board) {\n        // TODO: scan for '.', trial valid digits, backtrack on contradiction.\n    }\n};",
+    "java": "class Solution {\n    public char[][] solveSudoku(char[][] board) {\n        // TODO: find the next blank, trial digits 1-9, recurse and revert.\n        return board;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "constraint-satisfaction",
+      "sudoku-solver"
+    ],
+    "hintLevels": [
+      "Level 1: Only blanks are decisions; every given digit is a fixed constraint the trial digits must respect.",
+      "Level 2: A digit is legal at (r, c) when its row, column, and 3x3 zone are all free of it — one triple scan settles it.",
+      "Level 3: Zone membership folds into a single index: the zone's top-left is (3*(r/3), 3*(c/3)), and its nine cells are reached by walking i/3 and i%3 offsets."
+    ]
+  }
+}

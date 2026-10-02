@@ -1,0 +1,126 @@
+{
+  "id": "power-set",
+  "index": 2,
+  "topic": "05.Recursion",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Power set",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Power%20set",
+    "sourceFilePath": "05.Recursion/2.Subsequences Pattern/02.Power set.cpp"
+  },
+  "narrative": {
+    "title": "Every Flight Roster the Charter Could Fly",
+    "scenario": "A charter operator lists candidate crew members and must file every possible roster — including the empty one — before the season starts. Each crew member is either on a roster or not, so the planner walks the list once and forks at every name: file the rosters that include this member, then the ones that don't. With all-distinct candidates, no two rosters coincide.",
+    "inputFormat": "An array nums of n distinct integers.",
+    "outputFormat": "All 2^n subsets, in the order the include-first depth-first walk emits them.",
+    "constraints": [
+      "1 <= n <= 10",
+      "-10 <= nums[i] <= 10",
+      "all elements are distinct"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n * 2^n) — 2^n subsets, each copied in O(n)",
+    "optimalSpace": "O(n) recursion depth beyond the output"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "nums": [
+          1,
+          2,
+          3
+        ]
+      },
+      "expected": [
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ],
+        []
+      ],
+      "isPublic": true,
+      "explanation": "The include-first walk at index 0 emits every roster containing 1 before the rosters built from the rest; the empty roster lands last."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "nums": [
+          0
+        ]
+      },
+      "expected": [
+        [
+          0
+        ],
+        []
+      ],
+      "isPublic": true,
+      "explanation": "One member: take them, or file the empty roster."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "nums": [
+          5,
+          -7
+        ]
+      },
+      "expected": [
+        [
+          5,
+          -7
+        ],
+        [
+          5
+        ],
+        [
+          -7
+        ],
+        []
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def subsets(self, nums: list[int]) -> list[list[int]]:\n        # TODO: at each index, emit include-branch first, then exclude-branch.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> subsets(vector<int>& nums) {\n        // TODO: recurse include-then-exclude over the index range.\n    }\n};",
+    "java": "class Solution {\n    public java.util.List<java.util.List<Integer>> subsets(int[] nums) {\n        // TODO: at each index, emit include-branch first, then exclude-branch.\n        return new java.util.ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "subsets",
+      "power-set"
+    ],
+    "hintLevels": [
+      "Level 1: Each element has a binary fate — in or out — so the answer space is a binary tree of depth n.",
+      "Level 2: Recurse on the index: push the element, recurse (include), pop it, recurse again (exclude); record the subset whenever the index runs past the end.",
+      "Level 3: The base case fires at index == n, so every leaf records exactly one subset and no dedup logic is needed while elements stay distinct."
+    ]
+  }
+}

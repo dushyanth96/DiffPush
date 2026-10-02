@@ -1,0 +1,60 @@
+{
+  "id": "longest-happy-prefix",
+  "index": 4,
+  "topic": "16.Strings_Hard",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Longest Happy Prefix",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=longest+happy+prefix",
+    "sourceFilePath": "16. Strings (Hard)/Hard/04. Longest Happy Prefix.cpp"
+  },
+  "narrative": {
+    "title": "The Twin Stave Header Hunt",
+    "scenario": "A music engraver examines a melody line for its longest opening phrase that also closes the piece — a non-empty phrase that starts and ends the score without being the whole score. Finding it lets the engraver compress the notation. When no such phrase exists, the report comes back empty.",
+    "inputFormat": "A string s.",
+    "outputFormat": "Return the longest non-empty proper prefix of s that is also a suffix of s, or \"\" when none exists.",
+    "constraints": [
+      "1 <= len(s) <= 10^5",
+      "s contains only lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "level" },
+      "expected": "l",
+      "isPublic": true,
+      "explanation": "\"l\" opens and closes the word; no longer proper prefix repeats as a suffix."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "ababab" },
+      "expected": "abab",
+      "isPublic": true,
+      "explanation": "\"abab\" is both the opening and the closing phrase of the period-2 melody."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "abcdef" },
+      "expected": "",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, s):\n        # Return the longest proper prefix that is also a suffix.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the longest proper prefix that is also a suffix.\n    std::string solve(std::string s);\n};",
+    "java": "class Solution {\n    // Return the longest proper prefix that is also a suffix.\n    public String solve(String s) {\n        // TODO\n        return \"\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "kmp", "lps-array", "prefix-suffix"],
+    "hintLevels": [
+      "Level 1: This is literally the border concept from string algorithms — the longest proper prefix that is also a suffix.",
+      "Level 2: Compute the LPS array; its final entry is the answer's length.",
+      "Level 3: Slice s[:lps[-1]]; the empty-string case falls out naturally when the border is 0."
+    ]
+  }
+}

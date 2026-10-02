@@ -1,0 +1,60 @@
+{
+  "id": "max-nesting-depth-of-parenthesis",
+  "index": 2,
+  "topic": "03.Strings",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Max nesting depth of parenthesis",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Max%20nesting%20depth%20of%20parenthesis",
+    "sourceFilePath": "03.Strings/2.Medium/02.Max_nesting_depth_of_parenthesis.cpp"
+  },
+  "narrative": {
+    "title": "Depth Gauge for the Kernel Trace Line",
+    "scenario": "A kernel debug logger writes each trace as a single balanced line where every nested subroutine call adds one more layer of parentheses around its own sub-expression. The profiler's summary reports how deep the call stack ever gets — the largest number of parentheses that are simultaneously open at any point of the line. Digits and operators are noise; only the brackets move the gauge.",
+    "inputFormat": "A valid parentheses string s containing digits, the operators '+', '-', '*', '/', and the parentheses '(' and ')'.",
+    "outputFormat": "The nesting depth of s — the maximum count of simultaneously open parentheses at any point in the string.",
+    "constraints": [
+      "1 <= s.length <= 100",
+      "s is a valid parentheses string: every '(' has a matching ')' in order"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "(1+(2*3)+((8)/4))+1" },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The term (8)/4 sits inside three simultaneously open pairs — the deepest point of the line."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "(1)+((2))+(((3)))" },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The three bracket groups nest one, two, and three levels deep, so the deepest group sets the answer."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "()(())((()()))" },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def maxDepth(self, s: str) -> int:\n        # TODO: return the maximum number of simultaneously open parentheses.\n        pass",
+    "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxDepth(string s) {\n        // TODO: return the maximum number of simultaneously open parentheses.\n    }\n};",
+    "java": "class Solution {\n    public int maxDepth(String s) {\n        // TODO: return the maximum number of simultaneously open parentheses.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "parentheses", "depth-counting", "max-nesting-depth-of-parenthesis"],
+    "hintLevels": [
+      "Level 1: Depth only changes at brackets — digits and operators never move the gauge.",
+      "Level 2: Sweep once with a counter: increment on '(', decrement on ')', and remember the highest value the counter ever reaches.",
+      "Level 3: Raise the running maximum immediately after each opening bracket, because the peak can only occur right after a '(' — a full stack is never needed, just one integer."
+    ]
+  }
+}

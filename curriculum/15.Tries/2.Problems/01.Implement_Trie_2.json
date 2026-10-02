@@ -1,0 +1,62 @@
+{
+  "id": "implement-trie-2",
+  "index": 1,
+  "topic": "15.Tries",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Implement Trie II (Prefix Tree with Counts)",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=implement+trie+ii+prefix+tree",
+    "sourceFilePath": "15. Tries/2. Problems/01. Implement Trie 2.cpp"
+  },
+  "narrative": {
+    "title": "The Badge Log Frequency Board",
+    "scenario": "A security desk archives every badge word swiped at the gate and must answer tally questions on the fly: how many times was this exact badge word swiped, and how many archived words start with this fragment? Erasing removes one archived occurrence. The desk needs a structure that keeps per-word and per-prefix running tallies.",
+    "inputFormat": "A list of operations: [\"Trie\"], [\"insert\", word], [\"countWordsEqualTo\", word], [\"countWordsStartingWith\", prefix], or [\"erase\", word].",
+    "outputFormat": "Return one entry per count operation; all other operations yield null.",
+    "constraints": [
+      "1 <= number of operations <= 25000",
+      "1 <= len(word), len(prefix) <= 2000",
+      "words and prefixes use lowercase English letters",
+      "erase only removes words previously inserted"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(L) per operation",
+    "optimalSpace": "O(total inserted characters)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "ops": [["Trie"], ["insert", "apple"], ["insert", "apple"], ["countWordsEqualTo", "apple"], ["countWordsStartingWith", "app"], ["erase", "apple"], ["countWordsEqualTo", "apple"], ["countWordsStartingWith", "app"]] },
+      "expected": [null, null, null, 2, 2, null, 1, 1],
+      "isPublic": true,
+      "explanation": "Two inserts tally to 2; one erase drops both counts to 1."
+    },
+    {
+      "id": "tc-2",
+      "input": { "ops": [["Trie"], ["insert", "badge"], ["countWordsEqualTo", "bad"], ["countWordsStartingWith", "bad"], ["erase", "badge"], ["countWordsStartingWith", "bad"]] },
+      "expected": [null, null, 0, 1, null, 0],
+      "isPublic": true,
+      "explanation": "The prefix matches the stored word, but the shorter word itself was never archived."
+    },
+    {
+      "id": "tc-3",
+      "input": { "ops": [["Trie"], ["insert", "abc"], ["insert", "abd"], ["countWordsStartingWith", "ab"], ["erase", "abc"], ["countWordsStartingWith", "ab"]] },
+      "expected": [null, null, null, 2, null, 1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Trie:\n    def __init__(self):\n        pass\n\n    def insert(self, word):\n        pass\n\n    def countWordsEqualTo(self, word):\n        # Return how many copies of word are archived.\n        pass\n\n    def countWordsStartingWith(self, prefix):\n        # Return how many archived words start with prefix.\n        pass\n\n    def erase(self, word):\n        pass",
+    "cpp": "#include <string>\n\nclass Trie {\npublic:\n    Trie();\n\n    void insert(const std::string& word);\n    // Return how many copies of word are archived.\n    int countWordsEqualTo(const std::string& word);\n    // Return how many archived words start with prefix.\n    int countWordsStartingWith(const std::string& prefix);\n    void erase(const std::string& word);\n};",
+    "java": "class Trie {\n    public Trie() {\n    }\n\n    public void insert(String word) {\n    }\n\n    // Return how many copies of word are archived.\n    public int countWordsEqualTo(String word) {\n        return 0;\n    }\n\n    // Return how many archived words start with prefix.\n    public int countWordsStartingWith(String prefix) {\n        return 0;\n    }\n\n    public void erase(String word) {\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["tries", "design", "counting", "prefix-tree"],
+    "hintLevels": [
+      "Level 1: Same walk as a plain trie, but every node now carries two counters — words ending here and words passing through.",
+      "Level 2: insert bumps the pass-counter on each new node and the end-counter on the last; erase mirrors exactly that.",
+      "Level 3: countWordsEqualTo reads the end counter; countWordsStartingWith reads the pass counter at the prefix node."
+    ]
+  }
+}

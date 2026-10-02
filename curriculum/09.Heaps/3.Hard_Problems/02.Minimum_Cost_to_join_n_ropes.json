@@ -1,0 +1,60 @@
+{
+  "id": "minimum-cost-to-join-n-ropes",
+  "index": 2,
+  "topic": "09.Heaps",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Minimum Cost to Connect Ropes",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=minimum+cost+to+connect+ropes",
+    "sourceFilePath": "09. Heaps/3. Hard Problems/02. Minimum Cost to join n ropes.cpp"
+  },
+  "narrative": {
+    "title": "The Cable Splice Accounting",
+    "scenario": "A utility crew must splice a pile of cables into one continuous line. Every splice fuses two runs into one whose length is the sum, and the work order charges exactly that sum per splice. Because an early fat splice keeps getting re-spliced later, joining the two shortest runs at every step keeps total spend minimal. Compute the cheapest possible bill.",
+    "inputFormat": "An integer array arr of rope lengths.",
+    "outputFormat": "Return the minimum total cost to join all ropes into one.",
+    "constraints": [
+      "1 <= arr.length <= 10^4",
+      "1 <= arr[i] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [4, 3, 2, 6] },
+      "expected": 29,
+      "isPublic": true,
+      "explanation": "Splice 2+3=5, then 4+5=9, then 6+9=15; the bill totals 29."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [1, 2, 3, 4, 5] },
+      "expected": 33,
+      "isPublic": true,
+      "explanation": "Splices are 1+2=3, 3+3=6, 4+5=9 and 6+9=15 — bills of 3, 6, 9, 15 totalling 33."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [8] },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\ndef connect_ropes(arr):\n    heap = list(arr)\n    heapq.heapify(heap)\n    cost = 0\n    while len(heap) > 1:\n        a = heapq.heappop(heap)\n        b = heapq.heappop(heap)\n        cost += a + b\n        heapq.heappush(heap, a + b)\n    return cost",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nlong long connectRopes(vector<int>& arr) {\n    priority_queue<int, vector<int>, greater<int>> pq;\n    for (int v : arr) pq.push(v);\n    long long cost = 0;\n    while (pq.size() > 1) {\n        int a = pq.top(); pq.pop();\n        int b = pq.top(); pq.pop();\n        cost += a + b;\n        pq.push(a + b);\n    }\n    return cost;\n}",
+    "java": "import java.util.PriorityQueue;\n\nclass Solution {\n    public long connectRopes(int[] arr) {\n        PriorityQueue<Integer> pq = new PriorityQueue<>();\n        for (int v : arr) pq.offer(v);\n        long cost = 0;\n        while (pq.size() > 1) {\n            int a = pq.poll(), b = pq.poll();\n            cost += a + b;\n            pq.offer(a + b);\n        }\n        return cost;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["heap", "greedy", "huffman-style", "minimum-cost-to-join-n-ropes"],
+    "hintLevels": [
+      "Level 1: Every rope's length is charged once per splice it survives — late splices are cheap for big ropes.",
+      "Level 2: Always fuse the two shortest current runs; a min-heap serves them instantly.",
+      "Level 3: The recurrence mirrors Huffman coding — the greedy choice is provably optimal."
+    ]
+  }
+}

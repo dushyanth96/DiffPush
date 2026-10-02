@@ -1,0 +1,60 @@
+{
+  "id": "sort-0-1-2-in-ll",
+  "index": 11,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Sort 0 1 2 in LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Sort%20list%200%201%202",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/11.Sort_0_1_2_in_LL.cpp"
+  },
+  "narrative": {
+    "title": "Sorting the Bay by Signal Class",
+    "scenario": "A warehouse chain lists pallets each carrying one of three signal classes — 0, 1, or 2 — and the floor plan demands all 0-class pallets up front, 2-class at the far end, 1-class in between. Because only three classes exist, a tally pass followed by an overwrite pass re-stamps the chain in class order without building anything new.",
+    "inputFormat": "An array head of node values, each of which is 0, 1, or 2.",
+    "outputFormat": "The values after segregation: all 0s first, then all 1s, then all 2s.",
+    "constraints": [
+      "1 <= list length <= 10^5",
+      "each node value is 0, 1, or 2"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [1, 2, 2, 1, 2, 0, 2, 2] },
+      "expected": [0, 1, 1, 2, 2, 2, 2, 2],
+      "isPublic": true,
+      "explanation": "One zero, two ones, five twos — the rewrite lays them out in class order."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [2, 2, 0] },
+      "expected": [0, 2, 2],
+      "isPublic": true,
+      "explanation": "No 1-class pallets exist; the zero leads and the twos follow."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [0, 1, 2] },
+      "expected": [0, 1, 2],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def segregate(self, head: list[int]) -> list[int]:\n        # TODO: return the values with all 0s, then 1s, then 2s.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node* next;\n    Node(int d) : data(d), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    Node* segregate(Node* head) {\n        // TODO: overwrite the chain in 0/1/2 order and return the head.\n    }\n};",
+    "java": "class Solution {\n    public int[] segregate(int[] head) {\n        // TODO: return the values with all 0s, then 1s, then 2s.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "counting-sort", "in-place-overwrite", "sort-0-1-2-in-ll"],
+    "hintLevels": [
+      "Level 1: With only three possible values you do not need a general sort — you need three counters.",
+      "Level 2: Tally the counts of 0, 1, and 2 in one pass, then walk the chain again writing 0s, then 1s, then 2s over the node values.",
+      "Level 3: The overwrite trick works because node identity is irrelevant here — only the multiset of values matters; relinking three sub-lists is the alternative when values must not be mutated."
+    ]
+  }
+}

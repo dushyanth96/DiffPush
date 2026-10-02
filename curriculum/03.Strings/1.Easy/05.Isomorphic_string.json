@@ -1,0 +1,61 @@
+{
+  "id": "isomorphic-string",
+  "index": 5,
+  "topic": "03.Strings",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Isomorphic string",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Isomorphic%20string",
+    "sourceFilePath": "03.Strings/1.Easy/05.Isomorphic_string.cpp"
+  },
+  "narrative": {
+    "title": "Cipher Consistency Audit",
+    "scenario": "A cipher vault replaces each plaintext letter with a ciphertext letter through a fixed substitution table, and an auditor receives two transcripts claimed to be encodings of the same message. The substitution must be consistent: one source letter always becomes the same target letter, and no two different source letters may collapse onto the same target. The auditor certifies the pair only when such a flawless mapping exists.",
+    "inputFormat": "Two strings s and t of equal length.",
+    "outputFormat": "true when the characters of s can be replaced to produce t under a consistent one-to-one mapping, false otherwise.",
+    "constraints": [
+      "1 <= s.length <= 5 * 10^4",
+      "s.length == t.length",
+      "s and t consist of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "egg", "t": "add" },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "e maps to a and g maps to d; both replacements hold at every occurrence."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "foo", "t": "bar" },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "The two o's in s would need to become a and r simultaneously, which no single mapping allows."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "badc", "t": "baba" },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def isIsomorphic(self, s: str, t: str) -> bool:\n        # TODO: return True when s can be remapped character-for-character onto t.\n        pass",
+    "cpp": "#include <string>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isIsomorphic(string s, string t) {\n        // TODO: return true when s can be remapped character-for-character onto t.\n    }\n};",
+    "java": "class Solution {\n    public boolean isIsomorphic(String s, String t) {\n        // TODO: return true when s can be remapped character-for-character onto t.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "hash-mapping", "bijection-check", "isomorphic-string"],
+    "hintLevels": [
+      "Level 1: A valid remap is a two-way contract — every letter on the left names exactly one letter on the right, and vice versa.",
+      "Level 2: Walk both strings in lockstep with two dictionaries (left-to-right and right-to-left); any position where an existing entry disagrees fails the audit.",
+      "Level 3: The sneaky failure is a collision, not a mismatch — two left letters reaching the same right letter passes a one-way map check, so the reverse map (or a set of used targets) is mandatory."
+    ]
+  }
+}

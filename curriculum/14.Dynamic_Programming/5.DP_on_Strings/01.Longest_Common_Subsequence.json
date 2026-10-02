@@ -1,0 +1,60 @@
+{
+  "id": "longest-common-subsequence",
+  "index": 1,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Longest Common Subsequence",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=longest+common+subsequence",
+    "sourceFilePath": "14. Dynamic Programming/5. DP on Strings/01. Longest Common Subsequence.cpp"
+  },
+  "narrative": {
+    "title": "The Changelog Diff Anchor",
+    "scenario": "A documentation tool compares two revisions of a protocol spec by finding the longest run of terms that appear in both versions in the same relative order — the anchor text both revisions share. Terms need not be adjacent, only in sequence. The diff viewer highlights that anchor length to visualize how much of the spec survived the edit.",
+    "inputFormat": "Two strings text1 and text2.",
+    "outputFormat": "Return the length of the longest sequence of characters appearing in both strings in the same relative order.",
+    "constraints": [
+      "1 <= len(text1), len(text2) <= 1000",
+      "strings consist of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*m)",
+    "optimalSpace": "O(min(n, m))"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "text1": "abcde", "text2": "ace" },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The shared in-order anchor is \"ace\" — length 3."
+    },
+    {
+      "id": "tc-2",
+      "input": { "text1": "abc", "text2": "def" },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "No character appears in both strings."
+    },
+    {
+      "id": "tc-3",
+      "input": { "text1": "aggtab", "text2": "gxtxayb" },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, text1, text2):\n        # Return the length of the longest common subsequence.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the length of the longest common subsequence.\n    int solve(std::string text1, std::string text2);\n};",
+    "java": "class Solution {\n    // Return the length of the longest common subsequence.\n    public int solve(String text1, String text2) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "strings", "lcs", "two-sequence"],
+    "hintLevels": [
+      "Level 1: When the current characters match, extend the best of both shorter prefixes; otherwise drop one character from either string.",
+      "Level 2: dp[i][j] = dp[i-1][j-1] + 1 on a match, else max(dp[i-1][j], dp[i][j-1]); empty prefixes are 0.",
+      "Level 3: Two rolling rows cut memory to the shorter string's length."
+    ]
+  }
+}

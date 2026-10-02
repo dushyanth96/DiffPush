@@ -1,0 +1,61 @@
+{
+  "id": "insert-into-bst",
+  "index": 3,
+  "topic": "12.Binary_Search_Trees",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Insert Into a Binary Search Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=insert+into+a+binary+search+tree",
+    "sourceFilePath": "12. Binary Search Trees/2. Practice Problems/03. Insert into BST.cpp"
+  },
+  "narrative": {
+    "title": "Onboarding the New Filing Cabinet",
+    "scenario": "A compliance office files every contract by value in a sorted tree, and a brand-new contract arrives that matches nothing on file. Rather than reorganizing the archive, the clerk walks the tree once — smaller goes left, larger goes right — until a corridor dead-ends, and hangs the new contract exactly there. The archive's shape grows by one leaf; nothing else moves.",
+    "inputFormat": "A binary search tree as a level-order array (null marks a missing child) and an integer val to insert. val does not already exist in the tree.",
+    "outputFormat": "Return the tree after insertion, serialized as a level-order array with trailing nulls trimmed.",
+    "constraints": [
+      "0 <= number of nodes <= 10^5",
+      "-10^9 <= node value, val <= 10^9",
+      "All values are unique before and after insertion"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(h)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [4, 2, 7, 1, 3], "val": 5 },
+      "expected": [4, 2, 7, 1, 3, 5],
+      "isPublic": true,
+      "explanation": "5 descends right of 4, left of 7, and becomes 7's left child."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [], "val": 5 },
+      "expected": [5],
+      "isPublic": true,
+      "explanation": "Inserting into an empty archive creates the root."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [5, 3, 8, 1, 4], "val": 6 },
+      "expected": [5, 3, 8, 1, 4, 6],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root, val):\n        # Insert val into the BST; return the (possibly new) root.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Insert val into the BST; return the (possibly new) root.\n    TreeNode* solve(TreeNode* root, int val);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Insert val into the BST; return the (possibly new) root.\n    public TreeNode solve(TreeNode root, int val) {\n        // TODO\n        return root;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bst", "insertion", "tree-traversal", "binary-search", "insert-into-bst"],
+    "hintLevels": [
+      "Level 1: A new record always lands as a leaf — the walk itself chooses the corridor.",
+      "Level 2: Recurse left when the newcomer is smaller, right when larger; a null pointer is the landing spot.",
+      "Level 3: Rewire on the way back up: child = insert(child, val) keeps the return-value chain intact, and an empty tree becomes the new root."
+    ]
+  }
+}

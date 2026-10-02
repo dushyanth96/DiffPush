@@ -1,0 +1,61 @@
+{
+  "id": "unique-paths-2",
+  "index": 3,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Unique Paths II",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=unique+paths+ii+obstacles",
+    "sourceFilePath": "14. Dynamic Programming/3. 2D DP/03. Unique Paths 2.cpp"
+  },
+  "narrative": {
+    "title": "The Detour-Ridden Aisle Map",
+    "scenario": "The courier's follow-up run happens during a stocktake, and some grid blocks are sealed by pallet stacks. The drone still flies only east and south from the northwest depot to the southeast customer, but no flight plan may cross a sealed block. Dispatch needs the count of valid routes that skirt every obstacle so it can promise realistic delivery options.",
+    "inputFormat": "An m x n matrix grid where 0 marks an open block and 1 marks an obstacle.",
+    "outputFormat": "Return the number of obstacle-free down/right paths from the top-left to the bottom-right cell.",
+    "constraints": [
+      "1 <= m, n <= 100",
+      "grid[i][j] is 0 or 1",
+      "the answer fits in a 32-bit signed integer"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m*n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "grid": [[0, 0, 0], [0, 1, 0], [0, 0, 0]] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Only the hugging-the-edge routes survive: all-right-then-down and all-down-then-right."
+    },
+    {
+      "id": "tc-2",
+      "input": { "grid": [[0, 1], [0, 0]] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "The blocked corner forces the single route: down, then right."
+    },
+    {
+      "id": "tc-3",
+      "input": { "grid": [[1, 0]] },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, grid):\n        # Return the number of obstacle-free paths.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the number of obstacle-free paths.\n    int solve(std::vector<std::vector<int>>& grid);\n};",
+    "java": "class Solution {\n    // Return the number of obstacle-free paths.\n    public int solve(int[][] grid) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "2d-dp", "grid-paths", "obstacles", "unique-paths-2"],
+    "hintLevels": [
+      "Level 1: An obstacle contributes zero routes — it can never be entered, so nothing flows through it.",
+      "Level 2: Keep the unique-paths sum but force blocked cells to 0; everything else reflows around them.",
+      "Level 3: If the start or the goal is blocked the answer is 0; also handle a 1x1 grid before any accumulation."
+    ]
+  }
+}

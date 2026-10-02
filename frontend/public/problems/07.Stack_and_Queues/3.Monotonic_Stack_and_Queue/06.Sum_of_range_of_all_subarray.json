@@ -1,0 +1,60 @@
+{
+  "id": "sum-of-range-of-all-subarray",
+  "index": 6,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Sum of Subarray Ranges",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=sum+of+subarray+ranges",
+    "sourceFilePath": "07.Stack and Queues/3. Monotonic Stack and Queue/06. Sum of range of all subarray.cpp"
+  },
+  "narrative": {
+    "title": "The Fleet Spread Report",
+    "scenario": "A delivery fleet logs vehicle loads in a row, and analysts define the 'spread' of any stretch of vehicles as its hottest load minus its coolest. Finance wants the grand total of spreads across every contiguous stretch. The audit runs twice: once summing maxima contributions, once subtracting minima contributions.",
+    "inputFormat": "An integer array nums of vehicle loads.",
+    "outputFormat": "Return the sum of (max - min) over every contiguous subarray of nums.",
+    "constraints": [
+      "1 <= nums.length <= 1000",
+      "-10^9 <= nums[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 2, 3] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "Ranges are 0,0,0 for singles, 1 and 1 for the pairs, and 2 for the full array: total 4."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1, 3, 3] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "Duplicates count as separate positions; the pairs (1,3) contribute 2 each and the full array contributes 2."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [4, -2, 9] },
+      "expected": 28,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def sub_array_ranges(nums):\n    def contribution(target):\n        # True -> sum as maximum; False -> sum as minimum\n        n = len(nums)\n        prev = [-1] * n\n        nxt = [n] * n\n        stack = []\n        for i in range(n):\n            while stack and (\n                (nums[stack[-1]] < nums[i]) if target else (nums[stack[-1]] > nums[i])\n            ):\n                stack.pop()\n            prev[i] = stack[-1] if stack else -1\n            stack.append(i)\n        stack = []\n        for i in range(n - 1, -1, -1):\n            while stack and (\n                (nums[stack[-1]] <= nums[i]) if target else (nums[stack[-1]] >= nums[i])\n            ):\n                stack.pop()\n            nxt[i] = stack[-1] if stack else n\n            stack.append(i)\n        return sum((i - prev[i]) * (nxt[i] - i) * nums[i] for i in range(n))\n\n    return contribution(True) - contribution(False)",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nlong long subArrayRanges(vector<int>& arr) {\n    auto bounds = [&](bool asMax) {\n        int n = arr.size();\n        vector<int> prev(n, -1), nxt(n, n);\n        stack<int> st;\n        for (int i = 0; i < n; ++i) {\n            while (!st.empty() && (asMax ? arr[st.top()] < arr[i] : arr[st.top()] > arr[i])) st.pop();\n            if (!st.empty()) prev[i] = st.top();\n            st.push(i);\n        }\n        while (!st.empty()) st.pop();\n        for (int i = n - 1; i >= 0; --i) {\n            while (!st.empty() && (asMax ? arr[st.top()] <= arr[i] : arr[st.top()] >= arr[i])) st.pop();\n            if (!st.empty()) nxt[i] = st.top();\n            st.push(i);\n        }\n        long long sum = 0;\n        for (int i = 0; i < n; ++i)\n            sum += (long long)(i - prev[i]) * (nxt[i] - i) * arr[i];\n        return sum;\n    };\n    return bounds(true) - bounds(false);\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public long subArrayRanges(int[] nums) {\n        return contribution(nums, true) - contribution(nums, false);\n    }\n\n    private long contribution(int[] a, boolean asMax) {\n        int n = a.length;\n        int[] prev = new int[n], nxt = new int[n];\n        java.util.Arrays.fill(prev, -1);\n        java.util.Arrays.fill(nxt, n);\n        Deque<Integer> stack = new ArrayDeque<>();\n        for (int i = 0; i < n; ++i) {\n            while (!stack.isEmpty() &&\n                   (asMax ? a[stack.peek()] < a[i] : a[stack.peek()] > a[i])) stack.pop();\n            if (!stack.isEmpty()) prev[i] = stack.peek();\n            stack.push(i);\n        }\n        stack.clear();\n        for (int i = n - 1; i >= 0; --i) {\n            while (!stack.isEmpty() &&\n                   (asMax ? a[stack.peek()] <= a[i] : a[stack.peek()] >= a[i])) stack.pop();\n            if (!stack.isEmpty()) nxt[i] = stack.peek();\n            stack.push(i);\n        }\n        long sum = 0;\n        for (int i = 0; i < n; ++i)\n            sum += (long)(i - prev[i]) * (nxt[i] - i) * a[i];\n        return sum;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["monotonic-stack", "contribution-technique", "sum-of-range-of-all-subarray"],
+    "hintLevels": [
+      "Level 1: max-sum minus min-sum is the range sum — each half is the same counting problem.",
+      "Level 2: Reuse the subarray-minimum machinery with comparison directions flipped for maxima.",
+      "Level 3: Keep the strict/non-strict tie-breaking consistent within each pass so duplicates count exactly once per role."
+    ]
+  }
+}

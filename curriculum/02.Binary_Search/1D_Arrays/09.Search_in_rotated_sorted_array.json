@@ -1,0 +1,62 @@
+{
+  "id": "search-in-rotated-sorted-array",
+  "index": 9,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Search in rotated sorted array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Search%20in%20rotated%20sorted%20array",
+    "sourceFilePath": "02.Binary Search/1D Arrays/09.Search_in_rotated_sorted_array.cpp"
+  },
+  "narrative": {
+    "title": "Locating a Cassette in a Wrapped Carousel",
+    "scenario": "A carousel of tape cassettes is arranged in ascending order, but the whole ring was advanced by an unknown number of slots, so the sequence reads like a shifted ascending run. The retrieval arm must still find one cassette in a handful of probes. Either identify the requested cassette's slot or declare it absent.",
+    "inputFormat": "An array nums of n distinct integers, sorted ascending then rotated at an unknown pivot, and an integer target.",
+    "outputFormat": "The index of target in nums, or -1 when target is absent.",
+    "constraints": [
+      "1 <= n <= 5000",
+      "-10^4 <= nums[i] <= 10^4",
+      "All values in nums are unique",
+      "An O(log n) algorithm is required"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [4, 5, 6, 7, 0, 1, 2], "target": 0 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The wrap point sits between 7 and 0, and probing halves that still respect order locates 0 at index 4."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [4, 5, 6, 7, 0, 1, 2], "target": 3 },
+      "expected": -1,
+      "isPublic": true,
+      "explanation": "Neither wrapped half can contain 3, so the search exhausts its space and reports -1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1], "target": 1 },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def search(self, nums: list[int], target: int) -> int:\n        # TODO: find target in the wrapped ascending ring, or -1.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        // TODO: find target in the wrapped ascending ring, or -1.\n    }\n};",
+    "java": "class Solution {\n    public int search(int[] nums, int target) {\n        // TODO: find target in the wrapped ascending ring, or -1.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "rotated-array", "half-sortedness-test", "search-in-rotated-sorted-array"],
+    "hintLevels": [
+      "Level 1: Splitting a wrapped ring at any point always leaves at least one side as a clean ascending run.",
+      "Level 2: Identify which side of the probe is the sorted run, then decide from the target's bounds whether it can live in that run or must be in the other half.",
+      "Level 3: The inclusive equality at the probe and the closed range checks against the sorted run's end values are what stop the search from discarding the target's half."
+    ]
+  }
+}

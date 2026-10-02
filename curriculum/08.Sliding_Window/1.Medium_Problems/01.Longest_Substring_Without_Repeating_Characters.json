@@ -1,0 +1,60 @@
+{
+  "id": "longest-substring-without-repeating-characters",
+  "index": 1,
+  "topic": "08.Sliding_Window",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Longest Substring Without Repeating Characters",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=longest+substring+without+repeating+characters",
+    "sourceFilePath": "08. Sliding Window/1. Medium Problems/01. Longest Substring Without Repeating Characters.cpp"
+  },
+  "narrative": {
+    "title": "The Radio Call-Sign Scanner",
+    "scenario": "An aviation radio logs a continuous stream of call-sign characters, and the tower software highlights the longest stretch in which no character appears twice — such stretches can be bundled into a single transmission packet without ambiguity. The scanner slides a frame over the log, retreating its left edge just far enough whenever a duplicate sneaks in, and reports the widest clean frame it ever saw.",
+    "inputFormat": "A string s of characters.",
+    "outputFormat": "Return the length of the longest substring in which every character occurs exactly once.",
+    "constraints": [
+      "0 <= s.length <= 5 * 10^4",
+      "s may contain letters, digits, symbols and spaces"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(m)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "abcabcbb" },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The cleanest stretch is \"abc\"; the fourth character repeats and forces a retreat."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "bbbbb" },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "Every pair repeats, so a single character is the widest unique frame."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "pwwkew" },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def length_of_longest_substring(s: str) -> int:\n    last_seen = {}   # char -> most recent index\n    start = 0        # left edge of the current unique window\n    best = 0\n    for i, ch in enumerate(s):\n        if ch in last_seen and last_seen[ch] >= start:\n            start = last_seen[ch] + 1\n        last_seen[ch] = i\n        best = max(best, i - start + 1)\n    return best",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint lengthOfLongestSubstring(const string& s) {\n    unordered_map<char, int> lastIndex;\n    int start = 0, ans = 0;\n    for (int i = 0; i < (int)s.size(); ++i) {\n        auto it = lastIndex.find(s[i]);\n        if (it != lastIndex.end() && it->second >= start)\n            start = it->second + 1;\n        lastIndex[s[i]] = i;\n        ans = max(ans, i - start + 1);\n    }\n    return ans;\n}",
+    "java": "import java.util.HashMap;\nimport java.util.Map;\n\nclass Solution {\n    public int lengthOfLongestSubstring(String s) {\n        Map<Character, Integer> lastIndex = new HashMap<>();\n        int start = 0, best = 0;\n        for (int i = 0; i < s.length(); ++i) {\n            char ch = s.charAt(i);\n            Integer prev = lastIndex.get(ch);\n            if (prev != null && prev >= start) start = prev + 1;\n            lastIndex.put(ch, i);\n            best = Math.max(best, i - start + 1);\n        }\n        return best;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["sliding-window", "string", "unique-window", "longest-substring-without-repeating-characters"],
+    "hintLevels": [
+      "Level 1: A window with duplicates anywhere is disqualified — keep the invariant that the frame is always clean.",
+      "Level 2: Remember each character's latest position; a repeat jumps the left edge past its previous sighting.",
+      "Level 3: Only move the left edge forward (never backward) — the jump target may already be behind the current start."
+    ]
+  }
+}

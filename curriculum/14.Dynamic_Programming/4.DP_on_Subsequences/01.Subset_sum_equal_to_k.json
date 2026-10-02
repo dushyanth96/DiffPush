@@ -1,0 +1,61 @@
+{
+  "id": "subset-sum-equal-to-k",
+  "index": 1,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Subset Sum Equal to K",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=subset+sum+equal+to+k",
+    "sourceFilePath": "14. Dynamic Programming/4. DP on Subsequences/01. Subset sum equal to k.cpp"
+  },
+  "narrative": {
+    "title": "The Cargo Bay Manifest Check",
+    "scenario": "A freight loader must prove that some combination of crates in a bay adds up to exactly the customs-declared weight k — no more, no less. Crates are indivisible, and not every declared weight is reachable. The audit bot scans all inclusion patterns and answers a single yes-or-no question for each manifest.",
+    "inputFormat": "An integer n, an array arr of n non-negative integers, and a target k.",
+    "outputFormat": "Return true when some subset of arr sums to exactly k, otherwise false.",
+    "constraints": [
+      "1 <= n <= 200",
+      "0 <= arr[i] <= 10^3",
+      "0 <= k <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*k)",
+    "optimalSpace": "O(k)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 6, "arr": [3, 34, 4, 12, 5, 2], "k": 9 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The subset 4 + 3 + 2 hits 9 exactly."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3, "arr": [1, 2, 3], "k": 4 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "1 + 3 = 4."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 2, "arr": [2, 4], "k": 5 },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, arr, k):\n        # Return True if some subset of arr sums to exactly k.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return true if some subset of arr sums to exactly k.\n    bool solve(int n, std::vector<int>& arr, int k);\n};",
+    "java": "class Solution {\n    // Return true if some subset of arr sums to exactly k.\n    public boolean solve(int n, int[] arr, int k) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "subsequences", "subset-sum", "take-or-skip"],
+    "hintLevels": [
+      "Level 1: For each crate the loader decides take it (k shrinks) or leave it (k unchanged).",
+      "Level 2: reachable[i][j] = reachable[i-1][j] or (arr[i] <= j and reachable[i-1][j-arr[i]]), with reachable[*][0] = true.",
+      "Level 3: A single boolean row sweeps left-to-right per item; watch the arr[i] == 0 case at the boundary."
+    ]
+  }
+}

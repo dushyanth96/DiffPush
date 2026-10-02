@@ -1,0 +1,60 @@
+{
+  "id": "merge-overlapping-subinterval",
+  "index": 7,
+  "topic": "01.Arrays",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Merge overlapping subinterval",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Merge%20overlapping%20subinterval",
+    "sourceFilePath": "01.Arrays/3.Hard/07.Merge_overlapping_subinterval.cpp"
+  },
+  "narrative": {
+    "title": "Consolidating Overlapping Maintenance Windows",
+    "scenario": "A datacenter scheduler collected maintenance bookings as start and end times from several teams, so the list is unsorted and the windows may touch or overlap. Before publishing downtime, overlapping windows have to be collapsed into the smallest set of disjoint windows that still covers every booked minute.",
+    "inputFormat": "An array intervals where intervals[i] = [start_i, end_i] with start_i <= end_i.",
+    "outputFormat": "A list of non-overlapping intervals with start <= end, sorted by start, covering exactly the minutes of the input intervals.",
+    "constraints": [
+      "1 <= n <= 10^4",
+      "0 <= start_i <= end_i <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(n) for the merged output"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "intervals": [[1, 3], [2, 6], [8, 10], [15, 18]] },
+      "expected": [[1, 6], [8, 10], [15, 18]],
+      "isPublic": true,
+      "explanation": "The first two windows overlap and collapse into [1,6], while the later windows stay separate."
+    },
+    {
+      "id": "tc-2",
+      "input": { "intervals": [[1, 4], [4, 5]] },
+      "expected": [[1, 5]],
+      "isPublic": true,
+      "explanation": "Windows that merely touch at minute 4 are treated as connected and fuse into a single window."
+    },
+    {
+      "id": "tc-3",
+      "input": { "intervals": [[1, 4], [0, 4]] },
+      "expected": [[0, 4]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def merge(self, intervals: list[list[int]]) -> list[list[int]]:\n        # TODO: collapse overlapping windows into disjoint windows.\n        pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> merge(vector<vector<int>>& intervals) {\n        // TODO: collapse overlapping windows into disjoint windows.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int[][] merge(int[][] intervals) {\n        // TODO: collapse overlapping windows into disjoint windows.\n        return new int[0][0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "sorting", "interval-merging", "greedy"],
+    "hintLevels": [
+      "Level 1: Once the bookings are ordered by start time, any window that can be absorbed always sits next to the window already being built.",
+      "Level 2: Sort by start, then walk the list keeping the last merged window: if the next start is not past the current end the two windows fuse, otherwise open a new merged window.",
+      "Level 3: Fusing must extend the end to the larger of the two ends, since a contained window has a shorter end than the window it joins; equality of start and end still counts as overlapping."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "longest-increasing-subsequence",
+  "index": 1,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Longest Increasing Subsequence",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=longest+increasing+subsequence",
+    "sourceFilePath": "14. Dynamic Programming/7. DP on LIS/01. Longest Increasing Subsequence.cpp"
+  },
+  "narrative": {
+    "title": "The Relay Handoff Streak",
+    "scenario": "A logistics relay passes parcels through n stations, and station i only accepts a parcel whose priority tag is strictly higher than the one stamped at the previous stop. The route planner wants the longest possible chain of handoffs for a given tag sequence. Tags can be visited out of physical order — only the relative ranking matters.",
+    "inputFormat": "An array nums of n integers.",
+    "outputFormat": "Return the length of the longest strictly increasing subsequence of nums.",
+    "constraints": [
+      "1 <= n <= 2500",
+      "-10^4 <= nums[i] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [10, 9, 2, 5, 3, 7, 101, 18] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "2, 3, 7, 18 (or 2, 5, 7, 101) — four strictly rising tags."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [0, 1, 0, 3, 2, 3] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "0, 1, 2, 3 uses both zeros correctly — one per rising step."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [7, 7, 7, 7] },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, nums):\n        # Return the length of the longest strictly increasing subsequence.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the length of the longest strictly increasing subsequence.\n    int solve(std::vector<int>& nums);\n};",
+    "java": "class Solution {\n    // Return the length of the longest strictly increasing subsequence.\n    public int solve(int[] nums) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "lis", "subsequences"],
+    "hintLevels": [
+      "Level 1: For every element ask: how long is the best rising chain that ends right here?",
+      "Level 2: dp[i] = 1 + max(dp[prev]) over all prev with nums[prev] < nums[i]; answer the table maximum.",
+      "Level 3: The patience-sorting trick keeps a sorted list of chain tails and binary-searches each tag for O(n log n)."
+    ]
+  }
+}

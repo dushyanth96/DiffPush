@@ -1,0 +1,61 @@
+{
+  "id": "aggresive-cows",
+  "index": 7,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Aggresive cows",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Aggresive%20cows",
+    "sourceFilePath": "02.Binary Search/In Search Space/08.Aggresive_cows.cpp"
+  },
+  "narrative": {
+    "title": "Spreading Calibration Probes Along a Rail",
+    "scenario": "A QA rig places m sensor probes on slots fixed along a straight rail so that the two closest probes end up as far apart as possible - closer spacing causes interference. Slots are given in arbitrary order. Choose the placement that maximizes that minimum spacing and report the spacing achieved.",
+    "inputFormat": "An array position of n slot coordinates and an integer m, the number of probes to place.",
+    "outputFormat": "The largest possible value of the minimum distance between any two probes.",
+    "constraints": [
+      "2 <= n <= 10^5",
+      "2 <= m <= n",
+      "0 <= position[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n) (sorting) plus O(n log D) for the search over distances",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "position": [1, 2, 3, 4, 7], "m": 3 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Probes at slots 1, 4 and 7 space every pair at least 3 apart, and no placement beats that."
+    },
+    {
+      "id": "tc-2",
+      "input": { "position": [1, 2, 4, 8, 9], "m": 3 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Placing at 1, 4 and 8 keeps the tightest pair 3 apart; demanding 4 strands the third probe."
+    },
+    {
+      "id": "tc-3",
+      "input": { "position": [1, 2], "m": 2 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def maxDistance(self, position: list[int], m: int) -> int:\n        # TODO: return the largest achievable minimum spacing.\n        pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxDistance(vector<int>& position, int m) {\n        // TODO: return the largest achievable minimum spacing.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int maxDistance(int[] position, int m) {\n        // TODO: return the largest achievable minimum spacing.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "answer-space", "maximize-minimum", "greedy-placement", "aggresive-cows"],
+    "hintLevels": [
+      "Level 1: The question 'can m probes fit with at least d spacing' gets harder as d grows, which is the monotonic shape to exploit.",
+      "Level 2: Sort the slots, then for a candidate spacing greedily place probes left to right, each at the first slot at least d beyond the last placement.",
+      "Level 3: The search runs from 1 up to the span between the extreme slots, and feasibility should push the bound upward on success because a larger spacing may still fit."
+    ]
+  }
+}

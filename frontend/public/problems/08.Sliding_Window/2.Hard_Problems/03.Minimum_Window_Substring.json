@@ -1,0 +1,61 @@
+{
+  "id": "minimum-window-substring",
+  "index": 3,
+  "topic": "08.Sliding_Window",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Minimum Window Substring",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=minimum+window+substring",
+    "sourceFilePath": "08. Sliding Window/2. Hard Problems/03. Minimum Window Substring.cpp"
+  },
+  "narrative": {
+    "title": "The Supply Chain Order Assembler",
+    "scenario": "A fulfillment scanner reads one long stream of crate codes and must locate the shortest contiguous stretch that contains every part code on today's pick list — counting multiplicity, so a part demanded twice must appear twice. The scanner slides a frame over the stream, records the first complete covering stretch, then keeps tightening from the left as long as coverage holds, tracking the shortest frame ever seen.",
+    "inputFormat": "Two strings: s (the crate-code stream) and t (the pick list).",
+    "outputFormat": "Return the shortest substring of s covering every character of t with multiplicity, or an empty string if none exists.",
+    "constraints": [
+      "1 <= s.length, t.length <= 10^5",
+      "s and t consist of uppercase and lowercase English letters",
+      "The answer is guaranteed to be unique when it exists"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m + n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "ADOBECODEBANC", "t": "ABC" },
+      "expected": "BANC",
+      "isPublic": true,
+      "explanation": "The tail \"BANC\" is the shortest stretch holding A, B and C simultaneously."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "a", "t": "a" },
+      "expected": "a",
+      "isPublic": true,
+      "explanation": "The single character covers the demand exactly."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "aa", "t": "aa" },
+      "expected": "aa",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def min_window(s: str, t: str) -> str:\n    need = {}\n    for ch in t:\n        need[ch] = need.get(ch, 0) + 1\n    missing = len(need)   # distinct letters still lacking full coverage\n    start = 0\n    best_len = len(s) + 1\n    best_start = 0\n    for i, ch in enumerate(s):\n        need[ch] = need.get(ch, 0) - 1\n        if need[ch] == 0:\n            missing -= 1\n        while missing == 0:\n            if i - start + 1 < best_len:\n                best_len = i - start + 1\n                best_start = start\n            need[s[start]] += 1\n            if need[s[start]] > 0:\n                missing += 1\n            start += 1\n    return \"\" if best_len > len(s) else s[best_start:best_start + best_len]",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstring minWindow(string s, string t) {\n    unordered_map<char, int> need;\n    for (char ch : t) ++need[ch];\n    int missing = need.size();\n    int start = 0, bestLen = INT_MAX, bestStart = 0;\n    for (int i = 0; i < (int)s.size(); ++i) {\n        if (--need[s[i]] == 0) --missing;\n        while (missing == 0) {\n            if (i - start + 1 < bestLen) {\n                bestLen = i - start + 1;\n                bestStart = start;\n            }\n            if (++need[s[start]] > 0) ++missing;\n            ++start;\n        }\n    }\n    return bestLen == INT_MAX ? \"\" : s.substr(bestStart, bestLen);\n}",
+    "java": "import java.util.HashMap;\nimport java.util.Map;\n\nclass Solution {\n    public String minWindow(String s, String t) {\n        Map<Character, Integer> need = new HashMap<>();\n        for (char ch : t.toCharArray()) need.merge(ch, 1, Integer::sum);\n        int missing = need.size();\n        int start = 0, bestLen = Integer.MAX_VALUE, bestStart = 0;\n        for (int i = 0; i < s.length(); ++i) {\n            char ch = s.charAt(i);\n            if (need.merge(ch, -1, Integer::sum) == 0) --missing;\n            while (missing == 0) {\n                if (i - start + 1 < bestLen) {\n                    bestLen = i - start + 1;\n                    bestStart = start;\n                }\n                char left = s.charAt(start++);\n                if (need.merge(left, 1, Integer::sum) > 0) ++missing;\n            }\n        }\n        return bestLen == Integer.MAX_VALUE ? \"\" : s.substring(bestStart, bestStart + bestLen);\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["sliding-window", "string", "coverage-window", "minimum-window-substring"],
+    "hintLevels": [
+      "Level 1: Track how many distinct letters still lack their full quota — coverage is binary per letter.",
+      "Level 2: Expand until every letter's deficit hits zero, then shrink from the left while coverage holds.",
+      "Level 3: Record the window right before each shrink; the map can go negative for surplus letters, which is fine."
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "id": "bellman-ford-algorithm",
+  "index": 8,
+  "topic": "13.Graphs",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Bellman-Ford Algorithm — Negative Weights and Cycles",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=bellman+ford",
+    "sourceFilePath": "13. Graphs/4. Shortest Path Problems/08. Bellman Ford Algorithm.cpp"
+  },
+  "narrative": {
+    "title": "Auditing Rebate Loops in the Settlement Grid",
+    "scenario": "A settlement grid routes money between accounts over channels that may carry rebates — negative costs. The finance desk must know each account's cheapest receivable total from the clearing house, but a loop of rebates that keeps shrinking its own payout poisons the books. Bellman-Ford answers both: the cheapest totals, or a hard alarm if such a rebate loop exists.",
+    "inputFormat": "An integer V (vertices 0..V-1), an edge list edges where [u, v, w] is a one-way channel u -> v with cost w (possibly negative), and the source S.",
+    "outputFormat": "Return the array of shortest distances from S, or the single-element array [-1] if a negative cycle is reachable from S.",
+    "constraints": [
+      "1 <= V <= 10^3",
+      "1 <= edges.length <= 5 * 10^3",
+      "-10^3 <= w <= 10^3",
+      "0 <= S < V"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(V * E)",
+    "optimalSpace": "O(V)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "V": 3, "S": 2, "edges": [[0, 1, 5], [1, 0, 3], [1, 2, -1], [2, 0, 1]] },
+      "expected": [1, 6, 0],
+      "isPublic": true,
+      "explanation": "Node 0 is reached by 2 -> 0 costing 1; node 1 rides through 0 for 6."
+    },
+    {
+      "id": "tc-2",
+      "input": { "V": 2, "S": 0, "edges": [[0, 1, 4]] },
+      "expected": [0, 4],
+      "isPublic": true,
+      "explanation": "A single channel settles both accounts immediately."
+    },
+    {
+      "id": "tc-3",
+      "input": { "V": 3, "S": 0, "edges": [[0, 1, 2], [1, 2, -5], [2, 0, -1]] },
+      "expected": [-1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, V, edges, S):\n        # Return shortest distances, or [-1] if a negative cycle is reachable.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return shortest distances, or {-1} if a negative cycle is reachable.\n    std::vector<int> solve(int V, std::vector<std::vector<int>>& edges, int S);\n};",
+    "java": "class Solution {\n    // Return shortest distances, or {-1} if a negative cycle is reachable.\n    public int[] solve(int V, int[][] edges, int S) {\n        // TODO\n        return new int[]{-1};\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "bellman-ford", "negative-weights", "cycle-detection", "bellman-ford-algorithm"],
+    "hintLevels": [
+      "Level 1: Repeatedly let every channel try to improve every account's total — patience replaces the priority queue.",
+      "Level 2: V-1 full relaxation sweeps suffice because a shortest path visits at most V-1 channels.",
+      "Level 3: A sweep V that still improves some distance certifies a shrinking loop — emit the alarm array."
+    ]
+  }
+}

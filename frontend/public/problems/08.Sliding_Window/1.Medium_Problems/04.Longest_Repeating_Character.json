@@ -1,0 +1,61 @@
+{
+  "id": "longest-repeating-character",
+  "index": 4,
+  "topic": "08.Sliding_Window",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Longest Repeating Character Replacement",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=longest+repeating+character+replacement",
+    "sourceFilePath": "08. Sliding Window/1. Medium Problems/04. Longest Repeating Character.cpp"
+  },
+  "narrative": {
+    "title": "The Mural Touch-Up Painter",
+    "scenario": "A restorer inspects a long mural strip of colored tiles, each already painted one uppercase-coded color, and carries k cans of touch-up paint — each can repaints one tile into any color. The studio asks for the longest solid single-color band the restorer can produce. The painter evaluates a frame by asking one question: can the minority tiles inside it all be repainted within budget?",
+    "inputFormat": "A string s of uppercase English letters and an integer k, the repaint budget.",
+    "outputFormat": "Return the length of the longest single-letter substring achievable with at most k replacements.",
+    "constraints": [
+      "1 <= s.length <= 10^5",
+      "s consists of uppercase English letters",
+      "0 <= k <= s.length"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(26)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "ABAB", "k": 2 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "Two repaints turn either letter into the other across the whole strip."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "AABABBA", "k": 1 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The best band is \"ABBA\"-shaped: one repaint makes it four identical letters."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "AAAA", "k": 0 },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def character_replacement(s: str, k: int) -> int:\n    count = {}          # letter -> frequency in window\n    start = top = best = 0   # top = highest single-letter frequency seen\n    for i, ch in enumerate(s):\n        count[ch] = count.get(ch, 0) + 1\n        top = max(top, count[ch])\n        while (i - start + 1) - top > k:\n            count[s[start]] -= 1\n            start += 1\n        best = max(best, i - start + 1)\n    return best",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint characterReplacement(string s, int k) {\n    unordered_map<char, int> count;\n    int start = 0, top = 0, ans = 0;\n    for (int i = 0; i < (int)s.size(); ++i) {\n        top = max(top, ++count[s[i]]);\n        while ((i - start + 1) - top > k) {\n            --count[s[start]];\n            ++start;\n        }\n        ans = max(ans, i - start + 1);\n    }\n    return ans;\n}",
+    "java": "import java.util.HashMap;\nimport java.util.Map;\n\nclass Solution {\n    public int characterReplacement(String s, int k) {\n        Map<Character, Integer> count = new HashMap<>();\n        int start = 0, top = 0, best = 0;\n        for (int i = 0; i < s.length(); ++i) {\n            char ch = s.charAt(i);\n            count.merge(ch, 1, Integer::sum);\n            top = Math.max(top, count.get(ch));\n            while ((i - start + 1) - top > k) {\n                count.merge(s.charAt(start), -1, Integer::sum);\n                ++start;\n            }\n            best = Math.max(best, i - start + 1);\n        }\n        return best;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["sliding-window", "string", "frequency-window", "longest-repeating-character"],
+    "hintLevels": [
+      "Level 1: A window is upgradeable when (length - most frequent letter count) fits in k repaints.",
+      "Level 2: Track the dominant letter's frequency; the frame is valid while the minorities stay within budget.",
+      "Level 3: The dominant frequency may go stale after evictions, but the answer window only ever grows — staleness never overestimates."
+    ]
+  }
+}

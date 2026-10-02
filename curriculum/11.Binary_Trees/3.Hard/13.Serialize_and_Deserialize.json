@@ -1,0 +1,86 @@
+{
+  "id": "serialize-and-deserialize-binary-tree",
+  "index": 13,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Serialize and Deserialize Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=serialize+and+deserialize+binary+tree",
+    "sourceFilePath": "11. Binary Trees/3. Hard/14. Serialize and Deserialize.cpp"
+  },
+  "narrative": {
+    "title": "The Blueprint Wire Format for Relay Towers",
+    "scenario": "A telecom ops team must snapshot the live relay-tower tree and ship it to a DR site that rebuilds it byte-for-byte. The wire format is theirs to choose — the contract only demands that every tower, gap, and branch position survives the trip: encode the structure into one string, and later decode that string back into the identical tree.",
+    "inputFormat": "A binary tree as a level-order array (null marks a missing child).",
+    "outputFormat": "Return the preorder serialization — comma-separated node values with the literal token N for every missing child, e.g. '1,2,N,N,3,N,N'.",
+    "constraints": [
+      "0 <= number of nodes <= 10^5",
+      "-10^4 <= node value <= 10^4",
+      "The format must round-trip: deserialize(serialize(tree)) reproduces the exact tree"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          null,
+          6
+        ]
+      },
+      "expected": "1,2,4,N,N,5,N,N,3,N,6,N,N",
+      "isPublic": true,
+      "explanation": "Preorder walks 1, its full left wing 2-4-5 with null bookends, then 3 and its right child 6."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          null,
+          2,
+          3
+        ]
+      },
+      "expected": "1,N,2,3,N,N,N",
+      "isPublic": true,
+      "explanation": "The root's missing left child is recorded as N before the right spine 2-3 is unrolled."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": []
+      },
+      "expected": "N",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def serialize(self, root):\n        # Return the preorder, comma-separated wire string ('N' for null).\n        pass\n\n    def deserialize(self, data):\n        # Rebuild the tree from the wire string; return the root.\n        pass",
+    "cpp": "#include <string>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the preorder, comma-separated wire string ('N' for null).\n    std::string serialize(TreeNode* root);\n    // Rebuild the tree from the wire string; return the root.\n    TreeNode* deserialize(const std::string& data);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the preorder, comma-separated wire string ('N' for null).\n    public String serialize(TreeNode root) {\n        // TODO\n        return \"\";\n    }\n\n    // Rebuild the tree from the wire string; return the root.\n    public TreeNode deserialize(String data) {\n        // TODO\n        return null;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "serialization",
+      "design",
+      "serialize-and-deserialize-binary-tree"
+    ],
+    "hintLevels": [
+      "Level 1: Nulls carry structure — a format that records every missing child can be rebuilt without guessing.",
+      "Level 2: Preorder plus explicit null tokens is self-delimiting: each token completes exactly one subtree slot.",
+      "Level 3: Deserialize by consuming tokens in the same order serialization produced them — recursion mirrors recursion."
+    ]
+  }
+}

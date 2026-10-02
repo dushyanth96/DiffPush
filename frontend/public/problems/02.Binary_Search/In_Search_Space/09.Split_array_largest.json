@@ -1,0 +1,61 @@
+{
+  "id": "split-array-largest",
+  "index": 9,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Split array largest",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Split%20array%20largest",
+    "sourceFilePath": "02.Binary Search/In Search Space/10.Split_array_largest.cpp"
+  },
+  "narrative": {
+    "title": "Sharding an Ordered Write Log Under a Latency Cap",
+    "scenario": "An ordered write log must be cut into at most k shards, each shard processed by one worker whose latency tracks the shard's total load. Cuts respect log order, and the slowest worker determines the pipeline's latency. Split the log so the heaviest shard is as light as possible and report that load.",
+    "inputFormat": "An array nums of n non-negative integers and an integer k, the maximum number of shards.",
+    "outputFormat": "The minimized largest shard sum over all valid splits into at most k non-empty contiguous shards.",
+    "constraints": [
+      "1 <= nums.length <= 1000",
+      "0 <= nums[i] <= 10^6",
+      "1 <= k <= min(50, nums.length)"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log S), where S is the total sum",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [7, 2, 5, 10, 8], "k": 2 },
+      "expected": 18,
+      "isPublic": true,
+      "explanation": "Cutting after the third entry balances 14 against 18, and no single cut keeps both shards at or below anything smaller."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1, 2, 3, 4, 5], "k": 2 },
+      "expected": 9,
+      "isPublic": true,
+      "explanation": "The split 1+2+3 against 4+5 caps the heavier shard at 9."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1], "k": 1 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def splitArray(self, nums: list[int], k: int) -> int:\n        # TODO: return the minimized largest shard sum.\n        pass",
+    "cpp": "#include <vector>\n#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    int splitArray(vector<int>& nums, int k) {\n        // TODO: return the minimized largest shard sum.\n    }\n};",
+    "java": "class Solution {\n    public int splitArray(int[] nums, int k) {\n        // TODO: return the minimized largest shard sum.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "answer-space", "minimize-maximum", "contiguous-partition", "split-array-largest"],
+    "hintLevels": [
+      "Level 1: This is the load-balancing pattern - search the answer (the heaviest shard) rather than the split itself.",
+      "Level 2: A candidate cap is feasible when a greedy left-to-right fill needs at most k shards; search caps between the largest entry and the total sum.",
+      "Level 3: Greedy filling must open a new shard the moment the running sum would exceed the cap, and allowing fewer shards than k is fine because extra cuts can always be added without raising any shard."
+    ]
+  }
+}

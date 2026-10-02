@@ -1,0 +1,61 @@
+{
+  "id": "rotate-array-left-right-by-k-places",
+  "index": 6,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Rotate array left&right by k places",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Rotate%20array%20left%26right%20by%20k%20places",
+    "sourceFilePath": "01.Arrays/1.Easy/06.Rotate_array_leftright_by_k_places.cpp"
+  },
+  "narrative": {
+    "title": "Cyclic Duty Roster",
+    "scenario": "An on-call roster is stored as an ordered list of engineers, and every k weeks the schedule is cycled so later engineers take the earliest shifts. Ops needs both directions available: one helper cycles the roster to the right, the other to the left. Both must rearrange the roster in place without a scratch copy.",
+    "inputFormat": "An array arr of n integer ids followed by a non-negative integer k, the number of positions to cycle.",
+    "outputFormat": "The array cycled k positions in the requested direction; a right rotation by k moves the last k entries to the front.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "0 <= k <= 10^5",
+      "-10^9 <= arr[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 2, 3, 4, 5, 6, 7], "k": 3, "direction": "right" },
+      "expected": [5, 6, 7, 1, 2, 3, 4],
+      "isPublic": true,
+      "explanation": "Cycling right three times lifts the tail block 5,6,7 to the front while the rest keeps its order."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [-1, -100, 3, 99], "k": 2, "direction": "right" },
+      "expected": [3, 99, -1, -100],
+      "isPublic": true,
+      "explanation": "Two right shifts move the last pair to the front, and ordering inside each block is preserved."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1, 2], "k": 3, "direction": "right" },
+      "expected": [2, 1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def rightRotate(self, arr: list[int], n: int, k: int) -> list[int]:\n        # TODO: cycle the roster k places to the right, in place.\n        pass\n\n    def leftRotate(self, arr: list[int], n: int, k: int) -> list[int]:\n        # TODO: cycle the roster k places to the left, in place.\n        pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    void rightRotate(vector<int>& arr, int n, int k) {\n        // TODO: cycle the roster k places to the right, in place.\n    }\n\n    void leftRotate(vector<int>& arr, int n, int k) {\n        // TODO: cycle the roster k places to the left, in place.\n    }\n};",
+    "java": "class Solution {\n    public void rightRotate(int[] arr, int n, int k) {\n        // TODO: cycle the roster k places to the right, in place.\n    }\n\n    public void leftRotate(int[] arr, int n, int k) {\n        // TODO: cycle the roster k places to the left, in place.\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "in-place", "reversal-technique", "rotation-by-k"],
+    "hintLevels": [
+      "Level 1: Shifting one slot at a time costs k full passes; try to reach the answer with a constant number of passes instead.",
+      "Level 2: Splitting the roster into two blocks and reversing each block separately, then reversing the whole roster, lands exactly on the rotated order.",
+      "Level 3: k can exceed n, so reduce it modulo n first; otherwise the block split falls outside the array."
+    ]
+  }
+}

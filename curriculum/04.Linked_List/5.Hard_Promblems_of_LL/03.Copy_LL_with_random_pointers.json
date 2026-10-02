@@ -1,0 +1,61 @@
+{
+  "id": "copy-ll-with-random-pointers",
+  "index": 3,
+  "topic": "04.Linked_List",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Copy LL with random pointers",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Copy%20linked%20list%20with%20random%20pointers",
+    "sourceFilePath": "04.Linked List/5.Hard Promblems of LL/03.Copy_LL_with_random_pointers.cpp"
+  },
+  "narrative": {
+    "title": "Cloning the Relay Team's Cross-Wired Call Sheet",
+    "scenario": "A relay network stores each runner's order plus a private walkie channel that can jump to any runner — or nobody at all. The operations team needs an entirely separate clone of the network: same runner values, same handoff order, and each clone's jump channel pointing at the equivalent clone runner, never at an original. In a single weaving pass, each new runner is stitched in right behind their original; the jump channels are copied by reading the neighbour of whatever the original points at; then the weave is split back into two clean, independent chains.",
+    "inputFormat": "An array pairs of n entries [value, random_index], where random_index is the 0-based position of the random target or -1 for null.",
+    "outputFormat": "The deep copy expressed the same way — n pairs [value, random_index] over brand-new nodes.",
+    "constraints": [
+      "0 <= n <= 10^4",
+      "-10^9 <= value <= 10^9",
+      "random_index is -1 or an index in [0, n-1]"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n) for the n new nodes (the interleaving itself uses no map)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "pairs": [[7, -1], [13, 0], [11, 4], [10, 2], [1, 0]] },
+      "expected": [[7, -1], [13, 0], [11, 4], [10, 2], [1, 0]],
+      "isPublic": true,
+      "explanation": "Every jump channel is reproduced inside the clone — e.g. the second runner's channel re-points at the clone of runner 0, never at the original."
+    },
+    {
+      "id": "tc-2",
+      "input": { "pairs": [[1, 1], [2, 1]] },
+      "expected": [[1, 1], [2, 1]],
+      "isPublic": true,
+      "explanation": "Both channels land on the same (second) runner, and the second runner's channel loops back to itself."
+    },
+    {
+      "id": "tc-3",
+      "input": { "pairs": [[3, -1], [5, -1]] },
+      "expected": [[3, -1], [5, -1]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def copyRandomList(self, pairs: list[list[int]]) -> list[list[int]]:\n        # TODO: deep-copy the chain so random indices resolve inside the copy.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int val;\n    Node *next, *random;\n    Node(int v) : val(v), next(nullptr), random(nullptr) {}\n};\n\nclass Solution {\npublic:\n    Node* copyRandomList(Node* head) {\n        // TODO: interleave clones after originals, copy randoms, then split.\n    }\n};",
+    "java": "class Solution {\n    public int[][] copyRandomList(int[][] pairs) {\n        // TODO: deep-copy the chain so random indices resolve inside the copy.\n        return new int[0][];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "deep-copy", "hashing-alternative", "copy-ll-with-random-pointers"],
+    "hintLevels": [
+      "Level 1: Two passes beat one — first invent the clone runners, then figure out where their channels point.",
+      "Level 2: Stitch each clone directly after its original; a clone's channel then mirrors its original's channel by stepping one node forward from the original's target.",
+      "Level 3: Detaching the weave needs care: un-zip alternate nodes so originals re-form their own chain while clones re-form theirs — losing either link corrupts both lists."
+    ]
+  }
+}

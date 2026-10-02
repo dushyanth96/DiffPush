@@ -1,0 +1,61 @@
+{
+  "id": "minimum-platforms",
+  "index": 4,
+  "topic": "10.Greedy_Approach",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Minimum Platforms",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=minimum+number+of+platforms",
+    "sourceFilePath": "10. Greedy Approach/2. Medium/04. Minimum Platforms.cpp"
+  },
+  "narrative": {
+    "title": "The Loading Dock Scheduling Audit",
+    "scenario": "A distribution hub logs delivery truck arrivals and departures on one operating day, all times in 24-hour codes. A dock frees up only strictly after a truck pulls out — a truck arriving at the exact moment another departs needs its own dock. The yard master wants the smallest dock count that keeps every truck moving without waiting.",
+    "inputFormat": "Two integer arrays: arr (arrival times) and dep (departure times), as HHMM codes.",
+    "outputFormat": "Return the minimum number of docks (platforms) required.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "0 <= arr[i] <= dep[i] <= 2359",
+      "A train (truck) arriving at time t cannot share a platform with one departing at t"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [900, 940, 950, 1100, 1500, 1800], "dep": [910, 1200, 1120, 1130, 1900, 2000] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Around 1100, three trucks are simultaneously on-site (950, 1100 arrivals against the 1200 departure)."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [900, 1100, 1235], "dep": [1000, 1200, 1240] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "Each truck departs before the next arrives, so one dock cycles through all three."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [1000, 1000], "dep": [1030, 1100] },
+      "expected": 2,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def find_platforms(arr, dep):\n    arr, dep = sorted(arr), sorted(dep)\n    i = j = occupied = needed = 0\n    while i < len(arr):\n        if arr[i] <= dep[j]:     # arrival before (or exactly at) a departure\n            occupied += 1\n            needed = max(needed, occupied)\n            i += 1\n        else:\n            occupied -= 1\n            j += 1\n    return needed",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint findPlatform(vector<int>& arr, vector<int>& dep) {\n    sort(arr.begin(), arr.end());\n    sort(dep.begin(), dep.end());\n    int i = 0, j = 0, occupied = 0, needed = 0;\n    while (i < (int)arr.size()) {\n        if (arr[i] <= dep[j]) {\n            ++occupied;\n            needed = max(needed, occupied);\n            ++i;\n        } else {\n            --occupied;\n            ++j;\n        }\n    }\n    return needed;\n}",
+    "java": "import java.util.Arrays;\n\nclass Solution {\n    public int findPlatform(int[] arr, int[] dep) {\n        Arrays.sort(arr);\n        Arrays.sort(dep);\n        int i = 0, j = 0, occupied = 0, needed = 0;\n        while (i < arr.length) {\n            if (arr[i] <= dep[j]) {\n                ++occupied;\n                needed = Math.max(needed, occupied);\n                ++i;\n            } else {\n                --occupied;\n                ++j;\n            }\n        }\n        return needed;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["greedy", "two-pointer", "sweep-line", "minimum-platforms"],
+    "hintLevels": [
+      "Level 1: Sort arrivals and departures independently, then walk them like a merge — the running count is dock occupancy.",
+      "Level 2: `<=` on arrival vs departure encodes the same-instant rule: equality forces a new dock.",
+      "Level 3: The peak of the occupancy trace is the answer; sorting decouples events from their trains."
+    ]
+  }
+}

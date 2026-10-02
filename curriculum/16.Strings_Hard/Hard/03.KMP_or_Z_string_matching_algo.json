@@ -1,0 +1,74 @@
+{
+  "id": "kmp-or-z-string-matching-algo",
+  "index": 3,
+  "topic": "16.Strings_Hard",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Find the Index of the First Occurrence in a String",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=find+the+index+of+the+first+occurrence+in+a+string",
+    "sourceFilePath": "16. Strings (Hard)/Hard/03. KMP or Z string matching algo.cpp"
+  },
+  "narrative": {
+    "title": "The Conveyor Tag Scanner",
+    "scenario": "A parcel line prints a long serial tape, and customs looks for one short tag code anywhere along it. The scanner must report where the tag first appears, or flag absence. Brute-force re-scanning stalls on adversarial tapes, so the reader uses a prefix-failure table to slide forward without re-checking matched characters.",
+    "inputFormat": "Two strings: haystack (the tape) and needle (the tag).",
+    "outputFormat": "Return the 0-based position where the tag first shows up on the tape, or -1 when the tape never contains it. An empty tag matches at position 0.",
+    "constraints": [
+      "0 <= len(haystack), len(needle) <= 5 * 10^4",
+      "strings consist of lowercase or uppercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m + n)",
+    "optimalSpace": "O(m)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "haystack": "sadbutsad",
+        "needle": "sad"
+      },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "The tag appears at index 0 (and again at 6); the first hit wins."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "haystack": "leetcode",
+        "needle": "leeto"
+      },
+      "expected": -1,
+      "isPublic": true,
+      "explanation": "The tag never shows up on the tape."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "haystack": "mississippi",
+        "needle": "issip"
+      },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, haystack, needle):\n        # Return the first index of needle in haystack, or -1.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the first index of needle in haystack, or -1.\n    int solve(std::string haystack, std::string needle);\n};",
+    "java": "class Solution {\n    // Return the first index of needle in haystack, or -1.\n    public int solve(String haystack, String needle) {\n        // TODO\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "strings",
+      "kmp",
+      "string-matching",
+      "lps-array"
+    ],
+    "hintLevels": [
+      "Level 1: On a mismatch, don't restart from scratch — reuse what the already-matched prefix tells you.",
+      "Level 2: Build the LPS table for the needle; it maps each position to the longest border to fall back to.",
+      "Level 3: The separator trick (needle + '$' + haystack) turns matching into one LPS scan: a border of length len(needle) is a hit."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "row-with-maximum-number-of-1-s",
+  "index": 1,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Row with maximum number of 1's",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Row%20with%20maximum%20number%20of%201%27s",
+    "sourceFilePath": "02.Binary Search/2D Arrays/1.Row_with_maximum_number_of_1's.cpp"
+  },
+  "narrative": {
+    "title": "The Busiest Lane on the Sorting Floor",
+    "scenario": "A parcel sorter feeds lanes with pass/fail flags, and each lane's flags arrive sorted - failures first, passes after. Supervision wants the first lane with the most passes to route rush parcels down it. Exploit the sorted flags to sweep the grid without rescanning every lane.",
+    "inputFormat": "An integer n, an integer m, and an n x m boolean matrix Arr where every row is sorted (0s before 1s).",
+    "outputFormat": "The 0-indexed number of the first row containing the most 1s, or -1 when the grid holds no 1s at all.",
+    "constraints": [
+      "1 <= n, m <= 100",
+      "0 <= Arr[i][j] <= 1",
+      "Each row is sorted in non-decreasing order"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n + m)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4, "m": 4, "Arr": [[0, 1, 1, 1], [0, 0, 1, 1], [1, 1, 1, 1], [0, 0, 0, 0]] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Lane 2 passes every parcel, four in total, the most on the floor."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 2, "m": 2, "Arr": [[0, 0], [1, 1]] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "Only the second lane passes anything, so it wins with two passes."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 2, "m": 2, "Arr": [[0, 0], [0, 0]] },
+      "expected": -1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def rowWithMax1s(self, arr: list[list[int]], n: int, m: int) -> int:\n        # TODO: return the first row index holding the most 1s, or -1.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int rowWithMax1s(vector<vector<int>> arr, int n, int m) {\n        // TODO: return the first row index holding the most 1s, or -1.\n    }\n};",
+    "java": "class Solution {\n    public int rowWithMax1s(int[][] arr, int n, int m) {\n        // TODO: return the first row index holding the most 1s, or -1.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "matrix", "staircase-sweep", "row-wise-sorted", "row-with-maximum-number-of-1-s"],
+    "hintLevels": [
+      "Level 1: Because every lane is sorted, the number of passes in a lane is just the distance from its first pass to the end.",
+      "Level 2: Start a column marker at the far right and sweep lanes top to bottom, stepping the marker left each time a lane beats the current best column.",
+      "Level 3: The marker only ever moves left, so the total work across all lanes is bounded by one pass down and one pass across; remember the no-passes-at-all case must report -1."
+    ]
+  }
+}

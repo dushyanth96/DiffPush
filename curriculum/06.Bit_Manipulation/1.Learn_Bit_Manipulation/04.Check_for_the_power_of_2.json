@@ -1,0 +1,59 @@
+{
+  "id": "check-for-the-power-of-2",
+  "index": 4,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Check for the power of 2",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Check%20for%20the%20power%20of%202",
+    "sourceFilePath": "06.Bit Manipulation/1. Learn Bit Manipulation/04.Check for the power of 2.cpp"
+  },
+  "narrative": {
+    "title": "Certifying the Cell Tower's Channel Count",
+    "scenario": "A telecom planner can only deploy tower clusters whose channel counts are exact powers of two, because the switching fabric splits and merges channels in halves. A cluster size qualifies precisely when its binary form carries a single 1 bit. Subtracting one from such a number flips that lone bit and all lower bits, so one AND against the original exposes any impostor.",
+    "inputFormat": "An integer n.",
+    "outputFormat": "true when n is a positive power of two, false otherwise.",
+    "constraints": [
+      "-2^31 <= n <= 2^31 - 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 1 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "2^0 = 1 carries a single set bit."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 16 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "16 is 10000 — one bit, four zeros, a clean 2^4."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 0 },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def isPowerOfTwo(self, n: int) -> bool:\n        # TODO: single set bit and positive — one AND decides.\n        pass",
+    "cpp": "#include <cstdint>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isPowerOfTwo(int n) {\n        // TODO: n > 0 and n & (n - 1) == 0.\n    }\n};",
+    "java": "class Solution {\n    public boolean isPowerOfTwo(int n) {\n        // TODO: single set bit and positive — one AND decides.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "power-of-two", "bitset-trick", "check-for-the-power-of-2"],
+    "hintLevels": [
+      "Level 1: A power of two is the only positive integer whose binary form shows exactly one 1.",
+      "Level 2: n & (n - 1) clears the lowest set bit; on a true power of two that leaves zero.",
+      "Level 3: Guard n > 0 first — zero ANDs to zero with everything, and negatives would sneak past otherwise."
+    ]
+  }
+}

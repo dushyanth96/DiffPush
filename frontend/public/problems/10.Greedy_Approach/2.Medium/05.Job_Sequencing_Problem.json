@@ -1,0 +1,61 @@
+{
+  "id": "job-sequencing-problem",
+  "index": 5,
+  "topic": "10.Greedy_Approach",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Job Sequencing Problem",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=job+sequencing+problem",
+    "sourceFilePath": "10. Greedy Approach/2. Medium/05. Job Sequencing Problem.cpp"
+  },
+  "narrative": {
+    "title": "The Print Shop Deadline Board",
+    "scenario": "A print shop takes single-slot commissions: each commission pays on completion and expires after its deadline slot. One commission runs per slot. The foreman ranks commissions by payout and slides each down the timeline, claiming the latest still-open slot at or before its deadline — the classic trick that keeps early slots free for tight-deadline work.",
+    "inputFormat": "A list of jobs, each [jobId, deadline, profit].",
+    "outputFormat": "Return [numberOfJobsDone, totalProfit] for the schedule that maximizes profit.",
+    "constraints": [
+      "1 <= number of jobs <= 10^5",
+      "1 <= deadline <= 100",
+      "1 <= profit <= 10^6"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n + n * maxDeadline)",
+    "optimalSpace": "O(maxDeadline)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "jobs": [[1, 4, 20], [2, 1, 10], [3, 1, 40], [4, 1, 30]] },
+      "expected": [2, 60],
+      "isPublic": true,
+      "explanation": "Jobs 1 and 3 fill the two useful slots for 20 + 40 = 60."
+    },
+    {
+      "id": "tc-2",
+      "input": { "jobs": [[1, 2, 100], [2, 1, 19], [3, 2, 27], [4, 1, 25], [5, 1, 15]] },
+      "expected": [2, 127],
+      "isPublic": true,
+      "explanation": "The 100-payout job takes slot 2, and the 27-payout job takes slot 1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "jobs": [[1, 1, 5]] },
+      "expected": [1, 5],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def job_sequencing(jobs):\n    # jobs: [jobId, deadline, profit]; schedule most profitable first\n    ordered = sorted(jobs, key=lambda j: j[2], reverse=True)\n    max_deadline = max(j[1] for j in jobs)\n    slot_used = [False] * (max_deadline + 1)\n    count = profit = 0\n    for _, dead, pay in ordered:\n        for slot in range(min(dead, max_deadline), 0, -1):\n            if not slot_used[slot]:\n                slot_used[slot] = True\n                count += 1\n                profit += pay\n                break\n    return [count, profit]",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> jobScheduling(vector<array<int, 3>>& jobs) {\n    // jobs[i] = {id, deadline, profit}\n    int maxDead = 0;\n    for (auto& j : jobs) maxDead = max(maxDead, j[1]);\n    sort(jobs.begin(), jobs.end(), [](auto& a, auto& b) { return a[2] > b[2]; });\n    vector<bool> used(maxDead + 1, false);\n    int count = 0, profit = 0;\n    for (auto& [id, dead, pay] : jobs) {\n        for (int slot = min(dead, maxDead); slot >= 1; --slot) {\n            if (!used[slot]) {\n                used[slot] = true;\n                ++count;\n                profit += pay;\n                break;\n            }\n        }\n    }\n    return {count, profit};\n}",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int[] jobSequencing(int[][] jobs) {  // jobs[i] = {id, deadline, profit}\n        int maxDead = 0;\n        for (int[] j : jobs) maxDead = Math.max(maxDead, j[1]);\n        Arrays.sort(jobs, (a, b) -> b[2] - a[2]);\n        boolean[] used = new boolean[maxDead + 1];\n        int count = 0, profit = 0;\n        for (int[] job : jobs) {\n            for (int slot = Math.min(job[1], maxDead); slot >= 1; --slot) {\n                if (!used[slot]) {\n                    used[slot] = true;\n                    ++count;\n                    profit += job[2];\n                    break;\n                }\n            }\n        }\n        return new int[]{count, profit};\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["greedy", "scheduling", "deadline-slots", "job-sequencing-problem"],
+    "hintLevels": [
+      "Level 1: Highest payouts first — but never at the cost of displacing a tighter deadline later.",
+      "Level 2: Claim the LATEST free slot at or before each job's deadline; earliest slots stay open for urgent work.",
+      "Level 3: A slot array makes the search explicit; a union-find over slots collapses it to near-linear."
+    ]
+  }
+}

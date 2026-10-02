@@ -1,0 +1,61 @@
+{
+  "id": "floyd-warshall-algorithm",
+  "index": 9,
+  "topic": "13.Graphs",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Floyd-Warshall — All-Pairs Shortest Distances",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=floyd+warshall",
+    "sourceFilePath": "13. Graphs/4. Shortest Path Problems/09. Floyd Warshall Algorithm.cpp"
+  },
+  "narrative": {
+    "title": "The Full Fare Chart Reconciliation",
+    "scenario": "A rail company stores its fare table as a square grid: cell (i, j) is the direct fare from platform i to platform j, and a blank (-1) means no direct train. The revenue team must upgrade the table into a true cheapest-fare chart — every pair, via any connections — leaving blanks only where no sequence of trains connects the pair at all.",
+    "inputFormat": "An n x n matrix where Matrix[i][j] is the direct edge weight from i to j, or -1 if no such edge exists.",
+    "outputFormat": "Return the updated matrix holding the shortest distance for every ordered pair, with -1 restored where no path exists.",
+    "constraints": [
+      "1 <= n <= 500",
+      "-1 <= Matrix[i][j] <= 10^8, where -1 denotes no edge",
+      "The graph is directed; Matrix[i][i] is 0"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^3)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "matrix": [[0, 25], [-1, 0]] },
+      "expected": [[0, 25], [-1, 0]],
+      "isPublic": true,
+      "explanation": "No connection improves any direct fare, and the blank stays blank."
+    },
+    {
+      "id": "tc-2",
+      "input": { "matrix": [[0, 3, -1], [-1, 0, 2], [1, -1, 0]] },
+      "expected": [[0, 3, 5], [3, 0, 2], [1, 4, 0]],
+      "isPublic": true,
+      "explanation": "Connections surface: 0->2 costs 5 via 1, 1->0 costs 3 via 2, and 2->1 costs 4 via 0."
+    },
+    {
+      "id": "tc-3",
+      "input": { "matrix": [[0, -1], [-1, 0]] },
+      "expected": [[0, -1], [-1, 0]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, matrix):\n        # Update the matrix in place to all-pairs shortest distances (-1 = no path).\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Update the matrix in place to all-pairs shortest distances (-1 = no path).\n    void solve(std::vector<std::vector<int>>& matrix);\n};",
+    "java": "class Solution {\n    // Update the matrix in place to all-pairs shortest distances (-1 = no path).\n    public void solve(int[][] matrix) {\n        // TODO\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "floyd-warshall", "all-pairs", "dynamic-programming", "floyd-warshall-algorithm"],
+    "hintLevels": [
+      "Level 1: Ask for every pair: would hopping through one extra platform ever be cheaper?",
+      "Level 2: Fix the intermediate platform k, then relax every pair (i, j) through it; repeat for all k.",
+      "Level 3: Swap -1 for a huge sentinel before relaxing and restore -1 afterwards so blanks never look like real fares."
+    ]
+  }
+}

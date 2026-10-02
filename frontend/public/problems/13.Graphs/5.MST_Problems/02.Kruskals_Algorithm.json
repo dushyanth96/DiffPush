@@ -1,0 +1,62 @@
+{
+  "id": "kruskal-s-algorithm",
+  "index": 2,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Kruskal's Algorithm — Minimum Spanning Tree Weight",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=min+cost+to+connect+all+points",
+    "sourceFilePath": "13. Graphs/5. MST Problems/02. Kruskal's Algorithm.cpp"
+  },
+  "narrative": {
+    "title": "Sorting the Lease Bids into a Grid",
+    "scenario": "A satellite operator leases ground-station links from bids, each bid quoting one link at a price. The accountant sorts every bid cheapest-first and buys it unless both ends already connect through previously bought links — buying only links that merge two separate station groups, never one that closes a private loop. When every station belongs to one group, the bill is the minimum leasing cost.",
+    "inputFormat": "An integer n (vertices 0..n-1) and an edge list edges where [u, v, w] is an undirected link of cost w.",
+    "outputFormat": "Return the total weight of the minimum spanning tree.",
+    "constraints": [
+      "1 <= n <= 10^3",
+      "1 <= edges.length <= n * (n - 1) / 2",
+      "1 <= w <= 10^6",
+      "The graph is connected and undirected"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(E log E)",
+    "optimalSpace": "O(V)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 3, "edges": [[0, 1, 5], [1, 2, 3], [0, 2, 1]] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "Sorted bids buy 1 then 3, connecting everything for 4; the 5 bid is skipped."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 4, "edges": [[0, 1, 1], [1, 2, 2], [2, 3, 3], [3, 0, 4], [0, 2, 5]] },
+      "expected": 6,
+      "isPublic": true,
+      "explanation": "The 1, 2, 3 chain wins again; the 4-bid would close a loop and is refused."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 2, "edges": [[0, 1, 7]] },
+      "expected": 7,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, edges):\n        # Return the MST total weight.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the MST total weight.\n    int solve(int n, std::vector<std::vector<int>>& edges);\n};",
+    "java": "class Solution {\n    // Return the MST total weight.\n    public int solve(int n, int[][] edges) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "mst", "kruskal", "disjoint-set", "kruskal-s-algorithm"],
+    "hintLevels": [
+      "Level 1: Cheapest links first — a link is refused only when it would close a loop.",
+      "Level 2: A union-find answers 'already connected?' in near-constant time; buy the link and union when not.",
+      "Level 3: Exactly n-1 purchases connect n stations; stop early once the count is reached."
+    ]
+  }
+}

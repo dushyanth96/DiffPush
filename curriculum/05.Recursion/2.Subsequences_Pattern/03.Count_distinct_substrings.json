@@ -1,0 +1,72 @@
+{
+  "id": "count-distinct-substrings",
+  "index": 3,
+  "topic": "05.Recursion",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Count distinct substrings",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Count%20distinct%20substrings",
+    "sourceFilePath": "05.Recursion/2.Subsequences Pattern/03.Count distinct substrings.cpp"
+  },
+  "narrative": {
+    "title": "Cataloguing the Gene Bank's Unique Read Patterns",
+    "scenario": "A genomics archive stores each sample as a lowercase string, and the audit asks how many distinct reading patterns can be formed by deleting arbitrary characters while preserving order — the empty pattern included. Duplicated letters mean different deletion choices can yield the same pattern, so the counter must collect the patterns in a set rather than tallying every branch. The report carries the distinct-pattern count modulo 10^9 + 7.",
+    "inputFormat": "A string s of lowercase English letters.",
+    "outputFormat": "The number of distinct subsequences of s (empty included), modulo 10^9 + 7.",
+    "constraints": [
+      "1 <= s.length <= 20 (exponential search; DP handles much larger inputs)",
+      "s consists of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(2^n) enumeration in the source; O(n^2) set-of-subsequence-ends or O(n * alphabet) DP exists",
+    "optimalSpace": "O(2^n) for the pattern set in the source"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "s": "gfg"
+      },
+      "expected": 7,
+      "isPublic": true,
+      "explanation": "The distinct patterns are \"\", \"g\", \"f\", \"gf\", \"fg\", \"gg\", and \"gfg\" — the two g branches collapse."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "s": "ab"
+      },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "\"\", \"a\", \"b\", \"ab\" — with distinct letters every deletion choice is unique."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "s": "aaa"
+      },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def distinctSubsequences(self, s: str) -> int:\n        # TODO: enumerate include/exclude branches, collect patterns in a set.\n        pass",
+    "cpp": "#include <string>\n#include <unordered_set>\nusing namespace std;\n\nclass Solution {\npublic:\n    int distinctSubsequences(string s) {\n        // TODO: recurse include/exclude, inserting each completed pattern into a set.\n    }\n};",
+    "java": "class Solution {\n    public int distinctSubsequences(String s) {\n        // TODO: enumerate include/exclude branches, collect patterns in a set.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "subsequences",
+      "set",
+      "count-distinct-substrings"
+    ],
+    "hintLevels": [
+      "Level 1: This is the power-set walk over characters, but the collection must be a set because repeats collapse.",
+      "Level 2: At each index fork include/exclude; when the index reaches the end, insert the accumulated string — even when empty.",
+      "Level 3: The modulo in the statement only matters for counting variants; the enumeration itself counts distinct strings, so the set size is the answer."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "coin-change",
+  "index": 7,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Coin Change",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=coin+change+fewest+coins",
+    "sourceFilePath": "14. Dynamic Programming/4. DP on Subsequences/07. Coin Change.cpp"
+  },
+  "narrative": {
+    "title": "The Kiosk's Float Minimizer",
+    "scenario": "A self-service kiosk holds unlimited stock of each coin denomination in its hopper and must dispense exact change for every refund request. Maintenance wants the hopper emptied as rarely as possible, so the firmware computes the fewest coins per payout. Some amounts simply cannot be formed from the available denominations, and the kiosk must flag those too.",
+    "inputFormat": "An array coins of distinct denominations and an integer amount.",
+    "outputFormat": "Return the fewest number of coins summing to amount, or -1 when it cannot be formed. Each denomination may be used unlimited times.",
+    "constraints": [
+      "1 <= len(coins) <= 12",
+      "1 <= coins[i] <= 2^31 - 1",
+      "0 <= amount <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*amount)",
+    "optimalSpace": "O(amount)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "coins": [1, 2, 5], "amount": 11 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "5 + 5 + 1 covers 11 with three coins."
+    },
+    {
+      "id": "tc-2",
+      "input": { "coins": [2], "amount": 3 },
+      "expected": -1,
+      "isPublic": true,
+      "explanation": "Odd amounts are unreachable using only 2s."
+    },
+    {
+      "id": "tc-3",
+      "input": { "coins": [1, 5, 6, 9], "amount": 11 },
+      "expected": 2,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, coins, amount):\n        # Return the fewest coins for amount, or -1 if impossible.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the fewest coins for amount, or -1 if impossible.\n    int solve(std::vector<int>& coins, int amount);\n};",
+    "java": "class Solution {\n    // Return the fewest coins for amount, or -1 if impossible.\n    public int solve(int[] coins, int amount) {\n        // TODO\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "subsequences", "unbounded", "min-coins", "coin-change"],
+    "hintLevels": [
+      "Level 1: The last coin paid is some denomination c — the rest is the best answer for amount - c.",
+      "Level 2: best[a] = 1 + min over c <= a of best[a - c]; the coin may repeat, so stay on the same row.",
+      "Level 3: Seed best[0] = 0, treat unreachable amounts as infinity, and convert infinity to -1 at the end."
+    ]
+  }
+}

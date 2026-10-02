@@ -1,0 +1,81 @@
+{
+  "id": "genereate-all-valid-parenthesis",
+  "index": 1,
+  "topic": "05.Recursion",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Genereate all valid parenthesis",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Genereate%20all%20valid%20parenthesis",
+    "sourceFilePath": "05.Recursion/2.Subsequences Pattern/01.Genereate all valid parenthesis.cpp"
+  },
+  "narrative": {
+    "title": "Balancing the Trading Floor's Bracket Ledger",
+    "scenario": "A market maker prints order tickets where every open bracket must be closed by a matching one, and the compliance desk wants the full catalogue of well-formed ticket templates exactly n brackets long. A template is built one character at a time: an open bracket may be printed while any remain unopened, and a close bracket may only follow if an open one is still pending. The builder branches on those two rules until every bracket pair is complete.",
+    "inputFormat": "An integer n, the number of bracket pairs.",
+    "outputFormat": "Every well-formed bracket string of length 2n, in the order the depth-first build produces them.",
+    "constraints": [
+      "1 <= n <= 8"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(4^n / sqrt(n)) valid sequences, each costing O(n) to build",
+    "optimalSpace": "O(n) recursion depth beyond the output"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "n": 3
+      },
+      "expected": [
+        "((()))",
+        "(()())",
+        "(())()",
+        "()(())",
+        "()()()"
+      ],
+      "isPublic": true,
+      "explanation": "All five ways to interleave three open-close pairs without a close ever leading an open."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "n": 1
+      },
+      "expected": [
+        "()"
+      ],
+      "isPublic": true,
+      "explanation": "One pair admits exactly one template."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "n": 2
+      },
+      "expected": [
+        "(())",
+        "()()"
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def generateParenthesis(self, n: int) -> list[str]:\n        # TODO: branch on 'add open' and 'add close' while their budgets hold.\n        pass",
+    "cpp": "#include <string>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<string> generateParenthesis(int n) {\n        // TODO: recurse with open/close counters; close only when open > close.\n    }\n};",
+    "java": "class Solution {\n    public java.util.List<String> generateParenthesis(int n) {\n        // TODO: branch on 'add open' and 'add close' while their budgets hold.\n        return new java.util.ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "brackets",
+      "genereate-all-valid-parenthesis"
+    ],
+    "hintLevels": [
+      "Level 1: Never guess a full string — grow it character by character and abandon any prefix that breaks the balance rule.",
+      "Level 2: Track two counters. An open may be added while fewer than n are outstanding; a close only while more opens than closes are pending.",
+      "Level 3: The recursion stops exactly when both counters hit n — that single landing point guarantees validity, so no post-check is needed."
+    ]
+  }
+}

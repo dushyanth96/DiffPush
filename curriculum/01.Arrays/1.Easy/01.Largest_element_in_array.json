@@ -1,0 +1,60 @@
+{
+  "id": "largest-element-in-array",
+  "index": 1,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Largest element in array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Largest%20element%20in%20array",
+    "sourceFilePath": "01.Arrays/1.Easy/01.Largest_element_in_array.cpp"
+  },
+  "narrative": {
+    "title": "Peak Draw on the Solar String",
+    "scenario": "A solar farm streams one ampere reading per panel into a rolling buffer each minute. The hardware team needs the single highest reading the string ever produced so they can size the inline fuse. Return that peak value.",
+    "inputFormat": "An integer n followed by an array A of n integer readings.",
+    "outputFormat": "A single integer: the maximum element of A.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= A[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 5, "A": [1, 8, 7, 56, 90] },
+      "expected": 90,
+      "isPublic": true,
+      "explanation": "Scanning the five readings, 90 is the highest value encountered."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 6, "A": [4, 15, 8, 23, 16, 42] },
+      "expected": 42,
+      "isPublic": true,
+      "explanation": "The peak sits at the end of the buffer, so the scan cannot stop early."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 1, "A": [-7] },
+      "expected": -7,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def largestElement(self, arr: list[int], n: int) -> int:\n        # TODO: return the maximum value stored in arr.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int largestElement(const vector<int>& arr, int n) {\n        // TODO: return the maximum value stored in arr.\n    }\n};",
+    "java": "class Solution {\n    public int largestElement(int[] arr, int n) {\n        // TODO: return the maximum value stored in arr.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "linear-scan", "maximum", "largest-element-in-array"],
+    "hintLevels": [
+      "Level 1: You only need one number, so think about which single value must be remembered while walking the buffer.",
+      "Level 2: Seed a running best with the very first reading, then advance one index at a time and overwrite the best whenever a larger reading shows up.",
+      "Level 3: Watch the seed choice: starting at 0 breaks the moment every reading is negative, and a single-element array must return that element untouched."
+    ]
+  }
+}

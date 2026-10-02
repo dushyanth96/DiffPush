@@ -1,0 +1,60 @@
+{
+  "id": "binary-tree-preorder-traversal",
+  "index": 3,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Preorder Traversal of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=binary+tree+preorder+traversal",
+    "sourceFilePath": "11. Binary Trees/1. Traversals/03. Preorder Traversal.cpp"
+  },
+  "narrative": {
+    "title": "Root-First Plant Audit",
+    "scenario": "A botanical survey drone maps an orchard laid out as a binary grafting tree. Regulations require the auditor to log each grafted plant before descending into its two branch lineages, always taking the left lineage before the right. The drone's log, read top to bottom, becomes the orchard's master inventory.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return an array of node values in preorder: visit the node, then its left subtree, then its right subtree.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [1, 2, 3, 4, 5, null, 6] },
+      "expected": [1, 2, 4, 5, 3, 6],
+      "isPublic": true,
+      "explanation": "Root 1 first, then the whole left subtree {2,4,5}, then right subtree {3,6}."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [7] },
+      "expected": [7],
+      "isPublic": true,
+      "explanation": "A lone node is its own preorder sequence."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [1, 2, null, 3] },
+      "expected": [1, 2, 3],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the preorder traversal as a list of values.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the preorder traversal as a vector of values.\n    std::vector<int> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the preorder traversal as a List of Integer values.\n    public List<Integer> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["trees", "binary-tree", "traversal", "recursion", "binary-tree-preorder-traversal"],
+    "hintLevels": [
+      "Level 1: Preorder means the parent's value is recorded the moment you arrive, before any children are explored.",
+      "Level 2: The recursion is three beats — record node, recurse left, recurse right — and the beats never change order.",
+      "Level 3: Guard the base case (null node returns nothing) and the natural call stack depth of O(height) handles the rest."
+    ]
+  }
+}

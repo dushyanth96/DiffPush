@@ -1,0 +1,75 @@
+{
+  "id": "shortest-common-supersequence",
+  "index": 7,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Shortest Common Supersequence",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=shortest+common+supersequence",
+    "sourceFilePath": "14. Dynamic Programming/5. DP on Strings/07. Shortest Common Supersequence.cpp"
+  },
+  "narrative": {
+    "title": "The Broadcast Schedule Merger",
+    "scenario": "A radio network must interleave two station playlists into one master broadcast so that every song of each playlist still airs in its original relative order. Ad space is expensive, so the merged reel must be as short as possible. Several optimal reels may exist; any shortest merge is acceptable.",
+    "inputFormat": "Two strings str1 and str2.",
+    "outputFormat": "Return any shortest merged string that embeds both inputs as in-order character sequences.",
+    "constraints": [
+      "1 <= len(str1), len(str2) <= 1000",
+      "strings consist of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*m)",
+    "optimalSpace": "O(n*m)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "str1": "abac",
+        "str2": "cab"
+      },
+      "expected": "cabac",
+      "isPublic": true,
+      "explanation": "\"cabac\" contains \"abac\" (positions 2-5) and \"cab\" (positions 1-3); no shorter merge exists."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "str1": "abc",
+        "str2": "abc"
+      },
+      "expected": "abc",
+      "isPublic": true,
+      "explanation": "Identical strings merge into themselves."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "str1": "bd",
+        "str2": "ac"
+      },
+      "expected": "abcd",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, str1, str2):\n        # Return any shortest string containing both inputs as subsequences.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return any shortest string containing both inputs as subsequences.\n    std::string solve(std::string str1, std::string str2);\n};",
+    "java": "class Solution {\n    // Return any shortest string containing both inputs as subsequences.\n    public String solve(String str1, String str2) {\n        // TODO\n        return \"\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "strings",
+      "lcs",
+      "reconstruction",
+      "supersequence"
+    ],
+    "hintLevels": [
+      "Level 1: Shared in-order characters can be aired once for both playlists; everything else is added on top.",
+      "Level 2: The length is n + m - LCS; build the LCS table, then walk it backwards emitting one or both characters.",
+      "Level 3: When one string is exhausted, flush the remainder of the other — that tail loop is the usual bug site."
+    ]
+  }
+}

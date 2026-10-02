@@ -1,0 +1,61 @@
+{
+  "id": "dfs",
+  "index": 4,
+  "topic": "13.Graphs",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Depth First Search of a Graph",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=depth+first+search+traversal+graph",
+    "sourceFilePath": "13. Graphs/1. Learning/04. DFS.cpp"
+  },
+  "narrative": {
+    "title": "The Corridor-to-the-End Inspection",
+    "scenario": "A tunnel inspector starts at junction 0 and always takes the first unexplored tunnel ahead of her, following corridors to their dead ends before backtracking to the last junction with options left. Her hand-written log — one entry per junction, in the order first entered — is the depth-first record of the cave system.",
+    "inputFormat": "An adjacency list adj for a connected undirected graph — adj[i] lists the neighbours of vertex i.",
+    "outputFormat": "Return the DFS order starting from vertex 0, exploring neighbours in the order they appear in each list.",
+    "constraints": [
+      "1 <= V <= 10^5",
+      "The graph is connected and undirected",
+      "0 <= adj[i][j] < V"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(V + E)",
+    "optimalSpace": "O(V)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "adj": [[1, 2], [0, 2], [0, 1, 3, 4], [2], [2]] },
+      "expected": [0, 1, 2, 3, 4],
+      "isPublic": true,
+      "explanation": "The walk dives 0 -> 1 -> 2 -> 3, backtracks, then finishes with 4."
+    },
+    {
+      "id": "tc-2",
+      "input": { "adj": [[1, 4], [0, 2, 3], [1, 3], [1, 2, 4], [0, 3]] },
+      "expected": [0, 1, 2, 3, 4],
+      "isPublic": true,
+      "explanation": "Each neighbour list is consumed left to right; 4 only fires after 3 is exhausted."
+    },
+    {
+      "id": "tc-3",
+      "input": { "adj": [[1], [0, 2], [1]] },
+      "expected": [0, 1, 2],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import sys\nsys.setrecursionlimit(10**6)\n\nclass Solution:\n    def solve(self, adj):\n        # Return the DFS order from vertex 0.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the DFS order from vertex 0.\n    std::vector<int> solve(std::vector<int> adj[]);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return the DFS order from vertex 0.\n    public List<Integer> solve(List<List<Integer>> adj) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dfs", "recursion", "traversal", "dfs"],
+    "hintLevels": [
+      "Level 1: Go as deep as possible on the first choice before ever considering the second.",
+      "Level 2: Log the node when entered, mark visited, then recurse into each unvisited neighbour in list order.",
+      "Level 3: Deep graphs can blow the call stack — an explicit stack or raised recursion limit keeps it safe."
+    ]
+  }
+}

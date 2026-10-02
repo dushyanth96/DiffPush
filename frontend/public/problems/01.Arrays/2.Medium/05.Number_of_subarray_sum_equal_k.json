@@ -1,0 +1,61 @@
+{
+  "id": "number-of-subarray-sum-equal-k",
+  "index": 5,
+  "topic": "01.Arrays",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Number of subarray sum equal k",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Number%20of%20subarray%20sum%20equal%20k",
+    "sourceFilePath": "01.Arrays/2.Medium/05.Number_of_subarray_sum_equal_k.cpp"
+  },
+  "narrative": {
+    "title": "Counting Settled Batches in a Netted Ledger",
+    "scenario": "A payments engine records the net amount of each processing batch in order, and batches may be negative when refunds outnumber charges. A reconciliation pass must count how many contiguous runs of batches net out to an exact settlement amount. The runs may overlap and may be of any length.",
+    "inputFormat": "An array nums of n integers and an integer k, the target net amount.",
+    "outputFormat": "The number of contiguous subarrays of nums whose elements sum to exactly k.",
+    "constraints": [
+      "1 <= n <= 2 * 10^4",
+      "-1000 <= nums[i] <= 1000",
+      "-10^7 <= k <= 10^7"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 1, 1], "k": 2 },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "The pairs of adjacent batches net to 2, and no longer run does, so the count is 2."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1, 2, 3], "k": 3 },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "The run 1,2 and the single batch 3 both net to 3."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1, -1, 0], "k": 0 },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def subarraySum(self, nums: list[int], k: int) -> int:\n        # TODO: count the contiguous runs whose net total equals k.\n        pass",
+    "cpp": "#include <vector>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    int subarraySum(vector<int>& nums, int k) {\n        // TODO: count the contiguous runs whose net total equals k.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int subarraySum(int[] nums, int k) {\n        // TODO: count the contiguous runs whose net total equals k.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "prefix-sum", "hash-map", "subarray-count", "negative-values"],
+    "hintLevels": [
+      "Level 1: The total of any run is the difference of two running prefixes, so ask how many earlier prefixes differ from the current one by exactly k.",
+      "Level 2: Sweep the ledger maintaining the running prefix and a frequency table of prefixes seen so far; each step adds the frequency of prefix minus k to the answer.",
+      "Level 3: Seed the table with prefix 0 occurring once so runs starting at the first batch are counted, and note that negative amounts mean you cannot use a sliding window here."
+    ]
+  }
+}

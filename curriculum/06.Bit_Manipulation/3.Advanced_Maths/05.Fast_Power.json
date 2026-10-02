@@ -1,0 +1,61 @@
+{
+  "id": "fast-power",
+  "index": 5,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Fast Power",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Fast%20Power",
+    "sourceFilePath": "06.Bit Manipulation/3. Advanced Maths/05. Fast Power.cpp"
+  },
+  "narrative": {
+    "title": "Doubling the Gear Ratio Instead of Cranking It",
+    "scenario": "A press needs a mechanical ratio of x^n, and the operator only has a doubling jig: each crank squares the current ratio. Reading n in binary tells the operator exactly which squarings to bank — every 1 bit contributes the current squared value to the product, and negative exponents simply invert the finished ratio.",
+    "inputFormat": "A double x and an integer n (possibly negative).",
+    "outputFormat": "The value of x raised to the power n.",
+    "constraints": [
+      "-100.0 < x < 100.0",
+      "-2^31 <= n <= 2^31 - 1",
+      "the result fits in a double"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "x": 2.0, "n": 10 },
+      "expected": 1024.0,
+      "isPublic": true,
+      "explanation": "Ten is 1010 in binary: square-bank twice (4, then 256... ) — the product lands on 1024."
+    },
+    {
+      "id": "tc-2",
+      "input": { "x": 2.1, "n": 3 },
+      "expected": 9.261,
+      "isPublic": true,
+      "explanation": "Three cranks of the base, no squaring shortcuts skipped: 2.1^3 = 9.261."
+    },
+    {
+      "id": "tc-3",
+      "input": { "x": 2.0, "n": -2 },
+      "expected": 0.25,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def myPow(self, x: float, n: int) -> float:\n        # TODO: binary exponentiation; invert for negative exponents.\n        pass",
+    "cpp": "#include <cstdlib>\nusing namespace std;\n\nclass Solution {\npublic:\n    double myPow(double x, int n) {\n        // TODO: square the base each shift; bank the squared value on set bits.\n    }\n};",
+    "java": "class Solution {\n    public double myPow(double x, int n) {\n        // TODO: binary exponentiation; invert for negative exponents.\n        return 1.0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "binary-exponentiation", "math", "fast-power"],
+    "hintLevels": [
+      "Level 1: n in binary is a recipe — every 1 bit means 'multiply the current squared base into the result'.",
+      "Level 2: Loop while n > 0: bank base when the low bit is 1, square base, shift n right.",
+      "Level 3: Negate-then-invert handles negative exponents, but watch INT_MIN: taking abs() of it overflows 32-bit ints, so widen first."
+    ]
+  }
+}

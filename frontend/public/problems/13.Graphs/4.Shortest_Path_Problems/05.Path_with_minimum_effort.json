@@ -1,0 +1,60 @@
+{
+  "id": "path-with-minimum-effort",
+  "index": 5,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Path With Minimum Effort",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=path+with+minimum+effort",
+    "sourceFilePath": "13. Graphs/4. Shortest Path Problems/05. Path with minimum effort.cpp"
+  },
+  "narrative": {
+    "title": "Smoothing the Crossover Conveyor Route",
+    "scenario": "A robotic picking floor connects bays of differing platform heights, and a fragile-load cart must cross from the intake corner to the dispatch corner. The jolt a cart suffers between two adjacent bays is their height difference, and a route's roughness is its single worst jolt. Route planning must minimise that worst jolt — not the number of steps.",
+    "inputFormat": "A rows x columns matrix heights where heights[r][c] is the platform height of bay (r, c).",
+    "outputFormat": "Return the minimum possible value of the maximum absolute height difference along a 4-directional route from (0,0) to (rows-1, columns-1).",
+    "constraints": [
+      "1 <= rows, columns <= 100",
+      "1 <= heights[r][c] <= 10^6"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(rows * columns * log(rows * columns))",
+    "optimalSpace": "O(rows * columns)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "heights": [[1, 2, 2], [3, 8, 2], [5, 3, 5]] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Riding 1 -> 3 -> 5 -> 3 -> 5 never jolts worse than 2, beating the direct top-row route's 3."
+    },
+    {
+      "id": "tc-2",
+      "input": { "heights": [[1, 2, 3], [3, 8, 4], [5, 3, 5]] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "A staircase of neighbouring heights exists where every consecutive pair differs by at most 1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "heights": [[4]] },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\nclass Solution:\n    def solve(self, heights):\n        # Return the minimum possible maximum step difference.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the minimum possible maximum step difference.\n    int solve(std::vector<std::vector<int>>& heights);\n};",
+    "java": "class Solution {\n    // Return the minimum possible maximum step difference.\n    public int solve(int[][] heights) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dijkstra-variant", "minimax-path", "grid", "path-with-minimum-effort"],
+    "hintLevels": [
+      "Level 1: Minimising the worst step is a different metric — the 'distance' of a path is its maximum edge, not the sum.",
+      "Level 2: Run Dijkstra where relaxing an edge means candidate = max(current effort, that step's difference).",
+      "Level 3: The first time the goal pops from the min-heap, its effort is provably minimal — settle it immediately."
+    ]
+  }
+}

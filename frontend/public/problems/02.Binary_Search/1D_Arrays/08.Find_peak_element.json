@@ -1,0 +1,62 @@
+{
+  "id": "find-peak-element",
+  "index": 8,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Find peak element",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Find%20peak%20element",
+    "sourceFilePath": "02.Binary Search/1D Arrays/08.Find_peak_element.cpp"
+  },
+  "narrative": {
+    "title": "Locating a Stress Crest in a Load Profile",
+    "scenario": "A structural sensor logs one load value per segment along a beam, and inspection must sample the most stressed segment - one whose load strictly exceeds both neighbours. Segments beyond the beam's ends are treated as carrying no load, so a segment only needs to beat the neighbours that exist. Any crest qualifies when several exist.",
+    "inputFormat": "An array nums of n integers.",
+    "outputFormat": "The index of any element strictly greater than its neighbours, where out-of-array neighbours count as negative infinity.",
+    "constraints": [
+      "1 <= n <= 1000",
+      "-2^31 <= nums[i] <= 2^31 - 1",
+      "nums[i] != nums[i + 1] for every valid i",
+      "An O(log n) algorithm is required"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 2, 3, 1] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "The load rises to 3 at index 2 and drops afterwards, making that segment the crest."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1, 2, 1, 3, 5, 6, 4] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Two crests exist (index 1 and index 5) and either is a correct answer; this profile reports 5."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1, 2, 3, 4, 5] },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findPeakElement(self, nums: list[int]) -> int:\n        # TODO: return the index of any strictly greater-than-neighbours element.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findPeakElement(vector<int>& nums) {\n        // TODO: return the index of any strictly greater-than-neighbours element.\n    }\n};",
+    "java": "class Solution {\n    public int findPeakElement(int[] nums) {\n        // TODO: return the index of any strictly greater-than-neighbours element.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "peak-finding", "monotonic-halving", "find-peak-element"],
+    "hintLevels": [
+      "Level 1: Even though the array is unsorted, the direction of the slope at any probe tells you which half must contain a crest.",
+      "Level 2: If the probe value is below its right neighbour, walk the upper bound inward from the right side; otherwise walk the lower bound from the left.",
+      "Level 3: The loop should converge until the bounds meet rather than test equality, so the very ends of the beam (treated as downhill toward negative infinity) are handled without special cases."
+    ]
+  }
+}

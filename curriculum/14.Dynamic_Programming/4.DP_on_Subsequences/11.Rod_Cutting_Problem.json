@@ -1,0 +1,60 @@
+{
+  "id": "rod-cutting-problem",
+  "index": 11,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Rod Cutting",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=rod+cutting+maximum+price",
+    "sourceFilePath": "14. Dynamic Programming/4. DP on Subsequences/11. Rod Cutting Problem.cpp"
+  },
+  "narrative": {
+    "title": "The Cable-Spool Revenue Plan",
+    "scenario": "A supplier receives one continuous spool of cable N meters long. Predefined retail bundles exist for every integer length, each with its own price, and the spool can be sliced into any combination of bundle lengths. Sales wants the cutting plan that maximizes revenue from the single spool.",
+    "inputFormat": "An integer N (spool length) and an array price of N integers where price[i] is the revenue for a bundle of length i+1.",
+    "outputFormat": "Return the maximum revenue obtainable by slicing the spool into bundles of integer lengths.",
+    "constraints": [
+      "1 <= N <= 1000",
+      "1 <= price[i] <= 10^5"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N^2)",
+    "optimalSpace": "O(N)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "N": 8, "price": [1, 5, 8, 9, 10, 17, 17, 20] },
+      "expected": 22,
+      "isPublic": true,
+      "explanation": "Cut into lengths 2 and 6: 5 + 17 = 22."
+    },
+    {
+      "id": "tc-2",
+      "input": { "N": 8, "price": [3, 5, 8, 9, 10, 17, 17, 20] },
+      "expected": 24,
+      "isPublic": true,
+      "explanation": "Eight 1-meter bundles fetch 8 * 3 = 24, beating every other partition."
+    },
+    {
+      "id": "tc-3",
+      "input": { "N": 4, "price": [2, 3, 6, 7] },
+      "expected": 8,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, N, price):\n        # Return the maximum revenue from cutting the rod.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the maximum revenue from cutting the rod.\n    int solve(int N, std::vector<int>& price);\n};",
+    "java": "class Solution {\n    // Return the maximum revenue from cutting the rod.\n    public int solve(int N, int[] price) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "subsequences", "unbounded", "knapsack", "rod-cutting"],
+    "hintLevels": [
+      "Level 1: A first cut of length L leaves an N-L spool with the same problem structure — recurse on the remainder.",
+      "Level 2: best[n] = max over L in 1..n of price[L-1] + best[n - L]; lengths may repeat, so this is unbounded knapsack in disguise.",
+      "Level 3: best[0] = 0 seeds the build-up; the answer at best[N] needs no second pass."
+    ]
+  }
+}

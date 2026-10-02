@@ -1,0 +1,62 @@
+{
+  "id": "book-allocation",
+  "index": 8,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Book allocation",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Book%20allocation",
+    "sourceFilePath": "02.Binary Search/In Search Space/09.Book_allocation.cpp"
+  },
+  "narrative": {
+    "title": "Balancing Shelves Along One Reading Order",
+    "scenario": "A library must distribute a fixed sequence of volumes onto m reading desks. The sequence cannot be reordered, every desk gets a non-empty consecutive block, and the fairest split minimizes the page count on the most-loaded desk. Compute that minimized maximum load, or report that there are more desks than volumes.",
+    "inputFormat": "An integer N, an array A of N positive page counts (in fixed order), and an integer M, the number of students.",
+    "outputFormat": "The minimum possible value of the maximum pages assigned to any student, or -1 when M > N.",
+    "constraints": [
+      "1 <= N <= 10^5",
+      "1 <= M <= N",
+      "1 <= A[i] <= 10^9",
+      "Blocks must be contiguous and every student gets at least one book"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N log S), where S is the total page count",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "N": 4, "A": [12, 34, 67, 90], "M": 2 },
+      "expected": 113,
+      "isPublic": true,
+      "explanation": "Splitting after the third volume balances 113 against 90, and every other split leaves a heavier desk."
+    },
+    {
+      "id": "tc-2",
+      "input": { "N": 5, "A": [25, 46, 28, 49, 24], "M": 4 },
+      "expected": 71,
+      "isPublic": true,
+      "explanation": "Blocks 25+46, 28, 49 and 24 cap the load at 71, the best the order allows."
+    },
+    {
+      "id": "tc-3",
+      "input": { "N": 2, "A": [1, 2], "M": 1 },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findPages(self, A: list[int], N: int, M: int) -> int:\n        # TODO: return the minimized maximum desk load, or -1 when M > N.\n        pass",
+    "cpp": "#include <vector>\n#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findPages(int A[], int N, int M) {\n        // TODO: return the minimized maximum desk load, or -1 when M > N.\n    }\n};",
+    "java": "class Solution {\n    public int findPages(int[] A, int N, int M) {\n        // TODO: return the minimized maximum desk load, or -1 when M > N.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "answer-space", "minimize-maximum", "contiguous-partition", "book-allocation"],
+    "hintLevels": [
+      "Level 1: A load cap either permits a valid split or does not, and raising the cap never breaks a valid split - monotonic again.",
+      "Level 2: For a candidate cap, walk the fixed order filling one desk at a time and open a new desk whenever the next volume would overflow it.",
+      "Level 3: The search range runs from the largest single volume to the sum of all pages, the desk count must not exceed M, and more desks than volumes is the explicit -1 case."
+    ]
+  }
+}

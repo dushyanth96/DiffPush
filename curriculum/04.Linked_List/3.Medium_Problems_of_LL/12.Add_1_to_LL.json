@@ -1,0 +1,61 @@
+{
+  "id": "add-1-to-ll",
+  "index": 12,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Add 1 to LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Add%201%20to%20a%20number%20represented%20by%20linked%20list",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/12.Add_1_to_LL.cpp"
+  },
+  "narrative": {
+    "title": "Incrementing the Odometer Stored as a Chain",
+    "scenario": "A legacy odometer stores its reading as a one-way chain of digits, most significant first — but incrementing must act on the least significant digit, which sits at the far end with no shortcut to it. The crew reverses the chain, runs the increment with a carry, appends a digit if the carry overflows the last node, and reverses back for display.",
+    "inputFormat": "An array head of node values, each a single digit 0-9, forming a non-negative integer with no leading zeros (except the number 0 itself).",
+    "outputFormat": "The digits of the number after adding 1, most significant first.",
+    "constraints": [
+      "1 <= list length <= 10^5",
+      "0 <= node value <= 9",
+      "the leading digit is non-zero unless the number itself is 0"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [1, 5, 9] },
+      "expected": [1, 6, 0],
+      "isPublic": true,
+      "explanation": "159 + 1 = 160: the last digit rolls over and the carry dies at the tens place."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [9, 9, 9] },
+      "expected": [1, 0, 0, 0],
+      "isPublic": true,
+      "explanation": "999 + 1 = 1000 — the carry survives every node, forcing a new leading digit."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [1, 2, 3] },
+      "expected": [1, 2, 4],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def addOne(self, head: list[int]) -> list[int]:\n        # TODO: return the digits after incrementing the number by 1.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node* next;\n    Node(int d) : data(d), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    Node* addOne(Node* head) {\n        // TODO: increment the represented number by 1 and return the head.\n    }\n};",
+    "java": "class Solution {\n    public int[] addOne(int[] head) {\n        // TODO: return the digits after incrementing the number by 1.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "carry-propagation", "reversal", "add-1-to-ll"],
+    "hintLevels": [
+      "Level 1: Addition starts at the least significant digit, which on a head-first chain is the hardest node to reach.",
+      "Level 2: Reverse once, add with a carry starting at 1, stop early the moment a carry of 0 appears, then reverse back.",
+      "Level 3: The all-nines case is the whole point of the carry loop — after the walk ends with carry 1, append a fresh node (carry becomes a single digit here since the increment adds at most 1)."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "reverse-dll",
+  "index": 4,
+  "topic": "04.Linked_List",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Reverse DLL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Reverse%20doubly%20linked%20list",
+    "sourceFilePath": "04.Linked List/2.Doubly Linked List/04.Reverse_DLL.cpp"
+  },
+  "narrative": {
+    "title": "Running the Assembly Line the Other Way",
+    "scenario": "A plant repurposes a conveyor whose stations are two-way linked, and the retrofit requires the line to run in the opposite direction. Each station's forward and backward rails swap roles, and the station that used to hand work off into nowhere becomes the new entry point. Report the station order from the new entry.",
+    "inputFormat": "An array arr of n node values representing the doubly linked list.",
+    "outputFormat": "The list after reversal, read from the new head.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= arr[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [3, 4, 5] },
+      "expected": [5, 4, 3],
+      "isPublic": true,
+      "explanation": "The line's exit station (5) becomes its entry."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [75, 122, 59, 196] },
+      "expected": [196, 59, 122, 75],
+      "isPublic": true,
+      "explanation": "Four stations, every rail pair swapped, new order starts at 196."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [9, 9, 9] },
+      "expected": [9, 9, 9],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def reverseDLL(self, arr: list[int]) -> list[int]:\n        # TODO: return the values after the two-way list is reversed.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node *prev, *next;\n    Node(int d) : data(d), prev(nullptr), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    Node* reverseDLL(Node* head) {\n        // TODO: reverse in place and return the new head.\n    }\n};",
+    "java": "class Solution {\n    public int[] reverseDLL(int[] arr) {\n        // TODO: return the values after the two-way list is reversed.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "doubly-linked-list", "reversal", "reverse-dll"],
+    "hintLevels": [
+      "Level 1: Unlike a one-way reversal, no pointer chasing from scratch is needed — each node already knows both neighbours.",
+      "Level 2: One pass: save next, swap next and prev, then continue along the saved (now-prev) pointer.",
+      "Level 3: Track the last node processed rather than probing ahead — the loop ends on null, so the new head is the final node whose swapped prev became null before the move."
+    ]
+  }
+}

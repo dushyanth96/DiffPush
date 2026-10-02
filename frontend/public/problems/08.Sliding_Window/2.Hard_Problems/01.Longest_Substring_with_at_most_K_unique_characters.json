@@ -1,0 +1,60 @@
+{
+  "id": "longest-substring-with-at-most-k-unique-characters",
+  "index": 1,
+  "topic": "08.Sliding_Window",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Longest Substring with At Most K Distinct Characters",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=longest+substring+with+at+most+k+distinct+characters",
+    "sourceFilePath": "08. Sliding Window/2. Hard Problems/01. Longest Substring with at most K unique characters.cpp"
+  },
+  "narrative": {
+    "title": "The Frequency-Hopping Spectrum Plan",
+    "scenario": "A radio modem hops across channels, and its log records one channel letter per timeslot. Interference rules cap a transmission burst at k distinct channels, and the firmware wants the longest burst it can legally broadcast. The planner slides a frame over the log, dropping the oldest channel each time a (k+1)-th distinct channel appears.",
+    "inputFormat": "A string s of channel letters and an integer k.",
+    "outputFormat": "Return the length of the longest substring containing at most k distinct characters.",
+    "constraints": [
+      "1 <= s.length <= 10^5",
+      "1 <= k <= 26 (lowercase English letters)"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(k)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "abbbbbbc", "k": 2 },
+      "expected": 7,
+      "isPublic": true,
+      "explanation": "Bursts \"abbbbbb\" and \"bbbbbbc\" each use two channels across seven slots."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "abcde", "k": 2 },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Every channel is distinct, so no legal burst exceeds two slots."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "aaa", "k": 1 },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def longest_k_distinct(s: str, k: int) -> int:\n    count = {}\n    start = best = 0\n    for i, ch in enumerate(s):\n        count[ch] = count.get(ch, 0) + 1\n        while len(count) > k:\n            count[s[start]] -= 1\n            if count[s[start]] == 0:\n                del count[s[start]]\n            start += 1\n        best = max(best, i - start + 1)\n    return best",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint kDistinctChars(int k, string& s) {\n    unordered_map<char, int> count;\n    int start = 0, ans = 0;\n    for (int i = 0; i < (int)s.size(); ++i) {\n        ++count[s[i]];\n        while ((int)count.size() > k) {\n            if (--count[s[start]] == 0) count.erase(s[start]);\n            ++start;\n        }\n        ans = max(ans, i - start + 1);\n    }\n    return ans;\n}",
+    "java": "import java.util.HashMap;\nimport java.util.Map;\n\nclass Solution {\n    public int longestKDistinct(String s, int k) {\n        Map<Character, Integer> count = new HashMap<>();\n        int start = 0, best = 0;\n        for (int i = 0; i < s.length(); ++i) {\n            char ch = s.charAt(i);\n            count.merge(ch, 1, Integer::sum);\n            while (count.size() > k) {\n                char left = s.charAt(start);\n                if (count.merge(left, -1, Integer::sum) == 0) count.remove(left);\n                ++start;\n            }\n            best = Math.max(best, i - start + 1);\n        }\n        return best;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["sliding-window", "string", "at-most-k-distinct", "longest-substring-with-at-most-k-unique-characters"],
+    "hintLevels": [
+      "Level 1: The frame may never hold more than k distinct letters.",
+      "Level 2: When a (k+1)-th letter arrives, shrink from the left until one letter disappears entirely.",
+      "Level 3: Shrink exactly one letter past the violation — over-shrinking loses the true maximum."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "count-the-number-of-substrings-with-k-unique-characters",
+  "index": 5,
+  "topic": "03.Strings",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Count the number of substrings with k unique characters",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Count%20the%20number%20of%20substrings%20with%20k%20unique%20characters",
+    "sourceFilePath": "03.Strings/2.Medium/05.Count_the_number_of_substrings_with_k_unique_characters.cpp"
+  },
+  "narrative": {
+    "title": "Counting Broadcast Windows on Exactly K Channels",
+    "scenario": "A spectrum monitor logs a day's broadcast as one long string where each character names the channel a transmitter occupied. Planning needs to know how many contiguous listening windows used exactly K distinct channels — windows are counted by position, so identical content at different offsets counts separately. The monitor answers by counting windows with at most K channels, counting those with at most K-1, and taking the difference.",
+    "inputFormat": "A string S of lowercase English letters and an integer K.",
+    "outputFormat": "The number of (not necessarily distinct) substrings of S that contain exactly K distinct characters.",
+    "constraints": [
+      "1 <= S.length <= 10^5",
+      "1 <= K <= 26"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(k)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "S": "aba", "K": 2 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "\"ab\", \"ba\" and \"aba\" each mix exactly two channels."
+    },
+    {
+      "id": "tc-2",
+      "input": { "S": "abaaca", "K": 1 },
+      "expected": 7,
+      "isPublic": true,
+      "explanation": "Six single-character windows plus the \"aa\" pair — every window with one distinct channel."
+    },
+    {
+      "id": "tc-3",
+      "input": { "S": "abaaca", "K": 2 },
+      "expected": 10,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def substrCount(self, s: str, k: int) -> int:\n        # TODO: count substrings of s containing exactly k distinct characters.\n        pass",
+    "cpp": "#include <string>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    long long int substrCount(string s, int k) {\n        // TODO: count substrings of s containing exactly k distinct characters.\n    }\n};",
+    "java": "class Solution {\n    public long substrCount(String s, int k) {\n        // TODO: count substrings of s containing exactly k distinct characters.\n        return 0L;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "sliding-window", "prefix-counting", "count-the-number-of-substrings-with-k-unique-characters"],
+    "hintLevels": [
+      "Level 1: \"Exactly K\" is hard to hold directly in a window, but \"at most K\" is easy — and exactly K is the difference of two at-most counts.",
+      "Level 2: Run the standard sliding-window tally for at most K distinct and for at most K-1 distinct; subtracting the two totals answers the question.",
+      "Level 3: Shrink from the left whenever the distinct count exceeds K, and add the window length at each step — every right endpoint contributes one count per valid left endpoint that ends there."
+    ]
+  }
+}

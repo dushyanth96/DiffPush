@@ -1,0 +1,88 @@
+{
+  "id": "check-children-sum-property-sum-tree",
+  "index": 4,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Check Children Sum Property (Sum Tree)",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=sum+tree",
+    "sourceFilePath": "11. Binary Trees/3. Hard/04. Check children sum property.cpp"
+  },
+  "narrative": {
+    "title": "The Ledger Roll-Up Verification",
+    "scenario": "A finance bot keeps its books as a binary tree where each account node should hold exactly the total rolling up from everything beneath it — the node's own balance must equal the combined totals of its two sub-ledgers. Before the quarter closes, the auditor asks a single yes/no question: does every non-leaf balance reconcile with the roll-up beneath it?",
+    "inputFormat": "A binary tree as a level-order array (null marks a missing child), given by its root.",
+    "outputFormat": "Return true if every non-leaf node's value equals the sum of its left and right subtree totals; otherwise return false.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "0 <= node value <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          3,
+          1,
+          2
+        ]
+      },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The root's 3 is exactly 1 + 2, and both children are leaves that need no check."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          26,
+          10,
+          3,
+          4,
+          6,
+          null,
+          3
+        ]
+      },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "26 rolls up 20 (from the 10-4-6 wing) plus 6 (from the 3-3 wing); every internal node reconciles."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          10,
+          20,
+          30
+        ]
+      },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return True if every non-leaf node equals the sum of its subtree totals.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return true if every non-leaf node equals the sum of its subtree totals.\n    bool solve(TreeNode* root);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return true if every non-leaf node equals the sum of its subtree totals.\n    public boolean solve(TreeNode root) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "recursion",
+      "validation",
+      "check-children-sum-property-sum-tree"
+    ],
+    "hintLevels": [
+      "Level 1: Ask each node a two-part question — am I consistent, and how much do I and my descendants hold?",
+      "Level 2: A leaf reports just its own value; an internal node reports twice its value only when the roll-up matches exactly.",
+      "Level 3: A sentinel like an impossible value can carry the 'already broken' flag so one mismatch poisons every ancestor."
+    ]
+  }
+}

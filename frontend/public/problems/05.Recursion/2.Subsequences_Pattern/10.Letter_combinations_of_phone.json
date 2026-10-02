@@ -1,0 +1,85 @@
+{
+  "id": "letter-combinations-of-phone",
+  "index": 10,
+  "topic": "05.Recursion",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Letter combinations of phone",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Letter%20combinations%20of%20phone",
+    "sourceFilePath": "05.Recursion/2.Subsequences Pattern/10.Letter combinations of phone.cpp"
+  },
+  "narrative": {
+    "title": "Dialing Through the Call Center's Vanity Codes",
+    "scenario": "A call center reserves vanity extensions typed as digit strings, and the switchboard must publish every word each digit sequence could spell under the classic keypad mapping (2 = ABC, 3 = DEF, and so on; 7 and 9 carry four letters). The operator types one digit at a time, branching over that key's letters, and the catalogue is complete when the last digit's options are exhausted.",
+    "inputFormat": "A string digits containing only characters '2'-'9'.",
+    "outputFormat": "Every letter combination, in the order the depth-first walk produces them; an empty input yields an empty list.",
+    "constraints": [
+      "0 <= digits.length <= 4",
+      "digits[i] is a digit in the range ['2', '9']"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(4^n * n) worst case — up to 4 letters per digit, n to copy each string",
+    "optimalSpace": "O(n) recursion depth beyond the output"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "digits": "23"
+      },
+      "expected": [
+        "ad",
+        "ae",
+        "af",
+        "bd",
+        "be",
+        "bf",
+        "cd",
+        "ce",
+        "cf"
+      ],
+      "isPublic": true,
+      "explanation": "Three letters for '2' times three for '3', crossed in keypad order."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "digits": "2"
+      },
+      "expected": [
+        "a",
+        "b",
+        "c"
+      ],
+      "isPublic": true,
+      "explanation": "A single digit simply lists its own letters."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "digits": ""
+      },
+      "expected": [],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def letterCombinations(self, digits: str) -> list[str]:\n        # TODO: branch over each key's letters, one digit per depth level.\n        pass",
+    "cpp": "#include <string>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<string> letterCombinations(string digits) {\n        // TODO: map digits to letters; recurse one digit deeper per call.\n    }\n};",
+    "java": "class Solution {\n    public java.util.List<String> letterCombinations(String digits) {\n        // TODO: branch over each key's letters, one digit per depth level.\n        return new java.util.ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "cartesian-product",
+      "letter-combinations-of-phone"
+    ],
+    "hintLevels": [
+      "Level 1: This is a word-by-word expansion — each digit opens as many branches as it has letters.",
+      "Level 2: Keep a keypad table; at depth d, loop over table[digits[d]], append each letter, recurse to d + 1, and pop it back off.",
+      "Level 3: Guard the empty input before recursing — otherwise the base case fires immediately and emits one empty string instead of nothing."
+    ]
+  }
+}

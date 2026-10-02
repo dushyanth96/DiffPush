@@ -1,0 +1,60 @@
+{
+  "id": "number-of-substrings-containing-all-3-characters",
+  "index": 7,
+  "topic": "08.Sliding_Window",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Number of Substrings Containing All Three Characters",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=number+of+substrings+containing+all+three+characters",
+    "sourceFilePath": "08. Sliding Window/1. Medium Problems/07. Number of Substrings Containing all 3 characters.cpp"
+  },
+  "narrative": {
+    "title": "The Warehouse Zone Coverage Audit",
+    "scenario": "A warehouse's floor plan is encoded as a strip where each position is zone A, B, or C. Compliance requires every audit team to cover a contiguous stretch that touches all three zone types at least once. The planner counts how many distinct stretches qualify — teams differ by where they start and end, not by which zones they see.",
+    "inputFormat": "A string s consisting only of 'a', 'b', and 'c'.",
+    "outputFormat": "Return the number of substrings that contain at least one 'a', one 'b', and one 'c'.",
+    "constraints": [
+      "3 <= s.length <= 5 * 10^4",
+      "s consists only of 'a', 'b', 'c'"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "abcabc" },
+      "expected": 10,
+      "isPublic": true,
+      "explanation": "Every stretch ending at index 3 or later qualifies; the count follows each right edge's earliest legal start."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "aaacb" },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Only stretches that reach the final 'c' and also touch 'a' and 'b' qualify."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "abc" },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def number_of_substrings(s: str) -> int:\n    # For each right edge, find the last position where all three letters\n    # have appeared; every start at or before it yields a valid substring.\n    last = {'a': -1, 'b': -1, 'c': -1}\n    total = 0\n    for i, ch in enumerate(s):\n        last[ch] = i\n        if min(last.values()) >= 0:\n            total += min(last.values()) + 1\n    return total",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint numberOfSubstrings(string s) {\n    int last[3] = {-1, -1, -1};\n    long long total = 0;\n    for (int i = 0; i < (int)s.size(); ++i) {\n        last[s[i] - 'a'] = i;\n        int earliest = min({last[0], last[1], last[2]});\n        if (earliest >= 0) total += earliest + 1;\n    }\n    return (int)total;\n}",
+    "java": "class Solution {\n    public int numberOfSubstrings(String s) {\n        int[] last = {-1, -1, -1};\n        long total = 0;\n        for (int i = 0; i < s.length(); ++i) {\n            last[s.charAt(i) - 'a'] = i;\n            int earliest = Math.min(last[0], Math.min(last[1], last[2]));\n            if (earliest >= 0) total += earliest + 1;\n        }\n        return (int) total;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["sliding-window", "string", "subarray-counting", "number-of-substrings-containing-all-3-characters"],
+    "hintLevels": [
+      "Level 1: Fix the right edge and ask how far left the start may sit while still seeing all three letters.",
+      "Level 2: Track the latest index of each letter; the minimum of the three is the furthest legal start.",
+      "Level 3: Every start position 0..min(last) works, contributing min(last)+1 substrings per right edge."
+    ]
+  }
+}

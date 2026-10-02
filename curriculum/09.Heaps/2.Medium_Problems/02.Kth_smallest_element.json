@@ -1,0 +1,61 @@
+{
+  "id": "kth-smallest-element",
+  "index": 2,
+  "topic": "09.Heaps",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Kth Smallest Element in an Array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=kth+smallest+element+in+an+array",
+    "sourceFilePath": "09. Heaps/2. Medium Problems/02. Kth smallest element.cpp"
+  },
+  "narrative": {
+    "title": "The Warehouse Aisle Shortlist",
+    "scenario": "A warehouse scanner reads package weights one aisle at a time, and logistics wants the kth-lightest weight without a full sort. A holding bin keeps the k lightest weights seen so far, expelling its heaviest resident whenever a lighter package shows up. When the scan finishes, the bin's heaviest resident is exactly the kth-lightest weight.",
+    "inputFormat": "An integer array arr of distinct values and an integer K.",
+    "outputFormat": "Return the Kth smallest element of arr.",
+    "constraints": [
+      "1 <= K <= arr.length <= 10^5",
+      "-10^9 <= arr[i] <= 10^9",
+      "All array elements are distinct"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log k)",
+    "optimalSpace": "O(k)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [7, 10, 4, 3, 20, 15], "K": 3 },
+      "expected": 7,
+      "isPublic": true,
+      "explanation": "The values below 7 are 3 and 4, so 7 is the third-smallest."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [7, 10, 4, 3, 20, 15], "K": 4 },
+      "expected": 10,
+      "isPublic": true,
+      "explanation": "Exactly three values (3, 4, 7) rank below 10."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [5], "K": 1 },
+      "expected": 5,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\ndef find_kth_smallest(arr, K):\n    bin_heap = [-v for v in arr[:K]]   # max-heap via negation\n    heapq.heapify(bin_heap)\n    for v in arr[K:]:\n        if v < -bin_heap[0]:\n            heapq.heapreplace(bin_heap, -v)\n    return -bin_heap[0]",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint findKthSmallest(vector<int>& arr, int K) {\n    priority_queue<int> pq;  // max-heap of the K smallest so far\n    for (int i = 0; i < (int)arr.size(); ++i) {\n        if ((int)pq.size() < K) { pq.push(arr[i]); continue; }\n        if (arr[i] < pq.top()) { pq.pop(); pq.push(arr[i]); }\n    }\n    return pq.top();\n}",
+    "java": "import java.util.Collections;\nimport java.util.PriorityQueue;\n\nclass Solution {\n    public int findKthSmallest(int[] arr, int K) {\n        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());\n        for (int v : arr) {\n            if (pq.size() < K) { pq.offer(v); continue; }\n            if (v < pq.peek()) { pq.poll(); pq.offer(v); }\n        }\n        return pq.peek();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["heap", "selection", "max-heap-of-size-k", "kth-smallest-element"],
+    "hintLevels": [
+      "Level 1: The mirror of kth-largest — hold k candidates and evict the strongest when a smaller one appears.",
+      "Level 2: A max-heap of size k exposes the heaviest of the lightest k at the top.",
+      "Level 3: Distinct values simplify the answer — no tie handling is needed for the boundary element."
+    ]
+  }
+}

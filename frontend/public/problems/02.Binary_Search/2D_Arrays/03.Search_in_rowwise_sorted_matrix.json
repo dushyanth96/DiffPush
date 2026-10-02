@@ -1,0 +1,61 @@
+{
+  "id": "search-in-rowwise-sorted-matrix",
+  "index": 3,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Search in rowwise sorted matrix",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Search%20in%20rowwise%20sorted%20matrix",
+    "sourceFilePath": "02.Binary Search/2D Arrays/3.Search_in_rowwise_sorted_matrix.cpp"
+  },
+  "narrative": {
+    "title": "Sweeping a Corrosion Map from Its Sharpest Corner",
+    "scenario": "A corrosion map stores thickness readings that increase left to right along every row and top to bottom down every column - but rows do not continue each other, so the grid is not one flat sorted list. An inspector standing at the top-right corner can eliminate a whole row or column with every reading. Confirm whether a target thickness exists on the map.",
+    "inputFormat": "An m x n matrix where integers increase along each row and down each column, plus an integer target.",
+    "outputFormat": "true when target appears in the matrix, otherwise false.",
+    "constraints": [
+      "1 <= m, n <= 200",
+      "-10^9 <= matrix[i][j], target <= 10^9",
+      "Rows and columns are each sorted in ascending order"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m + n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "matrix": [[1, 4, 7, 11, 15], [2, 5, 8, 12, 19], [3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30]], "target": 5 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The corner sweep discards columns and rows in turn until it steps onto 5."
+    },
+    {
+      "id": "tc-2",
+      "input": { "matrix": [[1, 4, 7, 11, 15], [2, 5, 8, 12, 19], [3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30]], "target": 20 },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Every elimination step is justified, and the sweep leaves the map without ever meeting 20."
+    },
+    {
+      "id": "tc-3",
+      "input": { "matrix": [[-5]], "target": -5 },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def searchMatrix(self, matrix: list[list[int]], target: int) -> bool:\n        # TODO: eliminate a row or column per step from the top-right corner.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool searchMatrix(vector<vector<int>>& matrix, int target) {\n        // TODO: eliminate a row or column per step from the top-right corner.\n    }\n};",
+    "java": "class Solution {\n    public boolean searchMatrix(int[][] matrix, int target) {\n        // TODO: eliminate a row or column per step from the top-right corner.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "matrix", "staircase-search", "elimination-walk", "search-in-rowwise-sorted-matrix"],
+    "hintLevels": [
+      "Level 1: The top-right cell is special - it is the largest in its row and the smallest in its column at the same time.",
+      "Level 2: From that corner, a value larger than the target clears the whole column, and a value smaller clears the whole row; take one step per comparison.",
+      "Level 3: The walk ends when it leaves the grid, and starting from the wrong corner (say bottom-right) offers no valid elimination move at all."
+    ]
+  }
+}

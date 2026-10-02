@@ -1,0 +1,59 @@
+{
+  "id": "climbing-stairs",
+  "index": 1,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Climbing Stairs",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=climbing+stairs",
+    "sourceFilePath": "14. Dynamic Programming/2. 1D DP/01. Climbing Stairs.cpp"
+  },
+  "narrative": {
+    "title": "The Two-Stride Dock Loader",
+    "scenario": "A warehouse robot services a loading dock with n steps. Its wheel base lets it advance exactly one or two steps per move, and its route planner logs every distinct sequence of moves that reaches the top. The fleet manager wants to know how many different climb patterns exist for a dock of any height, so crews can budget inspection time per route variant.",
+    "inputFormat": "A single integer n, the number of steps in the staircase.",
+    "outputFormat": "Return the number of distinct move sequences that reach step n.",
+    "constraints": [
+      "1 <= n <= 45"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 2 },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "1+1 or a single 2-step leap."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "1+1+1, 1+2, and 2+1 — the count is f(2) + f(1) = 2 + 1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 1 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n):\n        # Return the number of distinct ways to climb n steps.\n        pass",
+    "cpp": "class Solution {\npublic:\n    // Return the number of distinct ways to climb n steps.\n    int solve(int n);\n};",
+    "java": "class Solution {\n    // Return the number of distinct ways to climb n steps.\n    public int solve(int n) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "1d-dp", "fibonacci-pattern", "climbing-stairs"],
+    "hintLevels": [
+      "Level 1: The last move onto step n came from step n-1 or n-2 — count both branches.",
+      "Level 2: ways(n) = ways(n-1) + ways(n-2) with ways(1) = 1 and ways(2) = 2.",
+      "Level 3: Carry only two rolling values upward; no array is needed."
+    ]
+  }
+}

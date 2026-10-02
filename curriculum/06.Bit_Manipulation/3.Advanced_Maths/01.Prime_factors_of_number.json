@@ -1,0 +1,59 @@
+{
+  "id": "prime-factors-of-number",
+  "index": 1,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Prime factors of number",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Prime%20factors%20of%20number",
+    "sourceFilePath": "06.Bit Manipulation/3. Advanced Maths/01. Prime factors of number.cpp"
+  },
+  "narrative": {
+    "title": "Distilling the Blend Down to Its Base Oils",
+    "scenario": "A refinery logs each blend by an integer code, and compliance wants the blend's base oils — the distinct primes that multiply into it. The chemist strips each candidate factor out completely (dividing it away with all its powers) before moving to the next candidate, so no composite ever pretends to be a base. Anything still standing after the square-root sweep is itself a large base oil.",
+    "inputFormat": "An integer n greater than 1.",
+    "outputFormat": "The distinct prime factors of n in increasing order.",
+    "constraints": [
+      "2 <= n <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(sqrt(n))",
+    "optimalSpace": "O(1) beyond the output"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 100 },
+      "expected": [2, 5],
+      "isPublic": true,
+      "explanation": "100 = 2^2 * 5^2; only the distinct bases 2 and 5 are reported."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 13 },
+      "expected": [13],
+      "isPublic": true,
+      "explanation": "A prime blend is its own single base oil."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 60 },
+      "expected": [2, 3, 5],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def allPrimeFactors(self, n: int) -> list[int]:\n        # TODO: strip each factor fully before advancing; catch the survivor > 1.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> allPrimeFactors(int n) {\n        // TODO: trial-divide to sqrt(n), dividing out each prime completely.\n    }\n};",
+    "java": "class Solution {\n    public int[] allPrimeFactors(int n) {\n        // TODO: strip each factor fully before advancing; catch the survivor > 1.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["number-theory", "factorization", "trial-division", "prime-factors-of-number"],
+    "hintLevels": [
+      "Level 1: Divide a factor out completely and it can never come back disguised as a composite later.",
+      "Level 2: Loop candidates from 2 while i * i <= n; each hit gets one entry and then divides n until it no longer fits.",
+      "Level 3: After the loop, a leftover n > 1 is a prime larger than sqrt(original) — the one factor the sweep could not reach."
+    ]
+  }
+}

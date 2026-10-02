@@ -1,0 +1,60 @@
+{
+  "id": "minimum-path-sum",
+  "index": 4,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Minimum Path Sum",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=minimum+path+sum",
+    "sourceFilePath": "14. Dynamic Programming/3. 2D DP/04. Minimum Path Sum.cpp"
+  },
+  "narrative": {
+    "title": "The Toll-Weighted Circuit Board",
+    "scenario": "An assembly robot traces a trace from the top-left pad of an m x n circuit board to the bottom-right pad, moving only right or down. Every pad levies a solder-time toll recorded in a grid, and the plant wants each trace to cost as little as possible. Program the planner to report the cheapest achievable toll total across any legal route.",
+    "inputFormat": "An m x n matrix grid of non-negative integers, where grid[i][j] is the toll at cell (i, j).",
+    "outputFormat": "Return the minimum possible sum of tolls along a right/down path from the top-left to the bottom-right cell.",
+    "constraints": [
+      "1 <= m, n <= 200",
+      "0 <= grid[i][j] <= 200"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m*n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "grid": [[1, 3, 1], [1, 5, 1], [4, 2, 1]] },
+      "expected": 7,
+      "isPublic": true,
+      "explanation": "Route 1, 3, 1, 1, 1 hugs the top edge then drops — total 7."
+    },
+    {
+      "id": "tc-2",
+      "input": { "grid": [[1, 2, 3], [4, 5, 6]] },
+      "expected": 12,
+      "isPublic": true,
+      "explanation": "Straight across the top row: 1 + 2 + 3 + 6 = 12."
+    },
+    {
+      "id": "tc-3",
+      "input": { "grid": [[5]] },
+      "expected": 5,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, grid):\n        # Return the minimum path sum from top-left to bottom-right.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the minimum path sum from top-left to bottom-right.\n    int solve(std::vector<std::vector<int>>& grid);\n};",
+    "java": "class Solution {\n    // Return the minimum path sum from top-left to bottom-right.\n    public int solve(int[][] grid) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "2d-dp", "grid-paths", "min-path-sum"],
+    "hintLevels": [
+      "Level 1: Same neighborhood as unique paths, but each cell keeps the cheaper of its two entries.",
+      "Level 2: cost[i][j] = grid[i][j] + min(cost[i-1][j], cost[i][j-1]); the corner seeds itself.",
+      "Level 3: Reuse a single rolling row; out-of-bounds neighbors are simply ignored rather than set to infinity."
+    ]
+  }
+}

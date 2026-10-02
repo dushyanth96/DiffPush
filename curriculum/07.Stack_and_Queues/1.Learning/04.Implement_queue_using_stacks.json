@@ -1,0 +1,61 @@
+{
+  "id": "implement-queue-using-stacks",
+  "index": 4,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Implement Queue using Stacks",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=implement+queue+using+stacks",
+    "sourceFilePath": "07.Stack and Queues/1. Learning/04. Implement queue using stacks.cpp"
+  },
+  "narrative": {
+    "title": "The Two-Drawer Mail Sorter",
+    "scenario": "A mailroom sorts envelopes with two stacking drawers. Letters arrive at the in-drawer on top of each other, but deliveries must leave in arrival order — so whenever the out-drawer is empty, the clerk pours the entire in-drawer into it, flipping the order so the oldest letter surfaces first. Implement this sorter: arrivals always land in the in-drawer, and departures drain the out-drawer.",
+    "inputFormat": "A list of operations, each either [\"enqueue\", value] to insert or [\"dequeue\"] to remove.",
+    "outputFormat": "Return the list of values produced by every dequeue operation, in order; a dequeue on an empty structure yields -1.",
+    "constraints": [
+      "1 <= number of operations <= 10^5",
+      "-10^9 <= enqueued values <= 10^9",
+      "Two stacks may be used internally"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1) amortized per operation",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "operations": [["enqueue", 1], ["enqueue", 2], ["dequeue"], ["enqueue", 3], ["dequeue"], ["dequeue"]] },
+      "expected": [1, 2, 3],
+      "isPublic": true,
+      "explanation": "Pure FIFO behavior: 1 leaves first even though it sits at the bottom of the in-stack."
+    },
+    {
+      "id": "tc-2",
+      "input": { "operations": [["enqueue", 9], ["dequeue"], ["dequeue"]] },
+      "expected": [9, -1],
+      "isPublic": true,
+      "explanation": "One letter is delivered, then the next request finds both drawers empty."
+    },
+    {
+      "id": "tc-3",
+      "input": { "operations": [["enqueue", 4], ["dequeue"], ["enqueue", 8], ["enqueue", -2], ["dequeue"], ["dequeue"], ["dequeue"]] },
+      "expected": [4, 8, -2, -1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def run_queue_via_stacks(operations):\n    # Simulate a queue backed by two stacks; return dequeue results (-1 when empty).\n    inbox, outbox = [], []\n    results = []\n    for op in operations:\n        if op[0] == \"enqueue\":\n            inbox.append(op[1])\n        else:\n            if not outbox:\n                while inbox:\n                    outbox.append(inbox.pop())\n            results.append(outbox.pop() if outbox else -1)\n    return results",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass MyQueue {\nprivate:\n    stack<int> inbox, outbox;\n    void transfer() {\n        if (outbox.empty())\n            while (!inbox.empty()) { outbox.push(inbox.top()); inbox.pop(); }\n    }\npublic:\n    void enqueue(int x) { inbox.push(x); }\n    int dequeue() {\n        if (inbox.empty() && outbox.empty()) return -1;\n        transfer();\n        int val = outbox.top();\n        outbox.pop();\n        return val;\n    }\n};",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass MyQueue {\n    private Deque<Integer> inbox = new ArrayDeque<>();\n    private Deque<Integer> outbox = new ArrayDeque<>();\n\n    public void enqueue(int x) { inbox.push(x); }\n\n    public int dequeue() {\n        if (inbox.isEmpty() && outbox.isEmpty()) return -1;\n        if (outbox.isEmpty())\n            while (!inbox.isEmpty()) outbox.push(inbox.pop());\n        return outbox.pop();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["queue", "stack", "design", "amortized", "implement-queue-using-stacks"],
+    "hintLevels": [
+      "Level 1: Two reversals cancel out — stack order flipped twice is queue order.",
+      "Level 2: Pour the in-stack into the out-stack only when the out-stack runs dry, not on every dequeue.",
+      "Level 3: Each element is moved at most once, giving O(1) amortized cost; both stacks empty means -1."
+    ]
+  }
+}

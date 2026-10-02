@@ -1,0 +1,62 @@
+{
+  "id": "find-smallest-integer",
+  "index": 5,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Find smallest integer",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Find%20smallest%20integer",
+    "sourceFilePath": "02.Binary Search/In Search Space/05.Find_smallest_integer.cpp"
+  },
+  "narrative": {
+    "title": "Choosing the Coarsest Sampler That Still Resolves the Signal",
+    "scenario": "A signal pipeline compresses each sample by integer division before summing the channels, and the regulator caps the combined output. A coarser divisor lowers the output but loses detail, so the team wants the smallest divisor that keeps the sum within the cap. Pick that divisor.",
+    "inputFormat": "An array nums of n positive integers and an integer threshold.",
+    "outputFormat": "The smallest positive divisor d such that the sum of ceil(nums[i] / d) over all i is at most threshold.",
+    "constraints": [
+      "1 <= nums.length <= 5 * 10^4",
+      "1 <= nums[i] <= 10^6",
+      "1 <= threshold <= 10^6",
+      "A valid divisor always exists"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log M), where M is the largest element",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 2, 5, 9], "threshold": 6 },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Divisor 4 leaves a sum of 7, while divisor 5 rounds every channel down far enough for a total of 5."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [44, 22, 33, 11, 1], "threshold": 5 },
+      "expected": 44,
+      "isPublic": true,
+      "explanation": "Every sample must collapse to 1, which happens only at a divisor of 44, the largest value."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [21212], "threshold": 1 },
+      "expected": 21212,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def smallestDivisor(self, nums: list[int], threshold: int) -> int:\n        # TODO: return the smallest divisor whose rounded sum fits the cap.\n        pass",
+    "cpp": "#include <vector>\n#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    int smallestDivisor(vector<int>& nums, int threshold) {\n        // TODO: return the smallest divisor whose rounded sum fits the cap.\n    }\n};",
+    "java": "class Solution {\n    public int smallestDivisor(int[] nums, int threshold) {\n        // TODO: return the smallest divisor whose rounded sum fits the cap.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "answer-space", "monotonic-predicate", "ceil-division", "find-smallest-integer"],
+    "hintLevels": [
+      "Level 1: Raising the divisor never raises the sum, so 'sum fits the cap' is a monotonic predicate over divisors.",
+      "Level 2: Search divisors from 1 to the largest sample; for each candidate, accumulate the ceiling-divided sum and compare it with the cap.",
+      "Level 3: Ceiling division can be expressed as (value + divisor - 1) / divisor without floating point, and the recorded answer must shrink toward the smallest passing candidate, not the largest."
+    ]
+  }
+}

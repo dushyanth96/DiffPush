@@ -1,0 +1,60 @@
+{
+  "id": "best-time-to-buy-and-sell-stocks",
+  "index": 1,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Best Time to Buy and Sell Stock",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=best+time+to+buy+and+sell+stock",
+    "sourceFilePath": "14. Dynamic Programming/6. DP on Stocks/01. Best time to buy and sell stocks.cpp"
+  },
+  "narrative": {
+    "title": "The Single-Shuttle Freight Arbitrage",
+    "scenario": "A logistics broker charters one shuttle between two depots whose transfer fee varies by the hour. The broker may lock a fee once (the buy) and release it later at a higher fee (the sell), strictly in that order. Dispatch wants the biggest spread achievable from exactly one lock-release cycle, or zero when every release would come out behind.",
+    "inputFormat": "An array prices where prices[i] is the fee on hour i.",
+    "outputFormat": "Return the maximum profit from one buy followed by one later sell, or 0 when no profitable pair exists.",
+    "constraints": [
+      "1 <= len(prices) <= 10^5",
+      "0 <= prices[i] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "prices": [7, 1, 5, 3, 6, 4] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Lock at 1, release at 6 — spread 5."
+    },
+    {
+      "id": "tc-2",
+      "input": { "prices": [7, 6, 4, 3, 1] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "Fees only fall, so no release ever beats its lock; the answer is 0."
+    },
+    {
+      "id": "tc-3",
+      "input": { "prices": [2, 4, 1, 7] },
+      "expected": 6,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, prices):\n        # Return the max profit from one buy-sell pair.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the max profit from one buy-sell pair.\n    int solve(std::vector<int>& prices);\n};",
+    "java": "class Solution {\n    // Return the max profit from one buy-sell pair.\n    public int solve(int[] prices) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "stocks", "single-pass", "state-machine"],
+    "hintLevels": [
+      "Level 1: While scanning, remember the cheapest fee seen so far — it is the only lock worth pairing with today.",
+      "Level 2: Track two values: running minimum price and running best spread price - min.",
+      "Level 3: Update the best spread before refreshing the minimum so a same-hour pair is never counted."
+    ]
+  }
+}

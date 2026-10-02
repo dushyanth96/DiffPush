@@ -1,0 +1,60 @@
+{
+  "id": "minimum-number-of-insertions-to-make-parenthesis-valid",
+  "index": 1,
+  "topic": "16.Strings_Hard",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Minimum Add to Make Parentheses Valid",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=minimum+add+to+make+parentheses+valid",
+    "sourceFilePath": "16. Strings (Hard)/Hard/01. Minimum number of insertions to make parenthesis valid.cpp"
+  },
+  "narrative": {
+    "title": "The Signal Bracket Balancer",
+    "scenario": "A telemetry parser rejects any packet whose bracket pattern is unbalanced — every opener needs a later closer, and no closer may arrive unpaired. Patching firmware per packet is expensive, so the gateway instead counts the fewest single brackets to splice in anywhere to legitimize the stream.",
+    "inputFormat": "A string s containing only '(' and ')'.",
+    "outputFormat": "Return the minimum number of bracket insertions needed to make s valid.",
+    "constraints": [
+      "1 <= len(s) <= 1000",
+      "s consists of '(' and ')' only"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "())" },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "One insertion fixes the trailing closer: \"(())\" or \"()()\"."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "(((" },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Each unmatched opener needs its own closing bracket."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "()))((" },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, s):\n        # Return the minimum insertions to balance the brackets.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the minimum insertions to balance the brackets.\n    int solve(std::string s);\n};",
+    "java": "class Solution {\n    // Return the minimum insertions to balance the brackets.\n    public int solve(String s) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "parentheses", "greedy", "balance-counter"],
+    "hintLevels": [
+      "Level 1: Track unmatched openers and orphan closers separately — both must be patched.",
+      "Level 2: A ')' consumes a pending '(' if one exists; otherwise it adds to the orphan count.",
+      "Level 3: The answer is just pending + orphans after one scan; no stack needed."
+    ]
+  }
+}

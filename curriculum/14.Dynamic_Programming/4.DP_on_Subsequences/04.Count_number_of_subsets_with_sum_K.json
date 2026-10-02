@@ -1,0 +1,62 @@
+{
+  "id": "count-number-of-subsets-with-sum-k",
+  "index": 4,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Count Subsets with Sum K",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=count+partitions+with+given+sum+perfect+sum",
+    "sourceFilePath": "14. Dynamic Programming/4. DP on Subsequences/04. Count number of subsets with sum K.cpp"
+  },
+  "narrative": {
+    "title": "The Spare-Parts Combination Audit",
+    "scenario": "An aircraft depot tags every spare part with a weight, and the compliance team wants to know how many distinct bundles weigh exactly the certified payload k. Parts are physically distinct even when weights repeat, and a bundle is only a bundle if the total matches the certificate to the gram. The audit program counts every qualifying selection.",
+    "inputFormat": "An integer n, an array arr of n non-negative integers, and a target sum.",
+    "outputFormat": "Return the number of distinct subsets of arr whose elements sum to the target, modulo 10^9 + 7.",
+    "constraints": [
+      "1 <= n <= 10^3",
+      "0 <= arr[i] <= 10^3",
+      "0 <= sum <= 10^3",
+      "answer modulo 10^9 + 7"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*sum)",
+    "optimalSpace": "O(sum)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 6, "arr": [2, 3, 5, 6, 8, 10], "sum": 10 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "{2, 3, 5}, {2, 8}, and {10} each total 10."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 2, "arr": [1, 1], "sum": 1 },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Either copy of the part alone is a valid distinct bundle."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 3, "arr": [0, 1, 2], "sum": 3 },
+      "expected": 2,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, arr, k):\n        # Return the count of subsets summing to k, modulo 1e9+7.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the count of subsets summing to k, modulo 1e9+7.\n    int solve(int n, std::vector<int>& arr, int k);\n};",
+    "java": "class Solution {\n    // Return the count of subsets summing to k, modulo 1e9+7.\n    public int solve(int n, int[] arr, int k) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "subsequences", "counting-dp", "subset-sum"],
+    "hintLevels": [
+      "Level 1: Swap the subset-sum OR for a running total — each cell counts ways instead of yes/no.",
+      "Level 2: ways[i][j] = ways[i-1][j] + ways[i-1][j-arr[i]] (second term only when arr[i] <= j).",
+      "Level 3: A zero-weight part doubles some entries: skipping it and taking it are both valid at equal sum."
+    ]
+  }
+}

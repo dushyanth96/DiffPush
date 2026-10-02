@@ -1,0 +1,61 @@
+{
+  "id": "fractional-knapsack",
+  "index": 2,
+  "topic": "10.Greedy_Approach",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Fractional Knapsack",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=fractional+knapsack",
+    "sourceFilePath": "10. Greedy Approach/1. Easy/02. Fractional Knapsack.cpp"
+  },
+  "narrative": {
+    "title": "The Cargo Lift Value Haul",
+    "scenario": "A cargo lift has a fixed weight budget and a warehouse full of commodity sacks, each with a weight and a resale value. Unlike sealed crates, sacks can be portioned — a fraction of a sack yields that fraction of its value. The loader packs by density, filling the lift with the most value-dense sacks first and taking a partial sack only to cap off the remaining budget.",
+    "inputFormat": "An integer W (capacity) plus two arrays: values and weights of the items.",
+    "outputFormat": "Return the maximum total value achievable, allowing fractional takes.",
+    "constraints": [
+      "1 <= number of items <= 10^5",
+      "1 <= W <= 10^9",
+      "1 <= values[i], weights[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "W": 50, "values": [60, 100, 120], "weights": [10, 20, 30] },
+      "expected": 240.0,
+      "isPublic": true,
+      "explanation": "Take the 10 and 20 weight items whole (160) plus two-thirds of the 30-weight item (80)."
+    },
+    {
+      "id": "tc-2",
+      "input": { "W": 25, "values": [60, 100], "weights": [10, 20] },
+      "expected": 135.0,
+      "isPublic": true,
+      "explanation": "The denser item fills 10 units for 60; the remaining 15 units take three-quarters of the second item for 75 more."
+    },
+    {
+      "id": "tc-3",
+      "input": { "W": 5, "values": [10], "weights": [2] },
+      "expected": 10.0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def fractional_knapsack(W, values, weights):\n    order = sorted(range(len(values)), key=lambda i: values[i] / weights[i], reverse=True)\n    loot = 0.0\n    for i in order:\n        if W <= 0:\n            break\n        if weights[i] > W:\n            loot += W * (values[i] / weights[i])\n            W = 0\n        else:\n            loot += values[i]\n            W -= weights[i]\n    return loot",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\ndouble fractionalKnapsack(int W, vector<pair<double, double>>& items) {\n    // items: {value, weight}; sort by value/weight descending\n    sort(items.begin(), items.end(), [](auto& a, auto& b) {\n        return a.first / a.second > b.first / b.second;\n    });\n    double loot = 0;\n    for (auto& [value, weight] : items) {\n        if (W <= 0) break;\n        if (weight > W) {\n            loot += W * (value / weight);\n            W = 0;\n        } else {\n            loot += value;\n            W -= (int)weight;\n        }\n    }\n    return loot;\n}",
+    "java": "import java.util.Arrays;\n\nclass Solution {\n    public double fractionalKnapsack(int W, int[] values, int[] weights) {\n        Integer[] order = new Integer[values.length];\n        for (int i = 0; i < order.length; ++i) order[i] = i;\n        Arrays.sort(order, (a, b) ->\n            Double.compare((double) values[b] / weights[b], (double) values[a] / weights[a]));\n        double loot = 0;\n        for (int idx : order) {\n            if (W <= 0) break;\n            if (weights[idx] > W) {\n                loot += W * ((double) values[idx] / weights[idx]);\n                W = 0;\n            } else {\n                loot += values[idx];\n                W -= weights[idx];\n            }\n        }\n        return loot;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["greedy", "knapsack", "ratio-sorting", "fractional-knapsack"],
+    "hintLevels": [
+      "Level 1: Value per unit weight is the only ranking that matters when fractions are allowed.",
+      "Level 2: Sort by density, take whole items while they fit, then top off with a fraction of the next.",
+      "Level 3: Once the budget hits zero, stop — remaining items contribute nothing."
+    ]
+  }
+}

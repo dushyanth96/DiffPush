@@ -1,0 +1,61 @@
+{
+  "id": "divide-array-into-sets-of-k-consecutive-number",
+  "index": 7,
+  "topic": "09.Heaps",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Divide Array in Sets of K Consecutive Numbers",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=divide+array+in+sets+of+k+consecutive+numbers",
+    "sourceFilePath": "09. Heaps/2. Medium Problems/07. Divide array into sets of K consecutive number.cpp"
+  },
+  "narrative": {
+    "title": "The Hotel Room Block Allocator",
+    "scenario": "A hotel allocates room blocks to tour groups: each block must be k consecutive room numbers, and every room number in the inventory list must be used exactly once. The allocator walks room numbers in ascending order, and whenever it opens a new block at a room, it must be able to claim the next k-1 rooms without conflict.",
+    "inputFormat": "An integer array nums of room numbers and an integer k, the block size.",
+    "outputFormat": "Return true if the inventory can be partitioned into sets of k consecutive numbers, false otherwise.",
+    "constraints": [
+      "1 <= k <= nums.length <= 10^5",
+      "0 <= nums[i] < 10^9",
+      "nums.length is divisible by k for a valid partition"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 2, 3, 3, 4, 4, 5, 6], "k": 4 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Blocks [1,2,3,4] and [3,4,5,6] consume every room exactly once."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1, 2, 3, 4], "k": 3 },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Four rooms cannot split into blocks of three."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1, 1, 2, 2, 3, 3], "k": 2 },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import Counter\n\ndef is_possible_divide(nums, k):\n    if len(nums) % k:\n        return False\n    count = Counter(nums)\n    for num in sorted(nums):\n        if count[num] > 0:\n            need = count[num]\n            for nxt in range(num, num + k):\n                if count[nxt] < need:\n                    return False\n                count[nxt] -= need\n    return True",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool isPossibleDivide(vector<int>& nums, int k) {\n    if (nums.size() % k) return false;\n    map<int, int> count;\n    for (int v : nums) ++count[v];\n    for (auto [num, need] : count) {\n        while (count[num] > 0) {\n            for (int nxt = num; nxt < num + k; ++nxt) {\n                if (count[nxt] < count[num]) return false;\n                count[nxt] -= count[num];\n            }\n        }\n    }\n    return true;\n}",
+    "java": "import java.util.*;\n\nclass Solution {\n    public boolean isPossibleDivide(int[] nums, int k) {\n        if (nums.length % k != 0) return false;\n        TreeMap<Integer, Integer> count = new TreeMap<>();\n        for (int v : nums) count.merge(v, 1, Integer::sum);\n        for (int num : new ArrayList<>(count.keySet())) {\n            int need;\n            while ((need = count.getOrDefault(num, 0)) > 0) {\n                for (int nxt = num; nxt < num + k; ++nxt) {\n                    int have = count.getOrDefault(nxt, 0);\n                    if (have < need) return false;\n                    if (have == need) count.remove(nxt); else count.put(nxt, have - need);\n                }\n            }\n        }\n        return true;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["heap", "greedy", "consecutive-groups", "divide-array-into-sets-of-k-consecutive-number"],
+    "hintLevels": [
+      "Level 1: Scan values in ascending order; the smallest unclaimed value must start a block.",
+      "Level 2: When value v starts a block, all of v+1..v+k-1 must be available in matching quantity.",
+      "Level 3: Consume whole runs at once (decrement by the starting count) to stay linear after sorting."
+    ]
+  }
+}

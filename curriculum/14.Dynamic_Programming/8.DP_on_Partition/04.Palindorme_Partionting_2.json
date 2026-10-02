@@ -1,0 +1,60 @@
+{
+  "id": "palindorme-partionting-2",
+  "index": 4,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Palindrome Partitioning II",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=palindrome+partitioning+ii+minimum+cuts",
+    "sourceFilePath": "14. Dynamic Programming/8. DP on Partition/05. Palindorme Partionting 2.cpp"
+  },
+  "narrative": {
+    "title": "The Cipher Ring Segmentation",
+    "scenario": "A cryptography lab shreds intercepted transmissions into chunks so that every chunk reads the same forwards and backwards — only then can each fragment be archived in the symmetric vault. Each slice of the tape costs one cut, and the archivist wants as few cuts as possible while keeping every fragment palindromic.",
+    "inputFormat": "A string s.",
+    "outputFormat": "Return the minimum number of cuts so that every resulting substring is a palindrome.",
+    "constraints": [
+      "1 <= len(s) <= 2000",
+      "s consists of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n^2)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "aab" },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "One cut yields \"aa\" + \"b\" — both palindromes."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "a" },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "A single character is already palindromic; no cut needed."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "abccbc" },
+      "expected": 2,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, s):\n        # Return the minimum palindrome-partitioning cuts for s.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the minimum palindrome-partitioning cuts for s.\n    int solve(std::string s);\n};",
+    "java": "class Solution {\n    // Return the minimum palindrome-partitioning cuts for s.\n    public int solve(String s) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "partition-dp", "palindrome", "mcm-pattern"],
+    "hintLevels": [
+      "Level 1: Greedy longest-prefix fails; a short palindromic prefix can pay off two cuts later.",
+      "Level 2: cuts[i] = min over palindromic s[i..j] of 1 + cuts[j+1]; subtract 1 at the end for the trailing cut.",
+      "Level 3: Precompute an isPalindrome table in O(n^2) instead of re-checking substrings inside the DP loop."
+    ]
+  }
+}

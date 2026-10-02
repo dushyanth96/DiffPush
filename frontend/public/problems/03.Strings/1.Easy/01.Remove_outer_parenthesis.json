@@ -1,0 +1,60 @@
+{
+  "id": "remove-outer-parenthesis",
+  "index": 1,
+  "topic": "03.Strings",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Remove outer parenthesis",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Remove%20outer%20parenthesis",
+    "sourceFilePath": "03.Strings/1.Easy/01.Remove_outer_parenthesis.cpp"
+  },
+  "narrative": {
+    "title": "Stripping Envelope Markers Off Packet Frames",
+    "scenario": "A message broker chops a transmission stream into primitive frames, and every frame is wrapped in exactly one outer pair of framing markers. Before payloads are forwarded downstream, that outermost wrapper must be peeled off each frame so only the inner content is shipped. Given the raw marker stream, emit it with every frame's outermost pair removed.",
+    "inputFormat": "A string s consisting of '(' and ')' characters that forms a valid, balanced parentheses sequence.",
+    "outputFormat": "The string s with the outermost parentheses of every primitive component deleted; content that sat deeper inside is preserved in order.",
+    "constraints": [
+      "2 <= s.length <= 10^5",
+      "s is a valid (balanced) parentheses string"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "(()())(())" },
+      "expected": "()()()",
+      "isPublic": true,
+      "explanation": "Two primitive frames sit back to back; peeling each outer wrapper leaves their inner contents concatenated."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "(()())(())(()(()))" },
+      "expected": "()()()()(())",
+      "isPublic": true,
+      "explanation": "The final frame carries a nested inner pair that survives, while only its outermost wrapper is stripped."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "()()" },
+      "expected": "",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def removeOuterParentheses(self, s: str) -> str:\n        # TODO: return s with every primitive's outermost wrapper stripped.\n        pass",
+    "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string removeOuterParentheses(string s) {\n        // TODO: return s with every primitive's outermost wrapper stripped.\n    }\n};",
+    "java": "class Solution {\n    public String removeOuterParentheses(String s) {\n        // TODO: return s with every primitive's outermost wrapper stripped.\n        return \"\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "parentheses", "depth-counting", "remove-outer-parenthesis"],
+    "hintLevels": [
+      "Level 1: Every marker sits at some nesting depth; a marker belongs to the output only if it is not the outermost wrapper of its own frame.",
+      "Level 2: Sweep left to right with a running depth counter — copy an opening marker only when the depth is already positive, and a closing marker only when the depth after it is still positive.",
+      "Level 3: Increment on '(' and decrement on ')' on every character, but guard the copy: '(' is kept when depth > 0 before the increment, ')' when depth > 1 before the decrement."
+    ]
+  }
+}

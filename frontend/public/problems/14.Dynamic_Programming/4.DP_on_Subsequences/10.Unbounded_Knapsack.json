@@ -1,0 +1,101 @@
+{
+  "id": "unbounded-knapsack",
+  "index": 10,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Unbounded Knapsack",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=unbounded+knapsack",
+    "sourceFilePath": "14. Dynamic Programming/4. DP on Subsequences/10. Unbounded Knapsack.cpp"
+  },
+  "narrative": {
+    "title": "The Wholesale Pallet Buyer",
+    "scenario": "A distributor loads a delivery van with stock items — each SKU has a boxed weight and a resale margin, and the storeroom holds unlimited copies of every SKU. The van has a hard axle limit W. The buyer's terminal must pick the basket of SKUs (repeats allowed) that maximizes margin without exceeding the limit.",
+    "inputFormat": "Integers n and W, plus arrays wt and val of length n giving each SKU's weight and value.",
+    "outputFormat": "Return the maximum total value with total weight at most W, where any item may be taken any number of times.",
+    "constraints": [
+      "1 <= n <= 10^3",
+      "1 <= W <= 10^3",
+      "1 <= wt[i], val[i] <= 10^3"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*W)",
+    "optimalSpace": "O(W)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "n": 2,
+        "W": 3,
+        "wt": [
+          2,
+          1
+        ],
+        "val": [
+          1,
+          1
+        ]
+      },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Load the weight-1 item three times — total 3 within the limit."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "n": 3,
+        "W": 8,
+        "wt": [
+          2,
+          3,
+          5
+        ],
+        "val": [
+          3,
+          4,
+          7
+        ]
+      },
+      "expected": 12,
+      "isPublic": true,
+      "explanation": "Four copies of the weight-2 SKU load the van to exactly 8 for 4 * 3 = 12."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "n": 2,
+        "W": 5,
+        "wt": [
+          5,
+          6
+        ],
+        "val": [
+          10,
+          11
+        ]
+      },
+      "expected": 10,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, W, wt, val):\n        # Return the maximum value with unlimited copies of each item.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the maximum value with unlimited copies of each item.\n    int solve(int n, int W, std::vector<int>& wt, std::vector<int>& val);\n};",
+    "java": "class Solution {\n    // Return the maximum value with unlimited copies of each item.\n    public int solve(int n, int W, int[] wt, int[] val) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "subsequences",
+      "unbounded",
+      "knapsack"
+    ],
+    "hintLevels": [
+      "Level 1: Identical to 0-1 knapsack except taking an item leaves you on the same item.",
+      "Level 2: best[i][w] = max(best[i-1][w], val[i] + best[i][w - wt[i]]) — note the same-row lookback.",
+      "Level 3: A 1D sweep left-to-right encodes the unbounded re-use automatically; right-to-left would forbid it."
+    ]
+  }
+}

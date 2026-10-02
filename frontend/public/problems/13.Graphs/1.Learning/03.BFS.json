@@ -1,0 +1,61 @@
+{
+  "id": "bfs",
+  "index": 3,
+  "topic": "13.Graphs",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Breadth First Search of a Graph",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=breadth+first+search+traversal+graph",
+    "sourceFilePath": "13. Graphs/1. Learning/03. BFS.cpp"
+  },
+  "narrative": {
+    "title": "The Expanding Roll-Call Wave",
+    "scenario": "A campus switchboard starts at the main desk (node 0) and announces a drill room by room in rings: first every room directly wired to the desk, then every room wired to those, and so on. Each room is called exactly once, and the announcement order is the moment each room first joins the wave — a queue keeps the rings honest.",
+    "inputFormat": "An integer V (number of vertices) and an adjacency list adj for a directed or undirected graph — adj[i] lists the neighbours of vertex i.",
+    "outputFormat": "Return the BFS order starting from vertex 0, restricted to nodes reachable from 0.",
+    "constraints": [
+      "1 <= V <= 10^5",
+      "0 <= number of edges <= 2 * 10^5",
+      "0 <= adj[i][j] < V"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(V + E)",
+    "optimalSpace": "O(V)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "V": 5, "adj": [[1, 2, 3], [], [4], [], []] },
+      "expected": [0, 1, 2, 3, 4],
+      "isPublic": true,
+      "explanation": "0 rings 1, 2, 3 first; 4 is reached when 2 is processed."
+    },
+    {
+      "id": "tc-2",
+      "input": { "V": 4, "adj": [[1, 2], [2], [3], []] },
+      "expected": [0, 1, 2, 3],
+      "isPublic": true,
+      "explanation": "The wave walks the chain level by level."
+    },
+    {
+      "id": "tc-3",
+      "input": { "V": 3, "adj": [[2], [2], []] },
+      "expected": [0, 2],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass Solution:\n    def solve(self, V, adj):\n        # Return the BFS order from vertex 0.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the BFS order from vertex 0.\n    std::vector<int> solve(int V, std::vector<int> adj[]);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return the BFS order from vertex 0.\n    public List<Integer> solve(int V, List<List<Integer>> adj) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "bfs", "queue", "traversal", "bfs"],
+    "hintLevels": [
+      "Level 1: Visit in rings — everything one hop out before anything two hops out.",
+      "Level 2: Mark nodes visited the moment they are enqueued, not when popped, or duplicates slip in.",
+      "Level 3: The pop order of a FIFO queue seeded from 0 IS the BFS order — no sorting, just discipline."
+    ]
+  }
+}

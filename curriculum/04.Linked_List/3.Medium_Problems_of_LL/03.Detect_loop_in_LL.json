@@ -1,0 +1,61 @@
+{
+  "id": "detect-loop-in-ll",
+  "index": 3,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Detect loop in LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Linked%20list%20cycle",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/03.Detect_loop_in_LL.cpp"
+  },
+  "narrative": {
+    "title": "Two Runners on a Possibly Circular Track",
+    "scenario": "A conveyor's return path may have been wrongly coupled back onto itself somewhere in the middle, creating a loop that would spin any single scanner forever. The inspection rig deploys two probes that travel at different speeds; on a straight run the faster probe escapes to the end, but on a loop it must eventually overtake the slower one. Report whether the belt is looped.",
+    "inputFormat": "An array head of node values and an integer pos — the 0-based index the tail's next pointer connects to, or -1 when there is no loop.",
+    "outputFormat": "true when the list contains a cycle, false otherwise.",
+    "constraints": [
+      "0 <= list length <= 10^4",
+      "-10^5 <= pos <= list length - 1",
+      "-10^9 <= node value <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [3, 2, 0, -4], "pos": 1 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The tail reconnects to the node holding 2, closing a loop."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [1, 2], "pos": 0 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The tail connects back to the head — the whole list is one loop."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [1, 2, 3], "pos": -1 },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def hasCycle(self, head: list[int], pos: int) -> bool:\n        # TODO: return True when the list contains a cycle.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int v) : val(v), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    bool hasCycle(ListNode* head) {\n        // TODO: return true when the list contains a cycle.\n    }\n};",
+    "java": "class Solution {\n    public boolean hasCycle(int[] head, int pos) {\n        // TODO: return true when the list contains a cycle.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "floyd-cycle-detection", "two-pointers", "detect-loop-in-ll"],
+    "hintLevels": [
+      "Level 1: A marking approach needs extra memory; two runners at different speeds need none.",
+      "Level 2: On a loop the gap between fast and slow shrinks by one each round, so they must meet; on a straight run fast falls off the end.",
+      "Level 3: The meeting test must happen after each simultaneous step — checking before moving would compare both probes at the shared start and lie about an empty list."
+    ]
+  }
+}

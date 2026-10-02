@@ -1,0 +1,61 @@
+{
+  "id": "minimum-value-in-bst",
+  "index": 3,
+  "topic": "12.Binary_Search_Trees",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Minimum Value in a Binary Search Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=minimum+element+in+bst",
+    "sourceFilePath": "12. Binary Search Trees/1. Concept/03. Minimum value in BST.cpp"
+  },
+  "narrative": {
+    "title": "The Leftmost Locker Rule",
+    "scenario": "A parcel depot files consignments so smaller tracking numbers always sit to the left of larger ones. The receptionist hunting the smallest number in play never needs to open a single locker: she keeps turning left until a locker has no further left wing, and that dead-end locker holds the depot's minimum.",
+    "inputFormat": "A binary search tree as a level-order array (null marks a missing child).",
+    "outputFormat": "Return the minimum value stored in the tree.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^9 <= node value <= 10^9",
+      "All node values are unique"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(h)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [8, 5, 10, 3, 6, null, 11] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "From 8, turning left twice reaches the leftmost locker 3."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [10, 5, 15, null, 7] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "5 has no left child, so it is already the smallest filed value."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [42] },
+      "expected": 42,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the minimum value in the BST.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the minimum value in the BST.\n    int solve(TreeNode* root);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the minimum value in the BST.\n    public int solve(TreeNode root) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bst", "minimum", "tree-traversal", "linear-descent", "minimum-value-in-bst"],
+    "hintLevels": [
+      "Level 1: In a sorted filing rule, the smallest item can never have anything to its left.",
+      "Level 2: Walk left while a left wing exists; the walk ends exactly at the minimum.",
+      "Level 3: The right subtree is irrelevant — touching it can only meet larger values."
+    ]
+  }
+}

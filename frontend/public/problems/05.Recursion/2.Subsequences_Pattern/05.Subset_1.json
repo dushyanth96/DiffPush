@@ -1,0 +1,100 @@
+{
+  "id": "subset-1",
+  "index": 5,
+  "topic": "05.Recursion",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Subset 1",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Subset%201",
+    "sourceFilePath": "05.Recursion/2.Subsequences Pattern/05.Subset 1.cpp"
+  },
+  "narrative": {
+    "title": "Tallying Every Load Combination on the Loading Ramp",
+    "scenario": "A freight planner wants to see the weight of every possible load that could leave the ramp, where a load is any subset of the parked pallets — including the empty truck. Walking the pallet line once and branching take-or-skip at each pallet produces the full ledger of load weights, which the planner then reads in ascending order.",
+    "inputFormat": "An array arr of N non-negative integers.",
+    "outputFormat": "The sum of every subset, sorted in ascending order.",
+    "constraints": [
+      "1 <= N <= 15",
+      "0 <= arr[i] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(2^N) branch walks plus O(2^N log 2^N) for the sort",
+    "optimalSpace": "O(N) recursion depth beyond the output"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "arr": [
+          2,
+          3
+        ]
+      },
+      "expected": [
+        0,
+        2,
+        3,
+        5
+      ],
+      "isPublic": true,
+      "explanation": "Take nothing (0), either pallet alone (2, 3), or both (5), then read in order."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "arr": [
+          5,
+          2,
+          1
+        ]
+      },
+      "expected": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8
+      ],
+      "isPublic": true,
+      "explanation": "Eight subsets, and their sums happen to run cleanly from 0 to 8."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "arr": [
+          1,
+          1
+        ]
+      },
+      "expected": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def subsetSums(self, arr: list[int], n: int) -> list[int]:\n        # TODO: branch take/skip carrying a running sum; sort before returning.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> subsetSums(vector<int> arr, int n) {\n        // TODO: recurse take/skip with a running sum; sort at the end.\n    }\n};",
+    "java": "class Solution {\n    public int[] subsetSums(int[] arr, int n) {\n        // TODO: branch take/skip carrying a running sum; sort before returning.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "subsets",
+      "subset-sum",
+      "subset-1"
+    ],
+    "hintLevels": [
+      "Level 1: You never need the subsets themselves — only their sums, so carry a single number down the recursion.",
+      "Level 2: At each index either add the element to the running sum or leave it; both branches advance the index.",
+      "Level 3: The two-branch recursion naturally produces 2^N leaves; sorting afterwards is the only step the DFS does not give you for free."
+    ]
+  }
+}

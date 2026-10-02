@@ -1,0 +1,61 @@
+{
+  "id": "iterative-postorder-traversal",
+  "index": 9,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Iterative Postorder Traversal of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=binary+tree+postorder+traversal+iterative",
+    "sourceFilePath": "11. Binary Trees/1. Traversals/09. Iterative Postorder.cpp"
+  },
+  "narrative": {
+    "title": "The Return-Visit Warranty Clerk",
+    "scenario": "A warranty clerk walks a dealership's branch chart loop-only: no recursive paperwork chains permitted. She parks nodes on her desk pile while sliding left, but a station may only be signed off once its right branch is either empty or already stamped — she keeps a seen-it ledger to tell the difference. If the right branch still needs work, it goes on the pile and the loop slides left through it first.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return an array of node values in postorder, produced without recursion.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100",
+      "No recursive calls allowed — the traversal must run on an explicit stack"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [1, 2, 3, 4, 5, null, 6] },
+      "expected": [4, 5, 2, 6, 3, 1],
+      "isPublic": true,
+      "explanation": "Children always land before their parents; the root closes the log."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [7] },
+      "expected": [7],
+      "isPublic": true,
+      "explanation": "With no right branch pending, the lone node is stamped on the first peek."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [1, 2, 3, 4, null, null, 5] },
+      "expected": [4, 2, 5, 3, 1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the postorder traversal using an explicit stack (no recursion).\n        pass",
+    "cpp": "#include <vector>\n#include <stack>\n#include <unordered_map>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the postorder traversal using an explicit stack (no recursion).\n    std::vector<int> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the postorder traversal using an explicit Deque (no recursion).\n    public List<Integer> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["trees", "binary-tree", "traversal", "stack", "iterative-postorder-traversal"],
+    "hintLevels": [
+      "Level 1: Postorder is the hardest to iterate because a node can be visited twice — once to scout its right wing, once to record it.",
+      "Level 2: Peek the stack top; record-and-pop only when its right subtree is null or already stamped in a visited set.",
+      "Level 3: Otherwise push the right child and re-slide left through it — every node still gets pushed and popped exactly once."
+    ]
+  }
+}

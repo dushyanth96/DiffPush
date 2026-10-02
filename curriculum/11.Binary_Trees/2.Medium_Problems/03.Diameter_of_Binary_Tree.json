@@ -1,0 +1,89 @@
+{
+  "id": "diameter-of-binary-tree",
+  "index": 3,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Diameter of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=diameter+of+binary+tree",
+    "sourceFilePath": "11. Binary Trees/2. Medium Problems/03. Diameter of Binary Tree.cpp"
+  },
+  "narrative": {
+    "title": "The Longest Cable Run",
+    "scenario": "A fiber crew maps junction boxes laid out as a binary tree and must budget the longest possible cable run between any two boxes, following connections only. The run doesn't have to touch the head junction — sometimes the longest haul arcs between two deep branches. Every junction reports the two deepest descents around it, and the best combination anywhere wins the budget.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return an integer: the length (in edges) of the longest path between any two nodes.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The path 4 -> 2 -> 1 -> 5 (or 3) covers 3 edges."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          2
+        ]
+      },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "The only two-node path is a single edge."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          null,
+          4,
+          null,
+          5
+        ]
+      },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the longest path length in edges between any two nodes.\n        pass",
+    "cpp": "#include <algorithm>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the longest path length in edges between any two nodes.\n    int solve(TreeNode* root);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the longest path length in edges between any two nodes.\n    public int solve(TreeNode root) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "recursion",
+      "diameter",
+      "diameter-of-binary-tree"
+    ],
+    "hintLevels": [
+      "Level 1: The longest route at any junction bends through it — left depth plus right depth.",
+      "Level 2: Compute subtree heights bottom-up and record left + right at every node in a running maximum.",
+      "Level 3: The height you return is one more than the taller child, but the recorded candidate is left + right — don't mix the two."
+    ]
+  }
+}

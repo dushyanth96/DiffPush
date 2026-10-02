@@ -1,0 +1,60 @@
+{
+  "id": "remove-duplicates-from-dll",
+  "index": 3,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Remove duplicates from dll",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Remove%20duplicates%20from%20dll",
+    "sourceFilePath": "04.Linked List/4.Medium Problems of DLL/03.Remove_duplicates_from_dll.cpp"
+  },
+  "narrative": {
+    "title": "Squeezing Repeat SKUs out of a Sorted Rail",
+    "scenario": "An inventory rail is value-sorted, but a scanner glitch booked the same SKU several times in a row. Operations wants exactly one entry per distinct SKU, first occurrence kept, and the two-way links re-fused so the rail stays coherent. Because duplicates can only be adjacent in a sorted run, a single forward pass that remembers the value of the last kept entry is enough to squeeze out every repeat.",
+    "inputFormat": "An array head of n node values forming a doubly linked list sorted in non-decreasing order.",
+    "outputFormat": "The values of the list after all duplicate nodes are unlinked, read from the head.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= head[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [1, 1, 1, 2, 3, 4] },
+      "expected": [1, 2, 3, 4],
+      "isPublic": true,
+      "explanation": "The run of three 1s collapses to its first occurrence; the sorted tail is untouched."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [1, 2, 2, 3, 3, 4, 4] },
+      "expected": [1, 2, 3, 4],
+      "isPublic": true,
+      "explanation": "Three separate duplicate runs each squeeze down to a single entry."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [7, 7, 7, 7] },
+      "expected": [7],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def removeDuplicates(self, head: list[int]) -> list[int]:\n        # TODO: unlink every node equal to its left neighbour's value and return the result.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node *prev, *next;\n    Node(int d) : data(d), prev(nullptr), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    Node* removeDuplicates(Node* head) {\n        // TODO: unlink consecutive duplicates and return the head.\n    }\n};",
+    "java": "class Solution {\n    public int[] removeDuplicates(int[] head) {\n        // TODO: unlink consecutive duplicates and return the surviving values.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "doubly-linked-list", "deduplication", "remove-duplicates-from-dll"],
+    "hintLevels": [
+      "Level 1: Sorted input means duplicates are always neighbours — no hashing needed.",
+      "Level 2: Keep the value of the last surviving node; peel off every following node that equals it, re-fusing prev/next around each removal.",
+      "Level 3: Maintain both link directions on every removal (survivor's next and the incoming node's prev) so the rail never loses a backward pointer mid-pass."
+    ]
+  }
+}

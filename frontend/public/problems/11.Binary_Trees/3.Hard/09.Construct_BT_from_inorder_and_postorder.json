@@ -1,0 +1,114 @@
+{
+  "id": "construct-binary-tree-from-inorder-and-postorder",
+  "index": 9,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Construct Binary Tree from Inorder and Postorder Traversal",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=construct+binary+tree+from+inorder+and+postorder+traversal",
+    "sourceFilePath": "11. Binary Trees/3. Hard/09. Construct BT from inorder and postorder.cpp"
+  },
+  "narrative": {
+    "title": "Rewinding the Warehouse Shutdown Log",
+    "scenario": "A shutdown audit captured two walks of a conveyor tree: a leaves-first log (each junction written after everything beneath it) and a left-first inventory. Junction names never repeat, so reading the leaves-first log backwards always names the next junction, and the left-first inventory reveals exactly how many conveyors feed each side of it.",
+    "inputFormat": "Two integer arrays — inorder (left subtree, root, right subtree) and postorder (left subtree, right subtree, root) of the same tree. Values are unique.",
+    "outputFormat": "Return the constructed binary tree serialized as a level-order array (null marks a missing child, trailing nulls trimmed).",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^4 <= node value <= 10^4",
+      "All values are unique"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "inorder": [
+          9,
+          3,
+          15,
+          20,
+          7
+        ],
+        "postorder": [
+          9,
+          15,
+          7,
+          20,
+          3
+        ]
+      },
+      "expected": [
+        3,
+        9,
+        20,
+        null,
+        null,
+        15,
+        7
+      ],
+      "isPublic": true,
+      "explanation": "The last postorder value 3 is the root; 9 hangs left, and 20 roots the right subtree over 15 and 7."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "inorder": [
+          2,
+          1,
+          3
+        ],
+        "postorder": [
+          2,
+          3,
+          1
+        ]
+      },
+      "expected": [
+        1,
+        2,
+        3
+      ],
+      "isPublic": true,
+      "explanation": "1 closes the postorder, so it is the root; 2 and 3 split as its left and right children."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "inorder": [
+          1
+        ],
+        "postorder": [
+          1
+        ]
+      },
+      "expected": [
+        1
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, inorder, postorder):\n        # Rebuild the tree; return its root.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Rebuild the tree; return its root.\n    TreeNode* solve(std::vector<int>& inorder, std::vector<int>& postorder);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Rebuild the tree; return its root.\n    public TreeNode solve(int[] inorder, int[] postorder) {\n        // TODO\n        return null;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "divide-and-conquer",
+      "construction",
+      "construct-binary-tree-from-inorder-and-postorder"
+    ],
+    "hintLevels": [
+      "Level 1: Postorder ends with the root — read it backwards and the current root always comes first.",
+      "Level 2: Locate that root in the inorder array; its left fragment sizes the left subtree in the postorder walk.",
+      "Level 3: Peel postorder from the back and build right before left — the right subtree's nodes sit just before the root."
+    ]
+  }
+}

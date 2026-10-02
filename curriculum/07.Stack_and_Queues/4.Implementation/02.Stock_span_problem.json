@@ -1,0 +1,61 @@
+{
+  "id": "stock-span-problem",
+  "index": 2,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Online Stock Span",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=online+stock+span",
+    "sourceFilePath": "07.Stack and Queues/4. Implementation/02. Stock span problem.cpp"
+  },
+  "narrative": {
+    "title": "The Market Ticker Retroscope",
+    "scenario": "A trading terminal receives one price per tick and must instantly show the retro-scope count: how many consecutive ticks up to and including now have posted a price at or below today's. Yesterday's ticks beyond the last strictly-higher price are irrelevant — the terminal keeps only those survivors on a shortlist.",
+    "inputFormat": "An integer array prices given in tick order.",
+    "outputFormat": "Return the span for each tick: the count of consecutive prior days (including itself) with price <= that day's price.",
+    "constraints": [
+      "1 <= prices.length <= 10^5",
+      "1 <= prices[i] <= 10^5",
+      "Spans are computed as a running stream, left to right"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "prices": [100, 80, 60, 70, 60, 75, 85] },
+      "expected": [1, 1, 1, 2, 1, 4, 6],
+      "isPublic": true,
+      "explanation": "75 looks back over 60,70,60 (all <=) and stops at 80; 85 additionally covers the 80, reaching 6."
+    },
+    {
+      "id": "tc-2",
+      "input": { "prices": [50, 50, 50] },
+      "expected": [1, 2, 3],
+      "isPublic": true,
+      "explanation": "Equal prices count toward the span, so the run keeps extending."
+    },
+    {
+      "id": "tc-3",
+      "input": { "prices": [30, 20, 10] },
+      "expected": [1, 1, 1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def stock_spans(prices):\n    # Stack of (price, day); pops everything <= current price.\n    stack = []\n    spans = []\n    for day, price in enumerate(prices):\n        while stack and stack[-1][0] <= price:\n            stack.pop()\n        span = day - stack[-1][1] if stack else day + 1\n        stack.append((price, day))\n        spans.append(span)\n    return spans",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> stockSpans(vector<int>& prices) {\n    vector<int> spans;\n    stack<pair<int, int>> st;  // {price, day}\n    for (int day = 0; day < (int)prices.size(); ++day) {\n        while (!st.empty() && st.top().first <= prices[day]) st.pop();\n        int span = st.empty() ? day + 1 : day - st.top().second;\n        st.push({prices[day], day});\n        spans.push_back(span);\n    }\n    return spans;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int[] stockSpans(int[] prices) {\n        int n = prices.length;\n        int[] spans = new int[n];\n        Deque<long[]> stack = new ArrayDeque<>();  // {price, day}\n        for (int day = 0; day < n; ++day) {\n            while (!stack.isEmpty() && stack.peek()[0] <= prices[day]) stack.pop();\n            spans[day] = stack.isEmpty() ? day + 1 : (int)(day - stack.peek()[1]);\n            stack.push(new long[]{prices[day], day});\n        }\n        return spans;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["monotonic-stack", "online-algorithm", "stock-span-problem"],
+    "hintLevels": [
+      "Level 1: The span is the gap to the previous strictly-greater price — a previous-greater query in disguise.",
+      "Level 2: Store (price, day) pairs and pop every price <= today's; the survivor's day marks the boundary.",
+      "Level 3: An empty stack means today beats everything so far, so the span is the full prefix day + 1."
+    ]
+  }
+}

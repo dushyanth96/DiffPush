@@ -1,0 +1,60 @@
+{
+  "id": "majority-element-2",
+  "index": 2,
+  "topic": "01.Arrays",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Majority element 2",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Majority%20element%202",
+    "sourceFilePath": "01.Arrays/3.Hard/02.Majority_element_2.cpp"
+  },
+  "narrative": {
+    "title": "Every Dominant Account Above a Third",
+    "scenario": "A fraud review runs over a merged stream of account ids from several feeds and wants every account that shows up in more than one third of the records. At most two such accounts can exist, and the stream is far too large to tally with a table. Identify them in a single pass with constant extra memory.",
+    "inputFormat": "An array nums of n integers, one account id per record.",
+    "outputFormat": "All values occurring more than floor(n / 3) times, in any order; the result may be empty.",
+    "constraints": [
+      "1 <= n <= 5 * 10^4",
+      "-10^9 <= nums[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [3, 2, 3] },
+      "expected": [3],
+      "isPublic": true,
+      "explanation": "Account 3 appears twice out of three records, clearing the one third threshold."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1] },
+      "expected": [1],
+      "isPublic": true,
+      "explanation": "A single record already exceeds one third of one, so it qualifies."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1, 2, 3, 4] },
+      "expected": [],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def majorityElement(self, nums: list[int]) -> list[int]:\n        # TODO: return every value occurring more than n // 3 times.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> majorityElement(vector<int>& nums) {\n        // TODO: return every value occurring more than nums.size() / 3 times.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public List<Integer> majorityElement(int[] nums) {\n        // TODO: return every value occurring more than nums.length / 3 times.\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "boyer-moore-voting", "two-candidates", "linear-scan", "verification-pass"],
+    "hintLevels": [
+      "Level 1: More than a third of the records means no more than two accounts can qualify, so tracking two contenders is enough.",
+      "Level 2: Run the vote cancellation scheme with two candidates and two counters, then sweep the stream once more to count the survivors.",
+      "Level 3: The vote scheme only proposes candidates and can nominate values that fall short, so the tally pass is mandatory, and the two candidates must be distinct before both are reported."
+    ]
+  }
+}

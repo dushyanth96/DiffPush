@@ -1,0 +1,60 @@
+{
+  "id": "check-for-the-ith-bit",
+  "index": 2,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Check for the ith bit",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Check%20for%20the%20ith%20bit",
+    "sourceFilePath": "06.Bit Manipulation/1. Learn Bit Manipulation/02.Check for the ith bit.cpp"
+  },
+  "narrative": {
+    "title": "Probing One Pin of the Badge Register",
+    "scenario": "A security badge encodes its zones as an integer, and the gate reader must ask whether one specific pin — counted from the least significant pin starting at zero — is currently carrying voltage. Shifting the register right by the pin's index parks that pin in the last slot, where a single AND with one reveals its state.",
+    "inputFormat": "An integer n and a 0-based bit index k.",
+    "outputFormat": "true when the k-th bit of n is set, false otherwise.",
+    "constraints": [
+      "0 <= n < 2^31",
+      "0 <= k <= 31"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4, "k": 0 },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "4 is 100; the least significant pin carries no voltage."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 4, "k": 2 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The only set pin of 100 sits at index 2."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 7, "k": 1 },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def checkKthBit(self, n: int, k: int) -> bool:\n        # TODO: shift right k places and test the last bit.\n        pass",
+    "cpp": "#include <cstdint>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool checkKthBit(int n, int k) {\n        // TODO: return (n >> k) & 1.\n    }\n};",
+    "java": "class Solution {\n    public boolean checkKthBit(int n, int k) {\n        // TODO: shift right k places and test the last bit.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "masks", "bit-test", "check-for-the-ith-bit"],
+    "hintLevels": [
+      "Level 1: Two equivalent probes — mask the pin (n & (1 << k)) or slide it to the front (n >> k) & 1.",
+      "Level 2: Both run in constant time; the shift form reads more naturally when the caller already wants a boolean.",
+      "Level 3: Watch the indexing convention: this problem is 0-based from the LSB, unlike its 1-based sibling."
+    ]
+  }
+}

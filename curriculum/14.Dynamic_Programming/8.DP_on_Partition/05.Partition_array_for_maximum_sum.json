@@ -1,0 +1,61 @@
+{
+  "id": "partition-array-for-maximum-sum",
+  "index": 5,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Partition Array for Maximum Sum",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=partition+array+for+maximum+sum",
+    "sourceFilePath": "14. Dynamic Programming/8. DP on Partition/06. Partition array for maximum sum.cpp"
+  },
+  "narrative": {
+    "title": "The Billboard Panel Pricing",
+    "scenario": "A media company slices a conveyor of ad slots into groups of at most k consecutive slots. Each group is sold at a flat rate set by its priciest slot, so every slot in the group bills at that peak price. The revenue desk wants the grouping that maximizes the total billing across the conveyor.",
+    "inputFormat": "An array arr of n integers and an integer k (max group length).",
+    "outputFormat": "Return the largest possible sum after replacing each group's values with the group maximum and summing.",
+    "constraints": [
+      "1 <= len(arr) <= 500",
+      "0 <= arr[i] <= 10^9",
+      "1 <= k <= len(arr)"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*k)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [1, 15, 7, 9, 2, 5, 10], "k": 3 },
+      "expected": 84,
+      "isPublic": true,
+      "explanation": "Groups [1,15,7], [9,2,5], [10] become 15,15,15,9,10,10,10 — total 84."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [1, 4, 1, 5, 7, 3, 6, 1, 9, 9, 3], "k": 4 },
+      "expected": 83,
+      "isPublic": true,
+      "explanation": "Optimal grouping lifts the flat-rate windows to reach 83."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [1], "k": 1 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, arr, k):\n        # Return the maximum sum after the flat-rate regrouping.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the maximum sum after the flat-rate regrouping.\n    int solve(std::vector<int>& arr, int k);\n};",
+    "java": "class Solution {\n    // Return the maximum sum after the flat-rate regrouping.\n    public int solve(int[] arr, int k) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "partition-dp", "mcm-pattern", "window-max"],
+    "hintLevels": [
+      "Level 1: From each position, try every group length 1..k and let the rest of the array answer itself.",
+      "Level 2: best[i] = max over L in 1..k of max(arr[i..i+L-1]) * L + best[i + L].",
+      "Level 3: Grow the running maximum as the window extends — no re-scanning of the window needed."
+    ]
+  }
+}

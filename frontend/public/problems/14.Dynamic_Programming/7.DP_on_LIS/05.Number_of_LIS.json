@@ -1,0 +1,91 @@
+{
+  "id": "number-of-lis",
+  "index": 5,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Number of Longest Increasing Subsequence",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=number+of+longest+increasing+subsequence",
+    "sourceFilePath": "14. Dynamic Programming/7. DP on LIS/05. Number of LIS.cpp"
+  },
+  "narrative": {
+    "title": "The Handoff Streak Census",
+    "scenario": "Relay dispatch liked the longest-handoff analysis so much that ops now wants a census: not the length alone, but how many distinct chains achieve that record length. Two chains are different if they use a different set of station stops, even when their tag values coincide.",
+    "inputFormat": "An array nums of n integers.",
+    "outputFormat": "Return the number of longest strictly increasing subsequences of nums.",
+    "constraints": [
+      "1 <= n <= 1000",
+      "-10^4 <= nums[i] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "nums": [
+          1,
+          3,
+          5,
+          4,
+          7
+        ]
+      },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "1-3-5-7 and 1-3-4-7 both reach the record length 4."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "nums": [
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Strictness caps every chain at one element, and each of the five positions is such a chain."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "nums": [
+          1,
+          2,
+          4,
+          3,
+          5,
+          4,
+          7,
+          2
+        ]
+      },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, nums):\n        # Return how many subsequences achieve the LIS length.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return how many subsequences achieve the LIS length.\n    int solve(std::vector<int>& nums);\n};",
+    "java": "class Solution {\n    // Return how many subsequences achieve the LIS length.\n    public int solve(int[] nums) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "lis",
+      "counting-dp"
+    ],
+    "hintLevels": [
+      "Level 1: Track two numbers per index — best chain length ending here, and how many chains do it.",
+      "Level 2: On a tie (dp[prev] + 1 == dp[i]) the counts add; on an improvement the count resets to the donor's.",
+      "Level 3: Sum the counts of every index whose dp equals the global maximum."
+    ]
+  }
+}

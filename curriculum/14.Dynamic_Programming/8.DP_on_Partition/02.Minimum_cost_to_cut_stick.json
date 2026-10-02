@@ -1,0 +1,92 @@
+{
+  "id": "minimum-cost-to-cut-stick",
+  "index": 2,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Minimum Cost to Cut a Stick",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=minimum+cost+to+cut+a+stick",
+    "sourceFilePath": "14. Dynamic Programming/8. DP on Partition/02. Minimum cost to cut stick.cpp"
+  },
+  "narrative": {
+    "title": "The Marble Slab Cutting Bay",
+    "scenario": "A stone workshop must slice a marble slab at a list of marked positions. Each pass of the saw bills the current length of the piece being cut, and the foreman may execute the marks in any order. Scheduling smartly — cutting expensive pieces apart early — can slash the invoice, so the shop wants the cheapest total billing plan.",
+    "inputFormat": "An integer n (stick length) and an array cuts of distinct cut positions.",
+    "outputFormat": "Return the minimum total cost to perform all cuts, where each cut costs the length of the piece cut.",
+    "constraints": [
+      "2 <= n <= 10^6",
+      "1 <= len(cuts) <= min(n - 1, 100)",
+      "1 <= cuts[i] <= n - 1",
+      "all cut positions are distinct"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m^3)",
+    "optimalSpace": "O(m^2)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "n": 7,
+        "cuts": [
+          1,
+          3,
+          4,
+          5
+        ]
+      },
+      "expected": 16,
+      "isPublic": true,
+      "explanation": "Cutting 1, then 5, then 3, then 4 keeps every billed length small — total 16."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "n": 9,
+        "cuts": [
+          5,
+          6,
+          1,
+          4,
+          2
+        ]
+      },
+      "expected": 22,
+      "isPublic": true,
+      "explanation": "Order 2, 1, 4, 5, 6 achieves the minimum billing of 22."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "n": 5,
+        "cuts": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": 12,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, cuts):\n        # Return the minimum total cost to perform all cuts.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the minimum total cost to perform all cuts.\n    int solve(int n, std::vector<int>& cuts);\n};",
+    "java": "class Solution {\n    // Return the minimum total cost to perform all cuts.\n    public int solve(int n, int[] cuts) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "partition-dp",
+      "interval-dp",
+      "cuts"
+    ],
+    "hintLevels": [
+      "Level 1: Sort the cut positions and pad the ends with 0 and n so every piece has computable boundaries.",
+      "Level 2: For the span between boundary i and j, try each interior cut k last: cost = span length + both halves.",
+      "Level 3: Choosing the LAST cut (not the first) is what makes the two subproblems independent."
+    ]
+  }
+}

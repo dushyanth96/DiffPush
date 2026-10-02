@@ -1,0 +1,81 @@
+{
+  "id": "burst-ballons",
+  "index": 3,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Burst Balloons",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=burst+balloons",
+    "sourceFilePath": "14. Dynamic Programming/8. DP on Partition/03. Burst Ballons.cpp"
+  },
+  "narrative": {
+    "title": "The Dominion Day Fireworks Line",
+    "scenario": "A festival crew detonates a line of celebratory charges, each stamped with a potency number. Detonating a charge scores the product of its potency with its two current neighbors, and neighbors close ranks after each blast. Boundary positions pair with a fixed neutral value of 1. The pyrotechnician chooses the firing order to maximize the evening's total score.",
+    "inputFormat": "An array nums of n balloon values.",
+    "outputFormat": "Return the maximum coins collectable by bursting every balloon, scoring nums[i-1] * nums[i] * nums[i+1] per burst with virtual 1s at the ends.",
+    "constraints": [
+      "1 <= n <= 300",
+      "0 <= nums[i] <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^3)",
+    "optimalSpace": "O(n^2)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "nums": [
+          3,
+          1,
+          5,
+          8
+        ]
+      },
+      "expected": 167,
+      "isPublic": true,
+      "explanation": "Burst order 1, 5, 3, 8 scores 15 + 120 + 24 + 8 = 167 in total."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "nums": [
+          1,
+          5
+        ]
+      },
+      "expected": 10,
+      "isPublic": true,
+      "explanation": "Burst 1 first (1*5*1 = 5), then 5 (1*5*1 = 5) — total 10; bursting 5 first only reaches 6."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "nums": [
+          7
+        ]
+      },
+      "expected": 7,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, nums):\n        # Return the maximum coins from bursting all balloons.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the maximum coins from bursting all balloons.\n    int solve(std::vector<int>& nums);\n};",
+    "java": "class Solution {\n    // Return the maximum coins from bursting all balloons.\n    public int solve(int[] nums) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "partition-dp",
+      "interval-dp",
+      "burst-balloons"
+    ],
+    "hintLevels": [
+      "Level 1: Reason about which balloon bursts LAST in a range, not first — that decouples the two sides.",
+      "Level 2: Pad with virtual 1s; dp[i][j] = max over k of nums[i-1]*nums[k]*nums[j+1] + dp[i][k-1] + dp[k+1][j].",
+      "Level 3: The last-burst frame means k's neighbors are the range boundaries, fixed at solve time — that's why subproblems don't interfere."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "flatten-ll",
+  "index": 4,
+  "topic": "04.Linked_List",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Flatten LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Flatten%20multilevel%20linked%20list",
+    "sourceFilePath": "04.Linked List/5.Hard Promblems of LL/04.Flatten_LL.cpp"
+  },
+  "narrative": {
+    "title": "Collapsing the Sorting Chutes into One Belt",
+    "scenario": "A mail hub has a row of vertical chutes: each chute hangs a chain of already-sorted parcels off a top-level rail node, and every hanging chain is itself sorted. The outfeed, though, is a single belt — so the hub must collapse all the vertical chains into one continuous sorted run, read through the vertical (bottom) links only, leaving no horizontal rail behind. Merging two sorted chutes is cheap, so the plan is to swallow the rail right-to-left, each step merging the next chute's chain into the growing output.",
+    "inputFormat": "An array levels of sorted sub-lists — levels[i] is the vertical chain hanging beneath the i-th top-level node.",
+    "outputFormat": "The flattened chain's values in non-decreasing order (the single sorted run through the bottom pointers).",
+    "constraints": [
+      "1 <= total nodes <= 10^5",
+      "-10^9 <= value <= 10^9",
+      "each sub-list and each chain is individually sorted"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N), N = total nodes across all levels",
+    "optimalSpace": "O(1) beyond the merge recursion stack"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "levels": [[5, 7, 8, 30], [10, 20], [19, 22, 50], [28, 35, 40, 45]] },
+      "expected": [5, 7, 8, 10, 19, 20, 22, 28, 30, 35, 40, 45, 50],
+      "isPublic": true,
+      "explanation": "Four sorted chutes of different depths merge into one continuous run of 13 parcels; the horizontal rail dissolves entirely."
+    },
+    {
+      "id": "tc-2",
+      "input": { "levels": [[3], [1, 2], [4, 6]] },
+      "expected": [1, 2, 3, 4, 6],
+      "isPublic": true,
+      "explanation": "A one-parcel chute can overtake both neighbours once merged — chute depth carries no ordering meaning."
+    },
+    {
+      "id": "tc-3",
+      "input": { "levels": [[10], [9, 11]] },
+      "expected": [9, 10, 11],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def flatten(self, levels: list[list[int]]) -> list[int]:\n        # TODO: merge every sorted vertical chain into one sorted run.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node *next, *bottom;\n    Node(int d) : data(d), next(nullptr), bottom(nullptr) {}\n};\n\nclass Solution {\npublic:\n    Node* flatten(Node* root) {\n        // TODO: fold the rail right-to-left, merging each bottom chain in.\n    }\n};",
+    "java": "class Solution {\n    public int[] flatten(int[][] levels) {\n        // TODO: merge every sorted vertical chain into one sorted run.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "merge", "divide-and-conquer", "flatten-ll"],
+    "hintLevels": [
+      "Level 1: Every vertical chain is already sorted — the task is really k-way merging under a list disguise.",
+      "Level 2: Fold the top rail from the right: recursively flatten the rest of the rail, then merge the current node's vertical chain into that result like a 2-way merge.",
+      "Level 3: Keep results threaded through bottom pointers only (the merge must splice nodes, not copy values) — and remember to cut the current node's next before merging so the rail cannot leak back in."
+    ]
+  }
+}

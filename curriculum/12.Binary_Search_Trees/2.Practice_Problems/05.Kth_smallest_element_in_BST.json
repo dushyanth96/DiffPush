@@ -1,0 +1,61 @@
+{
+  "id": "kth-smallest-element-in-bst",
+  "index": 5,
+  "topic": "12.Binary_Search_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Kth Smallest Element in a BST",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=kth+smallest+element+in+a+bst",
+    "sourceFilePath": "12. Binary Search Trees/2. Practice Problems/05. Kth smallest element in BST.cpp"
+  },
+  "narrative": {
+    "title": "The Rank-Verified Meter Reading",
+    "scenario": "A power grid console keeps substations in a sorted tree by load. During a rolling audit, the operator must report the substation holding the kth smallest load. Instead of collecting every reading, the console plays back the tree in its natural sorted order and simply counts out loud — the meter at count k is the answer.",
+    "inputFormat": "A binary search tree as a level-order array (null marks a missing child) and an integer k (1-indexed rank).",
+    "outputFormat": "Return the kth smallest value in the tree.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "1 <= k <= number of nodes",
+      "-10^9 <= node value <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(h + k)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [3, 1, 4, null, 2], "k": 1 },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "The sorted order is 1, 2, 3, 4 — the 1st smallest is 1."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [3, 1, 4, null, 2], "k": 3 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Counting three steps through the sorted order lands on 3."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [5, 3, 6, 2, 4], "k": 5 },
+      "expected": 6,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root, k):\n        # Return the kth smallest value in the BST.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the kth smallest value in the BST.\n    int solve(TreeNode* root, int k);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the kth smallest value in the BST.\n    public int solve(TreeNode root, int k) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bst", "inorder", "rank-selection", "recursion", "kth-smallest-element-in-bst"],
+    "hintLevels": [
+      "Level 1: A BST's inorder playback is already sorted — the kth item of that playback is the answer.",
+      "Level 2: Walk inorder with a counter; decrement-on-visit is unnecessary — increment and compare to k.",
+      "Level 3: Stop the recursion the moment the counter hits k; an early-exit flag prevents wasted traversal."
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "id": "count-and-say",
+  "index": 2,
+  "topic": "16.Strings_Hard",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Count and Say",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=count+and+say",
+    "sourceFilePath": "16. Strings (Hard)/Hard/02. Count and Say.cpp"
+  },
+  "narrative": {
+    "title": "The Roster Chant Evolution",
+    "scenario": "A marching band passes a count chant down the ranks. Each round, the cadet holding the chant reads it aloud as runs: how many of the same digit in a row, then the digit itself, run by run. Given the round number, the bandmaster needs the exact chant that round produces.",
+    "inputFormat": "An integer n, the round index.",
+    "outputFormat": "Return the chant string for round n under the run-length reading rule.",
+    "constraints": [
+      "1 <= n <= 30"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(2^n) total output size (the string roughly doubles per round)",
+    "optimalSpace": "O(2^n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4 },
+      "expected": "1211",
+      "isPublic": true,
+      "explanation": "1, 11, 21, 1211 — round 4 reads round 3's \"21\" as one-2 one-1."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 1 },
+      "expected": "1",
+      "isPublic": true,
+      "explanation": "Round 1 is the fixed seed."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 5 },
+      "expected": "111221",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n):\n        # Return the round-n chant string.\n        pass",
+    "cpp": "class Solution {\npublic:\n    // Return the round-n chant string.\n    std::string solve(int n);\n};",
+    "java": "class Solution {\n    // Return the round-n chant string.\n    public String solve(int n) {\n        // TODO\n        return \"\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "simulation", "run-length-encoding", "count-and-say"],
+    "hintLevels": [
+      "Level 1: Scan the previous string in runs of equal digits; each run becomes count-then-digit.",
+      "Level 2: Build round by round from \"1\"; every round is a deterministic read of the last.",
+      "Level 3: Careful with the tail run — flush the pending run after the loop ends."
+    ]
+  }
+}

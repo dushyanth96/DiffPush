@@ -1,0 +1,61 @@
+{
+  "id": "postfix-to-infix",
+  "index": 5,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Postfix to Infix Conversion",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=postfix+to+infix+conversion",
+    "sourceFilePath": "07.Stack and Queues/2. Infix, Postfix, and Prefix/05. Postfix to infix.cpp"
+  },
+  "narrative": {
+    "title": "The Robotic Arm Script Rewriter",
+    "scenario": "Warehouse robots execute action scripts in operator-last order (`A B *` means apply the join action to A then B), but safety auditors review scripts in ordinary infix notation. The rewriter scans the script left-to-right; each operator grabs the two most recent script fragments from a clipboard and wraps them with the operator in between.",
+    "inputFormat": "A string expression in valid postfix form with single alphanumeric operands.",
+    "outputFormat": "Return the fully parenthesized infix expression as a string.",
+    "constraints": [
+      "1 <= expression.length <= 10^5",
+      "Operands are single letters or digits",
+      "The expression is guaranteed to be a valid postfix expression"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "expression": "ab*c+" },
+      "expected": "((a*b)+c)",
+      "isPublic": true,
+      "explanation": "The * joins a and b first; the + then wraps that whole group with c."
+    },
+    {
+      "id": "tc-2",
+      "input": { "expression": "ABC/-AK/L-*" },
+      "expected": "((A-(B/C))*((A/K)-L))",
+      "isPublic": true,
+      "explanation": "Forward scanning rebuilds the exact infix tree the prefix conversion produced in reverse."
+    },
+    {
+      "id": "tc-3",
+      "input": { "expression": "abc++" },
+      "expected": "(a+(b+c))",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def postfix_to_infix(expression: str) -> str:\n    stack = []\n    for ch in expression:\n        if ch.isalnum():\n            stack.append(ch)\n        else:\n            a = stack.pop()   # right operand\n            b = stack.pop()   # left operand\n            stack.append(f\"({b}{ch}{a})\")\n    return stack[0]",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstring postToInfix(string exp) {\n    stack<string> st;\n    for (char ch : exp) {\n        if (isalnum((unsigned char)ch)) st.push(string(1, ch));\n        else {\n            string a = st.top(); st.pop();\n            string b = st.top(); st.pop();\n            st.push(\"(\" + b + ch + a + \")\");\n        }\n    }\n    return st.top();\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public String postToInfix(String exp) {\n        Deque<String> stack = new ArrayDeque<>();\n        for (char ch : exp.toCharArray()) {\n            if (Character.isLetterOrDigit(ch)) stack.push(String.valueOf(ch));\n            else {\n                String a = stack.pop(), b = stack.pop();\n                stack.push(\"(\" + b + ch + a + \")\");\n            }\n        }\n        return stack.peek();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["stack", "string-parsing", "expression-conversion", "postfix-to-infix"],
+    "hintLevels": [
+      "Level 1: In postfix the operator arrives after its operands — both are already on the clipboard.",
+      "Level 2: The first pop is the RIGHT operand, the second is the LEFT; the wrapper puts left-operator-right.",
+      "Level 3: Forward scan here (unlike the prefix variants) — order of popping is the trap to check."
+    ]
+  }
+}

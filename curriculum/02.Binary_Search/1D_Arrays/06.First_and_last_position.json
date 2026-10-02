@@ -1,0 +1,62 @@
+{
+  "id": "first-and-last-position",
+  "index": 6,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "First and last position",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=First%20and%20last%20position",
+    "sourceFilePath": "02.Binary Search/1D Arrays/06.First_and_last_position.cpp"
+  },
+  "narrative": {
+    "title": "Bounding a Fault Window in a Sorted Event Log",
+    "scenario": "A monitoring system keeps millions of log entries sorted by an internal fault code, and an on-call engineer needs the full span of one specific code. Because the code repeats, its first and last entries must both be found. If the code never appears, the answer is an empty span.",
+    "inputFormat": "An array nums of n integers sorted in non-decreasing order, and an integer target.",
+    "outputFormat": "A two-element array [first, last] of 0-indexed positions bounding every occurrence of target, or [-1, -1] when target is absent.",
+    "constraints": [
+      "0 <= n <= 10^5",
+      "-10^9 <= nums[i] <= 10^9",
+      "nums is sorted in non-decreasing order",
+      "An O(log n) algorithm is required"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [5, 7, 7, 8, 8, 10], "target": 8 },
+      "expected": [3, 4],
+      "isPublic": true,
+      "explanation": "The code 8 occupies two adjacent entries at indices 3 and 4."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [5, 7, 7, 8, 8, 10], "target": 6 },
+      "expected": [-1, -1],
+      "isPublic": true,
+      "explanation": "Code 6 never appears in the log, so both bounds report -1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1], "target": 1 },
+      "expected": [0, 0],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def searchRange(self, nums: list[int], target: int) -> list[int]:\n        # TODO: return [first, last] occurrence indices, or [-1, -1].\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> searchRange(vector<int>& nums, int target) {\n        // TODO: return [first, last] occurrence indices, or [-1, -1].\n    }\n};",
+    "java": "class Solution {\n    public int[] searchRange(int[] nums, int target) {\n        // TODO: return [first, last] occurrence indices, or [-1, -1].\n        return new int[] { -1, -1 };\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "lower-bound", "upper-bound", "occurrence-range", "first-and-last-position"],
+    "hintLevels": [
+      "Level 1: Both answers are boundary positions, and boundaries can be found by two slightly different halving searches.",
+      "Level 2: Bias one search left to land on the first occurrence and one right to land just past the last; one lookup before the second search can short-circuit the miss case.",
+      "Level 3: The right-biased search returns a position one past the final match, so it needs a decrement, and an empty array must survive both probes without an out-of-range read."
+    ]
+  }
+}

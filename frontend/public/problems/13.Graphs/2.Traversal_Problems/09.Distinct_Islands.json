@@ -1,0 +1,60 @@
+{
+  "id": "distinct-islands",
+  "index": 9,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Number of Distinct Islands",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=number+of+distinct+islands",
+    "sourceFilePath": "13. Graphs/2. Traversal Problems/10. Distinct Islands.cpp"
+  },
+  "narrative": {
+    "title": "Cataloguing the Repeated Yard Layouts",
+    "scenario": "A city planner scans a zoning map where built lots (1) form clusters separated by empty land (0). Two clusters built on the same footprint — same relative shape, regardless of where they sit on the map — count as one design. The planning office needs the number of distinct designs present, rotations and reflections counting as different designs.",
+    "inputFormat": "An n x m binary grid where 1 marks a built lot and 0 empty land.",
+    "outputFormat": "Return the number of distinct island shapes, where two islands are identical only if one translates exactly onto the other.",
+    "constraints": [
+      "1 <= n, m <= 500",
+      "grid[i][j] is 0 or 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n * m)",
+    "optimalSpace": "O(n * m)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "grid": [[1, 1, 0], [0, 0, 0], [1, 1, 0]] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "Both clusters are the same 2x1 domino footprint, one row apart."
+    },
+    {
+      "id": "tc-2",
+      "input": { "grid": [[1, 1, 0], [1, 0, 0], [0, 0, 1]] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "An L-shaped cluster and a single-lot cluster are two different designs."
+    },
+    {
+      "id": "tc-3",
+      "input": { "grid": [[0, 0], [0, 0]] },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import sys\nsys.setrecursionlimit(10**6)\n\nclass Solution:\n    def solve(self, grid):\n        # Return the number of distinct island shapes.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the number of distinct island shapes.\n    int solve(std::vector<std::vector<int>>& grid);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return the number of distinct island shapes.\n    public int solve(int[][] grid) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dfs", "hashing", "grid", "distinct-islands"],
+    "hintLevels": [
+      "Level 1: Shape, not position, is the identity — translate every island to a common origin before comparing.",
+      "Level 2: During DFS collect each cell's offset from the island's first cell; the sorted offset set is the signature.",
+      "Level 3: Drop the signatures into a set and return its size — hashing does the dedup for free."
+    ]
+  }
+}

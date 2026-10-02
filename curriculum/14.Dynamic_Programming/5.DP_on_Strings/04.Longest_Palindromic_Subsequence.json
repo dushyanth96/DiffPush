@@ -1,0 +1,60 @@
+{
+  "id": "longest-palindromic-subsequence",
+  "index": 4,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Longest Palindromic Subsequence",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=longest+palindromic+subsequence",
+    "sourceFilePath": "14. Dynamic Programming/5. DP on Strings/04. Longest Palindromic Subsequence.cpp"
+  },
+  "narrative": {
+    "title": "The Ribbon Weave Symmetry",
+    "scenario": "A textile archivist analyzes thread sequences from ancient ribbons, looking for the longest thread pattern that reads identically forwards and backwards after ignoring unrelated threads. The longer the preserved palindrome motif, the more valuable the ribbon's provenance. The catalog needs that motif length per specimen.",
+    "inputFormat": "A string s.",
+    "outputFormat": "Return the length of the longest subsequence of s that is a palindrome.",
+    "constraints": [
+      "1 <= len(s) <= 1000",
+      "s consists of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n^2)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "bbbab" },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "Dropping the lone 'a' leaves \"bbbb\" — a length-4 palindrome."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "cbbd" },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "\"bb\" is the best symmetric motif."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "agbdba" },
+      "expected": 5,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, s):\n        # Return the length of the longest palindromic subsequence.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the length of the longest palindromic subsequence.\n    int solve(std::string s);\n};",
+    "java": "class Solution {\n    // Return the length of the longest palindromic subsequence.\n    public int solve(String s) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "strings", "lcs", "palindrome"],
+    "hintLevels": [
+      "Level 1: A palindrome reads the same both ways — so it is a sequence shared by s and its mirror image.",
+      "Level 2: Run LCS between s and reverse(s); the classic two-string table does all the work.",
+      "Level 3: Alternatively fill an interval table dp[i][j] inward, adding 2 on matching ends."
+    ]
+  }
+}

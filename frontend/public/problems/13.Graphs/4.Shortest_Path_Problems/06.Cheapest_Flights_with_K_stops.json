@@ -1,0 +1,63 @@
+{
+  "id": "cheapest-flights-with-k-stops",
+  "index": 6,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Cheapest Flights Within K Stops",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=cheapest+flights+within+k+stops",
+    "sourceFilePath": "13. Graphs/4. Shortest Path Problems/06. Cheapest Flights with K stops.cpp"
+  },
+  "narrative": {
+    "title": "The Layaway Budget for a Courier Run",
+    "scenario": "A regional courier quotes one-way legs between cities, but a freight pass caps how many intermediate cities a discounted run may touch. The pricing desk must quote the cheapest legal total from the origin depot to the destination — where 'legal' means at most k intermediate stops — or declare the pair unservable under the cap.",
+    "inputFormat": "An integer n (cities 0..n-1), a flight list flights where [u, v, w] is a one-way leg u -> v costing w, plus src, dst, and the stop cap k.",
+    "outputFormat": "Return the cheapest total cost from src to dst using at most k intermediate stops, or -1 if no such route exists.",
+    "constraints": [
+      "1 <= n <= 100",
+      "0 <= k < n",
+      "1 <= flights.length <= 10^4",
+      "0 <= w <= 10^4",
+      "No duplicate or self-route legs"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O((n + E) * k)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4, "flights": [[0, 1, 100], [1, 2, 100], [2, 0, 100], [1, 3, 600], [2, 3, 200]], "src": 0, "dst": 3, "k": 1 },
+      "expected": 700,
+      "isPublic": true,
+      "explanation": "The 100+200 steal needs two stops and is illegal; the best one-stop route is 100 + 600 = 700."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3, "flights": [[0, 1, 100], [1, 2, 100], [0, 2, 500]], "src": 0, "dst": 2, "k": 0 },
+      "expected": 500,
+      "isPublic": true,
+      "explanation": "With zero stops allowed, only the direct 500 leg qualifies."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 3, "flights": [[0, 1, 100], [1, 2, 100], [0, 2, 500]], "src": 0, "dst": 2, "k": 1 },
+      "expected": 200,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, flights, src, dst, k):\n        # Return the cheapest cost with at most k stops, or -1.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the cheapest cost with at most k stops, or -1.\n    int solve(int n, std::vector<std::vector<int>>& flights,\n              int src, int dst, int k);\n};",
+    "java": "class Solution {\n    // Return the cheapest cost with at most k stops, or -1.\n    public int solve(int n, int[][] flights, int src, int dst, int k) {\n        // TODO\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "bellman-ford", "bounded-hops", "shortest-path", "cheapest-flights-with-k-stops"],
+    "hintLevels": [
+      "Level 1: Plain Dijkstra optimises cost but ignores the stop budget — the budget must bound the relaxation itself.",
+      "Level 2: Bellman-Ford style: run exactly k+1 rounds, each round extending every route by at most one leg.",
+      "Level 3: Relax against a frozen snapshot of the previous round's distances, or routes will silently pick up extra legs."
+    ]
+  }
+}

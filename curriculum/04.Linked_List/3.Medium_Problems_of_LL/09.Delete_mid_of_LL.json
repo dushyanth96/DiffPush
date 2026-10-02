@@ -1,0 +1,60 @@
+{
+  "id": "delete-mid-of-ll",
+  "index": 9,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Delete mid of LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Delete%20middle%20node%20linked%20list",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/09.Delete_mid_of_LL.cpp"
+  },
+  "narrative": {
+    "title": "Retiring the Middle Station of the Line",
+    "scenario": "A plant retires the exact middle station of a one-way line to shorten the path. The station count isn't posted, so the locator uses the two-speed probe: when the fast probe exits, the slow probe is parked on the middle. Crews track the station immediately behind the slow probe the whole way, so the moment retirement is confirmed, that predecessor can bridge straight over the retired station.",
+    "inputFormat": "An array head of node values representing the linked list.",
+    "outputFormat": "The values of the list after deleting the middle node. For n = 1 the result is empty; with an even count, the first of the two middles is removed.",
+    "constraints": [
+      "1 <= list length <= 10^5",
+      "-10^9 <= node value <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [1, 3, 4, 7, 1, 2, 6] },
+      "expected": [1, 3, 4, 1, 2, 6],
+      "isPublic": true,
+      "explanation": "Seven stations: the 4th (value 7) is the middle and gets removed."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [1, 2, 3, 4] },
+      "expected": [1, 3, 4],
+      "isPublic": true,
+      "explanation": "Four stations have middles 2 and 3; the first one goes."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [10] },
+      "expected": [],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def deleteMiddle(self, head: list[int]) -> list[int]:\n        # TODO: delete the middle node and return the list.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int v) : val(v), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    ListNode* deleteMiddle(ListNode* head) {\n        // TODO: delete the middle node and return the head.\n    }\n};",
+    "java": "class Solution {\n    public int[] deleteMiddle(int[] head) {\n        // TODO: delete the middle node and return the list.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "slow-fast", "deletion", "delete-mid-of-ll"],
+    "hintLevels": [
+      "Level 1: Finding the middle and deleting it are two halves of one walk — no second pass is needed.",
+      "Level 2: Advance slow one and fast two, but remember the node behind slow; when fast exits, bridge prev straight to slow's successor.",
+      "Level 3: The single-node list breaks the naive version — prev never gets set, so guard that case by returning an empty list up front."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "swim-in-rising-water",
+  "index": 8,
+  "topic": "13.Graphs",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Swim in Rising Water",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=swim+in+rising+water",
+    "sourceFilePath": "13. Graphs/5. MST Problems/08. Swim in rising water.cpp"
+  },
+  "narrative": {
+    "title": "Waiting Out the Flood Gate",
+    "scenario": "A storm drain network floods continuously: at time t every cell whose elevation is at most t is submerged and swimmable. A maintenance diver launches from the intake corner and must reach the outlet corner, able to cross only when both cells sit under water. The dive plan needs the earliest clock time at which some route from corner to corner becomes fully swimmable.",
+    "inputFormat": "An n x n matrix grid where grid[i][j] is the elevation of cell (i, j); all elevations are distinct.",
+    "outputFormat": "Return the least time t at which the bottom-right cell becomes reachable from the top-left.",
+    "constraints": [
+      "1 <= n <= 50",
+      "0 <= grid[i][j] < n^2",
+      "All elevations are distinct"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2 log n)",
+    "optimalSpace": "O(n^2)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "grid": [[0, 2], [1, 3]] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The outlet's elevation 3 is the last gate on the only diagonal-adjacent route."
+    },
+    {
+      "id": "tc-2",
+      "input": { "grid": [[0, 1, 2, 3, 4], [24, 23, 22, 21, 5], [12, 13, 14, 15, 16], [11, 17, 18, 19, 20], [10, 9, 8, 7, 6]] },
+      "expected": 16,
+      "isPublic": true,
+      "explanation": "The snake route's deepest gate — elevation 16 — is the binding constraint."
+    },
+    {
+      "id": "tc-3",
+      "input": { "grid": [[0]] },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\nclass Solution:\n    def solve(self, grid):\n        # Return the earliest time the bottom-right cell is reachable.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the earliest time the bottom-right cell is reachable.\n    int solve(std::vector<std::vector<int>>& grid);\n};",
+    "java": "class Solution {\n    // Return the earliest time the bottom-right cell is reachable.\n    public int solve(int[][] grid) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dijkstra-variant", "minimax-path", "grid", "swim-in-rising-water"],
+    "hintLevels": [
+      "Level 1: The waiting time of a route is its highest elevation cell — minimise that maximum.",
+      "Level 2: A min-heap seeded at the start always expands the currently shallowest frontier cell.",
+      "Level 3: The answer is the largest elevation popped by the time the goal surfaces; a union-find over cells sorted by elevation works equally well."
+    ]
+  }
+}

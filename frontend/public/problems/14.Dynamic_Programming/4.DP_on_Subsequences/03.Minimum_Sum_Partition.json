@@ -1,0 +1,61 @@
+{
+  "id": "minimum-sum-partition",
+  "index": 3,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Minimum Sum Partition",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=minimum+subset+sum+difference",
+    "sourceFilePath": "14. Dynamic Programming/4. DP on Subsequences/03. Minimum Sum Partition.cpp"
+  },
+  "narrative": {
+    "title": "The Load-Balancing Forklift Split",
+    "scenario": "A warehouse must load two trucks from one pallet queue, and the dispatch rule says the two loads should weigh as nearly the same as possible — perfect balance is rarely reachable. The scheduler therefore hunts for the split with the smallest gap between truck weights. Every pallet must go on one truck or the other.",
+    "inputFormat": "An integer n and an array arr of n non-negative integers.",
+    "outputFormat": "Return the minimum possible |sum(S1) - sum(S2)| over all partitions of arr into two sets.",
+    "constraints": [
+      "1 <= n <= 100",
+      "0 <= arr[i] <= 10^3",
+      "the total sum stays within 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*S)",
+    "optimalSpace": "O(S)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4, "arr": [1, 6, 11, 5] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "Sides {1, 5, 6} = 12 and {11} = 11 leave a gap of 1."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3, "arr": [3, 1, 4] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "{3, 1} = 4 and {4} = 4 balance perfectly."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 2, "arr": [2, 7] },
+      "expected": 5,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, arr):\n        # Return the minimum subset-sum difference.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the minimum subset-sum difference.\n    int solve(int n, std::vector<int>& arr);\n};",
+    "java": "class Solution {\n    // Return the minimum subset-sum difference.\n    public int solve(int n, int[] arr) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "subsequences", "subset-sum", "partition", "min-difference"],
+    "hintLevels": [
+      "Level 1: One side's sum s forces the other to total - s; small s means small gap.",
+      "Level 2: Run the reachability table up to the total, then take min |total - 2s| over reachable s.",
+      "Level 3: Only s up to total/2 need scanning, since the gap is symmetric around the midpoint."
+    ]
+  }
+}

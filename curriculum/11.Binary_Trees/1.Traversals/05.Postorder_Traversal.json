@@ -1,0 +1,60 @@
+{
+  "id": "binary-tree-postorder-traversal",
+  "index": 5,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Postorder Traversal of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=binary+tree+postorder+traversal",
+    "sourceFilePath": "11. Binary Trees/1. Traversals/05. Postorder Traversal.cpp"
+  },
+  "narrative": {
+    "title": "Demolition-Permit Walkthrough",
+    "scenario": "A demolition contractor surveys a building shaped like a binary tree of structural bays. Safety law forbids logging a bay for teardown until every bay beneath it — the whole left wing and then the whole right wing — has already been inspected. Only after both wings are cleared does the crew sign off the bay itself. The signed-off sequence is what the permit office receives.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return an array of node values in postorder: visit the left subtree, then the right subtree, then the node.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [1, 2, 3, 4, 5, null, 6] },
+      "expected": [4, 5, 2, 6, 3, 1],
+      "isPublic": true,
+      "explanation": "Left subtree finishes as 4,5,2; right subtree as 6,3; the root lands last."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [7] },
+      "expected": [7],
+      "isPublic": true,
+      "explanation": "A single node has no children, so it is visited first and last."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [1, 2, 3, null, null, 4, 5] },
+      "expected": [2, 4, 5, 3, 1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the postorder traversal as a list of values.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the postorder traversal as a vector of values.\n    std::vector<int> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the postorder traversal as a List of Integer values.\n    public List<Integer> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["trees", "binary-tree", "traversal", "recursion", "binary-tree-postorder-traversal"],
+    "hintLevels": [
+      "Level 1: Postorder defers the parent until both of its subtrees are fully handled — children always win.",
+      "Level 2: Move the recording beat to the end of the recursion: recurse left, recurse right, record node.",
+      "Level 3: The root of any subtree appears last in its own postorder slice — that anchor helps reconstruct or validate trees."
+    ]
+  }
+}

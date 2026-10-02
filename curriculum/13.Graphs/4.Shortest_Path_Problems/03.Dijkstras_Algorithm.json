@@ -1,0 +1,61 @@
+{
+  "id": "dijkstra-s-algorithm",
+  "index": 3,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Dijkstra's Algorithm — Single Source Shortest Paths",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=dijkstra",
+    "sourceFilePath": "13. Graphs/4. Shortest Path Problems/03. Dijkstra's Algorithm.cpp"
+  },
+  "narrative": {
+    "title": "Dispatching the Cheapest Freight Routes",
+    "scenario": "A freight network links depots with toll roads of varying cost, and dispatch must quote every depot its cheapest total toll from the home hub. The dispatcher always settles the cheapest unsettled depot next — once settled, its quote is final — and tries to improve each neighbour's quote through it. A priority queue keeps the cheapest unsettled depot on top.",
+    "inputFormat": "An integer n (vertices 0..n-1), an adjacency list adj where adj[i] holds pairs [neighbour, weight] for each undirected edge, and the source vertex s.",
+    "outputFormat": "Return the array of shortest distances from s to every vertex.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= weight <= 10^6",
+      "The graph is undirected and connected"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O((V + E) log V)",
+    "optimalSpace": "O(V + E)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 5, "s": 0, "adj": [[[1, 2], [2, 4]], [[0, 2], [2, 1], [3, 7]], [[0, 4], [1, 1], [4, 3]], [[1, 7], [4, 2]], [[2, 3], [3, 2]]] },
+      "expected": [0, 2, 3, 8, 6],
+      "isPublic": true,
+      "explanation": "The hub settles 1 (toll 2) before 2 (direct 4); 2 improves to 3 via 1, and the rest follow."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3, "s": 0, "adj": [[[1, 5], [2, 1]], [[0, 5], [2, 2]], [[0, 1], [1, 2]]] },
+      "expected": [0, 3, 1],
+      "isPublic": true,
+      "explanation": "Vertex 1 is cheaper through the low-toll bridge: 1 + 2 = 3 beats the direct 5."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 2, "s": 1, "adj": [[[1, 9]], [[0, 9]]] },
+      "expected": [9, 0],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\nclass Solution:\n    def solve(self, n, adj, s):\n        # Return shortest distances from s to every vertex.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return shortest distances from s to every vertex.\n    std::vector<int> solve(int n,\n                           std::vector<std::vector<std::pair<int, int>>>& adj, int s);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return shortest distances from s to every vertex.\n    public int[] solve(int n, List<List<int[]>> adj, int s) {\n        // TODO\n        return new int[n];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dijkstra", "priority-queue", "shortest-path", "dijkstra-s-algorithm"],
+    "hintLevels": [
+      "Level 1: Greedily finalize the closest unsettled depot — with non-negative tolls, nothing can ever improve it later.",
+      "Level 2: Min-heap of (distance, vertex); pop the cheapest, relax neighbours, push improvements.",
+      "Level 3: Stale heap entries are harmless — skip any pop whose distance no longer matches the settled array."
+    ]
+  }
+}

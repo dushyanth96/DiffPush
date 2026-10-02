@@ -1,0 +1,60 @@
+{
+  "id": "kth-largest-element",
+  "index": 1,
+  "topic": "09.Heaps",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Kth Largest Element in an Array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=kth+largest+element+in+an+array",
+    "sourceFilePath": "09. Heaps/2. Medium Problems/01. Kth largest element.cpp"
+  },
+  "narrative": {
+    "title": "The Leaderboard Podium Scan",
+    "scenario": "An esports backend tracks player scores in arrival order, and the broadcast needs the kth-highest score without sorting the entire leaderboard. A small holding pen keeps only the k best scores seen so far, always evicting its weakest resident whenever a stronger score arrives. When the scan ends, the pen's weakest resident is exactly the kth-highest score overall.",
+    "inputFormat": "An integer array nums and an integer k.",
+    "outputFormat": "Return the kth largest element of nums.",
+    "constraints": [
+      "1 <= k <= nums.length <= 10^5",
+      "-10^4 <= nums[i] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log k)",
+    "optimalSpace": "O(k)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [3, 2, 1, 5, 6, 4], "k": 2 },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Only 6 outranks 5, so 5 is the second-highest score."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [3, 2, 3, 1, 2, 4, 5, 5, 6], "k": 4 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The scores above 4 are 6, 5, 5 — making 4 the fourth-largest."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [7], "k": 1 },
+      "expected": 7,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\ndef find_kth_largest(nums, k):\n    pen = nums[:k]\n    heapq.heapify(pen)              # min-heap of the k best so far\n    for v in nums[k:]:\n        if v > pen[0]:\n            heapq.heapreplace(pen, v)\n    return pen[0]",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint findKthLargest(vector<int>& nums, int k) {\n    priority_queue<int, vector<int>, greater<int>> pq;\n    for (int i = 0; i < (int)nums.size(); ++i) {\n        if ((int)pq.size() < k) { pq.push(nums[i]); continue; }\n        if (nums[i] > pq.top()) { pq.pop(); pq.push(nums[i]); }\n    }\n    return pq.top();\n}",
+    "java": "import java.util.PriorityQueue;\n\nclass Solution {\n    public int findKthLargest(int[] nums, int k) {\n        PriorityQueue<Integer> pq = new PriorityQueue<>();\n        for (int v : nums) {\n            if (pq.size() < k) { pq.offer(v); continue; }\n            if (v > pq.peek()) { pq.poll(); pq.offer(v); }\n        }\n        return pq.peek();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["heap", "selection", "min-heap-of-size-k", "kth-largest-element"],
+    "hintLevels": [
+      "Level 1: Keep only k candidates — anything entering the pen must beat its weakest resident.",
+      "Level 2: A min-heap of size k exposes the weakest of the best k at the top in O(1).",
+      "Level 3: After the scan the heap's top IS the answer — no sorting of the full array ever happens."
+    ]
+  }
+}

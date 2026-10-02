@@ -1,0 +1,60 @@
+{
+  "id": "remove-k-elements",
+  "index": 7,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Remove K Digits",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=remove+k+digits",
+    "sourceFilePath": "07.Stack and Queues/3. Monotonic Stack and Queue/07. Remove K elements.cpp"
+  },
+  "narrative": {
+    "title": "The License Plate Trimmer",
+    "scenario": "A DMV system shrinks oversized license plate codes by deleting exactly k digits so the remaining number reads as small as possible. A greedy pass retires any digit that is taller than the digit arriving right after it — each removal buys the biggest possible drop in value — and leftover deletions trim from the tail.",
+    "inputFormat": "A string num of digits and an integer k, the count of deletions.",
+    "outputFormat": "Return the smallest possible number as a string, with leading zeros stripped; the empty result prints as \"0\".",
+    "constraints": [
+      "1 <= k <= num.length <= 10^5",
+      "num consists of digits only and has no leading zeros (except the single digit \"0\")"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "num": "1432219", "k": 3 },
+      "expected": "1219",
+      "isPublic": true,
+      "explanation": "Deleting 4, 3, and the second 2 leaves 1219, the smallest reachable value."
+    },
+    {
+      "id": "tc-2",
+      "input": { "num": "10200", "k": 1 },
+      "expected": "200",
+      "isPublic": true,
+      "explanation": "Removing the 1 leaves 0200; stripping the leading zero prints 200."
+    },
+    {
+      "id": "tc-3",
+      "input": { "num": "9", "k": 1 },
+      "expected": "0",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def remove_k_digits(num: str, k: int) -> str:\n    stack = []\n    for digit in num:\n        while stack and k > 0 and stack[-1] > digit:\n            stack.pop()\n            k -= 1\n        stack.append(digit)\n    stack = stack[:len(stack) - k] if k else stack  # trim from the tail\n    result = ''.join(stack).lstrip('0')\n    return result if result else \"0\"",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstring removeKdigits(string num, int k) {\n    string ans;  // used as the stack\n    for (char c : num) {\n        while (!ans.empty() && k > 0 && ans.back() > c) {\n            ans.pop_back();\n            --k;\n        }\n        ans.push_back(c);\n    }\n    ans.resize(ans.size() - k);  // remove leftover from the back\n    int zeros = 0;\n    while (zeros < (int)ans.size() && ans[zeros] == '0') ++zeros;\n    ans = ans.substr(zeros);\n    return ans.empty() ? \"0\" : ans;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public String removeKdigits(String num, int k) {\n        StringBuilder stack = new StringBuilder();\n        for (char c : num.toCharArray()) {\n            while (stack.length() > 0 && k > 0 && stack.charAt(stack.length() - 1) > c) {\n                stack.deleteCharAt(stack.length() - 1);\n                --k;\n            }\n            stack.append(c);\n        }\n        stack.setLength(stack.length() - k);\n        String trimmed = stack.toString().replaceFirst(\"^0+\", \"\");\n        return trimmed.isEmpty() ? \"0\" : trimmed;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["monotonic-stack", "greedy", "string", "remove-k-elements"],
+    "hintLevels": [
+      "Level 1: A digit taller than its successor should go — removals pay off most at local peaks.",
+      "Level 2: Keep a stack of digits; pop while the incoming digit is smaller and budget k remains.",
+      "Level 3: After the scan, unused budget deletes from the tail; then strip leading zeros and handle the all-empty case."
+    ]
+  }
+}

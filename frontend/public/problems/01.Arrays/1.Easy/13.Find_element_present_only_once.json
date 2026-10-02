@@ -1,0 +1,61 @@
+{
+  "id": "find-element-present-only-once",
+  "index": 13,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Find element present only once",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Find%20element%20present%20only%20once",
+    "sourceFilePath": "01.Arrays/1.Easy/13.Find_element_present_only_once.cpp"
+  },
+  "narrative": {
+    "title": "The Singleton Tenant in the Door Log",
+    "scenario": "A building turnstile logs every entry and exit, so each badge id appears an even number of times except one badge whose second swipe was lost by the controller. The security team needs that unpaired badge. The answer must be produced in a single pass over the log using no extra storage.",
+    "inputFormat": "An array nums of n integers where every value appears exactly twice except one value that appears once.",
+    "outputFormat": "The value that appears exactly once.",
+    "constraints": [
+      "1 <= n <= 3 * 10^4",
+      "-3 * 10^4 <= nums[i] <= 3 * 10^4",
+      "Every element appears twice except for one"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [2, 2, 1] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "The pair 2,2 cancels out and the leftover badge is 1."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [4, 1, 2, 1, 2] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "Both pairs are matched regardless of position, leaving 4 unpaired."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [7] },
+      "expected": 7,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def singleNumber(self, nums: list[int]) -> int:\n        # TODO: return the only value that appears exactly once, in one pass.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int singleNumber(vector<int>& nums) {\n        // TODO: return the only value that appears exactly once, in one pass.\n    }\n};",
+    "java": "class Solution {\n    public int singleNumber(int[] nums) {\n        // TODO: return the only value that appears exactly once, in one pass.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "bit-manipulation", "xor", "single-number", "constant-space"],
+    "hintLevels": [
+      "Level 1: Sorting would work but costs extra time and touches the log twice; think of an operation that annihilates equal values.",
+      "Level 2: Fold the entire log with XOR starting from 0 - identical values cancel to 0 and never disturb the accumulator.",
+      "Level 3: The order of folding is irrelevant because XOR commutes, and the identity element 0 is what makes the single leftover value fall out."
+    ]
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "id": "m-coloring-problem",
+  "index": 4,
+  "topic": "05.Recursion",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "M coloring problem",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=M%20coloring%20problem",
+    "sourceFilePath": "05.Recursion/3.Try Out All Combos/04.M coloring problem.cpp"
+  },
+  "narrative": {
+    "title": "Assigning Radio Channels to Tower Neighbours",
+    "scenario": "A county tower network must assign one of m available radio channels to every tower so that directly linked towers never broadcast on the same channel. The engineer walks the tower list in order, tries each channel on the current tower, and only accepts the assignment when none of its linked neighbours already holds that channel; a dead end retracts the channel and tries the next one.",
+    "inputFormat": "A boolean adjacency matrix graph of N x N, the number of colors m, and the number of vertices N.",
+    "outputFormat": "true when every vertex can receive one of m colors without any edge joining equal colors.",
+    "constraints": [
+      "1 <= N <= 20",
+      "1 <= m <= N",
+      "graph[i][j] is 1 exactly when towers i and j are linked"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m^N) — every tower may try every channel",
+    "optimalSpace": "O(N) for the color array and recursion depth"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "graph": [
+          [
+            false,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            false,
+            true,
+            false
+          ],
+          [
+            true,
+            true,
+            false,
+            true
+          ],
+          [
+            true,
+            false,
+            true,
+            false
+          ]
+        ],
+        "m": 3,
+        "N": 4
+      },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "This wheel-plus-chord graph is 3-colorable — a full palette lets every linked pair differ."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "graph": [
+          [
+            false,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            false,
+            true,
+            false
+          ],
+          [
+            true,
+            true,
+            false,
+            true
+          ],
+          [
+            true,
+            false,
+            true,
+            false
+          ]
+        ],
+        "m": 2,
+        "N": 4
+      },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Vertices 0, 1, 2 form a triangle, which no 2-coloring can satisfy."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "graph": [
+          [
+            false,
+            true
+          ],
+          [
+            true,
+            false
+          ]
+        ],
+        "m": 1,
+        "N": 2
+      },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def graphColoring(self, graph: list[list[bool]], m: int, N: int) -> bool:\n        # TODO: try colors 1..m per vertex; backtrack when a neighbor conflicts.\n        pass",
+    "cpp": "#include <cstring>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool graphColoring(bool graph[101][101], int m, int N) {\n        // TODO: assign colors vertex by vertex, verifying no neighbour matches.\n    }\n};",
+    "java": "class Solution {\n    public boolean graphColoring(boolean[][] graph, int m, int N) {\n        // TODO: try colors 1..m per vertex; backtrack when a neighbor conflicts.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "graph-coloring",
+      "m-coloring-problem"
+    ],
+    "hintLevels": [
+      "Level 1: One vertex is decided per recursion level; the only legality test is against already-colored neighbours.",
+      "Level 2: For vertex v, try each color 1..m: scan its adjacency row for a neighbour wearing the same color; on a clean color, recurse for v + 1.",
+      "Level 3: Success is reaching vertex N with all colors placed — no global check is needed because every assignment was validated at placement time."
+    ]
+  }
+}

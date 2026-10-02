@@ -1,0 +1,101 @@
+{
+  "id": "palindrome-partioning",
+  "index": 1,
+  "topic": "05.Recursion",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Palindrome partioning",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Palindrome%20partioning",
+    "sourceFilePath": "05.Recursion/3.Try Out All Combos/01.Palindrome partioning.cpp"
+  },
+  "narrative": {
+    "title": "Slicing the Transmission Log into Mirrored Blocks",
+    "scenario": "A telecom archive stores telemetry strings that auditors want pre-sliced into blocks, where every block reads the same forwards and backwards. The slicer scans from the current offset, cuts at every prefix that survives the mirror test, and recurses on the remainder — recording a full slicing plan each time the string is consumed.",
+    "inputFormat": "A string s of lowercase letters.",
+    "outputFormat": "Every partition of s into palindromic substrings, each as a list of the pieces in order.",
+    "constraints": [
+      "1 <= s.length <= 16",
+      "s consists of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n * 2^n) — up to 2^n cut plans, each checked and copied in O(n)",
+    "optimalSpace": "O(n) recursion depth beyond the output"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "s": "aab"
+      },
+      "expected": [
+        [
+          "a",
+          "a",
+          "b"
+        ],
+        [
+          "aa",
+          "b"
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "Single-letter cuts always mirror; the only multi-letter option is slicing off \"aa\" first."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "s": "a"
+      },
+      "expected": [
+        [
+          "a"
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "One character is its own mirror image."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "s": "abcba"
+      },
+      "expected": [
+        [
+          "a",
+          "b",
+          "c",
+          "b",
+          "a"
+        ],
+        [
+          "a",
+          "bcb",
+          "a"
+        ],
+        [
+          "abcba"
+        ]
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def partition(self, s: str) -> list[list[str]]:\n        # TODO: cut every palindromic prefix, recurse on the rest.\n        pass",
+    "cpp": "#include <string>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<string>> partition(string s) {\n        // TODO: for each start, try every palindromic prefix and recurse.\n    }\n};",
+    "java": "class Solution {\n    public java.util.List<java.util.List<String>> partition(String s) {\n        // TODO: cut every palindromic prefix, recurse on the rest.\n        return new java.util.ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "palindrome",
+      "palindrome-partioning"
+    ],
+    "hintLevels": [
+      "Level 1: Every cut position is a decision; the only legality check per piece is the mirror test.",
+      "Level 2: From offset i, try each end p: if s[i..p] is a palindrome, append it and recurse from p + 1; backtrack afterwards.",
+      "Level 3: Record the plan when the offset reaches len(s). Precomputing a palindrome DP table trades the per-piece mirror scan for O(1) checks."
+    ]
+  }
+}

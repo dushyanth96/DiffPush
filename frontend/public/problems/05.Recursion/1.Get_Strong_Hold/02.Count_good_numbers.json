@@ -1,0 +1,59 @@
+{
+  "id": "count-good-numbers",
+  "index": 2,
+  "topic": "05.Recursion",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Count good numbers",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Count%20good%20numbers",
+    "sourceFilePath": "05.Recursion/1.Get Strong Hold/02.Count_good_numbers.cpp"
+  },
+  "narrative": {
+    "title": "Issuing Even-Prime License Plates",
+    "scenario": "A motor registry issues plate strings where every even position must carry an even digit and every odd position must carry one of the four single-digit primes. With five even digits and four primes available, each slot's freedom multiplies, and the registry needs the count of valid plates of any requested length modulo 10^9 + 7. The count grows by a factor of 5 per even slot and 4 per odd slot.",
+    "inputFormat": "A single integer n, the plate length.",
+    "outputFormat": "The number of valid digit strings of length n, modulo 10^9 + 7.",
+    "constraints": [
+      "1 <= n <= 10^15"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n) with fast exponentiation (the source uses O(n))",
+    "optimalSpace": "O(n) recursion stack in the source form"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 1 },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "One slot, which is even-indexed: any of the five even digits."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 4 },
+      "expected": 400,
+      "isPublic": true,
+      "explanation": "Two even slots and two prime slots: 5 * 4 * 5 * 4 = 400."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 50 },
+      "expected": 564908303,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def countGoodNumbers(self, n: int) -> int:\n        # TODO: 5 choices per even slot, 4 per odd slot, mod 10^9 + 7.\n        pass",
+    "cpp": "#include <cstdint>\nusing namespace std;\n\nclass Solution {\npublic:\n    int countGoodNumbers(long long n) {\n        // TODO: multiply 5 per even slot and 4 per odd slot under the modulus.\n    }\n};",
+    "java": "class Solution {\n    public int countGoodNumbers(long n) {\n        // TODO: multiply 5 per even slot and 4 per odd slot under the modulus.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["recursion", "combinatorics", "modular-arithmetic", "count-good-numbers"],
+    "hintLevels": [
+      "Level 1: Slots are independent — the total is a product of per-slot choice counts, not a search.",
+      "Level 2: Even-indexed slots (0, 2, 4, ...) allow 5 digits; odd-indexed allow 4. Ceiling(n/2) even slots and floor(n/2) odd slots.",
+      "Level 3: n reaches 10^15, so linear multiplication overflows both time and patience — raise 5 and 4 to their slot counts with modular fast exponentiation."
+    ]
+  }
+}

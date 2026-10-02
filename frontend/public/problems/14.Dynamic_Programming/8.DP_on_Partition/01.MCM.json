@@ -1,0 +1,90 @@
+{
+  "id": "mcm",
+  "index": 1,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Matrix Chain Multiplication",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=matrix+chain+multiplication+minimum+operations",
+    "sourceFilePath": "14. Dynamic Programming/8. DP on Partition/01. MCM.cpp"
+  },
+  "narrative": {
+    "title": "The Render Pipeline Scheduler",
+    "scenario": "A graphics engine chains a sequence of image transforms whose intermediate buffers have known dimensions. Applying transforms in different groupings changes how many pixel-multiply operations the GPU performs, since pairing buffers incurs a cost proportional to their shared edges. The pipeline tuner must pick the association order that minimizes total scalar work.",
+    "inputFormat": "An integer N and an array arr of N integers, where matrix i has dimensions arr[i-1] x arr[i] (so there are N-1 matrices).",
+    "outputFormat": "Return the minimum number of scalar multiplications needed to multiply the whole chain.",
+    "constraints": [
+      "2 <= N <= 100",
+      "1 <= arr[i] <= 500"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N^3)",
+    "optimalSpace": "O(N^2)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "N": 5,
+        "arr": [
+          40,
+          20,
+          30,
+          10,
+          30
+        ]
+      },
+      "expected": 26000,
+      "isPublic": true,
+      "explanation": "Grouping (A*(B*C))*D bills 6000 + 8000 + 12000 = 26000 operations."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "N": 4,
+        "arr": [
+          10,
+          15,
+          20,
+          25
+        ]
+      },
+      "expected": 8000,
+      "isPublic": true,
+      "explanation": "(A*B)*C costs 10*15*20 + 10*20*25 = 8000, beating the other association's 11250."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "N": 3,
+        "arr": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": 18,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, N, arr):\n        # Return the minimum scalar multiplications for the chain.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the minimum scalar multiplications for the chain.\n    int solve(int N, std::vector<int>& arr);\n};",
+    "java": "class Solution {\n    // Return the minimum scalar multiplications for the chain.\n    public int solve(int N, int[] arr) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "partition-dp",
+      "interval-dp",
+      "mcm"
+    ],
+    "hintLevels": [
+      "Level 1: Split the chain at every possible final multiplication point and take the cheapest split.",
+      "Level 2: dp[i][j] = min over k of arr[i-1]*arr[k]*arr[j] + dp[i][k] + dp[k+1][j]; single matrices cost 0.",
+      "Level 3: Fill by increasing chain length rather than plain index order so subproblems exist before use."
+    ]
+  }
+}

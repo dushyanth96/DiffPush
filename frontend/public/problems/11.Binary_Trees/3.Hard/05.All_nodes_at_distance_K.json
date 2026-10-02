@@ -1,0 +1,115 @@
+{
+  "id": "all-nodes-at-distance-k",
+  "index": 5,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "All Nodes at Distance K",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=all+nodes+distance+k+binary+tree",
+    "sourceFilePath": "11. Binary Trees/3. Hard/05. All nodes at distance K.cpp"
+  },
+  "narrative": {
+    "title": "The Radio Check Distress Sweep",
+    "scenario": "A mountain rescue network is laid out as a binary tree of relay posts. When a post sends a distress ping, dispatch must name every relay exactly k hops away — counting along child links and the parent link alike — so neighbouring teams can be paged at once. Hops shorter or longer than k stay silent, and the call order doesn't matter.",
+    "inputFormat": "A binary tree as a level-order array (null marks a missing child), an integer target — the value of the origin post — and an integer k, the exact hop distance.",
+    "outputFormat": "Return the values of all nodes at exactly distance k from the target, in any order.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^4 <= node value <= 10^4",
+      "Node values are unique",
+      "0 <= k <= number of nodes"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          3,
+          5,
+          1,
+          6,
+          2,
+          0,
+          8,
+          null,
+          null,
+          7,
+          4
+        ],
+        "target": 5,
+        "k": 2
+      },
+      "expected": [
+        1,
+        4,
+        7
+      ],
+      "isPublic": true,
+      "explanation": "Two hops from 5 reach its parent 3's other child 1, and 5's grandchildren 7 and 4."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          3,
+          5,
+          1,
+          6,
+          2,
+          0,
+          8,
+          null,
+          null,
+          7,
+          4
+        ],
+        "target": 5,
+        "k": 3
+      },
+      "expected": [
+        0,
+        8
+      ],
+      "isPublic": true,
+      "explanation": "Three hops from 5 lands on the root 3's two children 0 and 8."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1
+        ],
+        "target": 1,
+        "k": 0
+      },
+      "expected": [
+        1
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root, target, k):\n        # Return values of all nodes exactly k hops from the target.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return values of all nodes exactly k hops from the target.\n    std::vector<int> solve(TreeNode* root, int target, int k);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return values of all nodes exactly k hops from the target.\n    public List<Integer> solve(TreeNode root, int target, int k) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "bfs",
+      "parent-map",
+      "all-nodes-at-distance-k"
+    ],
+    "hintLevels": [
+      "Level 1: A tree only lets you walk downward — to wander back up you first need a way to find each node's parent.",
+      "Level 2: One pass records every parent; a second BFS from the target then spreads across all three directions, skipping burned nodes.",
+      "Level 3: Stop expanding once the wave has travelled k rings; whatever sits in the queue is exactly the answer set."
+    ]
+  }
+}

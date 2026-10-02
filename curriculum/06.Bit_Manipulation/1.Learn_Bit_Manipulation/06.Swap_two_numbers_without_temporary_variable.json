@@ -1,0 +1,59 @@
+{
+  "id": "swap-two-numbers-without-temporary-variable",
+  "index": 6,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Swap two numbers without temporary variable",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Swap%20two%20numbers%20without%20temporary%20variable",
+    "sourceFilePath": "06.Bit Manipulation/1. Learn Bit Manipulation/06.Swap two numbers without temporary variable.cpp"
+  },
+  "narrative": {
+    "title": "The Dockhands' XOR Handshake",
+    "scenario": "Two dockhands carry pallet tokens and need to trade them, but the dock forbids spare clipboards — no third hand allowed. The XOR handshake saves them: combining their tokens into one register, each worker can re-derive the other's token by XOR-ing the register against what they still hold. Three such handshakes leave every token in the other's grip.",
+    "inputFormat": "Two integers a and b.",
+    "outputFormat": "The pair [b, a] — the values after swapping.",
+    "constraints": [
+      "-10^9 <= a, b <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "a": 13, "b": 9 },
+      "expected": [9, 13],
+      "isPublic": true,
+      "explanation": "Three XOR rounds exchange the values with no third storage slot."
+    },
+    {
+      "id": "tc-2",
+      "input": { "a": 5, "b": 5 },
+      "expected": [5, 5],
+      "isPublic": true,
+      "explanation": "Equal tokens survive the handshake — the swap is its own identity here."
+    },
+    {
+      "id": "tc-3",
+      "input": { "a": 0, "b": -7 },
+      "expected": [-7, 0],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def get(self, a: int, b: int) -> list[int]:\n        # TODO: three XOR assignments; no third variable.\n        pass",
+    "cpp": "#include <utility>\nusing namespace std;\n\nclass Solution {\npublic:\n    pair<int, int> get(int a, int b) {\n        // TODO: a ^= b; b ^= a; a ^= b; return {a, b}.\n    }\n};",
+    "java": "class Solution {\n    public int[] get(int a, int b) {\n        // TODO: three XOR assignments; no third variable.\n        return new int[2];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "xor", "swap-trick", "swap-two-numbers-without-temporary-variable"],
+    "hintLevels": [
+      "Level 1: XOR is its own inverse — a value XOR-ed with a mask twice returns to itself.",
+      "Level 2: Sequence it as a ^= b, then b ^= a (b now holds the old a), then a ^= b (a now holds the old b).",
+      "Level 3: The only trap is swapping a variable with itself in-place (a ^= a zeroes it) — distinct variables with equal values are safe."
+    ]
+  }
+}

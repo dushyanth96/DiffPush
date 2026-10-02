@@ -1,0 +1,61 @@
+{
+  "id": "3-sum",
+  "index": 3,
+  "topic": "01.Arrays",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "3Sum",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=3Sum",
+    "sourceFilePath": "01.Arrays/3.Hard/03.3_sum.cpp"
+  },
+  "narrative": {
+    "title": "Balancing Three Meter Channels to Net Zero",
+    "scenario": "A substation reads three phase offsets per sample, recorded as signed integer corrections, and the operator must find every distinct triple of offsets that sums to exactly zero. Offsets come from different samples so the same value may be reused at most once per triple. The triples are reported as value sets, so permutations of the same three values count once.",
+    "inputFormat": "An array nums of n integers.",
+    "outputFormat": "All distinct triples of values from nums whose sum is zero, with no duplicate triples and order not significant.",
+    "constraints": [
+      "3 <= n <= 3000",
+      "-10^5 <= nums[i] <= 10^5",
+      "The triple [nums[i], nums[j], nums[k]] requires distinct indices i, j, k"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(1) auxiliary (excluding the output)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [-1, 0, 1, 2, -1, -4] },
+      "expected": [[-1, -1, 2], [-1, 0, 1]],
+      "isPublic": true,
+      "explanation": "Only two distinct value sets net to zero, even though the repeated -1 sits at two different indices."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [0, 1, 1] },
+      "expected": [],
+      "isPublic": true,
+      "explanation": "No combination of three offsets cancels here, so the result is empty."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [0, 0, 0] },
+      "expected": [[0, 0, 0]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def threeSum(self, nums: list[int]) -> list[list[int]]:\n        # TODO: return every distinct triple summing to zero.\n        pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> threeSum(vector<int>& nums) {\n        // TODO: return every distinct triple summing to zero.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public List<List<Integer>> threeSum(int[] nums) {\n        // TODO: return every distinct triple summing to zero.\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "sorting", "two-pointers", "triplet-sum", "duplicate-skipping"],
+    "hintLevels": [
+      "Level 1: Sorting first converts the search for three unknown values into a search for two from a fixed anchor.",
+      "Level 2: Fix one offset per outer step, then run a converging pair of pointers on the remaining suffix, moving them inward based on how the running sum compares with the needed complement.",
+      "Level 3: Sorting alone does not remove duplicate output - after recording a hit you must skip equal values on both pointers, and also skip equal anchors so the same triple is never emitted twice."
+    ]
+  }
+}

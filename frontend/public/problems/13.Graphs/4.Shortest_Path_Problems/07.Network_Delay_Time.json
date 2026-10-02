@@ -1,0 +1,62 @@
+{
+  "id": "network-delay-time",
+  "index": 7,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Network Delay Time",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=network+delay+time",
+    "sourceFilePath": "13. Graphs/4. Shortest Path Problems/07. Network Delay Time.cpp"
+  },
+  "narrative": {
+    "title": "The Configuration-Propagation Finish Line",
+    "scenario": "A cluster controller pushes a config update from one master node across one-way latency links. The rollout finishes when the slowest node has received the update via its cheapest route, so ops needs the maximum, over all nodes, of the shortest latency from the master — or proof that some node can never be reached.",
+    "inputFormat": "An integer n (nodes 1..n), a list times where [u, v, w] is a one-way link u -> v costing w, and the originating node k.",
+    "outputFormat": "Return the minimum time for every node to receive the signal — the largest shortest-path distance from k — or -1 if some node is unreachable.",
+    "constraints": [
+      "1 <= n <= 100",
+      "1 <= times.length <= 6000",
+      "1 <= w <= 100",
+      "1 <= k <= n"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(E log V)",
+    "optimalSpace": "O(V + E)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4, "k": 2, "times": [[2, 1, 1], [2, 3, 1], [3, 4, 1]] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Nodes 1 and 3 get it in 1 tick; the farthest, node 4, waits 2."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3, "k": 1, "times": [[1, 2, 1]] },
+      "expected": -1,
+      "isPublic": true,
+      "explanation": "Node 3 never hears anything — the rollout fails."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 2, "k": 1, "times": [[1, 2, 7]] },
+      "expected": 7,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\nclass Solution:\n    def solve(self, n, times, k):\n        # Return the time when the last node is reached, or -1.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the time when the last node is reached, or -1.\n    int solve(int n, std::vector<std::vector<int>>& times, int k);\n};",
+    "java": "class Solution {\n    // Return the time when the last node is reached, or -1.\n    public int solve(int n, int[][] times, int k) {\n        // TODO\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dijkstra", "single-source", "shortest-path", "network-delay-time"],
+    "hintLevels": [
+      "Level 1: The rollout time is not the longest link — it is the farthest node's cheapest route.",
+      "Level 2: Dijkstra from k; the answer is the maximum over all settled distances.",
+      "Level 3: An untouched infinity in the distance array is the -1 signal for unreachable nodes."
+    ]
+  }
+}

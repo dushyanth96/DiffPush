@@ -1,0 +1,129 @@
+{
+  "id": "subset-2",
+  "index": 6,
+  "topic": "05.Recursion",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Subset 2",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Subset%202",
+    "sourceFilePath": "05.Recursion/2.Subsequences Pattern/06.Subset 2.cpp"
+  },
+  "narrative": {
+    "title": "Sampling Tracks Without Repeating the Playlist",
+    "scenario": "A radio scheduler builds every possible segment lineup from a track list that contains repeated titles. Two lineups with the same multiset of titles count as the same segment, so the scheduler sorts the list first and, when several identical titles sit side by side, refuses to start a new branch on the second copy of a title at the same depth. Every node of the resulting tree — not just the leaves — is a valid distinct lineup.",
+    "inputFormat": "An array nums of n integers, possibly with duplicates.",
+    "outputFormat": "All distinct subsets; the verifier compares them as a set of sorted tuples.",
+    "constraints": [
+      "1 <= n <= 10",
+      "-10 <= nums[i] <= 10"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n * 2^n) — copying each subset costs up to O(n)",
+    "optimalSpace": "O(n) recursion depth beyond the output"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "nums": [
+          1,
+          2,
+          2
+        ]
+      },
+      "expected": [
+        [],
+        [
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "Sorted lexicographically: the second 2 never starts a fresh branch at the same depth, killing duplicate subsets."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "nums": [
+          0
+        ]
+      },
+      "expected": [
+        [],
+        [
+          0
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "Distinct elements behave like the plain power set."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "nums": [
+          2,
+          1,
+          2
+        ]
+      },
+      "expected": [
+        [],
+        [
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def subsetsWithDup(self, nums: list[int]) -> list[list[int]]:\n        # TODO: sort first; skip equal neighbours when starting a branch.\n        pass",
+    "cpp": "#include <algorithm>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> subsetsWithDup(vector<int>& nums) {\n        // TODO: sort, then recurse; every recursion node records a subset.\n    }\n};",
+    "java": "class Solution {\n    public java.util.List<java.util.List<Integer>> subsetsWithDup(int[] nums) {\n        // TODO: sort first; skip equal neighbours when starting a branch.\n        return new java.util.ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "subsets",
+      "deduplication",
+      "subset-2"
+    ],
+    "hintLevels": [
+      "Level 1: Sorting groups duplicates next to each other, which is what makes them skippable.",
+      "Level 2: Inside the loop over candidates, take nums[i], recurse from i + 1, backtrack — then if the next element equals nums[i], advance past it.",
+      "Level 3: The exclusion step is not a single call but a skip-loop: every twin of the element you just chose must be stepped over before the 'without it' branch fires."
+    ]
+  }
+}

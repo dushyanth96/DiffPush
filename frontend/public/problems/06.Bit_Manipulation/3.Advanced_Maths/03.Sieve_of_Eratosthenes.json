@@ -1,0 +1,59 @@
+{
+  "id": "sieve-of-eratosthenes",
+  "index": 3,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Sieve of Eratosthenes",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Sieve%20of%20Eratosthenes",
+    "sourceFilePath": "06.Bit Manipulation/3. Advanced Maths/03. Sieve of Eratosthenes.cpp"
+  },
+  "narrative": {
+    "title": "Screening the Badge Holders Out of the Secure Wing",
+    "scenario": "A data center audits how many access levels below a threshold n remain 'prime' — held by exactly one badge. Starting from level 2, each surviving holder's multiples are struck from the roster (their access is shared, not unique), and sweeping from the survivor's own square onward avoids re-striking. The audit closes with the count of levels never struck.",
+    "inputFormat": "An integer n.",
+    "outputFormat": "The number of primes strictly less than n.",
+    "constraints": [
+      "0 <= n <= 5 * 10^6"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log log n)",
+    "optimalSpace": "O(n) for the sieve array"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 10 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "2, 3, 5, 7 survive the strike-off below 10."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 1 },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "No levels exist below 1, let alone prime ones."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 3 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def countPrimes(self, n: int) -> int:\n        # TODO: sieve flags up to n; start striking at i * i.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int countPrimes(int n) {\n        // TODO: strike multiples of each survivor, beginning at its square.\n    }\n};",
+    "java": "class Solution {\n    public int countPrimes(int n) {\n        // TODO: sieve flags up to n; start striking at i * i.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["number-theory", "sieve", "primes", "sieve-of-eratosthenes"],
+    "hintLevels": [
+      "Level 1: Strike shared-access levels first; whatever remains is uniquely held.",
+      "Level 2: For each surviving i, strike i*i, i*i + i, ... — smaller multiples were already struck by lesser survivors.",
+      "Level 3: Strictly-less-than matters: n itself is out of scope, so iterate survivors while i < n and count before striking."
+    ]
+  }
+}

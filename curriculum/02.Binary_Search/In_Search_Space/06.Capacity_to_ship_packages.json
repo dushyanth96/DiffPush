@@ -1,0 +1,61 @@
+{
+  "id": "capacity-to-ship-packages",
+  "index": 6,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Capacity to ship packages",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Capacity%20to%20ship%20packages",
+    "sourceFilePath": "02.Binary Search/In Search Space/06.Capacity_to_ship_packages.cpp"
+  },
+  "narrative": {
+    "title": "Right-Sizing a Freight Batcher Before the Sailing",
+    "scenario": "A dock must push a queue of pallets onto ships within a fixed number of sailings. Pallets load strictly in queue order, a sailing's manifest cannot exceed the ship's rated capacity, and underruns waste deck space. Find the smallest rating that clears the queue in the allowed number of sailings.",
+    "inputFormat": "An array weights of n positive integers, loaded strictly in order, and an integer days.",
+    "outputFormat": "The least ship capacity that lets every pallet ship within days sailings.",
+    "constraints": [
+      "1 <= weights.length <= 5 * 10^4",
+      "1 <= weights[i] <= 500",
+      "1 <= days <= weights.length"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log S), where S is the total weight",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "weights": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "days": 5 },
+      "expected": 15,
+      "isPublic": true,
+      "explanation": "Loads of 15, 13, 8, 9 and 10 across five sailings clear the queue, and no smaller rating manages it."
+    },
+    {
+      "id": "tc-2",
+      "input": { "weights": [3, 2, 2, 4, 1, 4], "days": 3 },
+      "expected": 6,
+      "isPublic": true,
+      "explanation": "A rating of 6 partitions the queue into 3+2, 2+4 and 1+4; a rating of 5 would force a fourth sailing."
+    },
+    {
+      "id": "tc-3",
+      "input": { "weights": [7], "days": 1 },
+      "expected": 7,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def shipWithinDays(self, weights: list[int], days: int) -> int:\n        # TODO: find the least capacity that clears the queue in time.\n        pass",
+    "cpp": "#include <vector>\n#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    int shipWithinDays(vector<int>& weights, int days) {\n        // TODO: find the least capacity that clears the queue in time.\n    }\n};",
+    "java": "class Solution {\n    public int shipWithinDays(int[] weights, int days) {\n        // TODO: find the least capacity that clears the queue in time.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "answer-space", "greedy-feasibility", "partition-capacity", "capacity-to-ship-packages"],
+    "hintLevels": [
+      "Level 1: Capacity is monotonic - anything shippable at rating X ships at any higher rating too.",
+      "Level 2: For a candidate rating, greedily fill sailings in queue order and count how many sailings the queue needs.",
+      "Level 3: The true lower bound is the heaviest single pallet (it can never share a sailing), and a candidate below that must be rejected inside the feasibility scan rather than trusting the search bounds alone."
+    ]
+  }
+}

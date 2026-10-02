@@ -1,0 +1,60 @@
+{
+  "id": "intro-to-linked-list",
+  "index": 1,
+  "topic": "04.Linked_List",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Intro to linked list",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Introduction%20to%20linked%20list",
+    "sourceFilePath": "04.Linked List/1. Single Linked List/01.Intro_to_linked_list.cpp"
+  },
+  "narrative": {
+    "title": "Chaining Waypoints into a Delivery Route",
+    "scenario": "A routing engine receives a batch of delivery stops and must chain them into a route where each stop knows only the next one — the classic singly-linked structure. The builder walks the array once, wiring each new stop onto the tail of the growing chain. The head of the finished route is handed back to the dispatcher.",
+    "inputFormat": "An integer n and an array arr of n node values.",
+    "outputFormat": "The head of the constructed singly linked list containing the values of arr in order.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= arr[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 5, "arr": [1, 2, 3, 4, 5] },
+      "expected": [1, 2, 3, 4, 5],
+      "isPublic": true,
+      "explanation": "Five stops chain in array order; reading the list from the head reproduces the input."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 2, "arr": [2, 4] },
+      "expected": [2, 4],
+      "isPublic": true,
+      "explanation": "A two-node chain: head holds 2 and its single link reaches 4."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 3, "arr": [-7, 0, 19] },
+      "expected": [-7, 0, 19],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Node:\n    def __init__(self, data, next=None):\n        self.data = data\n        self.next = next\n\nclass Solution:\n    def constructLL(self, arr: list[int]) -> Node:\n        # TODO: build and return the head of the linked list for arr.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node* next;\n    Node(int d) : data(d), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    Node* constructLL(vector<int>& arr) {\n        // TODO: build and return the head of the linked list for arr.\n    }\n};",
+    "java": "class Node {\n    int data;\n    Node next;\n    Node(int data) { this.data = data; }\n}\n\nclass Solution {\n    public Node constructLL(int[] arr) {\n        // TODO: build and return the head of the linked list for arr.\n        return null;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "construction", "linear-scan", "intro-to-linked-list"],
+    "hintLevels": [
+      "Level 1: Each array element becomes one node; the chain must preserve the array's order.",
+      "Level 2: Seed the list with the first element, keep a tail pointer, and append every following element by wiring tail.next to a fresh node.",
+      "Level 3: Appending via the tail pointer keeps the build O(n) — re-walking from the head for each append would silently turn it into O(n^2)."
+    ]
+  }
+}

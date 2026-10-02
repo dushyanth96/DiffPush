@@ -1,0 +1,60 @@
+{
+  "id": "max-nodes-at-level-n",
+  "index": 1,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Introduction to Trees",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=maximum+number+of+nodes+at+level+binary+tree",
+    "sourceFilePath": "11. Binary Trees/1. Traversals/01. Introduction to trees.cpp"
+  },
+  "narrative": {
+    "title": "The Knockout Bracket Blueprint",
+    "scenario": "A tournament organizer is drafting a single-elimination bracket on a whiteboard. The first round is a single title-holder at the top, and every subsequent round can field at most twice as many contenders as the round before it, because each slot in a round spawns at most two slots in the next. The organizer wants a one-line formula so the venue can be sized for any round number without redrawing the whole board.",
+    "inputFormat": "A single integer n — the 1-indexed level of the binary tree.",
+    "outputFormat": "Return one integer: the maximum number of nodes that can exist on level n.",
+    "constraints": [
+      "1 <= n <= 30",
+      "The answer always fits in a 32-bit signed integer for the given range"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 1 },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "Level 1 holds only the root, so the cap is 1."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3 },
+      "expected": 4,
+      "explanation": "Doubling each round: level 2 holds 2, level 3 holds 2^(3-1) = 4.",
+      "isPublic": true
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 10 },
+      "expected": 512,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n: int) -> int:\n        # Return the maximum number of nodes on level n of a binary tree.\n        pass",
+    "cpp": "class Solution {\npublic:\n    // Return the maximum number of nodes on level n of a binary tree.\n    long long solve(int n);\n};",
+    "java": "class Solution {\n    // Return the maximum number of nodes on level n of a binary tree.\n    public long solve(int n) {\n        // TODO\n        return 0L;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["trees", "binary-tree", "levels", "exponentiation", "max-nodes-at-level-n"],
+    "hintLevels": [
+      "Level 1: Picture each level of the tree as a round of a tournament — every node can parent at most two children on the next level.",
+      "Level 2: Track the headcount level by level: 1, 2, 4, 8 — each entry is double the previous one.",
+      "Level 3: Close the pattern into a closed form: the cap for level n is 2^(n-1), computed in a single exponentiation with no loops needed."
+    ]
+  }
+}

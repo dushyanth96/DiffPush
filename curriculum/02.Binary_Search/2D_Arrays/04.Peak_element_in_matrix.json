@@ -1,0 +1,62 @@
+{
+  "id": "peak-element-in-matrix",
+  "index": 4,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Peak element in matrix",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Peak%20element%20in%20matrix",
+    "sourceFilePath": "02.Binary Search/2D Arrays/4.Peak_element_in_matrix.cpp"
+  },
+  "narrative": {
+    "title": "Ridge Detection on a Grid Elevation Model",
+    "scenario": "A terrain model stores one elevation per cell, with no two adjacent cells equal, and surveyors need a summit - a cell higher than its four direct neighbours. Cells past the border count as a drop to -1. Binary searching the rows and comparing each row's best cell against its vertical neighbours finds a summit without scanning the whole grid.",
+    "inputFormat": "An m x n matrix mat with no two adjacent cells equal.",
+    "outputFormat": "A two-element array [row, col] of any peak cell, where the cell is strictly greater than its existing left, right, top and bottom neighbours.",
+    "constraints": [
+      "1 <= m, n <= 500",
+      "1 <= mat[i][j] <= 10^5",
+      "No two adjacent cells are equal",
+      "An O(m log n) or O(n log m) algorithm is required"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log m)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "mat": [[1, 4], [3, 2]] },
+      "expected": [0, 1],
+      "isPublic": true,
+      "explanation": "Both 4 and 3 exceed all their neighbours; this profile reports the position of 4."
+    },
+    {
+      "id": "tc-2",
+      "input": { "mat": [[10, 20, 15], [21, 30, 14], [7, 16, 32]] },
+      "expected": [1, 1],
+      "isPublic": true,
+      "explanation": "The cell 30 beats 20, 21, 14 and 16, so it is a valid summit."
+    },
+    {
+      "id": "tc-3",
+      "input": { "mat": [[1, 2, 3], [6, 5, 4], [7, 8, 9]] },
+      "expected": [2, 2],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findPeakGrid(self, mat: list[list[int]]) -> list[int]:\n        # TODO: return [row, col] of any cell greater than its four neighbours.\n        pass",
+    "cpp": "#include <vector>\n#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> findPeakGrid(vector<vector<int>>& mat) {\n        // TODO: return {row, col} of any cell greater than its four neighbours.\n    }\n};",
+    "java": "class Solution {\n    public int[] findPeakGrid(int[][] mat) {\n        // TODO: return {row, col} of any cell greater than its four neighbours.\n        return new int[] { -1, -1 };\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "matrix", "2d-peak", "row-maximum-probe", "peak-element-in-matrix"],
+    "hintLevels": [
+      "Level 1: Pick the tallest cell in a row and you only have to worry about its top and bottom neighbours - left and right are already beaten.",
+      "Level 2: Binary search the row index; at each probe, find that row's maximum column and compare upward and downward to decide which half holds a summit.",
+      "Level 3: Row ends and grid borders must be guarded so out-of-range comparisons never fire, and a peak is guaranteed to exist because no two adjacent cells are equal."
+    ]
+  }
+}

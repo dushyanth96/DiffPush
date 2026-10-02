@@ -1,0 +1,60 @@
+{
+  "id": "minimum-path-in-triangle",
+  "index": 5,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Triangle",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=triangle+minimum+path+sum",
+    "sourceFilePath": "14. Dynamic Programming/3. 2D DP/05. Minimum Path in Triangle.cpp"
+  },
+  "narrative": {
+    "title": "The Escalator Descent Lattice",
+    "scenario": "A terminal's wayfinding map is a triangular lattice of moving walkways: the apex sits at the top, and each walkway descends to one of two adjacent nodes on the row below. Every walkway posts a queue-time toll. Operations wants the least-cost descent from apex to bottom row, so the kiosk must evaluate the toll-minimal chain before suggesting a route.",
+    "inputFormat": "A list triangle of rows, where row i has i+1 integers and triangle[i][j] is the toll at that node.",
+    "outputFormat": "Return the minimum sum of tolls over a top-to-bottom chain of adjacent nodes.",
+    "constraints": [
+      "1 <= len(triangle) <= 200",
+      "-10^4 <= triangle[i][j] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "triangle": [[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]] },
+      "expected": 11,
+      "isPublic": true,
+      "explanation": "Chain 2, 3, 5, 1 — total 11."
+    },
+    {
+      "id": "tc-2",
+      "input": { "triangle": [[-10]] },
+      "expected": -10,
+      "isPublic": true,
+      "explanation": "A one-row triangle's best chain is its only node."
+    },
+    {
+      "id": "tc-3",
+      "input": { "triangle": [[1], [2, 3]] },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, triangle):\n        # Return the minimum path sum from apex to bottom row.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the minimum path sum from apex to bottom row.\n    int solve(std::vector<std::vector<int>>& triangle);\n};",
+    "java": "class Solution {\n    // Return the minimum path sum from apex to bottom row.\n    public int solve(java.util.List<java.util.List<Integer>> triangle) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "2d-dp", "triangle", "min-path-sum"],
+    "hintLevels": [
+      "Level 1: From node (i, j) the only descendants are (i+1, j) and (i+1, j+1) — pick the cheaper.",
+      "Level 2: Sweep the rows bottom-up so each node collapses into best[i][j] = tri[i][j] + min of its two children.",
+      "Level 3: A single 1D array works because row i+1 is fully consumed before row i overwrites it; the answer is slot 0."
+    ]
+  }
+}

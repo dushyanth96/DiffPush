@@ -1,0 +1,61 @@
+{
+  "id": "best-time-to-buy-and-sell-stock-uoto-k-transaction",
+  "index": 4,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Best Time to Buy and Sell Stock IV",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=best+time+to+buy+and+sell+stock+iv",
+    "sourceFilePath": "14. Dynamic Programming/6. DP on Stocks/04. Best time to buy and sell stock uoto k transaction.cpp"
+  },
+  "narrative": {
+    "title": "The Fleet-Wide Charter Quota",
+    "scenario": "The regulator now issues the broker a quota of k lock-release cycles per quarter. The fleet's scheduling terminal must allocate those k cycles across the fee curve to harvest the largest combined spread, never overlapping two cycles. When the quota exceeds the number of profitable swings, the cap effectively disappears.",
+    "inputFormat": "An integer k and an array prices where prices[i] is the fee on hour i.",
+    "outputFormat": "Return the maximum profit using at most k non-overlapping buy-sell transactions.",
+    "constraints": [
+      "0 <= k <= 100",
+      "1 <= len(prices) <= 1000",
+      "0 <= prices[i] <= 1000"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*k)",
+    "optimalSpace": "O(k)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "k": 2, "prices": [2, 4, 1] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "The only climb is 2 to 4; one cycle captures it all."
+    },
+    {
+      "id": "tc-2",
+      "input": { "k": 2, "prices": [3, 2, 6, 5, 0, 3] },
+      "expected": 7,
+      "isPublic": true,
+      "explanation": "(2 to 6) plus (0 to 3) — both cycles inside the quota."
+    },
+    {
+      "id": "tc-3",
+      "input": { "k": 0, "prices": [1, 5, 9] },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, k, prices):\n        # Return the max profit with at most k transactions.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the max profit with at most k transactions.\n    int solve(int k, std::vector<int>& prices);\n};",
+    "java": "class Solution {\n    // Return the max profit with at most k transactions.\n    public int solve(int k, int[] prices) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "stocks", "state-machine", "transaction-cap"],
+    "hintLevels": [
+      "Level 1: Same machine as the two-cycle version, with the cap as a parameter instead of a constant.",
+      "Level 2: dp[day][holding][cycles-used]; a buy increments the cycle count and hitting k seals the machine shut.",
+      "Level 3: When k >= n/2 the cap can never bind — fall back to the unlimited-trades answer to stay fast."
+    ]
+  }
+}

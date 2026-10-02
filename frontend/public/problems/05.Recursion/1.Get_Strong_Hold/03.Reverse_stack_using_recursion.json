@@ -1,0 +1,60 @@
+{
+  "id": "reverse-stack-using-recursion",
+  "index": 3,
+  "topic": "05.Recursion",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Reverse stack using recursion",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Reverse%20stack%20using%20recursion",
+    "sourceFilePath": "05.Recursion/1.Get Strong Hold/03.Reverse_stack_using_recursion.cpp"
+  },
+  "narrative": {
+    "title": "Re-stacking the Court's Case Files",
+    "scenario": "A courthouse clerk handles a single spring-loaded tray of case files that only allows the top file to be touched, and the newest case must end up on top instead of the oldest. The clerk may hold exactly one file in hand at a time and use only the tray's own push/pop action — no side tables. The call stack itself becomes the clerk's memory: hold the top file, reverse the rest of the tray, then push the held file all the way down to the bottom.",
+    "inputFormat": "An array stack representing the tray from bottom to top (the last element is the top).",
+    "outputFormat": "The array after the stack is reversed in place.",
+    "constraints": [
+      "1 <= N <= 10^4",
+      "-10^9 <= stack[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2) — each of the n held elements sinks through up to n items",
+    "optimalSpace": "O(n) recursion stack"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "stack": [1, 2, 3, 4, 5] },
+      "expected": [5, 4, 3, 2, 1],
+      "isPublic": true,
+      "explanation": "Each popped top is sunk to the bottom of the shrinking tray, so the oldest file ends up on top."
+    },
+    {
+      "id": "tc-2",
+      "input": { "stack": [7, 9] },
+      "expected": [9, 7],
+      "isPublic": true,
+      "explanation": "Two files: the top (9) is held, the single-file remainder is trivially reversed, and 9 sinks to the bottom."
+    },
+    {
+      "id": "tc-3",
+      "input": { "stack": [42] },
+      "expected": [42],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def reverseStack(self, stack: list[int]) -> list[int]:\n        # TODO: reverse in place using only push/pop plus the recursion stack.\n        pass",
+    "cpp": "#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    void reverseStack(stack<int>& stk) {\n        // TODO: hold the top, reverse the rest, insert the held element at the bottom.\n    }\n};",
+    "java": "class Solution {\n    public void reverseStack(java.util.Deque<Integer> stack) {\n        // TODO: reverse in place using only push/pop plus the recursion stack.\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["recursion", "stack", "in-place", "reverse-stack-using-recursion"],
+    "hintLevels": [
+      "Level 1: Two recursive jobs: one reverses the tray, one buries an element at the bottom — combine them.",
+      "Level 2: Pop the top and remember it in the call stack; reverse what remains; then push the remembered element beneath everything via a second recursion that empties, pushes, and refills.",
+      "Level 3: insertAtBottom is itself recursive — it pops everything, pushes the held element into the emptied tray, and lets the unwinding re-push the removed items above it."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "reverse-k-node-in-groups",
+  "index": 1,
+  "topic": "04.Linked_List",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Reverse k node in groups",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Reverse%20k%20node%20in%20groups",
+    "sourceFilePath": "04.Linked List/5.Hard Promblems of LL/01.Reverse_k_node_in_groups.cpp"
+  },
+  "narrative": {
+    "title": "Flipping Pallets a Truckload at a Time",
+    "scenario": "A freight yard stacks outbound pallets in a single chain and a re-sequencer flips them in fixed batches of k so the oldest pallet of each batch ends up nearest the dock gate. If the chain ends with a partial batch — fewer than k pallets left — that leftover tail ships in its original order. The re-sequencer must confirm a full batch exists before flipping, then splice the flipped batch back onto the results of the remaining chain.",
+    "inputFormat": "An array head of n node values and an integer k, the group size.",
+    "outputFormat": "The values of the list after every complete group of k nodes is reversed and spliced back in order.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= k <= n",
+      "-10^9 <= head[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1) iterative (O(n/k) recursion stack for the recursive form)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [1, 2, 3, 4, 5], "k": 2 },
+      "expected": [2, 1, 4, 3, 5],
+      "isPublic": true,
+      "explanation": "Two full batches flip to (2,1) and (4,3); the leftover single pallet 5 ships as-is."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [1, 2, 3, 4, 5], "k": 3 },
+      "expected": [3, 2, 1, 4, 5],
+      "isPublic": true,
+      "explanation": "The first batch of three flips to 3-2-1; the remaining pair 4-5 is a partial batch and stays untouched."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [1, 2, 3, 4, 5, 6, 7], "k": 3 },
+      "expected": [3, 2, 1, 6, 5, 4, 7],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def reverseKGroup(self, head: list[int], k: int) -> list[int]:\n        # TODO: reverse every complete group of k nodes; leave any tail group as-is.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node* next;\n    Node(int d) : data(d), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    Node* reverseKGroup(Node* head, int k) {\n        // TODO: verify k nodes exist, reverse the first k, recurse on the rest.\n    }\n};",
+    "java": "class Solution {\n    public int[] reverseKGroup(int[] head, int k) {\n        // TODO: reverse every complete group of k nodes; leave any tail group as-is.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "in-place-reversal", "group-processing", "reverse-k-node-in-groups"],
+    "hintLevels": [
+      "Level 1: This is ordinary list reversal, but gated — only start flipping once you know a full batch of k exists.",
+      "Level 2: Probe k nodes ahead first; if the probe falls off the end, return the chain untouched, otherwise reverse exactly k links.",
+      "Level 3: The original head of each batch becomes its tail after flipping — wire that tail's next to the already-processed remainder (recursion or a saved pointer) before moving to the next batch."
+    ]
+  }
+}

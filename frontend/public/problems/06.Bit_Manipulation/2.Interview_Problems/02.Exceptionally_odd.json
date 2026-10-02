@@ -1,0 +1,60 @@
+{
+  "id": "exceptionally-odd",
+  "index": 2,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Exceptionally odd",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Exceptionally%20odd",
+    "sourceFilePath": "06.Bit Manipulation/2. Interview Problems/02. Exceptionally odd.cpp"
+  },
+  "narrative": {
+    "title": "The Sensor That Pinged One Time Too Many",
+    "scenario": "A sensor network logs ID pings in an audit trail where every sensor reports an even number of times except one faulty unit that reports an odd number. Rebuilding a tally table is overkill for the gateway firmware; instead it folds every ping ID through one accumulator, in which paired pings annihilate and the lone repeat-offender survives.",
+    "inputFormat": "An array arr of n positive integers where exactly one value occurs an odd number of times.",
+    "outputFormat": "The value with the odd occurrence count.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= arr[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [1, 2, 3, 2, 3, 1, 3] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Pairs of 1s and 2s cancel; three 3s fold down to a lone survivor."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [5, 5, 5] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "One pair cancels and the third ping stands alone."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [10] },
+      "expected": 10,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def getOddOccurrence(self, arr: list[int], n: int) -> int:\n        # TODO: fold every element through XOR; the odd one out survives.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int getOddOccurrence(vector<int>& arr, int n) {\n        // TODO: XOR-accumulate the whole array.\n    }\n};",
+    "java": "class Solution {\n    public int getOddOccurrence(int[] arr, int n) {\n        // TODO: fold every element through XOR; the odd one out survives.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "xor", "cancellation", "exceptionally-odd"],
+    "hintLevels": [
+      "Level 1: Think cancellation, not counting — pairs erase themselves.",
+      "Level 2: x ^ x = 0 and XOR commutes, so the fold of the whole array keeps only the odd-occurring value.",
+      "Level 3: No hash map needed: the accumulator is order-independent and uses a single integer of memory."
+    ]
+  }
+}

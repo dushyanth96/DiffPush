@@ -1,0 +1,59 @@
+{
+  "id": "count-the-number-of-graphs",
+  "index": 1,
+  "topic": "13.Graphs",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Count the Number of Undirected Graphs on N Vertices",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=count+undirected+graphs+n+vertices",
+    "sourceFilePath": "13. Graphs/1. Learning/01. Count the number of graphs.cpp"
+  },
+  "narrative": {
+    "title": "The Network Blueprint Census",
+    "scenario": "A network architect is asked how many distinct wiring plans exist for a closed lab of n machines, where every unordered machine pair may either have a cable or not — nothing else distinguishes one plan from another. Every pair contributes an independent yes/no choice, so the plans multiply out to a simple power of two.",
+    "inputFormat": "An integer n — the number of vertices.",
+    "outputFormat": "Return 2 raised to the number of possible undirected edges, i.e. 2^(n*(n-1)/2).",
+    "constraints": [
+      "1 <= n <= 20"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 1 },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "A lone vertex has no possible edges, so only the empty graph exists."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3 },
+      "expected": 8,
+      "isPublic": true,
+      "explanation": "Three vertex pairs means 2^3 = 8 wiring plans."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 5 },
+      "expected": 1024,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n):\n        # Return the number of distinct undirected graphs on n vertices.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the number of distinct undirected graphs on n vertices.\n    long long solve(int n);\n};",
+    "java": "class Solution {\n    // Return the number of distinct undirected graphs on n vertices.\n    public long solve(int n) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "combinatorics", "formula", "count-the-number-of-graphs"],
+    "hintLevels": [
+      "Level 1: Count how many unordered vertex pairs could carry a wire.",
+      "Level 2: n choose 2 pairs exist; each pair is an independent present-or-absent decision.",
+      "Level 3: The answer is 2^(n(n-1)/2) — no enumeration is ever needed."
+    ]
+  }
+}

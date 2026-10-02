@@ -1,0 +1,116 @@
+{
+  "id": "zigzag-level-order-traversal",
+  "index": 6,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Zig-Zag / Spiral Level Order Traversal",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=binary+tree+zigzag+level+order+traversal",
+    "sourceFilePath": "11. Binary Trees/2. Medium Problems/06. Zig-Zag Traversal.cpp"
+  },
+  "narrative": {
+    "title": "The Snake-Queue Boarding Call",
+    "scenario": "A themed attraction loads guests from a binary-tree map of queue pens. The host calls one pen-depth at a time, but alternates the walking direction each round to keep the line moving past both entrances: first pen-depth left to right, next right to left, and so on. The announcer needs the exact call order grouped by pen-depth for the day's schedule.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return a list of lists: level i holds that level's values, left-to-right for even levels (0-indexed) and right-to-left for odd levels.",
+    "constraints": [
+      "0 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          3,
+          9,
+          20,
+          null,
+          null,
+          15,
+          7
+        ]
+      },
+      "expected": [
+        [
+          3
+        ],
+        [
+          20,
+          9
+        ],
+        [
+          15,
+          7
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "Level 1 runs right-to-left, so 20 precedes 9."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1
+        ]
+      },
+      "expected": [
+        [
+          1
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "A single pen holds a single guest."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "expected": [
+        [
+          1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the zigzag level order as a list of level lists.\n        pass",
+    "cpp": "#include <vector>\n#include <queue>\n#include <algorithm>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the zigzag level order as a vector of level vectors.\n    std::vector<std::vector<int>> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the zigzag level order as a List of level Lists.\n    public List<List<Integer>> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "bfs",
+      "zigzag",
+      "zigzag-level-order-traversal"
+    ],
+    "hintLevels": [
+      "Level 1: This is plain level order with a direction flip per level — collect normally, present differently.",
+      "Level 2: Snapshot the queue size per level, gather the level's values, and reverse the buffer on every odd level.",
+      "Level 3: Children always enqueue left-then-right regardless of direction; only the display order alternates."
+    ]
+  }
+}

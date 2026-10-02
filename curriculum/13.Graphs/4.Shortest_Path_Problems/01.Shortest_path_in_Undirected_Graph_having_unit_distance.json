@@ -1,0 +1,61 @@
+{
+  "id": "shortest-path-in-undirected-graph-having-unit-distance",
+  "index": 1,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Shortest Path in an Undirected Graph with Unit Weights",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=shortest+path+undirected+unit+weights",
+    "sourceFilePath": "13. Graphs/4. Shortest Path Problems/01. Shortest path in Undirected Graph having unit distance.cpp"
+  },
+  "narrative": {
+    "title": "The Uniform-Hop Relay Distances",
+    "scenario": "A packet relay mesh links routers with identical one-tick links. From the master router, ops needs each router's minimum tick count — the hop distance across the mesh — with unreachable routers flagged -1. Because every link costs exactly one tick, a level-by-level wave is sufficient; no weighted machinery required.",
+    "inputFormat": "An integer N (vertices 0..N-1), the edge count M, an edge list edges, and the source vertex src.",
+    "outputFormat": "Return an array where entry i is the minimum hop count from src to vertex i, or -1 if unreachable.",
+    "constraints": [
+      "1 <= N <= 10^5",
+      "0 <= M <= 2 * 10^5",
+      "0 <= src < N"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N + M)",
+    "optimalSpace": "O(N + M)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "N": 6, "M": 5, "src": 0, "edges": [[0, 1], [0, 3], [1, 2], [3, 4], [4, 5]] },
+      "expected": [0, 1, 2, 1, 2, 3],
+      "isPublic": true,
+      "explanation": "Wave rings: 0 first, 1 and 3 at one hop, 2 and 4 at two, 5 at three."
+    },
+    {
+      "id": "tc-2",
+      "input": { "N": 4, "M": 2, "src": 0, "edges": [[0, 1], [2, 3]] },
+      "expected": [0, 1, -1, -1],
+      "isPublic": true,
+      "explanation": "Vertices 2 and 3 live on an island the wave never crosses."
+    },
+    {
+      "id": "tc-3",
+      "input": { "N": 5, "M": 0, "src": 0, "edges": [] },
+      "expected": [0, -1, -1, -1, -1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass Solution:\n    def solve(self, N, M, edges, src):\n        # Return hop distances from src; -1 where unreachable.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return hop distances from src; -1 where unreachable.\n    std::vector<int> solve(int N, int M,\n                           std::vector<std::vector<int>>& edges, int src);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return hop distances from src; -1 where unreachable.\n    public int[] solve(int N, int M, int[][] edges, int src) {\n        // TODO\n        return new int[N];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "bfs", "unit-weights", "shortest-path", "shortest-path-in-undirected-graph-having-unit-distance"],
+    "hintLevels": [
+      "Level 1: Equal link costs make BFS rings the distances themselves.",
+      "Level 2: Track distance on enqueue — first arrival is the minimum for unit edges.",
+      "Level 3: Initialize with -1 and overwrite on first touch; untouched entries stay -1 for free."
+    ]
+  }
+}

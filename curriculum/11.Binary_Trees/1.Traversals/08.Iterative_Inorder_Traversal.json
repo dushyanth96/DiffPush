@@ -1,0 +1,61 @@
+{
+  "id": "iterative-inorder-traversal",
+  "index": 8,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Iterative Inorder Traversal of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=binary+tree+inorder+traversal+iterative",
+    "sourceFilePath": "11. Binary Trees/1. Traversals/08. Iterative Inorder Traversal.cpp"
+  },
+  "narrative": {
+    "title": "The Escalator Inspector's Left Slide",
+    "scenario": "A mall maintenance bot inspects a tree of escalators without any recursive subroutines — its firmware only allows a loop and a work-pile. Its trick: slide leftward as far as possible, parking every landing on the pile, then service the top landing, and re-emerge on its right branch to repeat. Landings get stamped exactly between their two descents, matching the official left-self-right sweep sheet.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return an array of node values in inorder, produced without recursion.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100",
+      "No recursive calls allowed — the traversal must run on an explicit stack"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [1, 2, 3, 4, 5, null, 6] },
+      "expected": [4, 2, 5, 1, 3, 6],
+      "isPublic": true,
+      "explanation": "Left wing bottoms out at 4, unwinds 4,2,5, then the root, then 3,6."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [7] },
+      "expected": [7],
+      "isPublic": true,
+      "explanation": "The single node is parked, popped, and recorded in one pass."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [1, 2, 3, 4, null, null, 5] },
+      "expected": [4, 2, 1, 3, 5],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the inorder traversal using an explicit stack (no recursion).\n        pass",
+    "cpp": "#include <vector>\n#include <stack>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the inorder traversal using an explicit stack (no recursion).\n    std::vector<int> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the inorder traversal using an explicit Deque (no recursion).\n    public List<Integer> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["trees", "binary-tree", "traversal", "stack", "iterative-inorder-traversal"],
+    "hintLevels": [
+      "Level 1: Inorder needs each node held back until its left subtree is finished — a stack can park it there.",
+      "Level 2: Keep one running pointer: push while sliding left, then pop-and-record, then jump to the popped node's right subtree.",
+      "Level 3: The two loop conditions (pointer alive OR stack non-empty) together form the driver; each node is pushed and popped exactly once."
+    ]
+  }
+}

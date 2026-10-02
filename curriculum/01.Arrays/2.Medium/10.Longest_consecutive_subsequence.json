@@ -1,0 +1,60 @@
+{
+  "id": "longest-consecutive-subsequence",
+  "index": 10,
+  "topic": "01.Arrays",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Longest consecutive subsequence",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Longest%20consecutive%20subsequence",
+    "sourceFilePath": "01.Arrays/2.Medium/10.Longest_consecutive_subsequence.cpp"
+  },
+  "narrative": {
+    "title": "Longest Unbroken Session Chain in a Session Log",
+    "scenario": "An analytics store keeps session numbers from many tenants in one unsorted table, and repeated numbers appear when a session is retried. The growth team wants the longest chain of back-to-back session numbers, where the chain does not need to be contiguous in the table. Report the length of that chain.",
+    "inputFormat": "An array nums of n integers, the session numbers in arbitrary order.",
+    "outputFormat": "The length of the longest run of consecutive integers present in nums, ignoring duplicates.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= nums[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n) expected",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [100, 4, 200, 1, 3, 2] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The numbers 1,2,3,4 form an unbroken chain of four, ignoring their scrambled positions."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [0, 3, 7, 2, 5, 8, 4, 6, 0, 1] },
+      "expected": 9,
+      "isPublic": true,
+      "explanation": "Duplicated 0 does not extend the chain, but 0 through 8 are all present for a length of 9."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1, 1, 1] },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def longestConsecutive(self, nums: list[int]) -> int:\n        # TODO: return the length of the longest run of consecutive values.\n        pass",
+    "cpp": "#include <vector>\n#include <unordered_set>\nusing namespace std;\n\nclass Solution {\npublic:\n    int longestConsecutive(vector<int>& nums) {\n        // TODO: return the length of the longest run of consecutive values.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int longestConsecutive(int[] nums) {\n        // TODO: return the length of the longest run of consecutive values.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "hash-set", "consecutive-sequence", "amortized-linear"],
+    "hintLevels": [
+      "Level 1: Sorting solves it but costs O(n log n); a hash set answers membership questions in constant expected time instead.",
+      "Level 2: Put every value into a set, then only start counting from values whose predecessor is absent - those are chain heads.",
+      "Level 3: Always expand from the head rather than from every element, otherwise the inner walk repeats the same chain and degrades to quadratic time."
+    ]
+  }
+}

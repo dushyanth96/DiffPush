@@ -1,0 +1,61 @@
+{
+  "id": "shortest-path-in-binary-matrix",
+  "index": 4,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Shortest Path in a Binary Matrix (8-Directional)",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=shortest+path+in+binary+matrix",
+    "sourceFilePath": "13. Graphs/4. Shortest Path Problems/04. Shortest Path in binary matrix.cpp"
+  },
+  "narrative": {
+    "title": "The Corner-to-Clearance Robot Run",
+    "scenario": "A warehouse robot must travel from the north-west corner to the south-east corner of a floor grid. Blocked bays are marked 1 and open bays 0, and the robot may roll in any of the eight directions — including diagonals — across open bays only. The route planner wants the shortest run measured in bays entered, or confirmation that no diagonal-capable route exists.",
+    "inputFormat": "An n x n binary matrix grid where 0 is open and 1 is blocked.",
+    "outputFormat": "Return the number of cells on the shortest clear path from (0,0) to (n-1,n-1), or -1 if no such path exists.",
+    "constraints": [
+      "1 <= n <= 100",
+      "grid[0][0] and grid[n-1][n-1] may need checking — the path must start and end on open cells",
+      "grid[i][j] is 0 or 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n^2)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "grid": [[0, 1], [1, 0]] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "The diagonal hop from corner to corner visits exactly two cells."
+    },
+    {
+      "id": "tc-2",
+      "input": { "grid": [[0, 0, 0], [1, 1, 0], [1, 1, 0]] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The only corridor hugs the top row and the right column: four bays."
+    },
+    {
+      "id": "tc-3",
+      "input": { "grid": [[1, 0], [0, 0]] },
+      "expected": -1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass Solution:\n    def solve(self, grid):\n        # Return the shortest clear path length in cells, or -1.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the shortest clear path length in cells, or -1.\n    int solve(std::vector<std::vector<int>>& grid);\n};",
+    "java": "class Solution {\n    // Return the shortest clear path length in cells, or -1.\n    public int solve(int[][] grid) {\n        // TODO\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "bfs", "grid", "8-directional", "shortest-path-in-binary-matrix"],
+    "hintLevels": [
+      "Level 1: Uniform step costs plus a single start — a ring-by-ring wave gives the first arrival at the goal.",
+      "Level 2: Expand all eight neighbours, guard the borders, and mark visited on enqueue to avoid repeats.",
+      "Level 3: Bail out early with -1 if either corner is blocked; the level counter doubles as the cell count."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "valid-parenthesis",
+  "index": 6,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Valid Parentheses",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=valid+parentheses",
+    "sourceFilePath": "07.Stack and Queues/1. Learning/06. Valid Parenthesis.cpp"
+  },
+  "narrative": {
+    "title": "The Firewall Bracket Audit",
+    "scenario": "A network appliance parses configuration lines made only of round, square, and curly brackets. A line is accepted only if every opening symbol is sealed by its exact matching partner, seals occur in the correct nesting order, and no closer appears without a pending opener. Write the audit routine that accepts or rejects each line.",
+    "inputFormat": "A string s containing only the characters '(', ')', '{', '}', '[' and ']'.",
+    "outputFormat": "Return true if the bracket sequence is valid, false otherwise.",
+    "constraints": [
+      "1 <= s.length <= 10^4",
+      "s consists of bracket characters only"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "()[]{}" },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Each bracket pair is well-formed and the three pairs sit side by side."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "(]" },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "A round opener cannot be sealed by a square closer."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "([)]" },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def is_valid(s: str) -> bool:\n    pairs = {')': '(', ']': '[', '}': '{'}\n    stack = []\n    for ch in s:\n        if ch in '([{':\n            stack.append(ch)\n        elif not stack or stack.pop() != pairs[ch]:\n            return False\n    return not stack",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool isValid(string& s) {\n    stack<char> st;\n    for (char c : s) {\n        if (c == '(' || c == '[' || c == '{') st.push(c);\n        else {\n            if (st.empty()) return false;\n            char open = st.top();\n            if ((open == '(' && c == ')') || (open == '[' && c == ']') ||\n                (open == '{' && c == '}')) st.pop();\n            else return false;\n        }\n    }\n    return st.empty();\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public boolean isValid(String s) {\n        Deque<Character> stack = new ArrayDeque<>();\n        for (char c : s.toCharArray()) {\n            if (c == '(' || c == '[' || c == '{') stack.push(c);\n            else if (stack.isEmpty()) return false;\n            else {\n                char open = stack.pop();\n                if ((c == ')' && open != '(') || (c == ']' && open != '[') ||\n                    (c == '}' && open != '{')) return false;\n            }\n        }\n        return stack.isEmpty();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["stack", "string", "matching", "valid-parenthesis"],
+    "hintLevels": [
+      "Level 1: The most recently opened bracket must be the first one closed — a stack.",
+      "Level 2: Push openers; on a closer, demand that the stack top be its exact partner.",
+      "Level 3: Two rejection paths to catch early: a closer arriving on an empty stack, and leftovers on the stack at the end."
+    ]
+  }
+}

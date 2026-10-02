@@ -1,0 +1,62 @@
+{
+  "id": "find-single-element-in-sorted-array",
+  "index": 12,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Find single element in sorted array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Find%20single%20element%20in%20sorted%20array",
+    "sourceFilePath": "02.Binary Search/1D Arrays/12.Find_single_element_in_sorted_array.cpp"
+  },
+  "narrative": {
+    "title": "The Unpaired Beacon in a Twinned Sensor Row",
+    "scenario": "A sensor row registers readings in sorted order where every model appears exactly twice - once for the primary unit and once for its standby - except one model whose standby was never commissioned. The maintenance query must find that lone model using only logarithmic probes over the sorted row.",
+    "inputFormat": "An array nums of n integers, sorted in non-decreasing order, where exactly one value appears once and every other value appears exactly twice.",
+    "outputFormat": "The value that appears exactly once.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "0 <= nums[i] <= 10^5",
+      "n is odd",
+      "An O(log n) algorithm with O(1) space is required"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 1, 2, 3, 3, 4, 4, 8, 8] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Every pairing survives until the lone 2, which breaks the alternating twos pattern."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [3, 3, 7, 7, 10, 11, 11] },
+      "expected": 10,
+      "isPublic": true,
+      "explanation": "The pairing pattern stays intact left of 10 and collapses right of it, isolating the unpaired beacon."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [5] },
+      "expected": 5,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def singleNonDuplicate(self, nums: list[int]) -> int:\n        # TODO: find the unpaired value in logarithmic time.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int singleNonDuplicate(vector<int>& nums) {\n        // TODO: find the unpaired value in logarithmic time.\n    }\n};",
+    "java": "class Solution {\n    public int singleNonDuplicate(int[] nums) {\n        // TODO: find the unpaired value in logarithmic time.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "parity-indexing", "single-element", "pair-structure", "find-single-element-in-sorted-array"],
+    "hintLevels": [
+      "Level 1: Before the lone value appears, the first copy of every pair sits at an even index; after it, that alignment flips.",
+      "Level 2: Probe and check the parity of the index: an even index matching its right neighbour means the anomaly is further right, otherwise it is at or left of the probe.",
+      "Level 3: Converge until the bounds meet so the anomaly index is isolated, and a one-element row must return its only value without reading past the end."
+    ]
+  }
+}

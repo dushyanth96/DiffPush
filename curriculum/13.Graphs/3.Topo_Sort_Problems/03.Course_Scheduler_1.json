@@ -1,0 +1,61 @@
+{
+  "id": "course-scheduler-1",
+  "index": 3,
+  "topic": "13.Graphs",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Course Schedule — Can All Courses Be Finished?",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=course+schedule",
+    "sourceFilePath": "13. Graphs/3. Topo Sort Problems/03. Course Scheduler 1.cpp"
+  },
+  "narrative": {
+    "title": "The Training-Pass Feasibility Check",
+    "scenario": "A certification body offers numbered training passes, some of which require earlier passes first. Each requirement is one-way: pass A demands pass B beforehand. Before publishing the term plan, the registrar must confirm no circular requirement chain makes the whole program impossible to complete.",
+    "inputFormat": "An integer numCourses and a list prerequisites where each pair [a, b] means course b must be taken before course a.",
+    "outputFormat": "Return true if all courses can be completed in some order, otherwise false.",
+    "constraints": [
+      "1 <= numCourses <= 2000",
+      "0 <= prerequisites.length <= 5000",
+      "All prerequisite pairs are unique"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N + E)",
+    "optimalSpace": "O(N + E)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "numCourses": 2, "prerequisites": [[1, 0]] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Take 0 first, then 1 — no conflict."
+    },
+    {
+      "id": "tc-2",
+      "input": { "numCourses": 2, "prerequisites": [[1, 0], [0, 1]] },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Each course demands the other first — an impossible circular requirement."
+    },
+    {
+      "id": "tc-3",
+      "input": { "numCourses": 3, "prerequisites": [[0, 1], [1, 2]] },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass Solution:\n    def solve(self, numCourses, prerequisites):\n        # Return True if every course can be finished.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return true if every course can be finished.\n    bool solve(int numCourses, std::vector<std::vector<int>>& prerequisites);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return true if every course can be finished.\n    public boolean solve(int numCourses, int[][] prerequisites) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "topological-sort", "cycle-detection", "dag", "course-scheduler-1"],
+    "hintLevels": [
+      "Level 1: Reframe requirements as directed edges — the question is exactly 'is this graph a DAG?'",
+      "Level 2: Count how many courses have no pending requirement and keep unlocking as you finish them.",
+      "Level 3: If the unlock count ever falls short of numCourses, a circular chain is the culprit."
+    ]
+  }
+}

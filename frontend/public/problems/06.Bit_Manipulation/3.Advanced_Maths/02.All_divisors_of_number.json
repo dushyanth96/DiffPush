@@ -1,0 +1,59 @@
+{
+  "id": "all-divisors-of-number",
+  "index": 2,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "All divisors of number",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=All%20divisors%20of%20number",
+    "sourceFilePath": "06.Bit Manipulation/3. Advanced Maths/02. All divisors of number.cpp"
+  },
+  "narrative": {
+    "title": "Cutting the Cable Coil Into Every Equal Length",
+    "scenario": "A cable crew must list every equal-length cut possible for a coil of length n, in ascending order. Scanning all lengths up to n wastes a shift; instead the crew checks lengths only up to the square root and records each complementary length — n divided by the small one — on a scratch list, then reads the scratch list backwards so the full catalogue ascends.",
+    "inputFormat": "An integer n.",
+    "outputFormat": "All divisors of n in ascending order.",
+    "constraints": [
+      "1 <= n <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(sqrt(n))",
+    "optimalSpace": "O(sqrt(n)) for the large-half scratch list"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 20 },
+      "expected": [1, 2, 4, 5, 10, 20],
+      "isPublic": true,
+      "explanation": "Small cuts 1, 2, 4 pair with large cuts 20, 10, 5; merged, the list ascends."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 36 },
+      "expected": [1, 2, 3, 4, 6, 9, 12, 18, 36],
+      "isPublic": true,
+      "explanation": "The square root 6 is a divisor exactly once — never list it twice."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 7 },
+      "expected": [1, 7],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def printDivisors(self, n: int) -> list[int]:\n        # TODO: pair each small divisor with n // i; dedupe the square root.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> printDivisors(int n) {\n        // TODO: sweep to sqrt(n), park complements, read them in reverse.\n    }\n};",
+    "java": "class Solution {\n    public java.util.List<Integer> printDivisors(int n) {\n        // TODO: pair each small divisor with n // i; dedupe the square root.\n        return new java.util.ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["number-theory", "divisors", "sqrt-sweep", "all-divisors-of-number"],
+    "hintLevels": [
+      "Level 1: Divisors come in pairs (i, n / i) — checking one side finds both.",
+      "Level 2: Sweep i from 1 while i * i <= n; when i divides n, emit i and stash n / i unless it equals i.",
+      "Level 3: The stash fills in descending order, so a single reverse pass produces the ascending catalogue."
+    ]
+  }
+}

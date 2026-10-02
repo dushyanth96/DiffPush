@@ -1,0 +1,60 @@
+{
+  "id": "ninja-training",
+  "index": 1,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Ninja's Training",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=ninja+training+merit+points",
+    "sourceFilePath": "14. Dynamic Programming/3. 2D DP/01. Ninja Training.cpp"
+  },
+  "narrative": {
+    "title": "The Cadet's Rotating Drill",
+    "scenario": "A trainee runs an n-day conditioning camp built around three stations — endurance, sparring, and tactics — each awarding a daily score. Regulations forbid repeating the same station two days in a row so every skill develops evenly. The coaching staff wants the highest possible total score over the camp, so the scheduler must pick one station per day without back-to-back repeats.",
+    "inputFormat": "An integer n and an n x 3 matrix points, where points[i][j] is the score for station j on day i.",
+    "outputFormat": "Return the maximum total score over n days with no station chosen on consecutive days.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "0 <= points[i][j] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 3, "points": [[1, 2, 5], [3, 1, 1], [3, 3, 3]] },
+      "expected": 11,
+      "isPublic": true,
+      "explanation": "Station 2 on day 0 (5), station 0 on day 1 (3), station 1 on day 2 (3) — total 11."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 2, "points": [[10, 50, 1], [5, 100, 11]] },
+      "expected": 110,
+      "isPublic": true,
+      "explanation": "Station 0 on day 0 (10), then station 1 on day 1 (100) — total 110."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 4, "points": [[10, 40, 70], [20, 50, 70], [90, 20, 80], [10, 25, 90]] },
+      "expected": 300,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, points):\n        # Return the maximum total score with no repeated consecutive station.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the maximum total score with no repeated consecutive station.\n    int solve(int n, std::vector<std::vector<int>>& points);\n};",
+    "java": "class Solution {\n    // Return the maximum total score with no repeated consecutive station.\n    public int solve(int n, int[][] points) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "2d-dp", "state-machine", "ninja-training"],
+    "hintLevels": [
+      "Level 1: Track one value per station — the best total if today ends on that station.",
+      "Level 2: today[j] = points[i][j] + max of yesterday's two other stations.",
+      "Level 3: The first day seeds the three states directly; the answer is the max of the final day's states."
+    ]
+  }
+}

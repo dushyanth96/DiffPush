@@ -1,0 +1,61 @@
+{
+  "id": "find-city-with-smallest-number-of-neighbours",
+  "index": 10,
+  "topic": "13.Graphs",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Find the City With the Smallest Number of Neighbors at a Threshold Distance",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=find+the+city+with+the+smallest+number+of+neighbors+at+a+threshold+distance",
+    "sourceFilePath": "13. Graphs/4. Shortest Path Problems/10. Find city with smallest number of neighbours.cpp"
+  },
+  "narrative": {
+    "title": "Siting the Quietest Relay Depot",
+    "scenario": "A telco must site its failover depot in the city that would serve the fewest neighbours — measured as cities reachable by any route totalling at most a given latency budget. Ties are broken deliberately: among the quietest candidates, the greatest city id wins. Every city's full reach map is needed before the choice can be made.",
+    "inputFormat": "An integer n (cities 0..n-1), a list edges where [u, v, w] is a bidirectional weighted link, and distanceThreshold.",
+    "outputFormat": "Return the city with the fewest reachable cities within distanceThreshold; break ties by choosing the greatest city id.",
+    "constraints": [
+      "2 <= n <= 100",
+      "1 <= edges.length <= n * (n - 1) / 2",
+      "1 <= w, distanceThreshold <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n * (E log V))",
+    "optimalSpace": "O(n + E)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4, "edges": [[0, 1, 3], [1, 2, 1], [1, 3, 4], [2, 3, 1]], "distanceThreshold": 4 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Cities 0 and 3 both reach two neighbours within budget; the tie favours the greater id, 3."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 5, "edges": [[0, 1, 2], [0, 4, 8], [1, 2, 3], [1, 4, 2], [2, 3, 1], [3, 4, 1]], "distanceThreshold": 2 },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "City 0 reaches only city 1 within budget 2 — one neighbour, fewer than anyone else."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 3, "edges": [[0, 1, 1], [1, 2, 1]], "distanceThreshold": 1 },
+      "expected": 2,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\nclass Solution:\n    def solve(self, n, edges, distanceThreshold):\n        # Return the chosen city id.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the chosen city id.\n    int solve(int n, std::vector<std::vector<int>>& edges, int distanceThreshold);\n};",
+    "java": "class Solution {\n    // Return the chosen city id.\n    public int solve(int n, int[][] edges, int distanceThreshold) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dijkstra", "all-pairs", "threshold-count", "find-city-with-smallest-number-of-neighbours"],
+    "hintLevels": [
+      "Level 1: You need every city's reach map, not just one — a shortest-path run per city.",
+      "Level 2: For each source, Dijkstra once, then count destinations within the budget.",
+      "Level 3: Track (count, city) with ascending-count then descending-id preference when picking the winner."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "shortest-palindrome",
+  "index": 5,
+  "topic": "16.Strings_Hard",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Shortest Palindrome",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=shortest+palindrome",
+    "sourceFilePath": "16. Strings (Hard)/Hard/05. Shortest Palindrome.cpp"
+  },
+  "narrative": {
+    "title": "The Emblem Prefix Forge",
+    "scenario": "A security firm stamps access badges with codes that must read as palindromes, but legacy badges fail the check. The forging machine may only prepend characters — the existing code stays untouched at the end. The badge system computes the shortest prependable patch that turns each legacy code into a palindrome.",
+    "inputFormat": "A string s.",
+    "outputFormat": "Return the shortest palindrome obtainable by adding characters only in front of s.",
+    "constraints": [
+      "0 <= len(s) <= 5 * 10^4",
+      "s consists of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "aacecaaa" },
+      "expected": "aaacecaaa",
+      "isPublic": true,
+      "explanation": "Prepending one 'a' completes the palindrome; the longest palindromic head of s spans \"aacecaa\"."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "abcd" },
+      "expected": "dcbabcd",
+      "isPublic": true,
+      "explanation": "The longest palindromic head is just \"a\", so the remaining \"bcd\" reversed goes in front."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "aa" },
+      "expected": "aa",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, s):\n        # Return the shortest palindrome formed by prepending characters.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the shortest palindrome formed by prepending characters.\n    std::string solve(std::string s);\n};",
+    "java": "class Solution {\n    // Return the shortest palindrome formed by prepending characters.\n    public String solve(String s) {\n        // TODO\n        return \"\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "kmp", "palindrome", "lps-array"],
+    "hintLevels": [
+      "Level 1: Only the longest palindromic head of s can stay put; everything after it must be mirrored in front.",
+      "Level 2: Run KMP on s + sep + reverse(s); the final LPS value is the longest palindromic head length.",
+      "Level 3: The separator must be a character absent from s, or the border can bleed across the join."
+    ]
+  }
+}

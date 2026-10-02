@@ -1,0 +1,61 @@
+{
+  "id": "missing-number",
+  "index": 10,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Missing number",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Missing%20number",
+    "sourceFilePath": "01.Arrays/1.Easy/10.Missing_number.cpp"
+  },
+  "narrative": {
+    "title": "The Badge That Never Checked In",
+    "scenario": "An access-control system issues badges numbered 0 through n, and an end-of-day audit dumps every badge that badged in exactly once. Exactly one badge is missing from the dump. Identify it without sorting the attendance log.",
+    "inputFormat": "An array nums of n distinct integers drawn from the range [0, n].",
+    "outputFormat": "The single integer in [0, n] that does not appear in nums.",
+    "constraints": [
+      "1 <= n <= 10^4",
+      "0 <= nums[i] <= n",
+      "All values in nums are distinct"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [3, 0, 1] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "The badges 0,1,3 checked in, so the untouched badge in [0,3] is 2."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [0, 1] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "With two entries present, the range is [0,2] and the absent badge is the upper bound itself."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [0] },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def missingNumber(self, nums: list[int]) -> int:\n        # TODO: return the one value in [0, n] absent from nums.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int missingNumber(vector<int>& nums) {\n        // TODO: return the one value in [0, n] absent from nums.\n    }\n};",
+    "java": "class Solution {\n    public int missingNumber(int[] nums) {\n        // TODO: return the one value in [0, n] absent from nums.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "arithmetic-series", "xor-trick", "missing-value"],
+    "hintLevels": [
+      "Level 1: The full set of badge numbers is known in advance, so compare what the log contains against what it should contain.",
+      "Level 2: Sum the closed series 0..n with the standard formula, subtract the sum of the log and the difference is the absent badge.",
+      "Level 3: The missing badge can be n itself, so the series length must come from the array size rather than from the largest value you observe."
+    ]
+  }
+}

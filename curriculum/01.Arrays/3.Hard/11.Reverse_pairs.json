@@ -1,0 +1,61 @@
+{
+  "id": "reverse-pairs",
+  "index": 11,
+  "topic": "01.Arrays",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Reverse pairs",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Reverse%20pairs",
+    "sourceFilePath": "01.Arrays/3.Hard/11.Reverse_pairs.cpp"
+  },
+  "narrative": {
+    "title": "Flagging Extreme Drift Between Sampled Sensors",
+    "scenario": "A monitoring pipeline pairs each sample with every later sample and flags the pair when the earlier reading is more than twice the later one, which indicates a sensor drifting far out of scale. The audit needs the total number of such flagged pairs in the stream.",
+    "inputFormat": "An array nums of n integers, one sensor reading per sample.",
+    "outputFormat": "The number of index pairs (i, j) with i < j and nums[i] > 2 * nums[j].",
+    "constraints": [
+      "1 <= n <= 5 * 10^4",
+      "-2^31 <= nums[i] <= 2^31 - 1",
+      "Doubling a reading may overflow a 32-bit integer"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 3, 2, 3, 1] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Both 3s at positions 1 and 3 exceed twice the trailing 1 at position 4, giving two flagged pairs."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [2, 4, 3, 5, 1] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The readings 4, 3 and 5 each outstrip twice the final tiny reading 1, so three pairs are flagged."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [-5, -5] },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def reversePairs(self, nums: list[int]) -> int:\n        # TODO: count pairs where the earlier reading exceeds twice the later one.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int reversePairs(vector<int>& nums) {\n        // TODO: count pairs where nums[i] > 2 * nums[j] with i < j.\n    }\n};",
+    "java": "class Solution {\n    public int reversePairs(int[] nums) {\n        // TODO: count pairs where nums[i] > 2 * nums[j] with i < j.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "merge-sort", "divide-and-conquer", "reverse-pairs", "overflow-safety"],
+    "hintLevels": [
+      "Level 1: As with counting out-of-order pairs, sorting the data while counting is the way to avoid a quadratic scan.",
+      "Level 2: Within each merge step, count the qualifying pairs by sweeping the sorted left half against a single forward-moving cursor over the sorted right half, then merge as usual.",
+      "Level 3: For each left value the qualifying count is how many right values are less than half of it - advance the cursor only in that direction, and widen the comparison before doubling so extreme or negative readings cannot overflow or invert."
+    ]
+  }
+}

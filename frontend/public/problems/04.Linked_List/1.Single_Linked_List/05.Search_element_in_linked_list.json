@@ -1,0 +1,60 @@
+{
+  "id": "search-element-in-linked-list",
+  "index": 5,
+  "topic": "04.Linked_List",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Search element in linked list",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Search%20element%20in%20linked%20list",
+    "sourceFilePath": "04.Linked List/1. Single Linked List/05.Search_element_in_linked_list.cpp"
+  },
+  "narrative": {
+    "title": "Checking the Manifest One Car at a Time",
+    "scenario": "A yard clerk must confirm whether a shipment code rides anywhere on a one-way chained train. There is no index to jump to — the only option is to step through each car and compare its label with the code, answering yes the moment one matches and no when the chain runs out.",
+    "inputFormat": "An integer n, an array arr of n node values, and an integer key.",
+    "outputFormat": "true when key appears in the list, false otherwise.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= arr[i], key <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4, "arr": [1, 2, 3, 4], "key": 3 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The walk reaches the third car and finds 3."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3, "arr": [1, 2, 3], "key": 9 },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "The chain ends without a single match, so the answer is false."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 5, "arr": [-4, -4, -4, 0, -4], "key": 0 },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def searchKey(self, arr: list[int], key: int) -> bool:\n        # TODO: return True when key is present in the list.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node* next;\n    Node(int d) : data(d), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    bool searchKey(int n, Node* head, int key) {\n        // TODO: return true when key is present in the list.\n    }\n};",
+    "java": "class Solution {\n    public boolean searchKey(int[] arr, int key) {\n        // TODO: return true when key is present in the list.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "linear-scan", "membership-test", "search-element-in-linked-list"],
+    "hintLevels": [
+      "Level 1: No shortcuts exist on a one-way chain — every car must be checked until the code appears.",
+      "Level 2: Walk from the head, compare each node's data with the key, and return true on the first hit.",
+      "Level 3: Falling off the end of the loop without a match is the false path; duplicates cost nothing extra because the first hit exits."
+    ]
+  }
+}

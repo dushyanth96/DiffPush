@@ -1,0 +1,60 @@
+{
+  "id": "check-if-array-is-heap",
+  "index": 2,
+  "topic": "09.Heaps",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Check if an Array Represents a Max Heap",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=check+if+array+represents+max+heap",
+    "sourceFilePath": "09. Heaps/1. Learning/02. Check if array is heap.cpp"
+  },
+  "narrative": {
+    "title": "The Parking Garage Priority Audit",
+    "scenario": "A garage stores vehicles in an array layout where slot i's children sit at fixed positions 2i+1 and 2i+2, and the garage rules demand that every occupied parent outrank its children. After reshuffling, an auditor must verify the layout still honors the hierarchy — walking each parent and comparing it against whichever children actually exist.",
+    "inputFormat": "An integer array A representing the layout.",
+    "outputFormat": "Return true if A satisfies the binary max-heap property, false otherwise.",
+    "constraints": [
+      "1 <= A.length <= 10^5",
+      "-10^9 <= A[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1) iterative / O(log n) recursion depth"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "A": [90, 15, 10, 7, 12, 2] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Every parent (90, 15, 10) is strictly greater than its existing children."
+    },
+    {
+      "id": "tc-2",
+      "input": { "A": [9, 15, 10, 7, 12, 11] },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "The root 9 is smaller than its child 15, violating the hierarchy at the first slot."
+    },
+    {
+      "id": "tc-3",
+      "input": { "A": [5, 5, 4] },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def is_max_heap(A):\n    n = len(A)\n    for parent in range(n // 2):  # only internal nodes have children\n        left, right = 2 * parent + 1, 2 * parent + 2\n        if A[parent] < A[left] or (right < n and A[parent] < A[right]):\n            return False\n    return True",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool isMaxHeap(vector<int>& A) {\n    int n = A.size();\n    for (int parent = 0; parent < n / 2; ++parent) {\n        int left = 2 * parent + 1, right = 2 * parent + 2;\n        if (A[parent] < A[left] || (right < n && A[parent] < A[right]))\n            return false;\n    }\n    return true;\n}",
+    "java": "class Solution {\n    public boolean isMaxHeap(int[] A) {\n        int n = A.length;\n        for (int parent = 0; parent < n / 2; ++parent) {\n            int left = 2 * parent + 1, right = 2 * parent + 2;\n            if (A[parent] < A[left] || (right < n && A[parent] < A[right]))\n                return false;\n        }\n        return true;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["heap", "array-verification", "max-heap", "check-if-array-is-heap"],
+    "hintLevels": [
+      "Level 1: Only internal nodes (indices 0..n/2-1) can violate the property — leaves have no children.",
+      "Level 2: Compare each parent against its existing children; any child outranking it fails the audit.",
+      "Level 3: Watch the right-child bound — the last internal node may have a left child but no right child."
+    ]
+  }
+}

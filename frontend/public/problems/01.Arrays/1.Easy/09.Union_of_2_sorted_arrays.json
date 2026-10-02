@@ -1,0 +1,61 @@
+{
+  "id": "union-of-2-sorted-arrays",
+  "index": 9,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Union of 2 sorted arrays",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Union%20of%202%20sorted%20arrays",
+    "sourceFilePath": "01.Arrays/1.Easy/09.Union_of_2_sorted_arrays.cpp"
+  },
+  "narrative": {
+    "title": "Merging Two Sorted Audit Streams",
+    "scenario": "Two replicas each keep their own sorted stream of audit event ids, and a compliance job needs the combined set of distinct ids. Both streams are long enough that concatenating and re-sorting would be wasteful, so the merge should walk them side by side and emit each id exactly once.",
+    "inputFormat": "Two sorted arrays arr1 and arr2 with sizes n and m respectively.",
+    "outputFormat": "A sorted array containing every distinct value that appears in either input.",
+    "constraints": [
+      "1 <= n, m <= 10^5",
+      "-10^9 <= arr1[i], arr2[j] <= 10^9",
+      "arr1 and arr2 are each sorted in non-decreasing order"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n + m)",
+    "optimalSpace": "O(1) auxiliary (excluding the output)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 5, "arr1": [1, 2, 3, 4, 5], "m": 3, "arr2": [1, 2, 3] },
+      "expected": [1, 2, 3, 4, 5],
+      "isPublic": true,
+      "explanation": "Every id of the shorter stream already appears in the longer one, so the union is just the longer stream."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 5, "arr1": [2, 2, 3, 4, 5], "m": 5, "arr2": [1, 1, 2, 3, 4] },
+      "expected": [1, 2, 3, 4, 5],
+      "isPublic": true,
+      "explanation": "Repeated ids inside each stream are collapsed, and shared ids are emitted once."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 3, "arr1": [-2, -2, 0], "m": 3, "arr2": [-2, 3, 3] },
+      "expected": [-2, 0, 3],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findUnion(self, arr1: list[int], arr2: list[int], n: int, m: int) -> list[int]:\n        # TODO: walk both sorted streams and emit every distinct value once.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> findUnion(int arr1[], int arr2[], int n, int m) {\n        // TODO: walk both sorted streams and emit every distinct value once.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public List<Integer> findUnion(int[] arr1, int[] arr2, int n, int m) {\n        // TODO: walk both sorted streams and emit every distinct value once.\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "two-pointers", "sorted-merge", "union", "deduplication"],
+    "hintLevels": [
+      "Level 1: Both streams are sorted, so the next smallest unused id is always at the head of one of the two pointers.",
+      "Level 2: Compare the values under both pointers, emit the smaller (or either one when equal) and advance past the emitted value.",
+      "Level 3: After one stream runs out, the other still holds ids - and when both pointers point at the same value, advancing only one of them duplicates that id."
+    ]
+  }
+}

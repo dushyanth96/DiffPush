@@ -1,0 +1,61 @@
+{
+  "id": "insert-node-in-dll",
+  "index": 2,
+  "topic": "04.Linked_List",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Insert node in DLL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Insert%20node%20in%20doubly%20linked%20list",
+    "sourceFilePath": "04.Linked List/2.Doubly Linked List/02.Insert_node_in_DLL.cpp"
+  },
+  "narrative": {
+    "title": "Slotting a Checkpoint into the Two-Way Corridor",
+    "scenario": "A facility adds a new checkpoint to a two-way corridor. The placement rule is relative: the checkpoint must slot in immediately after the p-th one (0-based). Because the corridor is two-way, the crew must wire four links — the newcomer's forward and backward registers, plus updated registers on both of its new neighbours — or patrols will deadlock.",
+    "inputFormat": "An array arr of node values, a 0-based position p, and an integer x.",
+    "outputFormat": "The list after inserting x immediately after the p-th node.",
+    "constraints": [
+      "1 <= arr.length <= 10^5",
+      "0 <= p < arr.length",
+      "-10^9 <= arr[i], x <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [2, 4, 5], "p": 2, "x": 6 },
+      "expected": [2, 4, 5, 6],
+      "isPublic": true,
+      "explanation": "Position 2 is the tail, so the newcomer becomes the new tail with only a backward link to wire."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [1, 2, 3, 4], "p": 0, "x": 44 },
+      "expected": [1, 44, 2, 3, 4],
+      "isPublic": true,
+      "explanation": "Inserting after the head rewires both the head's forward link and the old second node's backward link."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [10, 20, 30, 40], "p": 1, "x": 25 },
+      "expected": [10, 20, 25, 30, 40],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def addNode(self, arr: list[int], p: int, x: int) -> list[int]:\n        # TODO: insert x right after the p-th (0-based) node and return the list.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node *prev, *next;\n    Node(int d) : data(d), prev(nullptr), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    void addNode(Node* head, int p, int data) {\n        // TODO: insert a node holding data right after the p-th (0-based) node.\n    }\n};",
+    "java": "class Solution {\n    public int[] addNode(int[] arr, int p, int x) {\n        // TODO: insert x right after the p-th (0-based) node and return the list.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "doubly-linked-list", "insertion", "insert-node-in-dll"],
+    "hintLevels": [
+      "Level 1: The newcomer always lands between two existing nodes — right after position p — never before the head.",
+      "Level 2: Walk to the p-th node, then splice: newcomer.prev = node, newcomer.next = node.next, node.next = newcomer.",
+      "Level 3: The fourth link is the one that breaks lists — when the newcomer is not the new tail, its next node's prev must be updated; skip that and backwards traversal diverges."
+    ]
+  }
+}

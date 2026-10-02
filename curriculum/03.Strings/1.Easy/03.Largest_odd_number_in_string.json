@@ -1,0 +1,60 @@
+{
+  "id": "largest-odd-number-in-string",
+  "index": 3,
+  "topic": "03.Strings",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Largest odd number in string",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Largest%20odd%20number%20in%20string",
+    "sourceFilePath": "03.Strings/1.Easy/03.Largest_odd_number_in_string.cpp"
+  },
+  "narrative": {
+    "title": "The Last Odd Checkpoint Decides the Load",
+    "scenario": "A freight scanner reads a continuous stream of digits far too long to fit into any integer register, so values live as strings. The odd-lane loader only accepts containers whose numeric reading is odd, and the dispatcher wants the single largest odd value hiding anywhere in the scanned stream. If the stream contains no odd digit at all, the lane stays empty and the answer is an empty string.",
+    "inputFormat": "A string num of digits representing a very large non-negative integer without leading zeros.",
+    "outputFormat": "The largest-valued odd integer that appears as a non-empty contiguous substring of num, returned as a string, or \"\" when none exists.",
+    "constraints": [
+      "1 <= num.length <= 10^5",
+      "num consists only of digits and has no leading zeros (the value 0 itself is written as \"0\")"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "num": "35427" },
+      "expected": "35427",
+      "isPublic": true,
+      "explanation": "The final digit 7 is odd, so the entire reading — the longest prefix ending at that digit — is the largest odd value available."
+    },
+    {
+      "id": "tc-2",
+      "input": { "num": "52" },
+      "expected": "5",
+      "isPublic": true,
+      "explanation": "The stream ends in an even digit, so the best odd value is the prefix cut just before it, keeping the leading 5."
+    },
+    {
+      "id": "tc-3",
+      "input": { "num": "4206" },
+      "expected": "",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def largestOddNumber(self, num: str) -> str:\n        # TODO: return the largest odd-valued substring of num, or \"\" if none exists.\n        pass",
+    "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string largestOddNumber(string num) {\n        // TODO: return the largest odd-valued substring of num, or \"\" if none exists.\n    }\n};",
+    "java": "class Solution {\n    public String largestOddNumber(String num) {\n        // TODO: return the largest odd-valued substring of num, or \"\" if none exists.\n        return \"\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "greedy", "parity", "largest-odd-number-in-string"],
+    "hintLevels": [
+      "Level 1: Oddness is decided entirely by the final digit — a number is odd if and only if it ends in an odd digit.",
+      "Level 2: Walk from the right end of the string and stop at the first odd digit; the longest possible odd value is the prefix that ends right there.",
+      "Level 3: A longer positive number always beats a shorter one (no leading zeros), so the last odd digit in the string wins — and if none exists, return the empty string."
+    ]
+  }
+}

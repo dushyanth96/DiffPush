@@ -1,0 +1,60 @@
+{
+  "id": "odd-even-ll",
+  "index": 7,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Odd even LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Odd%20even%20linked%20list",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/07.Odd_even_LL.cpp"
+  },
+  "narrative": {
+    "title": "Re-sequencing the Badge Scanners by Turn Parity",
+    "scenario": "A security line records badge scans in order, and the auditor wants all odd-numbered turns processed first followed by all even-numbered turns — positions keep their relative order within each group, and the value on each badge never changes. The controllers rewrite the links in place, threading two sub-sequences and then joining the tail of the first to the head of the second.",
+    "inputFormat": "An array head of node values representing the linked list.",
+    "outputFormat": "The values after regrouping: nodes from 1-based odd positions first, then even positions, relative order preserved within each group.",
+    "constraints": [
+      "0 <= list length <= 10^5",
+      "-10^9 <= node value <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [1, 2, 3, 4, 5] },
+      "expected": [1, 3, 5, 2, 4],
+      "isPublic": true,
+      "explanation": "Odd positions (1st, 3rd, 5th) lead in order, then the even ones follow."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [2, 1, 3, 5, 6, 4, 7] },
+      "expected": [2, 3, 6, 7, 1, 5, 4],
+      "isPublic": true,
+      "explanation": "Positions 1,3,5,7 hold 2,3,6,7; positions 2,4,6 hold 1,5,4."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [4, 5, 6, 7] },
+      "expected": [4, 6, 5, 7],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def oddEvenList(self, head: list[int]) -> list[int]:\n        # TODO: return the values after odd/even regrouping.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int v) : val(v), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    ListNode* oddEvenList(ListNode* head) {\n        // TODO: regroup odd-indexed nodes ahead of even-indexed ones in place.\n    }\n};",
+    "java": "class Solution {\n    public int[] oddEvenList(int[] head) {\n        // TODO: return the values after odd/even regrouping.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "reordering", "pointer-weaving", "odd-even-ll"],
+    "hintLevels": [
+      "Level 1: Parity of position decides the destination — values never change, only the order of the chain does.",
+      "Level 2: Hold the head of the even sub-chain aside, advance an odd tracker and an even tracker in lockstep rewiring every other link, then attach the odd tail to the saved even head.",
+      "Level 3: The lockstep advance is the fragile part — the even tracker must move only after the odd rewire lands, or a short list will send a tracker through null."
+    ]
+  }
+}

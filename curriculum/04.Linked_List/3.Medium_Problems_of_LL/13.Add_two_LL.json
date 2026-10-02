@@ -1,0 +1,60 @@
+{
+  "id": "add-two-ll",
+  "index": 13,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Add two LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Add%20two%20numbers",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/13.Add_two_LL.cpp"
+  },
+  "narrative": {
+    "title": "Merging Two Ledger Chains Digit by Digit",
+    "scenario": "Two accounting terminals store big balances as digit chains, least significant digit first — the one layout where addition can start immediately at the head. A reconciliation pass walks both chains together, sums paired digits plus the running carry, emits each sum digit, and appends one final digit if a carry outlasts both chains.",
+    "inputFormat": "Two arrays nums1 and nums2 of digits 0-9, each representing a non-negative integer with the least significant digit first.",
+    "outputFormat": "The digit sequence of the sum, least significant digit first.",
+    "constraints": [
+      "1 <= nums1.length, nums2.length <= 10^5",
+      "0 <= node value <= 9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(max(N, M))",
+    "optimalSpace": "O(max(N, M))"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums1": [2, 4, 3], "nums2": [5, 6, 4] },
+      "expected": [7, 0, 8],
+      "isPublic": true,
+      "explanation": "342 + 465 = 807, emitted least significant digit first as 7, 0, 8."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums1": [0], "nums2": [0] },
+      "expected": [0],
+      "isPublic": true,
+      "explanation": "0 + 0 = 0 — a single zero digit, no carry anywhere."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums1": [9, 9, 9, 9], "nums2": [9, 9] },
+      "expected": [8, 9, 0, 0, 1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def addTwoNumbers(self, nums1: list[int], nums2: list[int]) -> list[int]:\n        # TODO: return the sum as a digit sequence, least significant first.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int v) : val(v), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {\n        // TODO: return the head of the sum chain, least significant digit first.\n    }\n};",
+    "java": "class Solution {\n    public int[] addTwoNumbers(int[] nums1, int[] nums2) {\n        // TODO: return the sum as a digit sequence, least significant first.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "carry-propagation", "simultaneous-walk", "add-two-ll"],
+    "hintLevels": [
+      "Level 1: Digits arrive backwards on purpose — the least significant digit leads, which is exactly where addition begins.",
+      "Level 2: March both chains at once: sum the paired digits plus carry, emit sum % 10, carry sum / 10; treat a finished chain as a stream of zeros.",
+      "Level 3: The loop must run until both chains are dry AND the carry is spent — a final 1 node after the longer chain is the classic miss."
+    ]
+  }
+}

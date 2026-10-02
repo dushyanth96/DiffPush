@@ -1,0 +1,60 @@
+{
+  "id": "reverse-ll",
+  "index": 2,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Reverse LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Reverse%20linked%20list",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/02.Reverse_LL.cpp"
+  },
+  "narrative": {
+    "title": "Sending the Relay Back Down the Line",
+    "scenario": "A one-way relay line must suddenly run in reverse — every worker's outbound link is re-aimed at the person who used to point at them, and the last worker becomes the new starter. Each rewiring happens one worker at a time while walking the line, and nobody may lose track of the worker ahead while their own link is being flipped.",
+    "inputFormat": "An array head of node values representing the linked list.",
+    "outputFormat": "The values of the reversed list, read from the new head.",
+    "constraints": [
+      "0 <= list length <= 10^5",
+      "-10^9 <= node value <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [1, 2, 3, 4, 5] },
+      "expected": [5, 4, 3, 2, 1],
+      "isPublic": true,
+      "explanation": "Every link flips and the tail node 5 opens the reversed chain."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [1, 2] },
+      "expected": [2, 1],
+      "isPublic": true,
+      "explanation": "A two-node chain needs exactly one link flip."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [3] },
+      "expected": [3],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def reverseList(self, head: list[int]) -> list[int]:\n        # TODO: return the values after the list is reversed.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int v) : val(v), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    ListNode* reverseList(ListNode* head) {\n        // TODO: reverse in place and return the new head.\n    }\n};",
+    "java": "class Solution {\n    public int[] reverseList(int[] head) {\n        // TODO: return the values after the list is reversed.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "reversal", "in-place", "reverse-ll"],
+    "hintLevels": [
+      "Level 1: Reversal is relinking, not revaluing — the nodes stay put, only their arrows change direction.",
+      "Level 2: Keep three trackers: the node behind (already reversed), the current node, and the node ahead; flip the current node's arrow toward the behind, then slide all three forward.",
+      "Level 3: The saved-ahead pointer is what stops the rest of the list from being orphaned the instant you flip — and the tracker that ends on null is the new head."
+    ]
+  }
+}

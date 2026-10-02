@@ -1,0 +1,102 @@
+{
+  "id": "min-time-to-burn-binary-tree",
+  "index": 6,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Minimum Time to Burn the Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=amount+of+time+for+binary+tree+to+be+infected",
+    "sourceFilePath": "11. Binary Trees/3. Hard/06. Min time to burn binary tree.cpp"
+  },
+  "narrative": {
+    "title": "The Contagion Clock in the Server Farm",
+    "scenario": "A corrupted update is detonated on one server blade of a tree-shaped rack network. Each second the corruption jumps to every directly connected blade — the two children and the parent. Ops needs to know the exact second the whole farm goes dark, so they can schedule the isolation window.",
+    "inputFormat": "A binary tree as a level-order array (null marks a missing child) and an integer start — the value of the initially infected node. Node values are unique.",
+    "outputFormat": "Return the number of seconds until every node is infected.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^4 <= node value <= 10^4",
+      "Node values are unique"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          null,
+          6,
+          null,
+          null,
+          7,
+          8,
+          null,
+          9,
+          null,
+          null,
+          null,
+          null,
+          null,
+          10
+        ],
+        "start": 8
+      },
+      "expected": 7,
+      "isPublic": true,
+      "explanation": "The fire climbs 8 -> 5 -> 2 -> 1 -> 3 -> 6 -> 9 -> 10: seven hops to the farthest blade."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3
+        ],
+        "start": 2
+      },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "The parent 1 burns first, then the sibling 3 catches it one second later."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1
+        ],
+        "start": 1
+      },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root, start):\n        # Return the seconds until the whole tree is infected.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the seconds until the whole tree is infected.\n    int solve(TreeNode* root, int start);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the seconds until the whole tree is infected.\n    public int solve(TreeNode root, int start) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "bfs",
+      "parent-map",
+      "min-time-to-burn-binary-tree"
+    ],
+    "hintLevels": [
+      "Level 1: Fire spreads one ring per second — the answer is the longest escape route from the start node.",
+      "Level 2: Convert the tree into an undirected graph by mapping every node to its parent, then BFS outward with a visited set.",
+      "Level 3: Each BFS level is one second; when the queue finally empties, the number of completed rings is the burn time."
+    ]
+  }
+}

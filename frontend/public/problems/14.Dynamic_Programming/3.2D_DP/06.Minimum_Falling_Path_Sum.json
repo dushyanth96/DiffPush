@@ -1,0 +1,112 @@
+{
+  "id": "minimum-falling-path-sum",
+  "index": 6,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Minimum Falling Path Sum",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=minimum+falling+path+sum",
+    "sourceFilePath": "14. Dynamic Programming/3. 2D DP/06. Minimum Falling Path Sum.cpp"
+  },
+  "narrative": {
+    "title": "The Beanstalk Gravity Run",
+    "scenario": "A warehouse sorter drops parcels down an n x n chute lattice: a parcel in column j lands in column j-1, j, or j+1 of the next level, and every cell it passes charges a handling fee. The floor manager wants the cheapest possible descent fee from the top level to the bottom, so the chute controller must scan all falling trajectories and report the minimal sum.",
+    "inputFormat": "An n x n matrix matrix of integers, where matrix[i][j] is the fee at level i, column j.",
+    "outputFormat": "Return the minimum sum of fees over any falling path that starts anywhere on the top row and ends on the bottom row.",
+    "constraints": [
+      "1 <= n <= 100",
+      "-100 <= matrix[i][j] <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "matrix": [
+          [
+            2,
+            1,
+            3
+          ],
+          [
+            6,
+            5,
+            4
+          ],
+          [
+            7,
+            8,
+            9
+          ]
+        ]
+      },
+      "expected": 13,
+      "isPublic": true,
+      "explanation": "Descents 1-4-8 and 1-5-8 both total 13 — the cheapest of all falls."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "matrix": [
+          [
+            -19,
+            57
+          ],
+          [
+            -40,
+            -5
+          ]
+        ]
+      },
+      "expected": -59,
+      "isPublic": true,
+      "explanation": "Start at -19, fall straight down to -40 — total -59."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "matrix": [
+          [
+            17,
+            82,
+            41
+          ],
+          [
+            72,
+            4,
+            5
+          ],
+          [
+            1,
+            33,
+            27
+          ]
+        ]
+      },
+      "expected": 22,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, matrix):\n        # Return the minimum falling path sum.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the minimum falling path sum.\n    int solve(std::vector<std::vector<int>>& matrix);\n};",
+    "java": "class Solution {\n    // Return the minimum falling path sum.\n    public int solve(int[][] matrix) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "2d-dp",
+      "grid-paths",
+      "falling-path"
+    ],
+    "hintLevels": [
+      "Level 1: Every cell has three possible parents — the three columns of the row above.",
+      "Level 2: best[i][j] = matrix[i][j] + min(best[i-1][j-1], best[i-1][j], best[i-1][j+1]).",
+      "Level 3: Column guards matter at both walls; the answer is the minimum across the final row."
+    ]
+  }
+}

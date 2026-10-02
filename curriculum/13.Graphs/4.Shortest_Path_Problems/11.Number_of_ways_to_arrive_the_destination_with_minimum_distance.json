@@ -1,0 +1,62 @@
+{
+  "id": "number-of-ways-to-arrive-the-destination-with-minimum-distance",
+  "index": 11,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Number of Ways to Arrive at Destination in Shortest Time",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=number+of+ways+to+arrive+at+destination",
+    "sourceFilePath": "13. Graphs/4. Shortest Path Problems/11. Number of ways to arrive the destination with minimum distance.cpp"
+  },
+  "narrative": {
+    "title": "Counting the Fastest Response Corridors",
+    "scenario": "An emergency network plans dispatch routes between junctions, and the controller wants to know how many distinct fastest corridors exist from base to the incident site — every one of them must be pre-cleared. Whenever two routes tie on total minutes, they count separately; the tally can be huge, so it is reported modulo 10^9 + 7.",
+    "inputFormat": "An integer n (junctions 0..n-1) and a list roads where [u, v, t] is a bidirectional road taking t minutes.",
+    "outputFormat": "Return the number of distinct shortest-time routes from 0 to n-1, modulo 10^9 + 7.",
+    "constraints": [
+      "1 <= n <= 200",
+      "n - 1 <= roads.length <= n * (n - 1) / 2",
+      "1 <= t <= 10^9",
+      "At most one road between any two junctions; the graph is connected"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O((V + E) log V)",
+    "optimalSpace": "O(V + E)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 3, "roads": [[0, 1, 1], [1, 2, 1], [0, 2, 2]] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "The direct 2-minute road and the 1+1 chain tie — two fastest routes."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 2, "roads": [[0, 1, 100]] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "A single corridor offers exactly one way to arrive."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 4, "roads": [[0, 1, 1], [1, 2, 1], [2, 3, 1], [0, 3, 3]] },
+      "expected": 2,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\nclass Solution:\n    def solve(self, n, roads):\n        # Return the number of shortest routes modulo 10^9 + 7.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the number of shortest routes modulo 10^9 + 7.\n    int solve(int n, std::vector<std::vector<int>>& roads);\n};",
+    "java": "class Solution {\n    // Return the number of shortest routes modulo 10^9 + 7.\n    public int solve(int n, int[][] roads) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dijkstra", "path-counting", "modulo", "number-of-ways-to-arrive-the-destination-with-minimum-distance"],
+    "hintLevels": [
+      "Level 1: Dijkstra finds the fastest time; a second number rides along counting how you got there.",
+      "Level 2: Strictly faster arrival replaces the count; an equal arrival adds the predecessor's count.",
+      "Level 3: Take the count modulo at every addition, and prefer 64-bit sums for the time values."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "minimum-steps-to-make-string-palindrome",
+  "index": 5,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Minimum Insertions to Make a String Palindrome",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=minimum+insertion+steps+to+make+string+palindrome",
+    "sourceFilePath": "14. Dynamic Programming/5. DP on Strings/05. Minimum steps to make string palindrome.cpp"
+  },
+  "narrative": {
+    "title": "The Palindrome Patch Ledger",
+    "scenario": "A legacy router stores configuration keys that must read as palindromes for its checksum logic to accept them. Upgrades may only prepend or append characters — one insertion per step. The migration tool computes the fewest insertions that turn each legacy key into a valid palindrome before the firmware swap.",
+    "inputFormat": "A string s.",
+    "outputFormat": "Return the minimum number of characters to insert (anywhere) so that s becomes a palindrome.",
+    "constraints": [
+      "1 <= len(s) <= 500",
+      "s consists of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n^2)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "zzazz" },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "The key is already a palindrome."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "mbadm" },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "\"mbdadbm\" or \"mdbabdm\" both need two insertions."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "abcd" },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, s):\n        # Return the minimum insertions to make s a palindrome.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the minimum insertions to make s a palindrome.\n    int solve(std::string s);\n};",
+    "java": "class Solution {\n    // Return the minimum insertions to make s a palindrome.\n    public int solve(String s) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "strings", "lcs", "palindrome"],
+    "hintLevels": [
+      "Level 1: Characters already belonging to a palindromic motif need no insertion; the rest must be mirrored.",
+      "Level 2: The count is exactly n minus the longest palindromic subsequence length.",
+      "Level 3: Compute that motif via LCS(s, reverse(s)) — reuse the two-string table."
+    ]
+  }
+}

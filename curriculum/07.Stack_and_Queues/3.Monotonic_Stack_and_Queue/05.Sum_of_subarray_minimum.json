@@ -1,0 +1,60 @@
+{
+  "id": "sum-of-subarray-minimum",
+  "index": 5,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Sum of Subarray Minimums",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=sum+of+subarray+minimums",
+    "sourceFilePath": "07.Stack and Queues/3. Monotonic Stack and Queue/05. Sum of subarray minimum.cpp"
+  },
+  "narrative": {
+    "title": "The Pipeline Bottleneck Ledger",
+    "scenario": "A data pipeline processes every contiguous chunk of a job queue, and each chunk runs as slow as its least-capacity worker. Operations wants one number: the sum of the bottleneck capacities over all possible chunks. Duplicate capacities are allowed, so identical values in different positions still count as separate chunk configurations.",
+    "inputFormat": "An integer array arr of worker capacities.",
+    "outputFormat": "Return the sum of min(b) over every contiguous subarray b of arr, modulo 10^9 + 7.",
+    "constraints": [
+      "1 <= arr.length <= 3 * 10^4",
+      "0 <= arr[i] <= 3 * 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [3, 1, 2, 4] },
+      "expected": 17,
+      "isPublic": true,
+      "explanation": "Single elements sum to 3+1+2+4=10; larger chunks add 1+1+2+1+2+1=7 more."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [11, 81, 94, 43, 3] },
+      "expected": 444,
+      "isPublic": true,
+      "explanation": "Each element contributes its value times the count of chunks where it is the minimum."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [2, 2, 2] },
+      "expected": 12,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "MOD = 10**9 + 7\n\ndef sum_subarray_mins(arr):\n    n = len(arr)\n    prev = [-1] * n   # index of previous strictly smaller element\n    next_ = [n] * n   # index of next smaller-or-equal element\n    stack = []\n    for i in range(n):\n        while stack and arr[stack[-1]] > arr[i]:\n            stack.pop()\n        prev[i] = stack[-1] if stack else -1\n        stack.append(i)\n    stack = []\n    for i in range(n - 1, -1, -1):\n        while stack and arr[stack[-1]] >= arr[i]:\n            stack.pop()\n        next_[i] = stack[-1] if stack else n\n        stack.append(i)\n    total = 0\n    for i in range(n):\n        total = (total + (i - prev[i]) * (next_[i] - i) * arr[i]) % MOD\n    return total % MOD",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint sumSubarrayMins(vector<int>& arr) {\n    int n = arr.size();\n    const long long MOD = 1e9 + 7;\n    vector<int> prevS(n, -1), nextS(n, n);\n    stack<int> st;\n    for (int i = 0; i < n; ++i) {\n        while (!st.empty() && arr[st.top()] > arr[i]) st.pop();\n        if (!st.empty()) prevS[i] = st.top();\n        st.push(i);\n    }\n    while (!st.empty()) st.pop();\n    for (int i = n - 1; i >= 0; --i) {\n        while (!st.empty() && arr[st.top()] >= arr[i]) st.pop();\n        if (!st.empty()) nextS[i] = st.top();\n        st.push(i);\n    }\n    long long ans = 0;\n    for (int i = 0; i < n; ++i)\n        ans = (ans + (long long)(i - prevS[i]) * (nextS[i] - i) % MOD * arr[i]) % MOD;\n    return (int)ans;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int sumSubarrayMins(int[] arr) {\n        int n = arr.length;\n        final long MOD = 1_000_000_007L;\n        int[] prevS = new int[n], nextS = new int[n];\n        java.util.Arrays.fill(prevS, -1);\n        java.util.Arrays.fill(nextS, n);\n        Deque<Integer> stack = new ArrayDeque<>();\n        for (int i = 0; i < n; ++i) {\n            while (!stack.isEmpty() && arr[stack.peek()] > arr[i]) stack.pop();\n            if (!stack.isEmpty()) prevS[i] = stack.peek();\n            stack.push(i);\n        }\n        stack.clear();\n        for (int i = n - 1; i >= 0; --i) {\n            while (!stack.isEmpty() && arr[stack.peek()] >= arr[i]) stack.pop();\n            if (!stack.isEmpty()) nextS[i] = stack.peek();\n            stack.push(i);\n        }\n        long ans = 0;\n        for (int i = 0; i < n; ++i)\n            ans = (ans + (long)(i - prevS[i]) * (nextS[i] - i) % MOD * arr[i]) % MOD;\n        return (int) ans;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["monotonic-stack", "contribution-technique", "sum-of-subarray-minimum"],
+    "hintLevels": [
+      "Level 1: Enumerating all n(n+1)/2 subarrays is quadratic — flip the question to per-element contribution.",
+      "Level 2: Element arr[i] is the minimum of (i - prevSmaller) * (nextSmaller - i) subarrays.",
+      "Level 3: Break ties asymmetrically (strict on one side, non-strict on the other) so duplicates are never double-counted."
+    ]
+  }
+}

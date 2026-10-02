@@ -1,0 +1,61 @@
+{
+  "id": "lca-in-bst",
+  "index": 7,
+  "topic": "12.Binary_Search_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Lowest Common Ancestor in a BST",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=lowest+common+ancestor+of+a+binary+search+tree",
+    "sourceFilePath": "12. Binary Search Trees/2. Practice Problems/07. LCA in BST.cpp"
+  },
+  "narrative": {
+    "title": "The Fork Point on the Sorted Routing Tree",
+    "scenario": "A packet router organizes destination addresses in a sorted tree, and two packets must share a staging checkpoint on their way to different addresses. The correct checkpoint is the deepest router where the two destinations still travel together: while both targets sit on the same side of a router, the walk continues into that wing; the moment they split — or one of them IS the router — that router is the meeting point.",
+    "inputFormat": "A binary search tree as a level-order array (null marks a missing child) plus two integers p and q — the target node values.",
+    "outputFormat": "Return the value of the lowest common ancestor of p and q. A node counts as an ancestor of itself.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^9 <= node value, p, q <= 10^9",
+      "All node values are unique; both p and q exist in the tree"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(h)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [6, 2, 8, 0, 4, 7, 9, null, null, 3, 5], "p": 2, "q": 8 },
+      "expected": 6,
+      "isPublic": true,
+      "explanation": "2 and 8 split onto opposite wings of 6, making it the fork point."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [6, 2, 8, 0, 4, 7, 9, null, null, 3, 5], "p": 2, "q": 4 },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "4 lives under 2, and a node is its own ancestor."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [6, 2, 8, 0, 4, 7, 9, null, null, 3, 5], "p": 7, "q": 9 },
+      "expected": 8,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root, p, q):\n        # Return the value of the LCA of p and q in the BST.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the value of the LCA of p and q in the BST.\n    int solve(TreeNode* root, int p, int q);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the value of the LCA of p and q in the BST.\n    public int solve(TreeNode root, int p, int q) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bst", "lca", "binary-search", "tree-traversal", "lca-in-bst"],
+    "hintLevels": [
+      "Level 1: Unlike a plain tree, the sorted order tells you which wing each target took — follow the split.",
+      "Level 2: Both targets smaller than the node? Go left. Both larger? Go right. Anything else is the answer.",
+      "Level 3: The first node where the two targets diverge — or that equals one of them — is the LCA; no post-processing needed."
+    ]
+  }
+}

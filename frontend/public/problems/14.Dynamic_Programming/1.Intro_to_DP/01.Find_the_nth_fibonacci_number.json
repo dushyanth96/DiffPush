@@ -1,0 +1,59 @@
+{
+  "id": "find-the-nth-fibonacci-number",
+  "index": 1,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Find the Nth Fibonacci Number",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=fibonacci+number",
+    "sourceFilePath": "14. Dynamic Programming/1. Intro to DP/01. Find the nth fibonacci number.cpp"
+  },
+  "narrative": {
+    "title": "The Beacon Pulse Ledger",
+    "scenario": "A deep-space relay logs how many beacons are airborne each hour, and the count always follows a Fibonacci-style drift: each hour's total is the sum of the two previous hours' totals. Mission control wants to forecast the count for any hour N without replaying the whole log. Your job is to compute the Nth value in this pulse series, where hour 0 counts 0 beacons and hour 1 counts 1.",
+    "inputFormat": "A single integer n, the hour index to forecast.",
+    "outputFormat": "Return the nth number of the sequence defined by f(0) = 0, f(1) = 1, f(n) = f(n-1) + f(n-2).",
+    "constraints": [
+      "0 <= n <= 30"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 5 },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "The series runs 0, 1, 1, 2, 3, 5 — the fifth value is 5."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 10 },
+      "expected": 55,
+      "isPublic": true,
+      "explanation": "Continuing the series: 8 + 13 = 21, 13 + 21 = 34, 21 + 34 = 55."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 2 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n):\n        # Return the nth Fibonacci number (f(0)=0, f(1)=1).\n        pass",
+    "cpp": "class Solution {\npublic:\n    // Return the nth Fibonacci number (f(0)=0, f(1)=1).\n    int solve(int n);\n};",
+    "java": "class Solution {\n    // Return the nth Fibonacci number (f(0)=0, f(1)=1).\n    public int solve(int n) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "memoization", "fibonacci", "intro-to-dp"],
+    "hintLevels": [
+      "Level 1: Each answer is just the sum of the two before it — the recurrence is handed to you.",
+      "Level 2: Walk n from 0 upward, keeping the last two values instead of a full table.",
+      "Level 3: n = 0 returns 0 and n = 1 returns 1; the loop can start at 2 with those two seeds."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "implement-lower-upper-bound",
+  "index": 3,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Implement lower upper bound",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Implement%20lower%20upper%20bound",
+    "sourceFilePath": "02.Binary Search/1D Arrays/03.Implement_lower_upper_bound.cpp"
+  },
+  "narrative": {
+    "title": "Calibrating Against an Unsorted Reference Chart",
+    "scenario": "A lab calibrator compares a probe reading against a reference chart, but the chart was compiled from several technicians and its entries are out of order. The calibration needs two anchors: the closest reference value at or below the reading and the closest one at or above it. Bring the chart into order first, then locate both anchors, using -1 whenever an anchor does not exist.",
+    "inputFormat": "An integer n, an array arr of n integers in arbitrary order, and an integer x.",
+    "outputFormat": "A pair [floor, ceil] of values: floor is the largest element at most x (or -1 if x is below every element) and ceil is the smallest element at least x (or -1 if x is above every element).",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= arr[i] <= 10^6",
+      "1 <= x <= 10^6"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 8, "arr": [5, 6, 8, 9, 6, 5, 5, 6], "x": 7 },
+      "expected": [6, 8],
+      "isPublic": true,
+      "explanation": "After ordering the chart, 6 is the deepest value not past 7 and 8 is the shallowest value not below it."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 8, "arr": [5, 6, 8, 9, 6, 5, 5, 6], "x": 8 },
+      "expected": [8, 8],
+      "isPublic": true,
+      "explanation": "The reading matches a reference exactly, so both anchors collapse onto the same value 8."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 3, "arr": [2, 1, 3], "x": 10 },
+      "expected": [3, -1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def getFloorAndCeil(self, arr: list[int], n: int, x: int) -> list[int]:\n        # TODO: return [floor, ceil] as values, -1 where an anchor is missing.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> getFloorAndCeil(int arr[], int n, int x) {\n        // TODO: return {floor, ceil} as values, -1 where an anchor is missing.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public List<Integer> getFloorAndCeil(int[] arr, int n, int x) {\n        // TODO: return [floor, ceil] as values, -1 where an anchor is missing.\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "floor", "ceil", "sort-first", "implement-lower-upper-bound"],
+    "hintLevels": [
+      "Level 1: Binary search cannot run on unordered data, so one preparatory pass fixes that at a known cost.",
+      "Level 2: After sorting, run two carried-answer searches: one biased right for the largest value at most x, one biased left for the smallest value at least x.",
+      "Level 3: Both searches return positions that must be converted back into values, and either search can fail when x lies entirely outside the chart's range, which is why -1 is the sentinel."
+    ]
+  }
+}

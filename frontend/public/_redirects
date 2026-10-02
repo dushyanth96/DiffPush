@@ -1,0 +1,3 @@
+# Cloudflare Pages SPA fallback: serve the app shell for all routes
+# (required for the /auth/callback OAuth landing path).
+/* /index.html 200

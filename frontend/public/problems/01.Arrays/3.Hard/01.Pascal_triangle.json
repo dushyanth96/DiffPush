@@ -1,0 +1,60 @@
+{
+  "id": "pascal-triangle",
+  "index": 1,
+  "topic": "01.Arrays",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Pascal triangle",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Pascal%20triangle",
+    "sourceFilePath": "01.Arrays/3.Hard/01.Pascal_triangle.cpp"
+  },
+  "narrative": {
+    "title": "Rebuilding One Row of a Growth Simulator",
+    "scenario": "A population growth simulator keeps a triangular table where every entry is the sum of the two entries directly above it. A checkpoint stored only the row depth, and the restore job must regenerate that row alone. Reproduce the requested row without materialising the whole table.",
+    "inputFormat": "A single integer rowIndex, where row 0 is the apex of the triangle.",
+    "outputFormat": "The rowIndex-th row of the triangle as an array of rowIndex + 1 integers.",
+    "constraints": [
+      "0 <= rowIndex <= 33",
+      "The row must be produced without building every earlier row"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(rowIndex)",
+    "optimalSpace": "O(rowIndex) for the row being returned"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "rowIndex": 3 },
+      "expected": [1, 3, 3, 1],
+      "isPublic": true,
+      "explanation": "Each interior entry is the sum of its two parents in the row above, giving 1,3,3,1."
+    },
+    {
+      "id": "tc-2",
+      "input": { "rowIndex": 1 },
+      "expected": [1, 1],
+      "isPublic": true,
+      "explanation": "The first row below the apex holds two 1s, and both edges of every row are always 1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "rowIndex": 0 },
+      "expected": [1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def getRow(self, rowIndex: int) -> list[int]:\n        # TODO: return row rowIndex of the triangular table.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> getRow(int rowIndex) {\n        // TODO: return row rowIndex of the triangular table.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public List<Integer> getRow(int rowIndex) {\n        // TODO: return row rowIndex of the triangular table.\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "combinatorics", "binomial-coefficient", "incremental-ratio", "pascal-triangle"],
+    "hintLevels": [
+      "Level 1: Each entry can be reached directly as a binomial coefficient rather than by summing the row above.",
+      "Level 2: Start at 1 and derive the next entry from the previous one with a single multiplication and division that reduces the numerator and denominator by one each step.",
+      "Level 3: The ratios multiply fast, so keep the running coefficient in a wide integer type and divide after multiplying, and make sure the row for the apex still contains its single 1."
+    ]
+  }
+}

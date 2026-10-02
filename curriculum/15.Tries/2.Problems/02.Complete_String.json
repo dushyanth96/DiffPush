@@ -1,0 +1,90 @@
+{
+  "id": "complete-string",
+  "index": 2,
+  "topic": "15.Tries",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Longest String with All Prefixes",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=longest+word+with+all+prefixes+complete+string",
+    "sourceFilePath": "15. Tries/2. Problems/02. Complete String.cpp"
+  },
+  "narrative": {
+    "title": "The Startup Domain Ladder",
+    "scenario": "A domain registrar audits customer names: a name is trustworthy only if every one of its growing prefixes — starting from the first letter — is itself a registered name. Among the trustworthy names the registrar awards the longest one, breaking length ties by alphabetical order. If no name qualifies, the audit returns \"None\".",
+    "inputFormat": "An integer n and an array a of n lowercase strings.",
+    "outputFormat": "Return the longest string whose every prefix is present in a (lexicographically smallest on ties), or \"None\" when no string qualifies.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= len(a[i]) <= 10^5 (total characters bounded)",
+      "strings use lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(total characters)",
+    "optimalSpace": "O(total characters)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "n": 4,
+        "a": [
+          "ab",
+          "abc",
+          "a",
+          "bp"
+        ]
+      },
+      "expected": "abc",
+      "isPublic": true,
+      "explanation": "\"a\" and \"ab\" are registered, so \"abc\" is complete; \"bp\" fails at prefix \"b\"."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "n": 5,
+        "a": [
+          "n",
+          "ni",
+          "nin",
+          "ninj",
+          "ninja"
+        ]
+      },
+      "expected": "ninja",
+      "isPublic": true,
+      "explanation": "Every rung of the ladder n, ni, nin, ninj, ninja is present."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "n": 3,
+        "a": [
+          "xy",
+          "xyz",
+          "zx"
+        ]
+      },
+      "expected": "None",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, a):\n        # Return the longest all-prefixes string, or \"None\".\n        pass",
+    "cpp": "#include <string>\n#include <vector>\n\nclass Solution {\npublic:\n    // Return the longest all-prefixes string, or \"None\".\n    std::string solve(int n, std::vector<std::string>& a);\n};",
+    "java": "class Solution {\n    // Return the longest all-prefixes string, or \"None\".\n    public String solve(int n, String[] a) {\n        // TODO\n        return \"None\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "tries",
+      "prefixes",
+      "string-scan",
+      "complete-string"
+    ],
+    "hintLevels": [
+      "Level 1: A candidate dies at the first prefix missing from the set — check every rung.",
+      "Level 2: Insert all words into a trie; a word qualifies when every node on its path carries an end flag.",
+      "Level 3: Track the best by (length, lexicographic order); no qualifying word means the literal \"None\"."
+    ]
+  }
+}

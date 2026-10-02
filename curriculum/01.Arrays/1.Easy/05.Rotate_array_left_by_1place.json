@@ -1,0 +1,60 @@
+{
+  "id": "rotate-array-left-by-1place",
+  "index": 5,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Rotate array left by 1place",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Rotate%20array%20left%20by%201place",
+    "sourceFilePath": "01.Arrays/1.Easy/05.Rotate_array_left_by_1place.cpp"
+  },
+  "narrative": {
+    "title": "Shift Change on the Conveyor Queue",
+    "scenario": "A warehouse conveyor holds one parcel per slot and dispatches from the head of the line. When the night shift begins, the front parcel is moved to the tail so the remaining parcels advance one slot. Produce the queue as it looks after that single left shift.",
+    "inputFormat": "An integer n followed by an array ARR of n parcel identifiers.",
+    "outputFormat": "The array after every element has moved one position to the left, with the former head appended at the tail.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= ARR[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 5, "ARR": [1, 2, 3, 4, 5] },
+      "expected": [2, 3, 4, 5, 1],
+      "isPublic": true,
+      "explanation": "Every parcel advances one slot and the original head 1 is appended at the tail."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 4, "ARR": [-1, 0, 3, 9] },
+      "expected": [0, 3, 9, -1],
+      "isPublic": true,
+      "explanation": "The shift is independent of the values, so negatives move exactly like positives."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 1, "ARR": [7] },
+      "expected": [7],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def rotateLeftByOne(self, arr: list[int], n: int) -> list[int]:\n        # TODO: shift every element one slot left and append the old head at the tail.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> rotateArray(vector<int>& arr, int n) {\n        // TODO: shift every element one slot left and append the old head at the tail.\n    }\n};",
+    "java": "class Solution {\n    public int[] rotateArray(int[] arr, int n) {\n        // TODO: shift every element one slot left and append the old head at the tail.\n        return arr;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "in-place-shift", "rotation-by-one", "single-save-variable"],
+    "hintLevels": [
+      "Level 1: The head is the only value that would be overwritten, so save it before touching the rest of the queue.",
+      "Level 2: Copy each slot from its right neighbour, then write the saved head into the final slot.",
+      "Level 3: The final copy step must stop at n-1 or the last slot reads past the end, and a one-slot queue must leave the value untouched."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "house-robber-2",
+  "index": 5,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "House Robber II",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=house+robber+ii",
+    "sourceFilePath": "14. Dynamic Programming/2. 1D DP/05. House Robber 2.cpp"
+  },
+  "narrative": {
+    "title": "The Roundabout Storage Ring",
+    "scenario": "The bot's next assignment is a circular storage ring where bay 0 sits beside the final bay, closing the alarm circuit into a loop. Cracking both ends of the ring in one shift is impossible. The dispatcher wants the maximum haul across all legal subsets, so the planner breaks the ring into two straight corridors — with and without the first bay — and takes the better result.",
+    "inputFormat": "An array nums of n non-negative integers arranged in a circle, where nums[i] is the charge in bay i.",
+    "outputFormat": "Return the maximum total charge collectable when no two adjacent bays (including the first and last) are opened.",
+    "constraints": [
+      "1 <= n <= 100",
+      "0 <= nums[i] <= 1000"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [2, 3, 2] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Bays 0 and 2 are now neighbors, so only one of them can be taken — best is bay 1 alone for 3."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1, 2, 3, 1] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The ring splits into [2,3] (answer 3) and [1,3,1] (answer 4); take 4."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1, 2, 3] },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, nums):\n        # Return the maximum charge around the circular ring.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the maximum charge around the circular ring.\n    int solve(std::vector<int>& nums);\n};",
+    "java": "class Solution {\n    // Return the maximum charge around the circular ring.\n    public int solve(int[] nums) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "1d-dp", "take-or-skip", "circular-array", "house-robber-2"],
+    "hintLevels": [
+      "Level 1: A ring means bays 0 and n-1 clash — every legal plan drops one of them.",
+      "Level 2: Run the linear robber on nums[0..n-2] and on nums[1..n-1]; the ring answer is the larger.",
+      "Level 3: A single bay has no neighbor, so n == 1 must return nums[0] before splitting."
+    ]
+  }
+}

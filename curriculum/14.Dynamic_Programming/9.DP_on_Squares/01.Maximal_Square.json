@@ -1,0 +1,60 @@
+{
+  "id": "maximal-square",
+  "index": 1,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Maximal Square",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=maximal+square",
+    "sourceFilePath": "14. Dynamic Programming/9. DP on Squares/01. Maximal Square.cpp"
+  },
+  "narrative": {
+    "title": "The Solar Panel String Survey",
+    "scenario": "A rooftop survey maps a grid of mounting points as either reinforced (1) or not (0). The installation crew wants to deploy one big square solar string whose anchors occupy a perfect block of reinforced points only. Survey software must report the area of the largest such square block anywhere on the roof.",
+    "inputFormat": "An m x n binary matrix matrix of '0' and '1' characters.",
+    "outputFormat": "Return the area of the largest square submatrix consisting entirely of 1s.",
+    "constraints": [
+      "1 <= m, n <= 300",
+      "matrix[i][j] is '0' or '1'"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m*n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "matrix": [["1", "0", "1", "0", "0"], ["1", "0", "1", "1", "1"], ["1", "1", "1", "1", "1"], ["1", "0", "0", "1", "0"]] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "A 2x2 block of 1s sits in the middle-right region; area 4."
+    },
+    {
+      "id": "tc-2",
+      "input": { "matrix": [["0", "1"], ["1", "0"]] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "No 2x2 block exists, but single reinforced points give area 1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "matrix": [["0", "0"], ["0", "0"]] },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, matrix):\n        # Return the area of the largest all-ones square.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the area of the largest all-ones square.\n    int solve(std::vector<std::vector<char>>& matrix);\n};",
+    "java": "class Solution {\n    // Return the area of the largest all-ones square.\n    public int solve(char[][] matrix) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "squares", "grid-dp", "maximal-square"],
+    "hintLevels": [
+      "Level 1: A big square needs its top-left, top, and left neighbors to each support a slightly smaller square.",
+      "Level 2: side[i][j] = 1 + min of the three neighbors when matrix[i][j] == 1, else 0.",
+      "Level 3: Track the maximum side during the fill and square it at the end; a padded border row/col removes edge cases."
+    ]
+  }
+}

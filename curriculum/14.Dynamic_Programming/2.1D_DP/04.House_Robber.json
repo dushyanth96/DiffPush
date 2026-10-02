@@ -1,0 +1,60 @@
+{
+  "id": "house-robber",
+  "index": 4,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "House Robber",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=house+robber",
+    "sourceFilePath": "14. Dynamic Programming/2. 1D DP/04. House Robber.cpp"
+  },
+  "narrative": {
+    "title": "The Sensor Bay Sweep",
+    "scenario": "A maintenance bot harvests energy cells from a row of sensor bays. Each bay holds a different charge, but the fire code forbids opening two neighboring bays in one shift because their shared alarm circuit would trip. The night crew wants the biggest possible haul per shift, so the bot must decide which bays to crack to maximize the collected charge without tripping the alarm.",
+    "inputFormat": "An array nums of n non-negative integers, where nums[i] is the charge in bay i.",
+    "outputFormat": "Return the maximum total charge collectable with no two adjacent bays opened.",
+    "constraints": [
+      "1 <= n <= 100",
+      "0 <= nums[i] <= 400"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 2, 3, 1] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "Bay 0 (1) plus bay 2 (3) — total 4."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [2, 7, 9, 3, 1] },
+      "expected": 12,
+      "isPublic": true,
+      "explanation": "Bays 0, 2, 4 give 2 + 9 + 1 = 12."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [2, 1, 1, 2] },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, nums):\n        # Return the maximum charge with no two adjacent bays opened.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the maximum charge with no two adjacent bays opened.\n    int solve(std::vector<int>& nums);\n};",
+    "java": "class Solution {\n    // Return the maximum charge with no two adjacent bays opened.\n    public int solve(int[] nums) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "1d-dp", "take-or-skip", "house-robber"],
+    "hintLevels": [
+      "Level 1: At each bay the bot either pockets it and skips the neighbor, or moves on empty-handed.",
+      "Level 2: best[i] = max(best[i-1], nums[i] + best[i-2]) with best[-1] treated as 0.",
+      "Level 3: Two rolling totals suffice; the answer is simply max of the last two."
+    ]
+  }
+}

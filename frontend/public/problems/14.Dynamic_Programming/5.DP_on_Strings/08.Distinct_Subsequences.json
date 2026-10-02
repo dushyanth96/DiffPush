@@ -1,0 +1,74 @@
+{
+  "id": "distinct-subsequences",
+  "index": 8,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Distinct Subsequences",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=distinct+subsequences",
+    "sourceFilePath": "14. Dynamic Programming/5. DP on Strings/08. Distinct Subsequences.cpp"
+  },
+  "narrative": {
+    "title": "The Beacon Code Counter",
+    "scenario": "A lighthouse emits a long pulse string, and the coast guard hunts for one short distress code as a subsequence of those pulses. Multiple flashes can serve the same slot, so the same code may hide in the beam log many different ways. The monitoring console counts every distinct embedding of the code in the log.",
+    "inputFormat": "Two strings s (the log) and t (the code).",
+    "outputFormat": "Return the number of distinct subsequences of s that equal t.",
+    "constraints": [
+      "1 <= len(s), len(t) <= 1000",
+      "strings consist of English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*m)",
+    "optimalSpace": "O(m)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "s": "rabbbit",
+        "t": "rabbit"
+      },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Any one of the three 'b's in the log can be dropped while spelling \"rabbit\"."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "s": "babgbag",
+        "t": "bag"
+      },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Five distinct position combinations spell \"bag\" in order."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "s": "aaa",
+        "t": "aa"
+      },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, s, t):\n        # Return the number of subsequences of s equal to t.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return the number of subsequences of s equal to t.\n    int solve(std::string s, std::string t);\n};",
+    "java": "class Solution {\n    // Return the number of subsequences of s equal to t.\n    public int solve(String s, String t) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "strings",
+      "counting-dp",
+      "subsequences"
+    ],
+    "hintLevels": [
+      "Level 1: On a character match you may spend the log letter on the code or skip it — both branches count.",
+      "Level 2: On a match count[i][j] = count[i-1][j-1] + count[i-1][j]; on a miss just count[i-1][j]. An empty code counts exactly once.",
+      "Level 3: A 1D array swept left-to-right per log character keeps memory at the code's length."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "move-0-s-to-end",
+  "index": 7,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Move 0's to end",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Move%200%27s%20to%20end",
+    "sourceFilePath": "01.Arrays/1.Easy/07.Move_0s_to_end.cpp"
+  },
+  "narrative": {
+    "title": "Pushing Empty Slots to the Tail of the Packet Buffer",
+    "scenario": "A network filter stores parsed packets in a fixed buffer where dropped frames are recorded as zero-length entries. Downstream code reads the buffer linearly and expects only real packets at the front, with the empty placeholders swept to the tail. Rearrange the buffer in place without allocating a second one.",
+    "inputFormat": "An array nums of n integers, where 0 marks an empty slot.",
+    "outputFormat": "The same array with all real packets kept in their original relative order at the front and every 0 pushed to the end.",
+    "constraints": [
+      "1 <= n <= 10^4",
+      "-2^31 <= nums[i] <= 2^31 - 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [0, 1, 0, 3, 12] },
+      "expected": [1, 3, 12, 0, 0],
+      "isPublic": true,
+      "explanation": "The real packets 1, 3, 12 keep their order at the front and both zeros land at the tail."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [0] },
+      "expected": [0],
+      "isPublic": true,
+      "explanation": "A buffer holding only an empty slot is already in its final state."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [0, 0, 0] },
+      "expected": [0, 0, 0],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def moveZeroes(self, nums: list[int]) -> None:\n        # TODO: sweep every 0 to the tail in place, keeping real values in order.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    void moveZeroes(vector<int>& nums) {\n        // TODO: sweep every 0 to the tail in place, keeping real values in order.\n    }\n};",
+    "java": "class Solution {\n    public void moveZeroes(int[] nums) {\n        // TODO: sweep every 0 to the tail in place, keeping real values in order.\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "in-place", "two-pointers", "stable-partition"],
+    "hintLevels": [
+      "Level 1: Two positions are useful here - one marking the boundary of the compacted real packets, another walking the buffer.",
+      "Level 2: Swap the walking reader with the writer whenever the reader finds a non-zero, then advance the writer; the writer only ever sits on a zero.",
+      "Level 3: Beware of restarting the search for the next non-zero at the head each time, and do not let an all-zero buffer read past the end."
+    ]
+  }
+}

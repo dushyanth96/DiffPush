@@ -1,0 +1,60 @@
+{
+  "id": "bit-manipulation",
+  "index": 1,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Bit Manipulation",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Bit%20Manipulation",
+    "sourceFilePath": "06.Bit Manipulation/1. Learn Bit Manipulation/01.Bit Manipulation.cpp"
+  },
+  "narrative": {
+    "title": "Wiring One Relay on the Lamp Panel",
+    "scenario": "A control room keeps a bank of numbered relays encoded as a 32-bit integer, and the technician must inspect, energize, and cut a single relay line in one shift. Relays are numbered from the nearest end starting at one, not zero. Report the relay's current state, the integer after energizing it, and the integer after cutting it.",
+    "inputFormat": "An integer num (the relay bank) and an integer i (1-based relay position).",
+    "outputFormat": "A triple [state, num after set, num after clear].",
+    "constraints": [
+      "1 <= i <= 32",
+      "0 <= num < 2^31"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "num": 70, "i": 3 },
+      "expected": [1, 70, 66],
+      "isPublic": true,
+      "explanation": "70 is 1000110 in binary; the 3rd relay is already on, so setting changes nothing and cutting yields 66."
+    },
+    {
+      "id": "tc-2",
+      "input": { "num": 10, "i": 2 },
+      "expected": [1, 10, 8],
+      "isPublic": true,
+      "explanation": "10 is 1010; the 2nd relay is on, and cutting it drops the bank to 8."
+    },
+    {
+      "id": "tc-3",
+      "input": { "num": 0, "i": 1 },
+      "expected": [0, 1, 0],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def bitManipulation(self, num: int, i: int) -> list[int]:\n        # TODO: return [bit i-1, num | mask, num & ~mask]; i is 1-based.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> bitManipulation(int num, int i) {\n        // TODO: get/set/clear the (i-1)-based bit and return all three values.\n    }\n};",
+    "java": "class Solution {\n    public int[] bitManipulation(int num, int i) {\n        // TODO: return [bit, set, clear] for the 1-based position i.\n        return new int[3];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "masks", "get-set-clear", "bit-manipulation"],
+    "hintLevels": [
+      "Level 1: One mask (1 << (i-1)) answers all three questions — read it, OR it in, AND with its complement.",
+      "Level 2: The state is (num >> (i-1)) & 1; setting is num | mask; clearing is num & ~mask.",
+      "Level 3: Edge to watch: when the relay is already on, setting must not change the value — OR is idempotent."
+    ]
+  }
+}

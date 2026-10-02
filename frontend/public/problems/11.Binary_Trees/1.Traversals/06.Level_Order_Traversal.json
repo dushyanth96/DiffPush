@@ -1,0 +1,60 @@
+{
+  "id": "binary-tree-level-order-traversal",
+  "index": 6,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Level Order Traversal of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=binary+tree+level+order+traversal",
+    "sourceFilePath": "11. Binary Trees/1. Traversals/06. Level Order Traversal.cpp"
+  },
+  "narrative": {
+    "title": "The Grandstand Wave Call",
+    "scenario": "A stadium section is arranged as a binary tree of seating clusters, and the event host starts the wave from the head cluster. Each heartbeat, everyone exactly one ring deeper from the head stands up, moving left to right within their ring. The broadcast team wants the standing order grouped by heartbeat, so the camera crew knows which ring to film during each beat.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return a list of lists: the i-th inner list holds all node values on tree level i, left to right.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [1, 2, 3, 4, 5, null, 6] },
+      "expected": [[1], [2, 3], [4, 5, 6]],
+      "isPublic": true,
+      "explanation": "Three levels: the root alone, then 2 and 3, then leaves 4, 5, 6 left to right."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [7] },
+      "expected": [[7]],
+      "isPublic": true,
+      "explanation": "One node means one level containing only that node."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [3, 9, 20, null, null, 15, 7] },
+      "expected": [[3], [9, 20], [15, 7]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return level order as a list of level lists.\n        pass",
+    "cpp": "#include <vector>\n#include <queue>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return level order as a vector of level vectors.\n    std::vector<std::vector<int>> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return level order as a List of level Lists.\n    public List<List<Integer>> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["trees", "binary-tree", "bfs", "queue", "binary-tree-level-order-traversal"],
+    "hintLevels": [
+      "Level 1: Levels are distance rings from the root — you need a structure that processes nodes in the order they were discovered.",
+      "Level 2: A FIFO queue does exactly that; snapshot its size at the top of each round to slice out one whole level.",
+      "Level 3: Enqueue children only when non-null, and each outer loop pass appends one level list — no sentinel nodes required."
+    ]
+  }
+}

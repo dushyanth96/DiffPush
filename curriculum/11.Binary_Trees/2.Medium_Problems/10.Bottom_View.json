@@ -1,0 +1,105 @@
+{
+  "id": "bottom-view-binary-tree",
+  "index": 10,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Bottom View of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=bottom+view+of+binary+tree",
+    "sourceFilePath": "11. Binary Trees/2. Medium Problems/10. Bottom View.cpp"
+  },
+  "narrative": {
+    "title": "The Underfloor Pipe Ledger",
+    "scenario": "A plant inspector maps a tree-shaped sprinkler network from beneath the floor: each junction's sub-pipes fan one column left and one column right, and the lowest pipe in a column covers everything above it. The report lists one junction per column, left to right — and when two junctions occupy the same column at equal depth, the one reached later in a level sweep takes the ledger slot.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child. The root sits at column 0.",
+    "outputFormat": "Return an array of bottom-view values, one per column, ordered left to right.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "expected": [
+        4,
+        2,
+        6,
+        3,
+        7
+      ],
+      "isPublic": true,
+      "explanation": "Column 0's deepest pair are 5 and 6; the later-swept 6 holds the slot."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          null,
+          4,
+          null,
+          5
+        ]
+      },
+      "expected": [
+        2,
+        4,
+        3,
+        5
+      ],
+      "isPublic": true,
+      "explanation": "Deeper nodes 4 and 5 cover the root's column and column 2 respectively."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        2,
+        1
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the bottom view values, columns left to right.\n        pass",
+    "cpp": "#include <vector>\n#include <queue>\n#include <unordered_map>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the bottom view values, columns left to right.\n    std::vector<int> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the bottom view values, columns left to right.\n    public List<Integer> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "bfs",
+      "hashing",
+      "bottom-view-binary-tree"
+    ],
+    "hintLevels": [
+      "Level 1: The mirror image of the top view — each column's deepest node wins instead of the shallowest.",
+      "Level 2: Sweep level by level and unconditionally overwrite the column's record; BFS order settles same-depth ties.",
+      "Level 3: Emit the map's keys in sorted order; no per-node depth comparison is needed because BFS visits columns in non-decreasing depth."
+    ]
+  }
+}

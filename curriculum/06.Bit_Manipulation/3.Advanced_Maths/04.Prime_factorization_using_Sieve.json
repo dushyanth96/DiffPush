@@ -1,0 +1,59 @@
+{
+  "id": "prime-factorization-using-sieve",
+  "index": 4,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Prime factorization using Sieve",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Prime%20factorization%20using%20Sieve",
+    "sourceFilePath": "06.Bit Manipulation/3. Advanced Maths/04. Prime factorization using Sieve.cpp"
+  },
+  "narrative": {
+    "title": "Decomposing the Alloy Into Its Base Metals",
+    "scenario": "A foundry receives an alloy batch identified by an integer and must list every base-metal unit that composes it — prime factors with multiplicity, so a doubled component appears twice. The factor-sieve marks shared-access values as it goes, and every surviving prime is divided out of the batch repeatedly, one entry per removal, until nothing but 1 remains.",
+    "inputFormat": "An integer n greater than 1.",
+    "outputFormat": "The prime factors of n with multiplicity, in non-decreasing order.",
+    "constraints": [
+      "2 <= n <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(sqrt(n)) for the trial sweep; the sieve array makes it O(n log log n) as written",
+    "optimalSpace": "O(n) for the sieve flags"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 12246 },
+      "expected": [2, 3, 13, 157],
+      "isPublic": true,
+      "explanation": "12246 = 2 * 3 * 13 * 157 — four single-power components."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 12 },
+      "expected": [2, 2, 3],
+      "isPublic": true,
+      "explanation": "The 2-component occurs squared, so it is listed twice."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 17 },
+      "expected": [17],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findPrimeFactors(self, n: int) -> list[int]:\n        # TODO: sieve primes to sqrt(n), divide out each one fully, append per removal.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> findPrimeFactors(int n) {\n        // TODO: one push per division; a leftover n > 1 is itself prime.\n    }\n};",
+    "java": "class Solution {\n    public java.util.List<Integer> findPrimeFactors(int n) {\n        // TODO: sieve primes to sqrt(n), divide out each one fully, append per removal.\n        return new java.util.ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["number-theory", "factorization", "sieve", "prime-factorization-using-sieve"],
+    "hintLevels": [
+      "Level 1: Unlike distinct-factor listing, multiplicity matters — divide each prime out repeatedly and record every removal.",
+      "Level 2: For each surviving sieve prime i while i * i <= n, append and divide n by i in a while loop.",
+      "Level 3: The loop ends with n either 1 or a single large prime; that survivor is the final entry."
+    ]
+  }
+}

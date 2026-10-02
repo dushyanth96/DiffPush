@@ -1,0 +1,61 @@
+{
+  "id": "nth-root-of-integer",
+  "index": 2,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Nth root of integer",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Nth%20root%20of%20integer",
+    "sourceFilePath": "02.Binary Search/In Search Space/02.Nth_root_of_integer.cpp"
+  },
+  "narrative": {
+    "title": "Equal-Splitting a Battery Bank",
+    "scenario": "A hardware team must arrange m identical cells into a perfect n-sided array where every leg holds the same count - that is, m must be an exact nth power. When the arrangement is impossible, the planner reports failure instead of rounding. Decide whether an integer root exists and return it.",
+    "inputFormat": "Two integers n (the root degree) and m (the target value).",
+    "outputFormat": "The integer r with r^n == m, or -1 when m has no integer nth root.",
+    "constraints": [
+      "1 <= n <= 30",
+      "1 <= m <= 10^9",
+      "Return -1 rather than a fractional root"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log m)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 2, "m": 9 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Three legs of three cells each form the array exactly, since 3 squared is 9."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3, "m": 9 },
+      "expected": -1,
+      "isPublic": true,
+      "explanation": "No integer cubed equals 9, so the arrangement is impossible and -1 is returned."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 3, "m": 27 },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def NthRoot(self, n: int, m: int) -> int:\n        # TODO: return the integer r with r**n == m, or -1.\n        pass",
+    "cpp": "class Solution {\npublic:\n    int NthRoot(int n, int m) {\n        // TODO: return the integer r with r^n == m, or -1.\n    }\n};",
+    "java": "class Solution {\n    public int NthRoot(int n, int m) {\n        // TODO: return the integer r with r^n == m, or -1.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "answer-space", "integer-arithmetic", "nth-root", "nth-root-of-integer"],
+    "hintLevels": [
+      "Level 1: r raised to the n grows monotonically with r, which is exactly the shape a halving search needs.",
+      "Level 2: Probe candidate roots between 1 and m and compare the power against m - an exact match returns, otherwise keep the half that could still contain the root.",
+      "Level 3: Do not use a floating-point pow helper for the comparison: intermediate rounding betrays exact matches, so accumulate the power with integer multiplication and widen the type."
+    ]
+  }
+}

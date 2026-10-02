@@ -1,0 +1,60 @@
+{
+  "id": "binary-tree-inorder-traversal",
+  "index": 4,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Inorder Traversal of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=binary+tree+inorder+traversal",
+    "sourceFilePath": "11. Binary Trees/1. Traversals/04. Inorder Traversal.cpp"
+  },
+  "narrative": {
+    "title": "Left-Wing-First Security Sweep",
+    "scenario": "An airport's terminal is split into two concourses joined at a central hub. The inspection team's protocol is strict: clear every gate in the left concourse before stamping the hub checkpoint, then sweep the right concourse. Inside any concourse the same protocol repeats recursively. The stamped order of checkpoints is the sweep's official record.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return an array of node values in inorder: visit the left subtree, then the node, then the right subtree.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [1, 2, 3, 4, 5, null, 6] },
+      "expected": [4, 2, 5, 1, 3, 6],
+      "isPublic": true,
+      "explanation": "Left subtree {4,2,5} yields 4,2,5; then root 1; then right subtree {3,6}."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [7] },
+      "expected": [7],
+      "isPublic": true,
+      "explanation": "With no children, the single node is recorded in its own turn."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [1, null, 2, null, 3] },
+      "expected": [1, 2, 3],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the inorder traversal as a list of values.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the inorder traversal as a vector of values.\n    std::vector<int> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the inorder traversal as a List of Integer values.\n    public List<Integer> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["trees", "binary-tree", "traversal", "recursion", "binary-tree-inorder-traversal"],
+    "hintLevels": [
+      "Level 1: Inorder sandwiches the parent between its two subtrees — left wing, then self, then right wing.",
+      "Level 2: Swap the recording beat to the middle of the recursion: recurse left, record node, recurse right.",
+      "Level 3: For a BST this order surfaces sorted values — a useful sanity check when reasoning about the traversal."
+    ]
+  }
+}

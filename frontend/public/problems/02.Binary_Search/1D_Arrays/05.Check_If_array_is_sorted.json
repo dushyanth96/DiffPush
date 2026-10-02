@@ -1,0 +1,61 @@
+{
+  "id": "check-if-array-is-sorted",
+  "index": 5,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Check If array is sorted",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Check%20If%20array%20is%20sorted",
+    "sourceFilePath": "02.Binary Search/1D Arrays/05.Check_If_array_is_sorted.cpp"
+  },
+  "narrative": {
+    "title": "Audit Trail Ordering Check",
+    "scenario": "Conveyor stations along a production line each append an event with a sequence number to a shared audit trail. Before the report is signed off, an auditor must confirm every recorded number is greater than or equal to the previous one. Verify the ordering and flag the trail as valid or not.",
+    "inputFormat": "An integer n and an array arr of n integers.",
+    "outputFormat": "true when arr is sorted in non-decreasing order, otherwise false (the canonical judge prints 1 and 0).",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= arr[i] <= 10^9",
+      "Equal neighbours are allowed"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(log n) recursion stack for the reference divide-and-conquer implementation"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 5, "arr": [10, 20, 30, 40, 50] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Every recorded number is greater than the one before it, so the trail is valid."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 5, "arr": [10, 20, 20, 40, 50] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The repeated 20 is acceptable because the rule is non-decreasing, not strictly increasing."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 4, "arr": [10, 20, 15, 40] },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def arraySortedOrNot(self, arr: list[int], n: int) -> bool:\n        # TODO: report whether every element is >= its predecessor.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool arraySortedOrNot(int arr[], int n) {\n        // TODO: report whether every element is >= its predecessor.\n    }\n};",
+    "java": "class Solution {\n    public boolean arraySortedOrNot(int[] arr, int n) {\n        // TODO: report whether every element is >= its predecessor.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "divide-and-conquer", "sortedness-test", "check-if-array-is-sorted"],
+    "hintLevels": [
+      "Level 1: The whole question reduces to one comparison per neighbouring pair; a recursive split is one way to organize those comparisons.",
+      "Level 2: An empty or single-element span is trivially ordered; otherwise the span is ordered when its middle junction holds and both halves hold.",
+      "Level 3: Non-decreasing means equal neighbours pass, and although a linear scan achieves O(n) time, the recursive version spends the same total comparisons but O(log n) stack frames."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "start-of-cycle-in-ll",
+  "index": 4,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Start of cycle in LL",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Linked%20list%20cycle%20II",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/04.Start_of_cycle_in_LL.cpp"
+  },
+  "narrative": {
+    "title": "Finding Where the Belt Loop Begins",
+    "scenario": "A mis-coupled conveyor loop has been confirmed, and maintenance now needs the exact station where the return path re-enters the line — that is where to cut. The two-probe rig already locates a meeting point inside the loop; a phase-distance argument then says that resetting one probe to the line's start and marching both one step at a time makes them converge precisely at the re-entry station.",
+    "inputFormat": "An array head of node values and an integer pos — the 0-based index the tail's next pointer connects to, or -1 when there is no loop.",
+    "outputFormat": "The 0-based index of the node where the cycle begins, or -1 when the list has no cycle.",
+    "constraints": [
+      "0 <= list length <= 10^4",
+      "-10^5 <= pos <= list length - 1",
+      "-10^9 <= node value <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [3, 2, 0, -4], "pos": 1 },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "The tail reconnects to index 1, so the loop begins at the node holding 2."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [1, 2], "pos": 0 },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "The tail re-enters at the head itself."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [5, 6, 7, 8], "pos": -1 },
+      "expected": -1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def detectCycle(self, head: list[int], pos: int) -> int:\n        # TODO: return the index where the cycle begins, or -1.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int v) : val(v), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    ListNode* detectCycle(ListNode* head) {\n        // TODO: return the node where the cycle begins, or null.\n    }\n};",
+    "java": "class Solution {\n    public int detectCycle(int[] head, int pos) {\n        // TODO: return the index where the cycle begins, or -1.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "floyd-cycle-detection", "phase-distance", "start-of-cycle-in-ll"],
+    "hintLevels": [
+      "Level 1: The meeting point is inside the loop but almost never at its start — one more observation pins the entry down.",
+      "Level 2: When the probes meet, the distance from head to entry equals the distance from the meeting point to entry (plus whole loop laps); so reset one probe to the head and advance both singly.",
+      "Level 3: If no loop exists the fast probe escapes and the answer is null/-1 — the entry-finding march must only ever start after a confirmed meeting."
+    ]
+  }
+}

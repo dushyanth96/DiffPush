@@ -1,0 +1,61 @@
+{
+  "id": "postfix-to-prefix",
+  "index": 6,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Postfix to Prefix Conversion",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=postfix+to+prefix+conversion",
+    "sourceFilePath": "07.Stack and Queues/2. Infix, Postfix, and Prefix/06. Postfix to prefix.cpp"
+  },
+  "narrative": {
+    "title": "The Diagnostics Channel Swapper",
+    "scenario": "Legacy diagnostics devices broadcast commands operator-last, while the modern control bus expects operator-first messages. The gateway scans each incoming command left-to-right, holding partially translated messages on a buffer; on every operator it re-emits the operator first, followed by the two buffered messages in swapped order.",
+    "inputFormat": "A string expression in valid postfix form with single alphanumeric operands.",
+    "outputFormat": "Return the equivalent prefix (Polish) expression as a string.",
+    "constraints": [
+      "1 <= expression.length <= 10^5",
+      "Operands are single letters or digits",
+      "The expression is guaranteed to be a valid postfix expression"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "expression": "ABC/-AK/L-*" },
+      "expected": "*-A/BC-/AKL",
+      "isPublic": true,
+      "explanation": "Each operator is hoisted to the front of the two fragments it merges, inverting the postfix layout."
+    },
+    {
+      "id": "tc-2",
+      "input": { "expression": "ab+c*" },
+      "expected": "*+abc",
+      "isPublic": true,
+      "explanation": "The + merges a and b first; the * then fronts the whole group with c."
+    },
+    {
+      "id": "tc-3",
+      "input": { "expression": "pq+mn-*" },
+      "expected": "*+pq-mn",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def postfix_to_prefix(expression: str) -> str:\n    stack = []\n    for ch in expression:\n        if ch.isalnum():\n            stack.append(ch)\n        else:\n            a = stack.pop()   # right operand\n            b = stack.pop()   # left operand\n            stack.append(ch + b + a)\n    return stack[0]",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstring postToPre(string post_exp) {\n    stack<string> st;\n    for (char ch : post_exp) {\n        if (isalnum((unsigned char)ch)) st.push(string(1, ch));\n        else {\n            string a = st.top(); st.pop();\n            string b = st.top(); st.pop();\n            st.push(ch + b + a);\n        }\n    }\n    return st.top();\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public String postToPre(String post) {\n        Deque<String> stack = new ArrayDeque<>();\n        for (char ch : post.toCharArray()) {\n            if (Character.isLetterOrDigit(ch)) stack.push(String.valueOf(ch));\n            else {\n                String a = stack.pop(), b = stack.pop();\n                stack.push(ch + b + a);\n            }\n        }\n        return stack.peek();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["stack", "string-parsing", "expression-conversion", "postfix-to-prefix"],
+    "hintLevels": [
+      "Level 1: Same two-fragment merge as postfix-to-infix, minus the parentheses.",
+      "Level 2: On an operator, emit operator-left-right — so the first pop (right operand) goes last.",
+      "Level 3: Forward scan; mixing this up with the reverse-scan prefix problems is the classic error."
+    ]
+  }
+}

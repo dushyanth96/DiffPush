@@ -1,0 +1,68 @@
+{
+  "id": "alien-dictonary",
+  "index": 6,
+  "topic": "13.Graphs",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Alien Dictionary — Character Ordering",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=alien+dictionary",
+    "sourceFilePath": "13. Graphs/3. Topo Sort Problems/06. Alien Dictonary.cpp"
+  },
+  "narrative": {
+    "title": "Reverse-Engineering the Signal Alphabet",
+    "scenario": "Signals interception recovered a sorted word list from an alien civilisation using the first k earth-equivalent letters. Comparing each neighbouring word pair at its first differing position reveals one before-the-other fact; chaining all those facts should yield one total letter precedence — provided the intercepted list isn't self-contradictory.",
+    "inputFormat": "A list dict of N words sorted by the alien alphabet, and an integer k — the number of letters (a..) in use.",
+    "outputFormat": "Return the alien character order as a string of k lowercase letters.",
+    "constraints": [
+      "1 <= N <= 10^3",
+      "1 <= k <= 26",
+      "1 <= word length <= 10^2",
+      "All words consist only of the first k lowercase letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N * L)",
+    "optimalSpace": "O(k)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "dict": ["baa", "abcd", "abca", "cab", "cad"], "k": 4 },
+      "expected": "bdac",
+      "isPublic": true,
+      "explanation": "baa<abcd pins b<a; abcd<abca pins d<c; abca<cab pins a<c — topologically b,d,a,c."
+    },
+    {
+      "id": "tc-2",
+      "input": { "dict": ["wrt", "wrf", "er", "ett", "rftt"], "k": 5 },
+      "expected": "wertf",
+      "isPublic": true,
+      "explanation": "The five comparisons chain into the order w, e, r, t, f."
+    },
+    {
+      "id": "tc-3",
+      "input": {"dict": [
+        "aaaa",
+        "aaab",
+        "aabb"
+      ],
+      "k": 3
+    },
+    "expected": "ab",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass Solution:\n    def solve(self, dict, k):\n        # Return the alien character order as a string.\n        pass",
+    "cpp": "#include <string>\n#include <vector>\n\nclass Solution {\npublic:\n    // Return the alien character order as a string.\n    std::string solve(std::vector<std::string>& dict, int k);\n};",
+    "java": "class Solution {\n    // Return the alien character order as a string.\n    public String solve(String[] dict, int k) {\n        // TODO\n        return \"\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "topological-sort", "string", "constraint-derivation", "alien-dictonary"],
+    "hintLevels": [
+      "Level 1: Only the FIRST differing character between adjacent words carries ordering information.",
+      "Level 2: Each comparison contributes one directed edge; a Kahn's pass over the letter graph is the answer.",
+      "Level 3: Letters untouched by any comparison simply append where their indegree clears; a drain shorter than k exposes the contradiction."
+    ]
+  }
+}

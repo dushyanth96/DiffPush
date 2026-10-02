@@ -1,0 +1,60 @@
+{
+  "id": "partition-array-in-two-equal-sum-subsets",
+  "index": 2,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Partition Equal Subset Sum",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=partition+equal+subset+sum",
+    "sourceFilePath": "14. Dynamic Programming/4. DP on Subsequences/02. Partition array in two equal sum subsets.cpp"
+  },
+  "narrative": {
+    "title": "The Twin Locker Allocation",
+    "scenario": "A gym equips two identical lockers and must split a shipment of weighted plates between them so both lockers carry exactly the same load. Plates are rigid — no splitting in half. The intake scanner answers one question per shipment: can the plates be divided into two perfectly balanced groups?",
+    "inputFormat": "An array nums of n positive integers.",
+    "outputFormat": "Return true if nums can be split into two subsets with equal sums, otherwise false.",
+    "constraints": [
+      "1 <= n <= 200",
+      "1 <= nums[i] <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*S)",
+    "optimalSpace": "O(S)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 5, 11, 5] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Locker A takes 11; locker B takes 1 + 5 + 5 = 11."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1, 2, 3, 5] },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "The total 11 is odd, so equal halves are impossible."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [2, 2, 3, 5] },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, nums):\n        # Return True if nums splits into two equal-sum subsets.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return true if nums splits into two equal-sum subsets.\n    bool solve(std::vector<int>& nums);\n};",
+    "java": "class Solution {\n    // Return true if nums splits into two equal-sum subsets.\n    public boolean solve(int[] nums) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "subsequences", "subset-sum", "partition"],
+    "hintLevels": [
+      "Level 1: Equal halves means one group must reach total/2 — check that single target.",
+      "Level 2: If the total is odd, bail immediately; otherwise run subset-sum against total/2.",
+      "Level 3: The odd-total early exit is both a correctness and a performance win."
+    ]
+  }
+}

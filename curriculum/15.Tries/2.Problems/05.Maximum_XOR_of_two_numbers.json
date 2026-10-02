@@ -1,0 +1,94 @@
+{
+  "id": "maximum-xor-of-two-numbers",
+  "index": 5,
+  "topic": "15.Tries",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Maximum XOR of Two Numbers in an Array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=maximum+xor+of+two+numbers+in+an+array",
+    "sourceFilePath": "15. Tries/2. Problems/05. Maximum XOR of two numbers.cpp"
+  },
+  "narrative": {
+    "title": "The Cipher Mask Championship",
+    "scenario": "A red-team exercise stores device keys as 32-bit words. The prize goes to the pair of devices whose keys disagree in the most significant bit positions — the pair whose XOR is largest. The analyzer inserts every key into a bit-wise trie, then walks each key against the trie, always chasing the branch that flips its current bit.",
+    "inputFormat": "An array nums of n non-negative integers.",
+    "outputFormat": "Return the maximum value of nums[i] XOR nums[j] over all pairs (i and j may be equal only in the trivial zero case; the meaningful answer uses distinct positions).",
+    "constraints": [
+      "1 <= n <= 2 * 10^5",
+      "0 <= nums[i] <= 2^31 - 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n * 32)",
+    "optimalSpace": "O(n * 32)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "nums": [
+          3,
+          10,
+          5,
+          25,
+          2,
+          8
+        ]
+      },
+      "expected": 28,
+      "isPublic": true,
+      "explanation": "5 XOR 25 = 28, the strongest disagreement pattern in the set."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "nums": [
+          14,
+          70,
+          53,
+          83,
+          49,
+          91,
+          36,
+          80,
+          92,
+          51,
+          66,
+          70
+        ]
+      },
+      "expected": 127,
+      "isPublic": true,
+      "explanation": "91 XOR 36 = 127 — the seven low bits all disagree between the two keys."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "nums": [
+          2,
+          4
+        ]
+      },
+      "expected": 6,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, nums):\n        # Return the maximum XOR over all pairs.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the maximum XOR over all pairs.\n    int solve(std::vector<int>& nums);\n};",
+    "java": "class Solution {\n    // Return the maximum XOR over all pairs.\n    public int solve(int[] nums) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "tries",
+      "bit-manipulation",
+      "binary-trie",
+      "xor-maximization"
+    ],
+    "hintLevels": [
+      "Level 1: High bits dominate XOR — greedily decide the outcome bit by bit, most significant first.",
+      "Level 2: Insert every number as a 32-level binary path; for each query number, walk toward the opposite bit whenever the trie offers it.",
+      "Level 3: Chasing the opposite branch sets that result bit; the accumulated mask after 32 levels is the best XOR for that number."
+    ]
+  }
+}

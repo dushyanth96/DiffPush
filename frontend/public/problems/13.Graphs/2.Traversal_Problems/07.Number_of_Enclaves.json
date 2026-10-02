@@ -1,0 +1,60 @@
+{
+  "id": "number-of-enclaves",
+  "index": 7,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Number of Enclaves",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=number+of+enclaves",
+    "sourceFilePath": "13. Graphs/2. Traversal Problems/07. Number of Enclaves.cpp"
+  },
+  "narrative": {
+    "title": "Counting the Landlocked Plots",
+    "scenario": "A harbour authority maps its estate as a grid of dock-access plots (1) and sealed lots (0). A plot grants an exit if a worker can walk across adjacent plots to the estate boundary and step off. The audit wants the number of plots from which no such walk exists — the fully landlocked ones, however large their inland cluster is.",
+    "inputFormat": "An m x n binary matrix grid where 0 is a sealed lot and 1 is a dock-access plot.",
+    "outputFormat": "Return the number of land cells from which the grid boundary cannot be reached by 4-directional moves.",
+    "constraints": [
+      "1 <= m, n <= 10^3",
+      "grid[i][j] is 0 or 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m * n)",
+    "optimalSpace": "O(m * n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "grid": [[0, 0, 0, 0], [0, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The three inland plots form one cluster sealed off by lots on every side."
+    },
+    {
+      "id": "tc-2",
+      "input": { "grid": [[1, 0], [0, 1]] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "Both plots sit on the boundary — each can step straight off the estate."
+    },
+    {
+      "id": "tc-3",
+      "input": { "grid": [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]] },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import sys\nsys.setrecursionlimit(10**6)\n\nclass Solution:\n    def solve(self, grid):\n        # Return the count of land cells that cannot reach the boundary.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the count of land cells that cannot reach the boundary.\n    int solve(std::vector<std::vector<int>>& grid);\n};",
+    "java": "class Solution {\n    // Return the count of land cells that cannot reach the boundary.\n    public int solve(int[][] grid) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dfs", "boundary-flood", "grid", "number-of-enclaves"],
+    "hintLevels": [
+      "Level 1: Mirror of Surrounded Regions — eliminate everything with a border escape, then count the rest.",
+      "Level 2: Flood from every land cell on the perimeter; whatever stays unvisited is landlocked.",
+      "Level 3: The final count is a plain tally over unvisited land — no per-cluster bookkeeping."
+    ]
+  }
+}

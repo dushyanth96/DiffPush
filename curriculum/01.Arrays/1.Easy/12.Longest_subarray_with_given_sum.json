@@ -1,0 +1,61 @@
+{
+  "id": "longest-subarray-with-given-sum",
+  "index": 12,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Longest subarray with given sum",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Longest%20subarray%20with%20given%20sum",
+    "sourceFilePath": "01.Arrays/1.Easy/12.Longest_subarray_with_given_sum.cpp"
+  },
+  "narrative": {
+    "title": "Longest Window of Metered Throughput",
+    "scenario": "A metering gateway logs bytes moved per second as strictly positive counters, and the billing team needs the widest contiguous window whose total traffic equals a target quota exactly. Because every counter is positive, stretching a window can only increase its total, which the search may exploit.",
+    "inputFormat": "An integer n, an array A of n positive integers, and an integer K, the target window total.",
+    "outputFormat": "The number of seconds in the longest contiguous window whose total equals K, or 0 when no such window exists.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= A[i] <= 10^4",
+      "0 <= K <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 7, "K": 3, "A": [1, 2, 3, 1, 1, 1, 1] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The windows [1,2], [3] and [1,1,1] all total 3, and the longest of them spans three seconds."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3, "K": 5, "A": [1, 2, 3] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Only the trailing pair [2,3] reaches the quota, giving a window of length 2."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 3, "K": 10, "A": [1, 2, 3] },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def longestSubarrayWithSumK(self, a: list[int], k: int) -> int:\n        # TODO: return the length of the longest window whose total equals k.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int longestSubarrayWithSumK(vector<int> a, long long k) {\n        // TODO: return the length of the longest window whose total equals k.\n    }\n};",
+    "java": "class Solution {\n    public int longestSubarrayWithSumK(int[] a, long long k) {\n        // TODO: return the length of the longest window whose total equals k.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "sliding-window", "two-pointers", "positive-integers"],
+    "hintLevels": [
+      "Level 1: Every counter is positive, so extending the window can only push its total up - that lets one window slide instead of restarting at each index.",
+      "Level 2: Grow the window by moving the right edge forward; while the total exceeds the quota, pull the left edge forward to shrink it.",
+      "Level 3: A quota larger than the sum of everything yields 0, and the window length must be measured as right minus left plus one whenever the totals match."
+    ]
+  }
+}

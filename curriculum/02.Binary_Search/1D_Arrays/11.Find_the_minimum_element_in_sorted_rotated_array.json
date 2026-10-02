@@ -1,0 +1,61 @@
+{
+  "id": "find-the-minimum-element-in-sorted-rotated-array",
+  "index": 11,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Find the minimum element in sorted rotated array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Find%20the%20minimum%20element%20in%20sorted%20rotated%20array",
+    "sourceFilePath": "02.Binary Search/1D Arrays/11.Find_the_minimum_element_in_sorted_rotated_array.cpp"
+  },
+  "narrative": {
+    "title": "Finding the Restart Point of a Wrapped Shift Schedule",
+    "scenario": "A control room stores a duty roster of unique shift codes that was written in ascending order and later wrapped around the display. The smallest code marks where the wrap begins, and the dispatcher needs it to rebuild the schedule. Locate that minimum in a logarithmic number of probes.",
+    "inputFormat": "An array nums of n unique integers, sorted ascending and then rotated between 1 and n times.",
+    "outputFormat": "The minimum element of nums.",
+    "constraints": [
+      "1 <= n <= 5000",
+      "-5000 <= nums[i] <= 5000",
+      "All values in nums are unique"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [4, 5, 6, 7, 0, 1, 2] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "The wrap begins right after 7, so the smallest code 0 sits at the restart point."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [3, 4, 5, 1, 2] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "The descending junction sits between 5 and 1, and the probe logic converges on 1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [11, 13, 15, 17] },
+      "expected": 11,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findMin(self, nums: list[int]) -> int:\n        # TODO: return the minimum value of the wrapped ascending roster.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findMin(vector<int>& nums) {\n        // TODO: return the minimum value of the wrapped ascending roster.\n    }\n};",
+    "java": "class Solution {\n    public int findMin(int[] nums) {\n        // TODO: return the minimum value of the wrapped ascending roster.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "rotated-array", "minimum-search", "converging-bounds", "find-the-minimum-element-in-sorted-rotated-array"],
+    "hintLevels": [
+      "Level 1: The minimum is exactly the element whose left neighbour is larger - the junction of the wrap.",
+      "Level 2: Compare the probe with the rightmost remaining element: a larger probe means the junction lies to the right, otherwise the probe itself might be it, so keep it in range.",
+      "Level 3: Converge the bounds until they meet and keep the probe inside the candidate range (high = mid, not mid - 1); a fully sorted roster is the degenerate case and still resolves correctly."
+    ]
+  }
+}

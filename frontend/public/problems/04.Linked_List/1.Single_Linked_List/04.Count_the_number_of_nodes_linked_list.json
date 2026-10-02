@@ -1,0 +1,60 @@
+{
+  "id": "count-the-number-of-nodes-linked-list",
+  "index": 4,
+  "topic": "04.Linked_List",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Count the number of nodes linked list",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Length%20of%20linked%20list",
+    "sourceFilePath": "04.Linked List/1. Single Linked List/04.Count_the_number_of_nodes_linked_list.cpp"
+  },
+  "narrative": {
+    "title": "Counting Wagons in the Marshalling Yard",
+    "scenario": "Yard control receives a consist whose cars are chained one-way with no manifest attached, so the only way to size the train is to walk it: step from car to car, tally as you go, and stop when the coupling leads nowhere. The final tally is the train's length.",
+    "inputFormat": "An array arr representing the linked list's node values.",
+    "outputFormat": "The number of nodes in the list.",
+    "constraints": [
+      "1 <= arr.length <= 10^5",
+      "-10^9 <= arr[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [1, 2, 3, 4, 5] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "The walk visits five cars before running off the end."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [2, 4, 6, 7, 5, 1, 0] },
+      "expected": 7,
+      "isPublic": true,
+      "explanation": "Seven nodes, so the tally stops at 7 — values play no role, only the count does."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [42] },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def getCount(self, arr: list[int]) -> int:\n        # TODO: return the number of nodes in the list.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node* next;\n    Node(int d) : data(d), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    int getCount(Node* head) {\n        // TODO: return the number of nodes in the list.\n    }\n};",
+    "java": "class Solution {\n    public int getCount(int[] arr) {\n        // TODO: return the number of nodes in the list.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "traversal", "counting", "count-the-number-of-nodes-linked-list"],
+    "hintLevels": [
+      "Level 1: The values are irrelevant — length is purely how many hops the chain holds.",
+      "Level 2: Start a counter at zero, walk from the head, and increment once per node until the current pointer is null.",
+      "Level 3: A single-node list must return 1 and the loop condition (checking the node, not its next) is what makes the last node counted."
+    ]
+  }
+}

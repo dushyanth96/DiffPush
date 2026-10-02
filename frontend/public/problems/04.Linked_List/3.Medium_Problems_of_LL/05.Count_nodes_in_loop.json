@@ -1,0 +1,61 @@
+{
+  "id": "count-nodes-in-loop",
+  "index": 5,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Count nodes in loop",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Find%20length%20of%20loop%20in%20linked%20list",
+    "sourceFilePath": "04.Linked List/3.Medium Problems of LL/05.Count_nodes_in_loop.cpp"
+  },
+  "narrative": {
+    "title": "Measuring the Roundabout's Circumference",
+    "scenario": "A plant's transport chain has a suspected roundabout — a section that cycles back onto itself. Control wants the number of stations trapped inside the cycling section, not just whether it exists. The two-speed probe rig confirms the loop and parks both probes at a meeting station; one probe then walks the roundabout exactly once, counting stations until it returns to that parking spot.",
+    "inputFormat": "An array head of N node values and an integer C — the 1-based position of the node the tail connects to for the loop, or 0 when there is no loop.",
+    "outputFormat": "The number of nodes inside the loop, or 0 when the list has no loop.",
+    "constraints": [
+      "1 <= N <= 10^5",
+      "0 <= C <= N",
+      "-10^9 <= node value <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [25, 14, 19, 33, 10, 21, 39, 90, 58, 45], "C": 4 },
+      "expected": 7,
+      "isPublic": true,
+      "explanation": "The tail reconnects to the 4th node (33); the roundabout 33-10-21-39-90-58-45 holds seven stations."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [1, 0], "C": 1 },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Both nodes sit inside the loop, so the circumference is the whole list."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [1, 2, 3], "C": 0 },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def countNodesInLoop(self, head: list[int], C: int) -> int:\n        # TODO: return the number of nodes in the loop, or 0.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node* next;\n    Node(int d) : data(d), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    int countNodesInLoop(Node* head) {\n        // TODO: return the number of nodes in the loop, or 0.\n    }\n};",
+    "java": "class Solution {\n    public int countNodesInLoop(int[] head, int C) {\n        // TODO: return the number of nodes in the loop, or 0.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "floyd-cycle-detection", "loop-length", "count-nodes-in-loop"],
+    "hintLevels": [
+      "Level 1: Detect first, measure second — a loop with zero stations is no loop at all.",
+      "Level 2: After the probes meet, park a counter at 1, advance one probe, and stop when it arrives back at the meeting station.",
+      "Level 3: The count starts at 1 because the meeting station itself is part of the loop — counting only the steps after it would under-report by exactly one."
+    ]
+  }
+}

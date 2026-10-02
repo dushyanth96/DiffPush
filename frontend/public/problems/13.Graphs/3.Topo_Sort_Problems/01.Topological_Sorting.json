@@ -1,0 +1,61 @@
+{
+  "id": "topological-sorting",
+  "index": 1,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Topological Sort of a DAG",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=topological+sort",
+    "sourceFilePath": "13. Graphs/3. Topo Sort Problems/01. Topological Sorting.cpp"
+  },
+  "narrative": {
+    "title": "The Assembly-Line Sequencing Sheet",
+    "scenario": "A factory's installation manual lists one-way dependency tickets between workstations: certain stations must finish before others may start. The planner needs one legal run order — any order where every ticket's predecessor comes first. With no loops guaranteed, a finish-time walk down the ticket map, read backwards, produces a valid sequence.",
+    "inputFormat": "An integer nodes and an edge list graph where each entry [u, v] is a one-way dependency u -> v. The graph is a DAG.",
+    "outputFormat": "Return a topological order — a permutation of 0..nodes-1 in which every edge u -> v has u appearing before v.",
+    "constraints": [
+      "1 <= nodes <= 10^5",
+      "0 <= number of edges <= 2 * 10^5",
+      "The graph is directed and acyclic"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(V + E)",
+    "optimalSpace": "O(V)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nodes": 4, "graph": [[0, 1], [0, 2], [1, 3], [2, 3]] },
+      "expected": [0, 2, 1, 3],
+      "isPublic": true,
+      "explanation": "0 must precede 1 and 2, and both must precede 3 — this order satisfies every ticket."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nodes": 3, "graph": [[2, 0], [2, 1]] },
+      "expected": [2, 1, 0],
+      "isPublic": true,
+      "explanation": "Station 2 has no predecessors and lands first; 0 and 1 are free afterwards."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nodes": 2, "graph": [[1, 0]] },
+      "expected": [1, 0],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import sys\nsys.setrecursionlimit(10**6)\n\nclass Solution:\n    def solve(self, nodes, graph):\n        # Return one valid topological order of the DAG.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return one valid topological order of the DAG.\n    std::vector<int> solve(int nodes, std::vector<std::vector<int>>& graph);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return one valid topological order of the DAG.\n    public List<Integer> solve(int nodes, int[][] graph) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "topological-sort", "dfs", "dag", "topological-sorting"],
+    "hintLevels": [
+      "Level 1: A node can be released once everything it depends on has been released.",
+      "Level 2: DFS appends nodes on the way OUT of the recursion; reversing that finish-time list yields the order.",
+      "Level 3: Sweep all nodes as DFS roots — disconnected DAG parts each contribute their own finish chain."
+    ]
+  }
+}

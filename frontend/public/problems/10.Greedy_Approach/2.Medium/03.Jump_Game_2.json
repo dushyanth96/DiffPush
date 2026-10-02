@@ -1,0 +1,61 @@
+{
+  "id": "jump-game-2",
+  "index": 3,
+  "topic": "10.Greedy_Approach",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Jump Game II",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=jump+game+ii",
+    "sourceFilePath": "10. Greedy Approach/2. Medium/03. Jump Game 2.cpp"
+  },
+  "narrative": {
+    "title": "The Relay Bidding Ladder",
+    "scenario": "The same relay network now charges per hop, so the courier wants the minimum number of relays to reach the final post. Dispatch proceeds in waves: within the current wave's reachable band, scout the farthest post any member can open up; when the band is exhausted, that scout becomes the next wave's frontier and the hop counter rises by one.",
+    "inputFormat": "An integer array nums where nums[i] is the maximum hop length from index i.",
+    "outputFormat": "Return the minimum number of hops needed to reach the last index.",
+    "constraints": [
+      "1 <= nums.length <= 10^4",
+      "0 <= nums[i] <= 10^5",
+      "The last index is always reachable"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [2, 3, 1, 1, 4] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "One hop reaches index 1, whose 3-hop range lands on the last index."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [2, 3, 0, 1, 4] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "A different second hop (through index 1 to index 4) still needs only two waves."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1, 1, 1, 1] },
+      "expected": 3,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def jump(nums):\n    steps = end = farthest = 0\n    for i in range(len(nums) - 1):\n        farthest = max(farthest, i + nums[i])\n        if farthest >= len(nums) - 1:\n            return steps + 1\n        if i == end:\n            steps += 1\n            end = farthest\n    return steps",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint jump(vector<int>& nums) {\n    int steps = 0, end = 0, farthest = 0;\n    for (int i = 0; i < (int)nums.size() - 1; ++i) {\n        farthest = max(farthest, i + nums[i]);\n        if (farthest >= (int)nums.size() - 1) return steps + 1;\n        if (i == end) {\n            ++steps;\n            end = farthest;\n        }\n    }\n    return steps;\n}",
+    "java": "class Solution {\n    public int jump(int[] nums) {\n        int steps = 0, end = 0, farthest = 0;\n        for (int i = 0; i < nums.length - 1; ++i) {\n            farthest = Math.max(farthest, i + nums[i]);\n            if (farthest >= nums.length - 1) return steps + 1;\n            if (i == end) {\n                ++steps;\n                end = farthest;\n            }\n        }\n        return steps;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["greedy", "bfs-layers", "arrays", "jump-game-2"],
+    "hintLevels": [
+      "Level 1: Minimum hops is a level count — BFS in disguise over an implicit graph.",
+      "Level 2: Sweep a wave: everything between `end` and the frontier belongs to the current level; `farthest` previews the next.",
+      "Level 3: When the sweep index hits `end`, close the wave and open the next at `farthest` — the early return handles the last leap."
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "id": "search-in-rotated-sorted-array-with-duplicates",
+  "index": 10,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Search in rotated sorted array with duplicates",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Search%20in%20rotated%20sorted%20array%20with%20duplicates",
+    "sourceFilePath": "02.Binary Search/1D Arrays/10.Search_in_rotated_sorted_array_with_duplicates.cpp"
+  },
+  "narrative": {
+    "title": "Membership Check in a Wrapped Catalog with Reprints",
+    "scenario": "A parts catalog lists stock codes in ascending order and was wrapped during re-shelving, but this revision contains repeated codes. Repeats make some probes ambiguous about which side is ordered, so the search occasionally must shrink by one slot from both ends instead of halving. Answer whether a requested code is still stocked.",
+    "inputFormat": "An array nums of n integers sorted in non-decreasing order and then rotated at an unknown pivot, and an integer target.",
+    "outputFormat": "true when target appears in nums, otherwise false.",
+    "constraints": [
+      "1 <= n <= 5000",
+      "-10^4 <= nums[i] <= 10^4",
+      "Values may repeat",
+      "Minimize the overall number of probe steps"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n) average, O(n) worst case when many duplicates hide the sorted side",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [2, 5, 6, 0, 0, 1, 2], "target": 0 },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The code 0 survives the re-shelve and is found despite the wrap."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [2, 5, 6, 0, 0, 1, 2], "target": 3 },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Code 3 is not stocked anywhere in the wrapped catalog."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [1, 0, 1, 1, 1], "target": 0 },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def search(self, nums: list[int], target: int) -> bool:\n        # TODO: report membership in a wrapped, duplicate-laden catalog.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool search(vector<int>& nums, int target) {\n        // TODO: report membership in a wrapped, duplicate-laden catalog.\n    }\n};",
+    "java": "class Solution {\n    public boolean search(int[] nums, int target) {\n        // TODO: report membership in a wrapped, duplicate-laden catalog.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "rotated-array", "duplicates", "ambiguity-shrinking", "search-in-rotated-sorted-array-with-duplicates"],
+    "hintLevels": [
+      "Level 1: The wrapped-ring trick from the distinct case works until a probe matches both end values.",
+      "Level 2: When the probe value equals both the left and right end values, no ordering conclusion is possible - shrink both bounds by one and retry.",
+      "Level 3: That shrinking step is what degrades the worst case to linear; the returned answer is membership only, so no index bookkeeping is needed."
+    ]
+  }
+}

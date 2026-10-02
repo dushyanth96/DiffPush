@@ -1,0 +1,61 @@
+{
+  "id": "implement-stack-using-queue",
+  "index": 3,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Implement Stack using Queue",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=implement+stack+using+queue",
+    "sourceFilePath": "07.Stack and Queues/1. Learning/03. Implement stack using queue.cpp"
+  },
+  "narrative": {
+    "title": "The Rotating Buffet Line",
+    "scenario": "A cafeteria passes trays along a single-file line, but the chef wants the tray added most recently to be the one served next — the opposite of how the line naturally works. The workaround: whenever a serving is requested, the kitchen cycles every tray except the newest around the line once, so the newest tray arrives at the serving end. Implement this controller so push stays cheap and each pop serves the freshest tray.",
+    "inputFormat": "A list of operations, each either [\"push\", value] to insert or [\"pop\"] to remove.",
+    "outputFormat": "Return the list of values produced by every pop operation, in order; a pop on an empty structure yields -1.",
+    "constraints": [
+      "1 <= number of operations <= 10^5",
+      "-10^9 <= pushed values <= 10^9",
+      "Only a single FIFO queue may be used internally"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1) push, O(n) pop",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "operations": [["push", 1], ["push", 2], ["pop"], ["push", 3], ["pop"], ["pop"]] },
+      "expected": [2, 3, 1],
+      "isPublic": true,
+      "explanation": "Pop rotates 1 to the back and serves 2; afterwards 3 then 1 leave in LIFO order."
+    },
+    {
+      "id": "tc-2",
+      "input": { "operations": [["push", 5], ["pop"], ["pop"]] },
+      "expected": [5, -1],
+      "isPublic": true,
+      "explanation": "The lone element is served first; the second pop hits an empty queue."
+    },
+    {
+      "id": "tc-3",
+      "input": { "operations": [["push", 4], ["push", 4], ["push", 4], ["pop"], ["pop"], ["pop"], ["pop"]] },
+      "expected": [4, 4, 4, -1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\ndef run_stack_via_queue(operations):\n    # Simulate a stack backed by a single queue; return pop results (-1 when empty).\n    queue = deque()\n    results = []\n    for op in operations:\n        if op[0] == \"push\":\n            queue.append(op[1])\n        else:\n            if not queue:\n                results.append(-1)\n                continue\n            for _ in range(len(queue) - 1):\n                queue.append(queue.popleft())\n            results.append(queue.popleft())\n    return results",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass QueueStack {\nprivate:\n    queue<int> q;\npublic:\n    void push(int x) { q.push(x); }\n    int pop() {\n        if (q.empty()) return -1;\n        for (int i = 0; i < (int)q.size() - 1; ++i) {\n            q.push(q.front());\n            q.pop();\n        }\n        int val = q.front();\n        q.pop();\n        return val;\n    }\n};",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass QueueStack {\n    private Deque<Integer> queue = new ArrayDeque<>();\n\n    public void push(int x) { queue.addLast(x); }\n\n    public int pop() {\n        if (queue.isEmpty()) return -1;\n        for (int i = 0; i < queue.size() - 1; ++i) {\n            queue.addLast(queue.pollFirst());\n        }\n        return queue.pollFirst();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["stack", "queue", "design", "simulation", "implement-stack-using-queue"],
+    "hintLevels": [
+      "Level 1: FIFO and LIFO are opposites, so something must absorb the mismatch at pop time.",
+      "Level 2: Before serving, rotate the first n-1 elements to the back so the newest element reaches the front.",
+      "Level 3: Pay the cost only when popping — pushes stay O(1); also handle the pop-from-empty case."
+    ]
+  }
+}

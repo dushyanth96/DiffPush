@@ -1,0 +1,61 @@
+{
+  "id": "count-the-number-of-nice-subarrays",
+  "index": 6,
+  "topic": "08.Sliding_Window",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Count Number of Nice Subarrays",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=count+number+of+nice+subarrays",
+    "sourceFilePath": "08. Sliding Window/1. Medium Problems/06. Count the number of nice subarrays.cpp"
+  },
+  "narrative": {
+    "title": "The Freight Yard Odd-Cargo Counter",
+    "scenario": "A freight yard tracks wagons, flagging each as carrying odd-classified cargo (1) or not (0 in the parity log). A route segment is 'eventful' when exactly k wagons in it carry odd-classified cargo. The yard clerk needs the number of eventful segments — even-length gaps of even cargo are allowed to pad either side, so segments are counted by position, not by shape.",
+    "inputFormat": "An integer array nums and an integer k.",
+    "outputFormat": "Return the number of contiguous subarrays containing exactly k odd numbers.",
+    "constraints": [
+      "1 <= nums.length <= 50000",
+      "1 <= k <= nums.length",
+      "0 <= nums[i] <= 10^5"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 1, 2, 1, 1], "k": 3 },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Only [1,1,2,1] and [1,2,1,1] hold exactly three odd wagons."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [2, 4, 6], "k": 1 },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "No wagon carries odd cargo, so no segment can be eventful."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [2, 2, 2, 1, 2, 2, 1, 2, 2, 2], "k": 2 },
+      "expected": 16,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def _at_most_k_odd(nums, k):\n    start = odd = total = 0\n    for i, v in enumerate(nums):\n        odd += v % 2\n        while odd > k:\n            odd -= nums[start] % 2\n            start += 1\n        total += i - start + 1\n    return total\n\ndef number_of_nice_subarrays(nums, k):\n    # exactly k = (at most k) - (at most k-1)\n    return _at_most_k_odd(nums, k) - _at_most_k_odd(nums, k - 1)",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nlong long atMostKOdd(vector<int>& nums, int k) {\n    long long start = 0, odd = 0, total = 0;\n    for (int i = 0; i < (int)nums.size(); ++i) {\n        odd += nums[i] % 2;\n        while (odd > k) {\n            odd -= nums[start] % 2;\n            ++start;\n        }\n        total += i - start + 1;\n    }\n    return total;\n}\n\nint numberOfSubarrays(vector<int>& nums, int k) {\n    return (int)(atMostKOdd(nums, k) - atMostKOdd(nums, k - 1));\n}",
+    "java": "class Solution {\n    private long atMostKOdd(int[] nums, int k) {\n        long start = 0, odd = 0, total = 0;\n        for (int i = 0; i < nums.length; ++i) {\n            odd += nums[i] % 2;\n            while (odd > k) {\n                odd -= nums[start] % 2;\n                ++start;\n            }\n            total += i - start + 1;\n        }\n        return total;\n    }\n\n    public int numberOfSubarrays(int[] nums, int k) {\n        return (int)(atMostKOdd(nums, k) - atMostKOdd(nums, k - 1));\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["sliding-window", "subarray-counting", "at-most-trick", "count-the-number-of-nice-subarrays"],
+    "hintLevels": [
+      "Level 1: Counting 'exactly k' directly is hard; count 'at most k' instead — windows behave nicely there.",
+      "Level 2: atMost(k) - atMost(k-1) isolates the exactly-k band.",
+      "Level 3: Each right edge contributes (i - start + 1) windows: every legal left edge for that right edge."
+    ]
+  }
+}

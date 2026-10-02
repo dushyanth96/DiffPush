@@ -1,0 +1,60 @@
+{
+  "id": "valid-anagram",
+  "index": 7,
+  "topic": "03.Strings",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Valid anagram",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Valid%20anagram",
+    "sourceFilePath": "03.Strings/1.Easy/07.Valid_anagram.cpp"
+  },
+  "narrative": {
+    "title": "Shipment Manifest Reconciliation",
+    "scenario": "Two depots transmit their part-code lists at the end of a shift, and the receiving hub must confirm the second manifest is a rearrangement of the first — identical part codes with identical multiplicities, merely shuffled. Any mismatched count, even by a single unit, flags the shipment for manual audit. Lengths that disagree make the check fail instantly.",
+    "inputFormat": "Two strings s and t.",
+    "outputFormat": "true when t is an anagram of s (same letters with the same frequencies), false otherwise.",
+    "constraints": [
+      "0 <= s.length, t.length <= 5 * 10^4",
+      "s and t consist of lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "anagram", "t": "nagaram" },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Both manifests use each letter exactly as often as the other — a perfect rearrangement."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "rat", "t": "car" },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Same length, but the letter inventories differ: an r appears where a c should be."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "aacc", "t": "ccac" },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def isAnagram(self, s: str, t: str) -> bool:\n        # TODO: return True when t uses exactly the same letters, with the same counts, as s.\n        pass",
+    "cpp": "#include <string>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isAnagram(string s, string t) {\n        // TODO: return true when t uses exactly the same letters, with the same counts, as s.\n    }\n};",
+    "java": "class Solution {\n    public boolean isAnagram(String s, String t) {\n        // TODO: return true when t uses exactly the same letters, with the same counts, as s.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "frequency-counting", "hash-mapping", "valid-anagram"],
+    "hintLevels": [
+      "Level 1: An anagram check is an inventory check — count every letter once and the two tallies must match exactly.",
+      "Level 2: Build one frequency map from s, then consume it while walking t: any missing letter, or a letter whose balance would go negative, fails on the spot.",
+      "Level 3: Equal lengths are necessary but nowhere near sufficient — 'aacc' and 'ccac' share a length and a letter set yet differ in counts, so only the full tally comparison settles it."
+    ]
+  }
+}

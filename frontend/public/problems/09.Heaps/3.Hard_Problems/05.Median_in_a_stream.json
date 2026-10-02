@@ -1,0 +1,61 @@
+{
+  "id": "median-in-a-stream",
+  "index": 5,
+  "topic": "09.Heaps",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Find Median from Data Stream",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=find+median+from+data+stream",
+    "sourceFilePath": "09. Heaps/3. Hard Problems/05. Median in a stream.cpp"
+  },
+  "narrative": {
+    "title": "The Toll Plaza Flow Gauge",
+    "scenario": "A toll plaza logs one vehicle count per hour and regulators request the running median after every reading — the hourly figure splitting all readings into equal halves. The gauge never re-sorts: it keeps the lower half of readings in a max-topped vault and the upper half in a min-topped vault, rebalancing after each insert so the medians are always one or two tops away.",
+    "inputFormat": "A list of operations: [\"add\", value] or [\"findMedian\"].",
+    "outputFormat": "Return the list of medians produced by every findMedian operation, in order.",
+    "constraints": [
+      "1 <= number of operations <= 5 * 10^4",
+      "-10^5 <= values <= 10^5",
+      "add: O(log n); findMedian: O(1)"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n) add, O(1) median",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "operations": [["add", 1], ["add", 2], ["findMedian"], ["add", 3], ["findMedian"]] },
+      "expected": [1.5, 2],
+      "isPublic": true,
+      "explanation": "Two readings split the median halfway; the third reading makes 2 the true middle."
+    },
+    {
+      "id": "tc-2",
+      "input": { "operations": [["add", 5], ["findMedian"], ["add", 15], ["findMedian"], ["add", 1], ["findMedian"]] },
+      "expected": [5, 10, 5],
+      "isPublic": true,
+      "explanation": "Each median is the middle of {5}, then {1,5,15} → 5... specifically 5, 10, 5."
+    },
+    {
+      "id": "tc-3",
+      "input": { "operations": [["add", -1], ["findMedian"], ["add", -2], ["findMedian"], ["add", -3], ["findMedian"]] },
+      "expected": [-1, -1.5, -2],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\nclass MedianFinder:\n    def __init__(self):\n        self.lower = []   # max-heap (negated): smaller half\n        self.upper = []   # min-heap: larger half\n\n    def add(self, num):\n        heapq.heappush(self.lower, -num)\n        heapq.heappush(self.upper, -heapq.heappop(self.lower))\n        if len(self.upper) > len(self.lower):\n            heapq.heappush(self.lower, -heapq.heappop(self.upper))\n\n    def find_median(self):\n        if len(self.lower) > len(self.upper):\n            return float(-self.lower[0])\n        return (-self.lower[0] + self.upper[0]) / 2",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass MedianFinder {\n    priority_queue<int> lower;                             // smaller half\n    priority_queue<int, vector<int>, greater<int>> upper;  // larger half\npublic:\n    void addNum(int num) {\n        lower.push(num);\n        upper.push(lower.top()); lower.pop();\n        if (upper.size() > lower.size()) {\n            lower.push(upper.top()); upper.pop();\n        }\n    }\n    double findMedian() {\n        if (lower.size() > upper.size()) return lower.top();\n        return (lower.top() + upper.top()) / 2.0;\n    }\n};",
+    "java": "import java.util.Collections;\nimport java.util.PriorityQueue;\n\nclass MedianFinder {\n    private final PriorityQueue<Integer> lower = new PriorityQueue<>(Collections.reverseOrder());\n    private final PriorityQueue<Integer> upper = new PriorityQueue<>();\n\n    public void add(int num) {\n        lower.offer(num);\n        upper.offer(lower.poll());\n        if (upper.size() > lower.size()) lower.offer(upper.poll());\n    }\n\n    public double findMedian() {\n        if (lower.size() > upper.size()) return lower.peek();\n        return (lower.peek() + upper.peek()) / 2.0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["heap", "two-heaps", "streaming", "median-in-a-stream"],
+    "hintLevels": [
+      "Level 1: Split the data into a smaller half and a larger half; the median lives at their boundary.",
+      "Level 2: A max-heap guards the lower half, a min-heap the upper half; keep sizes within one.",
+      "Level 3: Route each new value through both heaps (push low, hoist the max to upper, rebalance) — the invariant maintains itself."
+    ]
+  }
+}

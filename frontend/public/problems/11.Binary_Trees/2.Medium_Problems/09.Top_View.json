@@ -1,0 +1,105 @@
+{
+  "id": "top-view-binary-tree",
+  "index": 9,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Top View of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=top+view+of+binary+tree",
+    "sourceFilePath": "11. Binary Trees/2. Medium Problems/09. Top View.cpp"
+  },
+  "narrative": {
+    "title": "The Overpass Headcount Scan",
+    "scenario": "A drone photographs a tree-shaped car-wash lane network from directly overhead. Each lane sits one column left or right of its parent, and taller upstream lanes hide the lanes beneath them in the same column. The traffic office wants the visible lane numbers, reading the photo from leftmost column to rightmost — the first lane encountered from the sky in each column wins.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child. The root sits at column 0.",
+    "outputFormat": "Return an array of visible values, one per column, ordered left to right.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "expected": [
+        4,
+        2,
+        1,
+        3,
+        7
+      ],
+      "isPublic": true,
+      "explanation": "Columns -2..2 show 4, 2, the root 1 (which shades 5 and 6), 3, and 7."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          null,
+          4,
+          null,
+          5
+        ]
+      },
+      "expected": [
+        2,
+        1,
+        3,
+        5
+      ],
+      "isPublic": true,
+      "explanation": "The root sits above 4 in column 0, so 1 stays visible while 4 hides."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        2,
+        1
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the top view values, columns left to right.\n        pass",
+    "cpp": "#include <vector>\n#include <queue>\n#include <unordered_map>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the top view values, columns left to right.\n    std::vector<int> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the top view values, columns left to right.\n    public List<Integer> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "bfs",
+      "hashing",
+      "top-view-binary-tree"
+    ],
+    "hintLevels": [
+      "Level 1: Visibility means being the topmost node in your column — depth hides everything below it.",
+      "Level 2: Walk level by level with a column counter (left child -1, right child +1) and claim each column only the first time.",
+      "Level 3: A map keyed by column filled during BFS gives topmost holders; emit keys in sorted order for the final readout."
+    ]
+  }
+}

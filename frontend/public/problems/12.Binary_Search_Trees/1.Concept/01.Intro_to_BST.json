@@ -1,0 +1,60 @@
+{
+  "id": "intro-to-bst",
+  "index": 1,
+  "topic": "12.Binary_Search_Trees",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Check If an Inorder Sequence Can Belong to a BST",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=verify+preorder+sequence+binary+search+tree",
+    "sourceFilePath": "12. Binary Search Trees/1. Concept/01. Intro to BST.cpp"
+  },
+  "narrative": {
+    "title": "The Ledger Sequence Sanity Check",
+    "scenario": "A records desk receives a day's transactions already sorted by a walk that always visits smaller amounts before larger ones. Before the batch is filed, a clerk runs one sanity check: a walk with that property must never show an amount that fails to rise against the one before it. One flat scan settles whether the sequence could have come from such a filing tree at all.",
+    "inputFormat": "An integer array order — a claimed inorder traversal of a binary search tree.",
+    "outputFormat": "Return true if the sequence is strictly increasing (a valid BST inorder), otherwise false.",
+    "constraints": [
+      "1 <= order.length <= 10^5",
+      "-10^9 <= order[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "order": [1, 2, 3, 4] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Every entry rises over its predecessor, so the walk is consistent with a BST."
+    },
+    {
+      "id": "tc-2",
+      "input": { "order": [1, 3, 2] },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "The 3-to-2 drop breaks the non-decreasing guarantee of any BST inorder."
+    },
+    {
+      "id": "tc-3",
+      "input": { "order": [5, 5, 6] },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, order):\n        # Return True if the inorder sequence is strictly increasing.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return true if the inorder sequence is strictly increasing.\n    bool solve(std::vector<int>& order);\n};",
+    "java": "class Solution {\n    // Return true if the inorder sequence is strictly increasing.\n    public boolean solve(int[] order) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bst", "inorder", "validation", "linear-scan", "intro-to-bst"],
+    "hintLevels": [
+      "Level 1: A BST read left-to-right is a sorted reading — just prove the reading never dips.",
+      "Level 2: Compare each element only with its immediate predecessor; no tree needs to be built.",
+      "Level 3: Insist on strict increase — an equal neighbour is already a contradiction."
+    ]
+  }
+}

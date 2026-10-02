@@ -1,0 +1,62 @@
+{
+  "id": "minimum-days-to-make-boquets",
+  "index": 4,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Minimum days to make boquets",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Minimum%20days%20to%20make%20boquets",
+    "sourceFilePath": "02.Binary Search/In Search Space/04.Minimum_days_to_make_boquets.cpp"
+  },
+  "narrative": {
+    "title": "Slotting Adjoaining Workstations for Assembly Cells",
+    "scenario": "A factory installs stations along one row, each coming online on a known day. An assembly cell needs k neighbouring stations active, and production requires m such cells. Find the first day on which the floor can field m cells, or admit that the row is too short to ever do it.",
+    "inputFormat": "An array bloomDay of n integers (the day each station comes online), an integer m (cells required) and an integer k (adjacent stations per cell).",
+    "outputFormat": "The minimum day on which m bouquets of k adjacent bloomed stations can be formed, or -1 when fewer than m * k stations exist.",
+    "constraints": [
+      "1 <= bloomDay.length <= 10^5",
+      "1 <= bloomDay[i] <= 10^9",
+      "1 <= m <= 10^6",
+      "1 <= k <= n"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log D), where D is the latest bloom day",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "bloomDay": [1, 10, 3, 10, 2], "m": 3, "k": 1 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "By day 3 the stations at positions 1, 3 and 5 have come online, giving three single-station cells."
+    },
+    {
+      "id": "tc-2",
+      "input": { "bloomDay": [7, 7, 7, 7, 12, 7, 7], "m": 2, "k": 3 },
+      "expected": 12,
+      "isPublic": true,
+      "explanation": "Day 7 offers only one run of four adjacent stations; waiting for day 12 lights the whole row, enough for two cells."
+    },
+    {
+      "id": "tc-3",
+      "input": { "bloomDay": [1, 10, 3, 10, 2], "m": 2, "k": 2 },
+      "expected": 10,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def minDays(self, bloomDay: list[int], m: int, k: int) -> int:\n        # TODO: return the first day m cells of k adjacent stations exist, or -1.\n        pass",
+    "cpp": "#include <vector>\n#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    int minDays(vector<int>& bloomDay, int m, int k) {\n        // TODO: return the first day m cells of k adjacent stations exist, or -1.\n    }\n};",
+    "java": "class Solution {\n    public int minDays(int[] bloomDay, int m, int k) {\n        // TODO: return the first day m cells of k adjacent stations exist, or -1.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "answer-space", "adjacency-counting", "feasibility-check", "minimum-days-to-make-boquets"],
+    "hintLevels": [
+      "Level 1: Feasibility is monotonic in the day - once m cells can be fielded, waiting longer never loses them.",
+      "Level 2: For a candidate day, sweep the row tallying runs of consecutive available stations and count how many full k-runs they contain.",
+      "Level 3: The run counter must reset whenever a station is still offline, the feasibility scan needs a wide type when multiplying m by k, and a row shorter than m * k stations fails before any search starts."
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "balanced-binary-tree",
+  "index": 2,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Balanced Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=balanced+binary+tree",
+    "sourceFilePath": "11. Binary Trees/2. Medium Problems/02. Balanced Binary Tree.cpp"
+  },
+  "narrative": {
+    "title": "The Load-Balance Rigging Audit",
+    "scenario": "A stage-rigging contractor hangs lighting trusses from a binary tree of support arms. Insurance rules say the structure is certified only if, at every junction, the two hanging chains differ in length by at most one unit — otherwise torque builds up dangerously. The auditor needs a single pass that certifies or condemns the whole rig before the show is booked.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child. An empty array is a valid (empty) tree.",
+    "outputFormat": "Return true if the tree is height-balanced at every node, false otherwise.",
+    "constraints": [
+      "0 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          3,
+          9,
+          20,
+          null,
+          null,
+          15,
+          7
+        ]
+      },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Every junction's two chains differ by at most one unit."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          2,
+          2,
+          3,
+          3,
+          null,
+          null,
+          4,
+          4
+        ]
+      },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "At the root, the left chain runs 3 deep but the right chain only 1 — a gap of 2."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": []
+      },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return True if the tree is height-balanced at every node.\n        pass",
+    "cpp": "#include <cstdlib>\n#include <algorithm>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return true if the tree is height-balanced at every node.\n    bool solve(TreeNode* root);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return true if the tree is height-balanced at every node.\n    public boolean solve(TreeNode root) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "recursion",
+      "balance-check",
+      "balanced-binary-tree"
+    ],
+    "hintLevels": [
+      "Level 1: Checking heights naively re-measures subtrees repeatedly — the audit wants one trip, not one trip per node.",
+      "Level 2: Fold two answers into each recursion frame: the subtree's height and whether it is already balanced.",
+      "Level 3: A subtree is balanced iff both children are balanced and their heights differ by at most 1; bubble any failure straight to the top."
+    ]
+  }
+}

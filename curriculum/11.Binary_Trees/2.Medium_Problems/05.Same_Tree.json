@@ -1,0 +1,98 @@
+{
+  "id": "same-tree-check",
+  "index": 5,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Same Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=same+tree",
+    "sourceFilePath": "11. Binary Trees/2. Medium Problems/05. Same Tree.cpp"
+  },
+  "narrative": {
+    "title": "The Twin Chandelier Inspection",
+    "scenario": "A glasswork atelier hand-builds chandeliers as binary branch trees, and a wealthy client ordered two supposedly identical pieces. Before shipping, the quality clerk hangs both on rigging and compares them joint by joint: every joint must hold the same crystal grade, and every branch must fork the same way. A single mismatched fork or swapped child disqualifies the pair.",
+    "inputFormat": "Two binary trees p and q, each given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return true if the trees are structurally identical with matching values at every position, false otherwise.",
+    "constraints": [
+      "0 <= number of nodes in each tree <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "p": [
+          1,
+          2,
+          3
+        ],
+        "q": [
+          1,
+          2,
+          3
+        ]
+      },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Same shape, same values at every joint — identical pieces."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "p": [
+          1,
+          2
+        ],
+        "q": [
+          1,
+          null,
+          2
+        ]
+      },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "The branch hangs left in p but right in q — a structural mismatch."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "p": [
+          1,
+          2,
+          1
+        ],
+        "q": [
+          1,
+          1,
+          2
+        ]
+      },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, p, q):\n        # Return True if both trees are identical in shape and values.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return true if both trees are identical in shape and values.\n    bool solve(TreeNode* p, TreeNode* q);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return true if both trees are identical in shape and values.\n    public boolean solve(TreeNode p, TreeNode q) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "recursion",
+      "structural-comparison",
+      "same-tree-check"
+    ],
+    "hintLevels": [
+      "Level 1: Walk both trees in lockstep — the comparison is decided at the first position where they disagree.",
+      "Level 2: Handle the null algebra first: both null is a match, one null is a mismatch, both present compares values.",
+      "Level 3: Then recurse on left-with-left and right-with-right; the AND of all three checks is the answer."
+    ]
+  }
+}

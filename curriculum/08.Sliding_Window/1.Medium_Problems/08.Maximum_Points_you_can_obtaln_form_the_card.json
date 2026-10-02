@@ -1,0 +1,61 @@
+{
+  "id": "maximum-points-you-can-obtaln-form-the-card",
+  "index": 8,
+  "topic": "08.Sliding_Window",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Maximum Points You Can Obtain from Cards",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=maximum+points+you+can+obtain+from+cards",
+    "sourceFilePath": "08. Sliding Window/1. Medium Problems/08. Maximum Points you can obtaln form the card.cpp"
+  },
+  "narrative": {
+    "title": "The Dispatch Queue Card Pickup",
+    "scenario": "A dispatch console shows a row of task cards, each carrying a completion score. An operator must claim exactly k cards but may only take from the two ends of the row. Because the claimed cards always form one prefix glued to one suffix, the unclaimed middle is a single contiguous block — and minimizing that block's score maximizes the haul.",
+    "inputFormat": "An integer array cardPoints and an integer k, the number of cards to claim.",
+    "outputFormat": "Return the maximum total score obtainable by claiming k cards from the row's ends.",
+    "constraints": [
+      "1 <= cardPoints.length <= 10^5",
+      "1 <= k <= cardPoints.length",
+      "1 <= cardPoints[i] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "cardPoints": [1, 2, 3, 4, 5, 6, 1], "k": 3 },
+      "expected": 12,
+      "isPublic": true,
+      "explanation": "Claiming 1+6+5 from the ends beats any other split of three picks."
+    },
+    {
+      "id": "tc-2",
+      "input": { "cardPoints": [2, 2, 2], "k": 2 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "All cards score alike, so any two picks yield the same total."
+    },
+    {
+      "id": "tc-3",
+      "input": { "cardPoints": [9, 7, 7, 9, 7, 7, 9], "k": 7 },
+      "expected": 55,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def max_score(card_points, k):\n    total = sum(card_points)\n    keep = len(card_points) - k          # cards left unclaimed form a block\n    window = sum(card_points[:keep])\n    best = window\n    for i in range(keep, len(card_points)):\n        window += card_points[i] - card_points[i - keep]\n        best = min(best, window)\n    return total - best",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint maxScore(vector<int>& cardPoints, int k) {\n    int n = cardPoints.size(), keep = n - k;\n    int total = accumulate(cardPoints.begin(), cardPoints.end(), 0);\n    int window = accumulate(cardPoints.begin(), cardPoints.begin() + keep, 0);\n    int best = window;\n    for (int i = keep; i < n; ++i) {\n        window += cardPoints[i] - cardPoints[i - keep];\n        best = min(best, window);\n    }\n    return total - best;\n}",
+    "java": "class Solution {\n    public int maxScore(int[] cardPoints, int k) {\n        int n = cardPoints.length, keep = n - k;\n        int total = 0, window = 0;\n        for (int v : cardPoints) total += v;\n        for (int i = 0; i < keep; ++i) window += cardPoints[i];\n        int best = window;\n        for (int i = keep; i < n; ++i) {\n            window += cardPoints[i] - cardPoints[i - keep];\n            best = Math.min(best, window);\n        }\n        return total - best;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["sliding-window", "fixed-window", "prefix-suffix", "maximum-points-you-can-obtaln-form-the-card"],
+    "hintLevels": [
+      "Level 1: Taking k from the ends equals leaving one contiguous block of n-k cards behind.",
+      "Level 2: Slide a fixed-size window of length n-k and minimize its sum.",
+      "Level 3: Answer is total minus that minimum — careful when k equals n (the block is empty)."
+    ]
+  }
+}

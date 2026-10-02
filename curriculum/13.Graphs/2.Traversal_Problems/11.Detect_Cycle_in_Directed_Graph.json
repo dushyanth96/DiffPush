@@ -1,0 +1,61 @@
+{
+  "id": "detect-cycle-in-directed-graph",
+  "index": 11,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Detect Cycle in a Directed Graph",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=detect+cycle+directed+graph",
+    "sourceFilePath": "13. Graphs/2. Traversal Problems/12. Detect Cycle in Directed Graph.cpp"
+  },
+  "narrative": {
+    "title": "The Circular Approval Chain Alert",
+    "scenario": "A workflow engine routes approval requests along one-way dependency edges between stages. A stage that must wait on a chain that eventually waits back on itself deadlocks the pipeline. The engine needs a one-shot audit: does the one-way dependency map contain any loop, no matter how deeply buried?",
+    "inputFormat": "An integer v (stages numbered 0..v-1) and an edge list edges where each entry [u, w] is a one-way dependency u -> w.",
+    "outputFormat": "Return true if the directed graph contains a cycle, otherwise false.",
+    "constraints": [
+      "1 <= v <= 10^5",
+      "0 <= number of edges <= 2 * 10^5",
+      "0 <= u, w < v"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(V + E)",
+    "optimalSpace": "O(V)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "v": 4, "edges": [[0, 1], [1, 2], [2, 0], [3, 1]] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "0 -> 1 -> 2 -> 0 is a closed loop of approvals."
+    },
+    {
+      "id": "tc-2",
+      "input": { "v": 4, "edges": [[0, 1], [1, 2], [2, 3]] },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "A straight dependency chain never loops back."
+    },
+    {
+      "id": "tc-3",
+      "input": { "v": 1, "edges": [[0, 0]] },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import sys\nsys.setrecursionlimit(10**6)\n\nclass Solution:\n    def solve(self, v, edges):\n        # Return True if the directed graph contains a cycle.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return true if the directed graph contains a cycle.\n    bool solve(int v, std::vector<std::vector<int>>& edges);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return true if the directed graph contains a cycle.\n    public boolean solve(int v, int[][] edges) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dfs", "cycle-detection", "recursion-stack", "detect-cycle-in-directed-graph"],
+    "hintLevels": [
+      "Level 1: In a directed graph, a visited node is not enough — only a node on the CURRENT path closes a loop.",
+      "Level 2: Keep two marks: globally visited, and on-the-current-recursion-stack; un-mark when a branch finishes.",
+      "Level 3: Meeting a node that is on the stack is the cycle signal; meeting a finished node is harmless history."
+    ]
+  }
+}

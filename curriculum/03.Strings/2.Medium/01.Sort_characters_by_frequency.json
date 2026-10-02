@@ -1,0 +1,71 @@
+{
+  "id": "sort-characters-by-frequency",
+  "index": 1,
+  "topic": "03.Strings",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Sort characters by frequency",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Sort%20characters%20by%20frequency",
+    "sourceFilePath": "03.Strings/2.Medium/01.Sort_characters_by_frequency.cpp"
+  },
+  "narrative": {
+    "title": "Ranking the NOC's Loudest Event Codes",
+    "scenario": "A network operations center triages a feed where every event is a single-character code, and by the end of a shift some codes have fired far more often than others. The digest printer re-emits the whole feed rearranged so the noisiest codes lead, repeating each code once per occurrence. Codes tied at the same frequency may land in any order \u2014 only the ranking is contractual.",
+    "inputFormat": "A string s of characters.",
+    "outputFormat": "A rearrangement of s in which every character's block is no shorter than the block of any character that follows it; ties may be ordered arbitrarily.",
+    "constraints": [
+      "1 <= s.length <= 5 * 10^4",
+      "s consists of uppercase and lowercase English letters (case matters: 'A' and 'a' are different characters)"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "s": "tree"
+      },
+      "expected": "eert",
+      "isPublic": true,
+      "explanation": "e occurs twice so both e's lead; the once-occurring letters follow in either order."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "s": "cccaaa"
+      },
+      "expected": "cccaaa",
+      "isPublic": true,
+      "explanation": "Two codes tie at three occurrences, so either block may lead \u2014 the stored answer keeps the c block first."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "s": "Aabb"
+      },
+      "expected": "bbAa",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def frequencySort(self, s: str) -> str:\n        # TODO: return s rearranged from most frequent character to least.\n        pass",
+    "cpp": "#include <string>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    string frequencySort(string s) {\n        // TODO: return s rearranged from most frequent character to least.\n    }\n};",
+    "java": "class Solution {\n    public String frequencySort(String s) {\n        // TODO: return s rearranged from most frequent character to least.\n        return \"\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "strings",
+      "frequency-counting",
+      "sorting",
+      "sort-characters-by-frequency"
+    ],
+    "hintLevels": [
+      "Level 1: The output uses exactly the input's characters \u2014 only the emission order changes, driven by how often each one occurs.",
+      "Level 2: Tally every character first, then walk the tally from most to least frequent, repeating each character once per occurrence.",
+      "Level 3: Ties carry no contractual order, so a fixed tie-break (say, by character value) keeps results deterministic \u2014 and remember case-sensitive tallies: 'A' and 'a' count separately."
+    ]
+  }
+}

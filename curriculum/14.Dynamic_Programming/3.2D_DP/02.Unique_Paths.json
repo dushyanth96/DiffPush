@@ -1,0 +1,60 @@
+{
+  "id": "unique-paths",
+  "index": 2,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Unique Paths",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=unique+paths",
+    "sourceFilePath": "14. Dynamic Programming/3. 2D DP/02. Unique Paths.cpp"
+  },
+  "narrative": {
+    "title": "The Grid-Van Delivery Grid",
+    "scenario": "A courier drone flies over a city laid out as an m x n grid of blocks, launching at the northwest depot and landing at the southeast customer. Air-traffic rules allow only eastward and southward movement — no backtracking. Logistics needs to know how many distinct legal flight plans exist so it can spread fleet traffic across them.",
+    "inputFormat": "Two integers m (rows) and n (columns) describing the grid.",
+    "outputFormat": "Return the number of distinct down/right-only paths from the top-left to the bottom-right cell.",
+    "constraints": [
+      "1 <= m, n <= 100",
+      "the answer fits in a 32-bit signed integer"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m*n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "m": 3, "n": 7 },
+      "expected": 28,
+      "isPublic": true,
+      "explanation": "Every path is a sequence of 2 downs and 6 rights; the cell DP accumulates to 28."
+    },
+    {
+      "id": "tc-2",
+      "input": { "m": 3, "n": 2 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Two downs interleaved with one right: DDR, DRD, RDD."
+    },
+    {
+      "id": "tc-3",
+      "input": { "m": 1, "n": 1 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, m, n):\n        # Return the number of unique down/right paths.\n        pass",
+    "cpp": "class Solution {\npublic:\n    // Return the number of unique down/right paths.\n    int solve(int m, int n);\n};",
+    "java": "class Solution {\n    // Return the number of unique down/right paths.\n    public int solve(int m, int n) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "2d-dp", "grid-paths", "combinatorics", "unique-paths"],
+    "hintLevels": [
+      "Level 1: A cell can only be entered from above or from the left, so its route count is the sum of theirs.",
+      "Level 2: paths[i][j] = paths[i-1][j] + paths[i][j-1], with the entire top row and left column filled with 1.",
+      "Level 3: One rolling row suffices — fold each new row into the previous one."
+    ]
+  }
+}

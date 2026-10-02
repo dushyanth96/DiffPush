@@ -1,0 +1,146 @@
+{
+  "id": "vertical-order-traversal-binary-tree",
+  "index": 8,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Vertical Order Traversal of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=vertical+order+traversal+of+binary+tree",
+    "sourceFilePath": "11. Binary Trees/2. Medium Problems/08. Vertical Order Traversal.cpp"
+  },
+  "narrative": {
+    "title": "The Skyscraper Column Census",
+    "scenario": "A skyline model arranges buildings as a binary tree: each building sits one floor below its parent, with children slotted one column left and one column right. The city surveyor photographs the model from directly above and reads each column top to bottom. When two buildings share a column and floor, the readout lists them in ascending identifier order — no exceptions, even if construction order says otherwise.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child. The root is at column 0 and row 0.",
+    "outputFormat": "Return a list of lists: columns ordered left to right, each column's values sorted by row, then by value for ties.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-1000 <= node value <= 1000"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          3,
+          9,
+          20,
+          null,
+          null,
+          15,
+          7
+        ]
+      },
+      "expected": [
+        [
+          9
+        ],
+        [
+          3,
+          15
+        ],
+        [
+          20
+        ],
+        [
+          7
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "Column -1 holds 9; column 0 reads 3 above 15; columns 1 and 2 hold 20 and 7."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "expected": [
+        [
+          4
+        ],
+        [
+          2
+        ],
+        [
+          1,
+          5,
+          6
+        ],
+        [
+          3
+        ],
+        [
+          7
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "Column 0 lists 1 (row 0) before 5 and 6 (row 2), which tie by row."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          5,
+          7
+        ]
+      },
+      "expected": [
+        [
+          4
+        ],
+        [
+          2
+        ],
+        [
+          1,
+          5,
+          6
+        ],
+        [
+          3
+        ],
+        [
+          7
+        ]
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return vertical order: columns left to right, values by row then value.\n        pass",
+    "cpp": "#include <vector>\n#include <queue>\n#include <map>\n#include <algorithm>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return vertical order: columns left to right, values by row then value.\n    std::vector<std::vector<int>> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return vertical order: columns left to right, values by row then value.\n    public List<List<Integer>> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "bfs",
+      "hashing",
+      "vertical-order-traversal-binary-tree"
+    ],
+    "hintLevels": [
+      "Level 1: Assign coordinates — children shift one column away from the root and one row down.",
+      "Level 2: Sweep level by level so rows come out in order naturally, parking (row, value) pairs per column.",
+      "Level 3: Emit columns in sorted key order, sorting each column's pairs by (row, value) so same-cell collisions break by value."
+    ]
+  }
+}

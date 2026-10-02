@@ -1,0 +1,62 @@
+{
+  "id": "kth-element-of-two-sorted-arrays",
+  "index": 13,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Kth element of two sorted arrays",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Kth%20element%20of%20two%20sorted%20arrays",
+    "sourceFilePath": "02.Binary Search/In Search Space/14.Kth_element_of_two_sorted_arrays.cpp"
+  },
+  "narrative": {
+    "title": "Picking the k-th Batch from Two Interleaved Lines",
+    "scenario": "Two production lines finish batches in individually sorted priority order, and dispatch needs the batch that would land in position k if both lines were merged. Merging kilobytes of batches just to read one position is wasteful, so the pick is made by cutting both lines at complementary points.",
+    "inputFormat": "Two sorted arrays arr1 and arr2 of sizes N and M, and an integer K (1-based position in the merged order).",
+    "outputFormat": "The element that would occupy position K in the sorted merge of arr1 and arr2.",
+    "constraints": [
+      "1 <= N, M <= 10^5",
+      "1 <= K <= N + M",
+      "0 <= arr1[i], arr2[j] <= 10^8",
+      "An O(log(min(N, M))) algorithm is required"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log(min(N, M)))",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr1": [2, 3, 6, 7, 9], "arr2": [1, 4, 8, 10], "k": 5 },
+      "expected": 6,
+      "isPublic": true,
+      "explanation": "The merged order is 1, 2, 3, 4, 6, 7, 8, 9, 10 and the fifth batch is 6."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr1": [100, 112, 256, 349, 770], "arr2": [72, 86, 113, 119, 265, 445, 892], "k": 7 },
+      "expected": 256,
+      "isPublic": true,
+      "explanation": "Six batches precede 256 in the merged order, so it lands at position 7."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr1": [1, 2], "arr2": [3, 4], "k": 4 },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def kthElement(self, arr1: list[int], arr2: list[int], n: int, m: int, k: int) -> int:\n        # TODO: cut both arrays so the left cuts hold exactly k merged elements.\n        pass",
+    "cpp": "#include <vector>\n#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    int kthElement(int arr1[], int arr2[], int n, int m, int k) {\n        // TODO: cut both arrays so the left cuts hold exactly k merged elements.\n    }\n};",
+    "java": "class Solution {\n    public int kthElement(int[] arr1, int[] arr2, int n, int m, int k) {\n        // TODO: cut both arrays so the left cuts hold exactly k merged elements.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "partitioning", "two-arrays", "kth-element", "kth-element-of-two-sorted-arrays"],
+    "hintLevels": [
+      "Level 1: The median solution generalizes - the median is just the special case where k is half the total.",
+      "Level 2: Search how many of the k elements come from the smaller array; the rest must come from the other, and validity is the same cross comparison of cut neighbours.",
+      "Level 3: The cut bounds must respect both arrays' sizes (a cut can neither reach past k nor leave the other array short), and the answer is the larger of the two left-cut values once the split is valid."
+    ]
+  }
+}

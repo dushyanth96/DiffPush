@@ -1,0 +1,61 @@
+{
+  "id": "merge-k-sorted-arrays",
+  "index": 3,
+  "topic": "09.Heaps",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Merge K Sorted Arrays",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=merge+k+sorted+arrays",
+    "sourceFilePath": "09. Heaps/2. Medium Problems/03. Merge K sorted arrays.cpp"
+  },
+  "narrative": {
+    "title": "The Multi-Line Passport Queue",
+    "scenario": "An immigration hall runs k serving lanes, each already ordered from fastest to slowest applicant. The control desk must interleave all lanes into one master queue, always pulling the next-fastest applicant overall. The desk keeps a shortlist of each lane's current head, promotes the overall leader, and refills that lane's slot from its next applicant.",
+    "inputFormat": "A matrix of K rows, each a sorted array of K values, and the integer K.",
+    "outputFormat": "Return one sorted array containing all K*K values.",
+    "constraints": [
+      "1 <= K <= 10^2",
+      "-10^9 <= values <= 10^9",
+      "Each row is sorted in non-decreasing order"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(K^2 log K)",
+    "optimalSpace": "O(K)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "matrix": [[1, 5, 9], [2, 6, 10], [3, 7, 11]], "K": 3 },
+      "expected": [1, 2, 3, 5, 6, 7, 9, 10, 11],
+      "isPublic": true,
+      "explanation": "The heap interleaves the three lanes by their current heads."
+    },
+    {
+      "id": "tc-2",
+      "input": { "matrix": [[1, 3], [2, 4]], "K": 2 },
+      "expected": [1, 2, 3, 4],
+      "isPublic": true,
+      "explanation": "Two lanes alternate cleanly until both are drained."
+    },
+    {
+      "id": "tc-3",
+      "input": { "matrix": [[0]], "K": 1 },
+      "expected": [0],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\ndef merge_k_arrays(matrix, K):\n    heap = [(row[0], r, 0) for r, row in enumerate(matrix)]\n    heapq.heapify(heap)\n    merged = []\n    while heap:\n        val, r, c = heapq.heappop(heap)\n        merged.append(val)\n        if c + 1 < len(matrix[r]):\n            heapq.heappush(heap, (matrix[r][c + 1], r, c + 1))\n    return merged",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> mergeKArrays(vector<vector<int>>& arr, int K) {\n    using T = tuple<int, int, int>;  // {value, row, col}\n    priority_queue<T, vector<T>, greater<T>> pq;\n    for (int i = 0; i < K; ++i) pq.push({arr[i][0], i, 0});\n    vector<int> merged;\n    while (!pq.empty()) {\n        auto [val, row, col] = pq.top(); pq.pop();\n        merged.push_back(val);\n        if (col + 1 < (int)arr[row].size())\n            pq.push({arr[row][col + 1], row, col + 1});\n    }\n    return merged;\n}",
+    "java": "import java.util.PriorityQueue;\n\nclass Solution {\n    public int[] mergeKArrays(int[][] matrix, int K) {\n        record Cell(int val, int row, int col) {}\n        PriorityQueue<Cell> pq = new PriorityQueue<>((a, b) -> a.val - b.val);\n        int total = 0;\n        for (int r = 0; r < K; ++r) { pq.offer(new Cell(matrix[r][0], r, 0)); total += matrix[r].length; }\n        int[] merged = new int[total];\n        int idx = 0;\n        while (!pq.isEmpty()) {\n            Cell cur = pq.poll();\n            merged[idx++] = cur.val;\n            if (cur.col + 1 < matrix[cur.row].length)\n                pq.offer(new Cell(matrix[cur.row][cur.col + 1], cur.row, cur.col + 1));\n        }\n        return merged;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["heap", "k-way-merge", "matrix", "merge-k-sorted-arrays"],
+    "hintLevels": [
+      "Level 1: Only each row's head can be the next global minimum.",
+      "Level 2: Seed the heap with one entry per row; on pop, push that row's next cell.",
+      "Level 3: Carry (value, row, col) triples so the refill knows where to continue."
+    ]
+  }
+}

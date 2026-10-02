@@ -1,0 +1,118 @@
+{
+  "id": "word-search-in-grid",
+  "index": 2,
+  "topic": "05.Recursion",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Word search in grid",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Word%20search%20in%20grid",
+    "sourceFilePath": "05.Recursion/3.Try Out All Combos/02.Word search in grid.cpp"
+  },
+  "narrative": {
+    "title": "Tracing the Courier's Call Sign Across the Switchboard",
+    "scenario": "A dispatch switchboard lays out letters in a grid, and a courier's call sign must be traced as a path through adjacent cells — stepping up, down, left, or right without reusing a cell. An operator starts on any cell matching the first letter, marks it taken, and probes onward for each following letter, un-marking on the way back so other routes stay available.",
+    "inputFormat": "A grid board of characters and the target string word.",
+    "outputFormat": "true when some adjacent-cell path spells word, false otherwise.",
+    "constraints": [
+      "1 <= board.length, board[i].length <= 6",
+      "1 <= word.length <= 15",
+      "board and word consist of letters and digits"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(M * N * 4^L) — every cell can seed a walk of L letters",
+    "optimalSpace": "O(L) recursion depth"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "board": [
+          [
+            "A",
+            "B",
+            "C",
+            "E"
+          ],
+          [
+            "S",
+            "F",
+            "C",
+            "S"
+          ],
+          [
+            "A",
+            "D",
+            "E",
+            "E"
+          ]
+        ],
+        "word": "ABCCED"
+      },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The path A→B→C→C→E→D snakes through the left half of the grid."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "board": [
+          [
+            "A",
+            "B",
+            "C",
+            "E"
+          ],
+          [
+            "S",
+            "F",
+            "C",
+            "S"
+          ],
+          [
+            "A",
+            "D",
+            "E",
+            "E"
+          ]
+        ],
+        "word": "ABCB"
+      },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Reaching B after C would require reusing the starting cell, which the no-revisit rule forbids."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "board": [
+          [
+            "a",
+            "a"
+          ]
+        ],
+        "word": "aaa"
+      },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def exist(self, board: list[list[str]], word: str) -> bool:\n        # TODO: seed from every match of word[0]; DFS with mark/unmark.\n        pass",
+    "cpp": "#include <string>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool exist(vector<vector<char>>& board, string word) {\n        // TODO: seed from every cell matching word[0], then DFS the neighbours.\n    }\n};",
+    "java": "class Solution {\n    public boolean exist(char[][] board, String word) {\n        // TODO: seed from every match of word[0]; DFS with mark/unmark.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "grid-dfs",
+      "word-search-in-grid"
+    ],
+    "hintLevels": [
+      "Level 1: The board is a graph of adjacent cells; the word is a self-avoiding walk that must spell it.",
+      "Level 2: Match one letter per recursion level: try all four neighbours whose cell equals the next letter, mark the current cell before recursing and restore it after.",
+      "Level 3: Marking by overwriting the cell (a sentinel character) avoids a separate visited grid — and restoring it in the same call keeps alternate routes intact."
+    ]
+  }
+}

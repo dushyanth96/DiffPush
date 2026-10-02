@@ -1,0 +1,60 @@
+{
+  "id": "lemonade-exchange",
+  "index": 3,
+  "topic": "10.Greedy_Approach",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Lemonade Change",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=lemonade+change",
+    "sourceFilePath": "10. Greedy Approach/1. Easy/03. Lemonade Exchange.cpp"
+  },
+  "narrative": {
+    "title": "The Kiosk Float Management",
+    "scenario": "A kiosk sells single-entry passes for one base unit, and customers arrive in a fixed order paying with unit, double, or quadruple notes. The kiosk opens with an empty float and must hand exact change every time — a double customer gets one unit back, a quadruple customer gets three units back in whatever combination the float allows. Determine whether every customer can be served.",
+    "inputFormat": "An integer array bills of 5s, 10s and 20s in arrival order.",
+    "outputFormat": "Return true if change can be provided to every customer, false otherwise.",
+    "constraints": [
+      "1 <= bills.length <= 10^5",
+      "bills[i] is 5, 10 or 20"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "bills": [5, 5, 5, 10, 20] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Three 5s bank enough change: the 10 takes one 5, the 20 takes a 10 and a 5."
+    },
+    {
+      "id": "tc-2",
+      "input": { "bills": [5, 5, 10, 10, 20] },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "The final 20 arrives with no 5s left to combine with the 10."
+    },
+    {
+      "id": "tc-3",
+      "input": { "bills": [5, 5, 10, 10, 20, 5] },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def lemonade_change(bills):\n    fives = tens = 0\n    for bill in bills:\n        if bill == 5:\n            fives += 1\n        elif bill == 10:\n            tens += 1\n            fives -= 1\n        else:\n            if tens:\n                tens -= 1\n                fives -= 1\n            else:\n                fives -= 3\n        if fives < 0:\n            return False\n    return True",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool lemonadeChange(vector<int>& bills) {\n    int fives = 0, tens = 0;\n    for (int bill : bills) {\n        if (bill == 5) ++fives;\n        else if (bill == 10) { ++tens; --fives; }\n        else {\n            if (tens) { --tens; --fives; }\n            else fives -= 3;\n        }\n        if (fives < 0) return false;\n    }\n    return true;\n}",
+    "java": "class Solution {\n    public boolean lemonadeChange(int[] bills) {\n        int fives = 0, tens = 0;\n        for (int bill : bills) {\n            if (bill == 5) ++fives;\n            else if (bill == 10) { ++tens; --fives; }\n            else {\n                if (tens > 0) { --tens; --fives; }\n                else fives -= 3;\n            }\n            if (fives < 0) return false;\n        }\n        return true;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["greedy", "simulation", "change-making", "lemonade-exchange"],
+    "hintLevels": [
+      "Level 1: Only the count of 5s and 10s matters — 20s are never useful as change.",
+      "Level 2: For a 20, prefer giving a 10+5; saving 5s is what keeps future customers servable.",
+      "Level 3: A negative 5-count is the single failure signal — check it after every transaction."
+    ]
+  }
+}

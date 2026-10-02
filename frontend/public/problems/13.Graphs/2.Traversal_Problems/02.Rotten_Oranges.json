@@ -1,0 +1,60 @@
+{
+  "id": "rotten-oranges",
+  "index": 2,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Rotting Oranges",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=rotting+oranges",
+    "sourceFilePath": "13. Graphs/2. Traversal Problems/02. Rotten Oranges.cpp"
+  },
+  "narrative": {
+    "title": "The Cold-Room Contamination Sweep",
+    "scenario": "A cold room stores produce in a grid of crates: spoiled units, fresh units, and empty slots. Every minute the spoilage jumps to any fresh crate sharing an edge with a spoiled one. The floor manager must know the exact minute the last fresh unit goes down — or hear that some shelf corner is sealed off from every spoiled crate and will never turn.",
+    "inputFormat": "An m x n grid where 0 is an empty slot, 1 a fresh crate, and 2 a spoiled crate.",
+    "outputFormat": "Return the minimum number of minutes until no fresh crate remains, or -1 if some fresh crate can never be reached.",
+    "constraints": [
+      "1 <= m, n <= 10^3",
+      "grid[i][j] is 0, 1, or 2"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m * n)",
+    "optimalSpace": "O(m * n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "grid": [[2, 1, 1], [1, 1, 0], [0, 1, 1]] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The spoilage wave needs four minutes to crawl to the far corner."
+    },
+    {
+      "id": "tc-2",
+      "input": { "grid": [[0, 2]] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "Nothing fresh is present, so the clock never needs to start."
+    },
+    {
+      "id": "tc-3",
+      "input": { "grid": [[2, 1, 0], [0, 0, 1]] },
+      "expected": -1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass Solution:\n    def solve(self, grid):\n        # Return minutes until all fresh crates rot, or -1.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return minutes until all fresh crates rot, or -1.\n    int solve(std::vector<std::vector<int>>& grid);\n};",
+    "java": "class Solution {\n    // Return minutes until all fresh crates rot, or -1.\n    public int solve(int[][] grid) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "bfs", "multi-source", "grid", "rotten-oranges"],
+    "hintLevels": [
+      "Level 1: Multiple spoiled crates spread at once — this is a simultaneous race, not one seed.",
+      "Level 2: Seed the queue with every spoiled crate, then expand ring by ring; each ring is one minute.",
+      "Level 3: Keep a live count of fresh crates; if it never reaches zero when the queue empties, some are sealed off — answer -1."
+    ]
+  }
+}

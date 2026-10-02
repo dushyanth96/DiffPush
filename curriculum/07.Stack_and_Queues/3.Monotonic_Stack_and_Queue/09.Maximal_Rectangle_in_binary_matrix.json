@@ -1,0 +1,67 @@
+{
+  "id": "maximal-rectangle-in-binary-matrix",
+  "index": 9,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Maximal Rectangle",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=maximal+rectangle",
+    "sourceFilePath": "07.Stack and Queues/3. Monotonic Stack and Queue/09. Maximal Rectangle in binary matrix.cpp"
+  },
+  "narrative": {
+    "title": "The Datacenter Rack Allocation Sweep",
+    "scenario": "A datacenter floor maps occupied racks as 1s and free bays as 0s. Facilities planning wants the largest rectangular block of contiguous free bays to reserve for a cooling unit. Scanning row by row, each row's free-bay heights form a skyline whose largest inscribed rectangle is measured with the histogram routine.",
+    "inputFormat": "A binary matrix given as rows of 0/1 integers.",
+    "outputFormat": "Return the area of the largest rectangle containing only 1s.",
+    "constraints": [
+      "1 <= rows, cols <= 200",
+      "matrix[i][j] is 0 or 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(rows * cols)",
+    "optimalSpace": "O(cols)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "matrix": [
+          [1, 0, 1, 0, 0],
+          [1, 0, 1, 1, 1],
+          [1, 1, 1, 1, 1],
+          [1, 0, 0, 1, 0]
+        ]
+      },
+      "expected": 6,
+      "isPublic": true,
+      "explanation": "Rows 2-4, columns 3-5 form a 2x3 block of ones with area 6."
+    },
+    {
+      "id": "tc-2",
+      "input": { "matrix": [[0]] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "No free bay exists, so no rectangle can be reserved."
+    },
+    {
+      "id": "tc-3",
+      "input": { "matrix": [[1, 1], [1, 1]] },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def _largest_in_histogram(heights):\n    stack, best = [], 0\n    for i, h in enumerate(heights + [0]):\n        start = i\n        while stack and stack[-1][1] > h:\n            idx, hgt = stack.pop()\n            best = max(best, hgt * (i - idx))\n            start = idx\n        stack.append((start, h))\n    return best\n\ndef maximal_rectangle(matrix):\n    if not matrix or not matrix[0]:\n        return 0\n    cols = len(matrix[0])\n    heights = [0] * cols\n    best = 0\n    for row in matrix:\n        for j in range(cols):\n            heights[j] = heights[j] + 1 if row[j] == 1 else 0\n        best = max(best, _largest_in_histogram(heights))\n    return best",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint largestRectangleArea(vector<int>& heights) {\n    int n = heights.size(), ans = 0;\n    stack<int> st;\n    for (int i = 0; i <= n; ++i) {\n        int cur = i == n ? 0 : heights[i];\n        while (!st.empty() && heights[st.top()] > cur) {\n            int h = heights[st.top()]; st.pop();\n            int left = st.empty() ? -1 : st.top();\n            ans = max(ans, h * (i - left - 1));\n        }\n        st.push(i);\n    }\n    return ans;\n}\n\nint maximalRectangle(vector<vector<int>>& matrix) {\n    if (matrix.empty() || matrix[0].empty()) return 0;\n    int cols = matrix[0].size();\n    vector<int> heights(cols, 0), prev(cols, 0);\n    int maxArea = 0;\n    for (auto& row : matrix) {\n        for (int j = 0; j < cols; ++j)\n            heights[j] = row[j] == 1 ? prev[j] + 1 : 0;\n        maxArea = max(maxArea, largestRectangleArea(heights));\n        prev = heights;\n    }\n    return maxArea;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int maximalRectangle(int[][] matrix) {\n        if (matrix.length == 0 || matrix[0].length == 0) return 0;\n        int cols = matrix[0].length, maxArea = 0;\n        int[] heights = new int[cols];\n        for (int[] row : matrix) {\n            for (int j = 0; j < cols; ++j)\n                heights[j] = row[j] == 1 ? heights[j] + 1 : 0;\n            maxArea = Math.max(maxArea, largestInHistogram(heights));\n        }\n        return maxArea;\n    }\n\n    private int largestInHistogram(int[] heights) {\n        int n = heights.length, ans = 0;\n        Deque<Integer> stack = new ArrayDeque<>();\n        for (int i = 0; i <= n; ++i) {\n            int cur = i == n ? 0 : heights[i];\n            while (!stack.isEmpty() && heights[stack.peek()] > cur) {\n                int h = heights[stack.pop()];\n                int left = stack.isEmpty() ? -1 : stack.peek();\n                ans = Math.max(ans, h * (i - left - 1));\n            }\n            stack.push(i);\n        }\n        return ans;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["monotonic-stack", "matrix", "histogram", "maximal-rectangle-in-binary-matrix"],
+    "hintLevels": [
+      "Level 1: Every maximal all-ones rectangle touches some row as its bottom edge.",
+      "Level 2: Accumulate per-column heights of consecutive ones, resetting on 0, and solve a histogram per row.",
+      "Level 3: The heights array can be updated in place row by row — no second matrix is needed."
+    ]
+  }
+}

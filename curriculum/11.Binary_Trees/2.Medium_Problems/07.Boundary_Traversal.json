@@ -1,0 +1,104 @@
+{
+  "id": "boundary-traversal-binary-tree",
+  "index": 7,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Boundary Traversal of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=boundary+traversal+of+binary+tree",
+    "sourceFilePath": "11. Binary Trees/2. Medium Problems/07. Boundary Traversal.cpp"
+  },
+  "narrative": {
+    "title": "The Perimeter Fence Patrol",
+    "scenario": "A heritage orchard is pruned into a binary tree of plots, and the annual inspector walks only the perimeter: down the leftmost fence, across every dead-end plot left to right, then back up the rightmost fence toward the gate. Interior plots are skipped, and the root counts once no matter how many fences meet there. The patrol log is the official boundary record.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return an array: root, then left-boundary non-leaf nodes top-down, then all leaves left-to-right, then right-boundary non-leaf nodes bottom-up (root excluded).",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          null,
+          null,
+          8,
+          9
+        ]
+      },
+      "expected": [
+        1,
+        2,
+        4,
+        8,
+        9,
+        6,
+        7,
+        3
+      ],
+      "isPublic": true,
+      "explanation": "Left fence 2, leaves 4,8,9,6,7 left to right, then the right fence climbs 3."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1
+        ]
+      },
+      "expected": [
+        1
+      ],
+      "isPublic": true,
+      "explanation": "A lone plot is its own boundary — listed exactly once."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1,
+          2,
+          null
+        ]
+      },
+      "expected": [
+        1,
+        2
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the boundary values: root, left fence, leaves, reversed right fence.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the boundary values: root, left fence, leaves, reversed right fence.\n    std::vector<int> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the boundary values: root, left fence, leaves, reversed right fence.\n    public List<Integer> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "traversal",
+      "boundary",
+      "boundary-traversal-binary-tree"
+    ],
+    "hintLevels": [
+      "Level 1: Think of the answer as three strokes around the shape — down the left edge, along the bottom, up the right edge.",
+      "Level 2: The left stroke follows left children when present (else right), skipping leaves; the right stroke mirrors it and is reversed.",
+      "Level 3: Leaves are collected with a plain preorder leaf check, and the root is stamped once up front so no fence duplicates it."
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "id": "flatten-binary-tree-to-linked-list",
+  "index": 12,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Flatten Binary Tree to Linked List",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=flatten+binary+tree+to+linked+list",
+    "sourceFilePath": "11. Binary Trees/3. Hard/13. Flatten Binary Tree.cpp"
+  },
+  "narrative": {
+    "title": "The Conveyor Re-rack to a Single Lane",
+    "scenario": "A distribution hub is switching from a tree of branch conveyors to one straight express lane. Every station must survive the re-rack, and the order along the new lane must be exactly the hub-first walk of the old tree — each station's left spur is dismantled and spliced into the lane ahead of its right spur, all rewiring done with the existing stations and zero spare parts.",
+    "inputFormat": "A binary tree as a level-order array (null marks a missing child).",
+    "outputFormat": "Return the station values along the flattened lane — the preorder sequence after rewiring every left pointer to null and every right pointer to the next station.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-10^4 <= node value <= 10^4",
+      "Expected extra space: O(1) — flatten in place"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          5,
+          3,
+          4,
+          null,
+          6
+        ]
+      },
+      "expected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "isPublic": true,
+      "explanation": "The preorder walk 1-2-3-4-5-6 becomes the single right-leaning lane."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          null,
+          2,
+          3
+        ]
+      },
+      "expected": [
+        1,
+        2,
+        3
+      ],
+      "isPublic": true,
+      "explanation": "The left spur of node 2 splices in before nothing, so the lane keeps 1-2-3."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1
+        ]
+      },
+      "expected": [
+        1
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Flatten in place: left = None, right = next preorder node.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Flatten in place: left = nullptr, right = next preorder node.\n    void solve(TreeNode* root);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Flatten in place: left = null, right = next preorder node.\n    public void solve(TreeNode root) {\n        // TODO\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "linked-list",
+      "in-place",
+      "flatten-binary-tree-to-linked-list"
+    ],
+    "hintLevels": [
+      "Level 1: The final lane is exactly the preorder sequence — the question is only how to rewire without extra storage.",
+      "Level 2: At each node, hang the right subtree off the left subtree's rightmost descendant, then lift the left subtree into the right slot.",
+      "Level 3: Advance one right-step at a time; every node is visited a bounded number of times, so it stays linear."
+    ]
+  }
+}

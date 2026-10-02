@@ -1,0 +1,61 @@
+{
+  "id": "01-matrix",
+  "index": 5,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "01 Matrix — Distance to Nearest Zero",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=01+matrix",
+    "sourceFilePath": "13. Graphs/2. Traversal Problems/05. 01 Matrix.cpp"
+  },
+  "narrative": {
+    "title": "Nearest Extinguisher Mapping",
+    "scenario": "A data-hall floor plan marks equipment racks (1) and extinguisher stations (0). For every rack cell, the safety map must state the walking distance — steps across edge-adjacent floor cells — to the closest extinguisher. Stations themselves report 0.",
+    "inputFormat": "An m x n binary matrix mat containing at least one 0.",
+    "outputFormat": "Return an m x n matrix where each cell holds the distance to its nearest 0.",
+    "constraints": [
+      "1 <= m, n <= 10^4 and m * n <= 2 * 10^5",
+      "mat[i][j] is 0 or 1",
+      "At least one 0 exists in the matrix"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m * n)",
+    "optimalSpace": "O(m * n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "mat": [[0, 0, 0], [0, 1, 0], [0, 0, 0]] },
+      "expected": [[0, 0, 0], [0, 1, 0], [0, 0, 0]],
+      "isPublic": true,
+      "explanation": "The lone rack sits one step from extinguishers on every side."
+    },
+    {
+      "id": "tc-2",
+      "input": { "mat": [[0, 0, 0], [0, 1, 0], [1, 1, 1]] },
+      "expected": [[0, 0, 0], [0, 1, 0], [1, 2, 1]],
+      "isPublic": true,
+      "explanation": "Distances ripple outward from the zero row; the far corner needs two steps."
+    },
+    {
+      "id": "tc-3",
+      "input": { "mat": [[1, 1], [1, 0]] },
+      "expected": [[2, 1], [1, 0]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass Solution:\n    def solve(self, mat):\n        # Return the distance-to-nearest-zero matrix.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the distance-to-nearest-zero matrix.\n    std::vector<std::vector<int>> solve(std::vector<std::vector<int>>& mat);\n};",
+    "java": "class Solution {\n    // Return the distance-to-nearest-zero matrix.\n    public int[][] solve(int[][] mat) {\n        // TODO\n        return mat;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "bfs", "multi-source", "grid", "01-matrix"],
+    "hintLevels": [
+      "Level 1: Don't search from each 1 — flood from every 0 at once and let distances fall where they may.",
+      "Level 2: Seed the queue with all zeros at distance 0; each BFS ring adds exactly one step.",
+      "Level 3: A cell's answer is final the first time the wave reaches it — no relaxation passes needed."
+    ]
+  }
+}

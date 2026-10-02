@@ -1,0 +1,62 @@
+{
+  "id": "find-x-in-sorted-array",
+  "index": 1,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Find x in sorted array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Find%20x%20in%20sorted%20array",
+    "sourceFilePath": "02.Binary Search/1D Arrays/01.Find_x_in_sorted_array.cpp"
+  },
+  "narrative": {
+    "title": "The Archive Index Lookup",
+    "scenario": "A robotic archivist stores shelf labels in one strictly increasing index and must fetch the exact shelf holding a requested call number. Because the index is sorted, the robot can discard half of the remaining shelves after a single probe instead of walking the aisle. Report the shelf position when the call number exists, or signal that it does not.",
+    "inputFormat": "An array nums of n integers sorted in ascending order with distinct values, and an integer target.",
+    "outputFormat": "The 0-indexed position of target in nums, or -1 when target is absent.",
+    "constraints": [
+      "1 <= n <= 5000",
+      "-10^4 < nums[i], target < 10^4",
+      "All values in nums are unique",
+      "nums is sorted in ascending order"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [-1, 0, 3, 5, 9, 12], "target": 9 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "Probing the middle shelves repeatedly narrows the search to index 4, where 9 lives."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [-1, 0, 3, 5, 9, 12], "target": 2 },
+      "expected": -1,
+      "isPublic": true,
+      "explanation": "The search space collapses to an empty range without ever matching 2, so the lookup reports -1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [5], "target": 5 },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def search(self, nums: list[int], target: int) -> int:\n        # TODO: halve the search space until the shelf is found or ruled out.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        // TODO: halve the search space until the shelf is found or ruled out.\n    }\n};",
+    "java": "class Solution {\n    public int search(int[] nums, int target) {\n        // TODO: halve the search space until the shelf is found or ruled out.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "sorted-array", "classic-division", "find-x-in-sorted-array"],
+    "hintLevels": [
+      "Level 1: Every probe should make the remaining candidate range roughly half as large.",
+      "Level 2: Keep two bounds and move one of them past the middle probe each round based on whether the target sits above or below it.",
+      "Level 3: Compute the middle as low plus half the distance between the bounds so it cannot overflow, and make sure the loop still runs when the bounds meet on a single element."
+    ]
+  }
+}

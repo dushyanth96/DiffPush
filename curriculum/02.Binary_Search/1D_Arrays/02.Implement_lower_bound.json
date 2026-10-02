@@ -1,0 +1,62 @@
+{
+  "id": "implement-lower-bound",
+  "index": 2,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Implement lower bound",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Implement%20lower%20bound",
+    "sourceFilePath": "02.Binary Search/1D Arrays/02.Implement_lower_bound.cpp"
+  },
+  "narrative": {
+    "title": "The Nearest Pickup Slot Below the Request",
+    "scenario": "A warehouse picker works off a sorted list of aisle coordinates and receives a request coordinate that may fall between two slots. Fulfilment rules require the parcel to come from the deepest slot at or before the request coordinate. Identify that slot's position in the list, or report that no slot qualifies when the request sits before every coordinate.",
+    "inputFormat": "An integer n, an array arr of n distinct integers sorted in ascending order, and an integer x.",
+    "outputFormat": "The 0-indexed position of the largest element with value at most x, or -1 when every element exceeds x.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= arr[i] <= 10^6",
+      "0 <= x <= 10^6",
+      "arr is sorted in ascending order with no duplicates"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 7, "arr": [1, 2, 8, 10, 11, 12, 19], "x": 0 },
+      "expected": -1,
+      "isPublic": true,
+      "explanation": "Every slot coordinate exceeds 0, so no element qualifies as the floor and -1 is reported."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 7, "arr": [1, 2, 8, 10, 11, 12, 19], "x": 5 },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "The deepest coordinate not past 5 is 2, which sits at index 1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 7, "arr": [1, 2, 8, 10, 11, 12, 19], "x": 19 },
+      "expected": 6,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findFloor(self, arr: list[int], n: int, x: int) -> int:\n        # TODO: return the index of the largest element <= x, or -1.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findFloor(vector<long long> arr, long long n, long long x) {\n        // TODO: return the index of the largest element <= x, or -1.\n    }\n};",
+    "java": "class Solution {\n    public int findFloor(long[] arr, long n, long x) {\n        // TODO: return the index of the largest element <= x, or -1.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "floor", "answer-tracking", "sorted-array", "implement-lower-bound"],
+    "hintLevels": [
+      "Level 1: Unlike an exact lookup, this probe may still succeed after the last comparison, so the answer must be carried between rounds.",
+      "Level 2: When a probe value is at most x, remember its index and keep searching to the right for something even closer; otherwise drop to the left half.",
+      "Level 3: The carried answer must start as -1 so a request before every coordinate is handled naturally, and the stored index is only promoted, never demoted, once a qualifying element appears."
+    ]
+  }
+}

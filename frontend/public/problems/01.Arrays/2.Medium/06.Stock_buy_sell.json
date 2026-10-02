@@ -1,0 +1,60 @@
+{
+  "id": "stock-buy-sell",
+  "index": 6,
+  "topic": "01.Arrays",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Stock buy sell",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Stock%20buy%20sell",
+    "sourceFilePath": "01.Arrays/2.Medium/06.Stock_buy_sell.cpp"
+  },
+  "narrative": {
+    "title": "One Round Trip on the Trading Desk",
+    "scenario": "A desk clerk has the daily closing prices for a commodity and may buy on one day and sell on a later day, exactly once. The rules forbid buying after the sale date, and if every later price is lower the clerk simply sits out. Compute the best profit available under those rules.",
+    "inputFormat": "An array prices of n integers, the closing price per day.",
+    "outputFormat": "The maximum achievable profit from one buy followed by one later sell, or 0 when no profit is possible.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "0 <= prices[i] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "prices": [7, 1, 5, 3, 6, 4] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Buying at the day-2 price of 1 and selling at the day-5 price of 6 yields the best profit of 5."
+    },
+    {
+      "id": "tc-2",
+      "input": { "prices": [7, 6, 4, 3, 1] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "Prices only fall, so every buy would lose money and the clerk sits out with profit 0."
+    },
+    {
+      "id": "tc-3",
+      "input": { "prices": [5] },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def maxProfit(self, prices: list[int]) -> int:\n        # TODO: return the best profit from one buy followed by a later sell.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxProfit(vector<int>& prices) {\n        // TODO: return the best profit from one buy followed by a later sell.\n    }\n};",
+    "java": "class Solution {\n    public int maxProfit(int[] prices) {\n        // TODO: return the best profit from one buy followed by a later sell.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "single-pass", "running-minimum", "best-time-to-buy-and-sell"],
+    "hintLevels": [
+      "Level 1: Selling on a given day only depends on the cheapest purchase price available before that day.",
+      "Level 2: Sweep forward keeping the lowest price seen so far, and at each day consider selling there for the difference against that minimum.",
+      "Level 3: Update the answer before lowering the minimum, so a day is never paired with itself, and start the best profit at 0 to cover strictly falling prices."
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "id": "kth-missing-number",
+  "index": 10,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Kth missing number",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Kth%20missing%20number",
+    "sourceFilePath": "02.Binary Search/In Search Space/11.Kth_missing_number.cpp"
+  },
+  "narrative": {
+    "title": "The k-th Silent Slot in an ID Sequence",
+    "scenario": "A ticketing system allocates strictly increasing IDs, but outages left gaps in the issued sequence. Auditors reference issues by counting gaps - the k-th positive integer that was never issued. Find that value from the sorted list of issued IDs without walking every integer.",
+    "inputFormat": "An array arr of n strictly increasing positive integers and an integer k.",
+    "outputFormat": "The k-th positive integer missing from arr.",
+    "constraints": [
+      "1 <= arr.length <= 1000",
+      "1 <= arr[i] <= 1000",
+      "1 <= k <= 1000",
+      "arr is sorted in strictly increasing order"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "arr": [2, 3, 4, 7, 11], "k": 5 },
+      "expected": 9,
+      "isPublic": true,
+      "explanation": "The missing IDs are 1, 5, 6, 8, 9 in order, so the fifth gap is 9."
+    },
+    {
+      "id": "tc-2",
+      "input": { "arr": [1, 2, 3, 4], "k": 2 },
+      "expected": 6,
+      "isPublic": true,
+      "explanation": "Nothing is missing inside the range, so the gaps continue past the last ID: 5 then 6."
+    },
+    {
+      "id": "tc-3",
+      "input": { "arr": [2], "k": 1 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findKthPositive(self, arr: list[int], k: int) -> int:\n        # TODO: return the k-th positive integer absent from arr.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findKthPositive(vector<int>& arr, int k) {\n        // TODO: return the k-th positive integer absent from arr.\n    }\n};",
+    "java": "class Solution {\n    public int findKthPositive(int[] arr, int k) {\n        // TODO: return the k-th positive integer absent from arr.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "counting-gaps", "monotonic-missing-count", "kth-missing-number"],
+    "hintLevels": [
+      "Level 1: Before any index i, exactly arr[i] - (i + 1) positive integers are missing - a count that only grows with i.",
+      "Level 2: Binary search for the first index whose missing-count reaches k; the answer relates that index back to k.",
+      "Level 3: If no index accumulates k gaps, the answer lies past the last ID and equals the array length plus k; otherwise it is found just before the first index that crosses the threshold."
+    ]
+  }
+}

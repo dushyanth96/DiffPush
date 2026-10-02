@@ -1,0 +1,60 @@
+{
+  "id": "print-the-lcs",
+  "index": 2,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Print the Longest Common Subsequence",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=print+longest+common+subsequence",
+    "sourceFilePath": "14. Dynamic Programming/5. DP on Strings/02. Print the LCS.cpp"
+  },
+  "narrative": {
+    "title": "The Firmware Lineage Tracer",
+    "scenario": "A hardware team tracks two firmware branches and must print the exact sequence of module tokens both branches inherited from their common ancestor — not just how many. The lineage tool rebuilds the shared token string by walking the completion table backwards, emitting each token where the branches agree.",
+    "inputFormat": "Integers n and m, plus strings s1 and s2 of lengths n and m.",
+    "outputFormat": "Return one longest common subsequence as a string. If several exist, any valid one is accepted.",
+    "constraints": [
+      "1 <= n, m <= 1000",
+      "strings consist of uppercase or lowercase English letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*m)",
+    "optimalSpace": "O(n*m)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 5, "m": 3, "s1": "abcde", "s2": "ace" },
+      "expected": "ace",
+      "isPublic": true,
+      "explanation": "\"ace\" appears in order within both strings and no longer anchor exists."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3, "m": 4, "s1": "abc", "s2": "bacd" },
+      "expected": "bc",
+      "isPublic": true,
+      "explanation": "\"ac\" also has length 2, so \"bc\" is an equally valid reconstruction."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 4, "m": 4, "s1": "abcd", "s2": "abcd" },
+      "expected": "abcd",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, m, s1, s2):\n        # Return one longest common subsequence of s1 and s2.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return one longest common subsequence of s1 and s2.\n    std::string solve(int n, int m, std::string s1, std::string s2);\n};",
+    "java": "class Solution {\n    // Return one longest common subsequence of s1 and s2.\n    public String solve(int n, int m, String s1, String s2) {\n        // TODO\n        return \"\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "strings", "lcs", "reconstruction"],
+    "hintLevels": [
+      "Level 1: Build the usual length table first — reconstruction always starts from a finished table.",
+      "Level 2: From (n, m), step diagonally on a match (emit the character), otherwise move toward the larger neighbor.",
+      "Level 3: Characters come out backwards; reverse once at the end."
+    ]
+  }
+}

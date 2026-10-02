@@ -1,0 +1,63 @@
+{
+  "id": "merge-2-sorted-array-without-space",
+  "index": 8,
+  "topic": "01.Arrays",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Merge 2 sorted array without space",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Merge%202%20sorted%20array%20without%20space",
+    "sourceFilePath": "01.Arrays/3.Hard/08.Merge_2_sorted_array_without_space.cpp"
+  },
+  "narrative": {
+    "title": "Folding a Standby Log Into the Primary Buffer",
+    "scenario": "A logging service keeps its primary index in a preallocated array whose tail slots are reserved for a standby batch, both already sorted by event id. On flush, the standby entries must be folded into the primary buffer so the whole thing reads sorted, without allocating another buffer. The primary array is exactly sized to hold both sets.",
+    "inputFormat": "An array nums1 of length m + n holding m sorted entries followed by n reserved slots, an integer m, an array nums2 of length n, and an integer n.",
+    "outputFormat": "nums1 rewritten in place so its first m + n cells hold all entries in non-decreasing order. nums2 is not part of the result.",
+    "constraints": [
+      "nums1.length == m + n",
+      "0 <= m, n <= 200",
+      "1 <= m + n",
+      "-10^9 <= nums1[i], nums2[j] <= 10^9",
+      "The merge must happen in place with no extra array"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m + n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums1": [1, 2, 3, 0, 0, 0], "m": 3, "nums2": [2, 5, 6], "n": 3 },
+      "expected": [1, 2, 2, 3, 5, 6],
+      "isPublic": true,
+      "explanation": "The reserved slots are exactly enough for the standby entries, which interleave into the primary index in order."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums1": [1], "m": 1, "nums2": [], "n": 0 },
+      "expected": [1],
+      "isPublic": true,
+      "explanation": "An empty standby batch leaves the primary index untouched."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums1": [0, 0, 0], "m": 0, "nums2": [1, 2, 3], "n": 3 },
+      "expected": [1, 2, 3],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def merge(self, nums1: list[int], m: int, nums2: list[int], n: int) -> None:\n        # TODO: fold the sorted standby batch into nums1 in place.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {\n        // TODO: fold the sorted standby batch into nums1 in place.\n    }\n};",
+    "java": "class Solution {\n    public void merge(int[] nums1, int m, int[] nums2, int n) {\n        // TODO: fold the sorted standby batch into nums1 in place.\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "two-pointers", "reverse-merge", "in-place", "sorted-merge"],
+    "hintLevels": [
+      "Level 1: Writing from the front would overwrite primary entries you have not read yet, but the reserved slots sit at the back for a reason.",
+      "Level 2: Compare the two runs from their largest ends and place the larger value into the highest free slot, walking the write cursor backwards.",
+      "Level 3: Once the primary run is exhausted the standby entries still need copying, whereas leftover primary entries are already in place; also handle an empty standby batch without touching anything."
+    ]
+  }
+}

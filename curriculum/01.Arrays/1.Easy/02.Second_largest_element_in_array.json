@@ -1,0 +1,60 @@
+{
+  "id": "second-largest-element-in-array",
+  "index": 2,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Second largest element in array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Second%20largest%20element%20in%20array",
+    "sourceFilePath": "01.Arrays/1.Easy/02.Second_largest_element_in_array.cpp"
+  },
+  "narrative": {
+    "title": "Runner-Up Power Draw",
+    "scenario": "A datacenter ranks rack power draw to plan failover capacity. The top rack is already handled by a dedicated circuit, so the facility team needs the second highest distinct draw across the fleet. If every rack draws the same power there is no runner-up, and the answer is -1.",
+    "inputFormat": "An integer n followed by an array Arr of n integer power draws.",
+    "outputFormat": "The second largest distinct value in Arr, or -1 when no such value exists.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= Arr[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 6, "Arr": [12, 35, 1, 10, 34, 1] },
+      "expected": 34,
+      "isPublic": true,
+      "explanation": "35 is the largest distinct draw and 34 is the next one down, so the runner-up is 34."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 5, "Arr": [2, 4, 6, 8, 10] },
+      "expected": 8,
+      "isPublic": true,
+      "explanation": "The draws climb monotonically, so the runner-up keeps shifting forward as 10 passes it."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 4, "Arr": [7, 7, 7, 7] },
+      "expected": -1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def secondLargest(self, arr: list[int], n: int) -> int:\n        # TODO: return the second largest DISTINCT value, or -1 if it does not exist.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int secondLargest(const vector<int>& arr, int n) {\n        // TODO: return the second largest DISTINCT value, or -1 if it does not exist.\n    }\n};",
+    "java": "class Solution {\n    public int secondLargest(int[] arr, int n) {\n        // TODO: return the second largest DISTINCT value, or -1 if it does not exist.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "linear-scan", "two-variable-tracking", "second-largest-distinct"],
+    "hintLevels": [
+      "Level 1: Track two positions at once - the champion so far and the best value that is strictly below the champion.",
+      "Level 2: Walk left to right; when a reading beats the champion, the old champion becomes the runner-up, otherwise compare the reading against the runner-up instead.",
+      "Level 3: The word distinct matters. Repeated copies of the maximum must never be promoted to runner-up, and an all-equal buffer has no runner-up at all."
+    ]
+  }
+}

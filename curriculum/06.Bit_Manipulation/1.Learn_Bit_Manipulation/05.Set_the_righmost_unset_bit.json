@@ -1,0 +1,59 @@
+{
+  "id": "set-the-righmost-unset-bit",
+  "index": 5,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Set the righmost unset bit",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Set%20the%20righmost%20unset%20bit",
+    "sourceFilePath": "06.Bit Manipulation/1. Learn Bit Manipulation/05.Set the righmost unset bit.cpp"
+  },
+  "narrative": {
+    "title": "Lighting the First Vacant Stall",
+    "scenario": "A stable's occupancy board packs stall states into one integer, and the groundskeeper lights the nearest vacant stall — the rightmost 0 bit — whenever a new horse arrives. If every stall already reads 1, the board must stay untouched. Adding one to the board flips the run of trailing full stalls and exposes the vacancy, and an OR with the original lights exactly that spot.",
+    "inputFormat": "A non-negative integer n.",
+    "outputFormat": "n with its rightmost unset bit set; n itself when every bit within its width is already set.",
+    "constraints": [
+      "0 <= n <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 6 },
+      "expected": 7,
+      "isPublic": true,
+      "explanation": "110 becomes 111 — the only vacancy is the last stall."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 15 },
+      "expected": 15,
+      "isPublic": true,
+      "explanation": "1111 has no vacancy, so the board stays as it is."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 8 },
+      "expected": 9,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def setBit(self, n: int) -> int:\n        # TODO: n | (n + 1) lights the first vacancy; all-ones boards pass through.\n        pass",
+    "cpp": "#include <cstdint>\nusing namespace std;\n\nclass Solution {\npublic:\n    int setBit(int n) {\n        // TODO: guard the all-ones case, then OR with n + 1.\n    }\n};",
+    "java": "class Solution {\n    public int setBit(int n) {\n        // TODO: guard the all-ones case, then OR with n + 1.\n        return n;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "bitset-trick", "lowest-unset-bit", "set-the-righmost-unset-bit"],
+    "hintLevels": [
+      "Level 1: Adding one flips the trailing run of 1s to 0s and turns the first 0 into a 1 — that's your target bit.",
+      "Level 2: n | (n + 1) lights that target while leaving everything else alone.",
+      "Level 3: The all-ones case needs its own guard — n + 1 spills into a brand-new bit and the plain OR would set it too."
+    ]
+  }
+}

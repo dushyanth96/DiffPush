@@ -1,0 +1,59 @@
+{
+  "id": "check-for-odd-even",
+  "index": 3,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Check for odd even",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Check%20for%20odd%20even",
+    "sourceFilePath": "06.Bit Manipulation/1. Learn Bit Manipulation/03.Check for odd even.cpp"
+  },
+  "narrative": {
+    "title": "Reading the Turnstile's Parity Wire",
+    "scenario": "A stadium turnstile reports crowd counts as integers, and the gate controller only needs to know whether the count is odd or even before opening lanes. The fastest probe reads the count's least significant wire: voltage present means an odd count, absent means even. No division, no modulo — one wire answers instantly.",
+    "inputFormat": "A positive integer N.",
+    "outputFormat": "The string \"odd\" when the least significant bit of N is set, \"even\" otherwise.",
+    "constraints": [
+      "1 <= N <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 1 },
+      "expected": "odd",
+      "isPublic": true,
+      "explanation": "The least significant wire of 1 carries voltage."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 42 },
+      "expected": "even",
+      "isPublic": true,
+      "explanation": "42 ends in a 0 bit, so the turnstile reports an even count."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 999 },
+      "expected": "odd",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def oddEven(self, n: int) -> str:\n        # TODO: test the least significant bit with n & 1.\n        pass",
+    "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string oddEven(int n) {\n        // TODO: return \"odd\" when n & 1, else \"even\".\n    }\n};",
+    "java": "class Solution {\n    public String oddEven(int n) {\n        // TODO: test the least significant bit with n & 1.\n        return \"even\";\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "parity", "lsb", "check-for-odd-even"],
+    "hintLevels": [
+      "Level 1: Parity is exactly the last binary digit — no arithmetic needed.",
+      "Level 2: n & 1 extracts that digit; 1 means odd, 0 means even.",
+      "Level 3: For negative inputs in two's complement, n & 1 still reports parity correctly where the modulo operator can surprise you."
+    ]
+  }
+}

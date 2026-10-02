@@ -1,0 +1,61 @@
+{
+  "id": "implement-queue-using-array",
+  "index": 2,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Implement Queue using Array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=implement+queue+using+array",
+    "sourceFilePath": "07.Stack and Queues/1. Learning/02. Implement queue using array.cpp"
+  },
+  "narrative": {
+    "title": "The One-Way Conveyor Belt",
+    "scenario": "A factory line moves crates onto a conveyor at one end and unloads them from the other, so the crate that arrived first is always the crate that leaves first. The belt controller accepts two commands: drop a crate onto the loading end, or release whatever is waiting at the unloading end. Your job is to replay a command log and report what each release yields.",
+    "inputFormat": "A list of operations, each either [\"push\", value] to enqueue or [\"pop\"] to dequeue.",
+    "outputFormat": "Return the list of values produced by every pop operation, in order; a pop on an empty queue yields -1.",
+    "constraints": [
+      "1 <= number of operations <= 10^5",
+      "-10^9 <= pushed values <= 10^9",
+      "The structure behaves as FIFO: the earliest pushed element is the first popped"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1) per operation",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "operations": [["push", 2], ["push", 3], ["pop"], ["push", 4], ["pop"]] },
+      "expected": [2, 3],
+      "isPublic": true,
+      "explanation": "First-in-first-out: the 2 leaves before the 3, then the 4 follows."
+    },
+    {
+      "id": "tc-2",
+      "input": { "operations": [["push", 7], ["pop"], ["pop"]] },
+      "expected": [7, -1],
+      "isPublic": true,
+      "explanation": "The single crate leaves first; the next release finds the belt empty."
+    },
+    {
+      "id": "tc-3",
+      "input": { "operations": [["pop"], ["push", -5], ["push", 9], ["pop"], ["pop"], ["pop"]] },
+      "expected": [-1, -5, 9, -1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\ndef run_queue_ops(operations):\n    # Simulate the array-backed queue; return list of pop results (-1 when empty).\n    queue = deque()\n    results = []\n    for op in operations:\n        if op[0] == \"push\":\n            queue.append(op[1])\n        else:\n            results.append(queue.popleft() if queue else -1)\n    return results",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass MyQueue {\nprivate:\n    vector<int> arr;\n    int front = 0;\npublic:\n    void push(int x) { arr.push_back(x); }\n    int pop() {\n        if (front >= (int)arr.size()) return -1;\n        return arr[front++];\n    }\n};",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass MyQueue {\n    private Deque<Integer> queue = new ArrayDeque<>();\n\n    public void push(int x) { queue.addLast(x); }\n\n    public int pop() {\n        Integer head = queue.pollFirst();\n        return head == null ? -1 : head;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["queue", "design", "array", "fifo", "implement-queue-using-array"],
+    "hintLevels": [
+      "Level 1: A queue is a waiting line: join at the back, leave from the front.",
+      "Level 2: Track two cursors — one for the next departure, one for the next arrival.",
+      "Level 3: The empty condition is when the departure cursor reaches the arrival cursor; answer -1 there."
+    ]
+  }
+}

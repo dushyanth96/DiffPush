@@ -1,0 +1,61 @@
+{
+  "id": "number-of-islands-2",
+  "index": 6,
+  "topic": "13.Graphs",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Number of Islands II (Dynamic)",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=number+of+islands+ii",
+    "sourceFilePath": "13. Graphs/5. MST Problems/06. Number of islands 2.cpp"
+  },
+  "narrative": {
+    "title": "Live Landfall Counting on the Model Basin",
+    "scenario": "A dredging simulator turns single sea cells into land one command at a time, and hydrology wants the live island count after every command — islands being land patches joined side-to-side. Each new cell either opens its own island or bridges up to four neighbouring islands into one, so a union-find ledger keeps the running tally without rescanning the basin.",
+    "inputFormat": "Integers n, m (an n x m basin, initially all water) and a list operators of [row, col] landfall commands.",
+    "outputFormat": "Return an array holding the number of islands after each operation.",
+    "constraints": [
+      "1 <= n, m <= 10^3",
+      "1 <= operators.length <= 10^4",
+      "0 <= row < n, 0 <= col < m"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(k α(n * m))",
+    "optimalSpace": "O(n * m)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4, "m": 5, "operators": [[1, 1], [0, 1], [3, 3], [3, 4]] },
+      "expected": [1, 1, 2, 2],
+      "isPublic": true,
+      "explanation": "The first two cells stack into one island; the two bottom-right cells form a second."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 3, "m": 3, "operators": [[0, 0], [0, 0]] },
+      "expected": [1, 1],
+      "isPublic": true,
+      "explanation": "Re-filling an already-land cell changes nothing."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 2, "m": 2, "operators": [[0, 0], [1, 1], [0, 1], [1, 0]] },
+      "expected": [1, 2, 1, 1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, m, operators):\n        # Return the island count after each landfall command.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the island count after each landfall command.\n    std::vector<int> solve(int n, int m, std::vector<std::vector<int>>& operators);\n};",
+    "java": "class Solution {\n    // Return the island count after each landfall command.\n    public int[] solve(int n, int m, int[][] operators) {\n        // TODO\n        return new int[operators.length];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "disjoint-set", "dynamic-connectivity", "grid", "number-of-islands-2"],
+    "hintLevels": [
+      "Level 1: Adding land can only merge islands or create one — never split them.",
+      "Level 2: Keep a live count: +1 when the cell is new land, minus one for each genuinely new neighbour merge.",
+      "Level 3: Flatten cell ids as row * m + col, guard double-fills, and snapshot the count after every command."
+    ]
+  }
+}

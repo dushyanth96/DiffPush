@@ -1,0 +1,61 @@
+{
+  "id": "subarrays-with-xor-k",
+  "index": 6,
+  "topic": "01.Arrays",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Subarrays with xor k",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Subarrays%20with%20xor%20k",
+    "sourceFilePath": "01.Arrays/3.Hard/06.Subarrays_with_xor_k.cpp"
+  },
+  "narrative": {
+    "title": "Fingerprinting Packet Runs with XOR Signatures",
+    "scenario": "A deep packet inspector folds the bytes of each packet into a single integer fingerprint and keeps the packets in arrival order. A security rule triggers on any contiguous run of packets whose combined XOR fingerprint equals a known signature. Count how many such runs exist in the capture.",
+    "inputFormat": "An integer N, an array A of N non-negative fingerprints, and an integer B, the signature to match.",
+    "outputFormat": "The number of contiguous subarrays of A whose bitwise XOR equals B.",
+    "constraints": [
+      "1 <= N <= 10^5",
+      "0 <= A[i] <= 10^9",
+      "0 <= B <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "N": 4, "A": [1, 2, 3, 2], "B": 2 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The whole capture folds to 2, and so do the two single-packet runs holding 2, giving three matches."
+    },
+    {
+      "id": "tc-2",
+      "input": { "N": 5, "A": [4, 2, 2, 6, 4], "B": 6 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "Four distinct runs fold to the signature, including overlapping runs that share packets."
+    },
+    {
+      "id": "tc-3",
+      "input": { "N": 3, "A": [0, 0, 0], "B": 0 },
+      "expected": 6,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def subarraysWithXorK(self, a: list[int], b: int) -> int:\n        # TODO: count contiguous runs whose combined XOR equals b.\n        pass",
+    "cpp": "#include <vector>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    int subarraysWithXorK(vector<int> a, int b) {\n        // TODO: count contiguous runs whose combined XOR equals b.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int subarraysWithXorK(int[] a, int b) {\n        // TODO: count contiguous runs whose combined XOR equals b.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "prefix-xor", "hash-map", "bit-manipulation", "subarray-count"],
+    "hintLevels": [
+      "Level 1: XOR of a run equals the fold of one prefix combined with the fold of the other, and the operation that undoes a fold is the fold itself.",
+      "Level 2: Keep the running fold and a frequency table of folds already seen; each packet contributes the number of earlier folds equal to fold XOR signature.",
+      "Level 3: Seed the table with fold 0 so runs beginning at the first packet are counted, and remember a signature of 0 makes every all-zero run a match, including overlapping ones."
+    ]
+  }
+}

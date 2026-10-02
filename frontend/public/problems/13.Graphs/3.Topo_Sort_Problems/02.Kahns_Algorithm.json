@@ -1,0 +1,61 @@
+{
+  "id": "kahn-s-algorithm",
+  "index": 2,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Cycle Detection Using Kahn's Algorithm",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=course+schedule",
+    "sourceFilePath": "13. Graphs/3. Topo Sort Problems/02. Kahn's Algorithm.cpp"
+  },
+  "narrative": {
+    "title": "The Ticket-Queue Deadlock Scanner",
+    "scenario": "A batch job runner processes work items whose one-way 'wait for' tickets must never form a loop. The scanner peels the system like an onion: any item nobody waits on (indegree zero) runs and cancels its own outgoing tickets, freeing more items. If the peeling stops with items still stuck holding tickets, a circular wait — a deadlock — is proven.",
+    "inputFormat": "An integer V and an adjacency list adj where adj[i] lists the items that item i's completion unblocks.",
+    "outputFormat": "Return true if the directed graph contains a cycle, otherwise false.",
+    "constraints": [
+      "1 <= V <= 10^5",
+      "0 <= number of edges <= 2 * 10^5",
+      "0 <= adj[i][j] < V"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(V + E)",
+    "optimalSpace": "O(V)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "V": 4, "adj": [[1, 2], [3], [3], []] },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Every item eventually reaches indegree zero — the whole queue drains cleanly."
+    },
+    {
+      "id": "tc-2",
+      "input": { "V": 3, "adj": [[1], [2], [0]] },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Each item waits on the next in a closed ring; nothing ever reaches indegree zero."
+    },
+    {
+      "id": "tc-3",
+      "input": { "V": 1, "adj": [[0]] },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass Solution:\n    def solve(self, V, adj):\n        # Return True if the directed graph contains a cycle.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return true if the directed graph contains a cycle.\n    bool solve(int V, std::vector<int> adj[]);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return true if the directed graph contains a cycle.\n    public boolean solve(int V, List<List<Integer>> adj) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "topological-sort", "cycle-detection", "indegree", "kahn-s-algorithm"],
+    "hintLevels": [
+      "Level 1: Repeatedly remove items with nothing pending on them; watch whether anything survives.",
+      "Level 2: Maintain indegree counters; enqueue zeros, and decrement successors as each item is removed.",
+      "Level 3: A DAG releases exactly V items — any shortfall is the size proof of a cycle."
+    ]
+  }
+}

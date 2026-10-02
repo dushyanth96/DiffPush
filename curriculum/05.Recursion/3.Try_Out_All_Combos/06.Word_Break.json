@@ -1,0 +1,89 @@
+{
+  "id": "word-break",
+  "index": 6,
+  "topic": "05.Recursion",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Word Break",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Word%20Break",
+    "sourceFilePath": "05.Recursion/3.Try Out All Combos/06.Word Break.cpp"
+  },
+  "narrative": {
+    "title": "Tokenizing the Legacy Command Stream",
+    "scenario": "An industrial controller accepts command strings only when they can be split entirely into tokens from its approved vocabulary — spaces are stripped, so the split points are invisible. The parser scans from the current offset, tries every vocabulary word that matches a prefix there, and recurses on the rest; the command is accepted when some chain of matches consumes the whole string.",
+    "inputFormat": "A string s and an array wordDict of vocabulary words.",
+    "outputFormat": "true when s can be segmented entirely into dictionary words, false otherwise.",
+    "constraints": [
+      "1 <= s.length <= 300",
+      "1 <= wordDict.length <= 1000",
+      "1 <= wordDict[i].length <= 20",
+      "s and wordDict[i] consist of lowercase letters"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2) with memoization over offsets (bare source recursion is exponential)",
+    "optimalSpace": "O(n) memo and recursion depth"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "s": "leetcode",
+        "wordDict": [
+          "leet",
+          "code"
+        ]
+      },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "\"leet\" consumes the first four letters and \"code\" the rest."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "s": "catsandog",
+        "wordDict": [
+          "cats",
+          "dog",
+          "sand",
+          "and",
+          "cat"
+        ]
+      },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Both parsings — \"cats and\" and \"cat sand\" — strand the trailing \"og\"."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "s": "aaaaab",
+        "wordDict": [
+          "a",
+          "aa",
+          "aaa"
+        ]
+      },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def wordBreak(self, s: str, wordDict: list[str]) -> bool:\n        # TODO: from each offset, try every dictionary prefix and recurse.\n        pass",
+    "cpp": "#include <string>\n#include <unordered_set>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool wordBreak(string s, vector<string>& wordDict) {\n        // TODO: load the dictionary into a set; scan prefixes per offset.\n    }\n};",
+    "java": "class Solution {\n    public boolean wordBreak(String s, java.util.List<String> wordDict) {\n        // TODO: from each offset, try every dictionary prefix and recurse.\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "string-segmentation",
+      "word-break"
+    ],
+    "hintLevels": [
+      "Level 1: The question at each offset is binary — can the rest of the stream be tokenized from here?",
+      "Level 2: Loop every end position past the offset; if that slice sits in the dictionary and the remainder parses, the answer is yes.",
+      "Level 3: Different match orders re-derive the same offsets constantly — memoize failing offsets to collapse the exponential blow-up on adversarial inputs."
+    ]
+  }
+}

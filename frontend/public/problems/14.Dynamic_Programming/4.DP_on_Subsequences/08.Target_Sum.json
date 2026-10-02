@@ -1,0 +1,62 @@
+{
+  "id": "target-sum",
+  "index": 8,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Target Sum",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=target+sum+assign+signs",
+    "sourceFilePath": "14. Dynamic Programming/4. DP on Subsequences/08. Target Sum.cpp"
+  },
+  "narrative": {
+    "title": "The Sensor Pairing Dip Switch",
+    "scenario": "A calibration rig flips each of n sensor channels into either an amplifying or an attenuating mode before a measurement run. The lab needs the combined gain to land exactly on a target offset, and the technician counts how many switch assignments achieve it. Channels with identical ratings are still independent hardware, so each assignment counts separately.",
+    "inputFormat": "An array nums of n non-negative integers and an integer target.",
+    "outputFormat": "Return the number of ways to assign + or - signs so the signed sum equals target.",
+    "constraints": [
+      "1 <= n <= 20",
+      "0 <= nums[i] <= 1000",
+      "sum of nums <= 1000",
+      "-1000 <= target <= 1000"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*S)",
+    "optimalSpace": "O(S)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 1, 1, 1, 1], "target": 3 },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Exactly one channel attenuates (five choices); each gives 4 - 1 = 3."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1], "target": 1 },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "The single channel must amplify: +1."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [0, 0, 1], "target": 1 },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, nums, target):\n        # Return the number of sign assignments summing to target.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the number of sign assignments summing to target.\n    int solve(std::vector<int>& nums, int target);\n};",
+    "java": "class Solution {\n    // Return the number of sign assignments summing to target.\n    public int solve(int[] nums, int target) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "subsequences", "counting-dp", "subset-sum", "target-sum"],
+    "hintLevels": [
+      "Level 1: Split the channels into an amplifying set P and an attenuating set N; their sums differ by target.",
+      "Level 2: sum(P) - sum(N) = target with sum(P) + sum(N) = total pins sum(P) at (total + target) / 2 — a count-subsets run.",
+      "Level 3: Guard the impossible cases first: total + target odd, or |target| > total, both answer 0."
+    ]
+  }
+}

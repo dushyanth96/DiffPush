@@ -1,0 +1,70 @@
+{
+  "id": "lru-cache",
+  "index": 4,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "LRU Cache",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=lru+cache",
+    "sourceFilePath": "07.Stack and Queues/4. Implementation/04. LRU Cache.cpp"
+  },
+  "narrative": {
+    "title": "The Tape Library Circulation Desk",
+    "scenario": "An archive circulates a fixed number of tapes. Every checkout or re-shelve makes a tape the freshest item; when the shelves are full and a new tape arrives, the least recently requested one is pulled from circulation. Readers want instant answers: is a tape on the shelf, and what is its catalog number?",
+    "inputFormat": "A capacity integer and a list of operations: [\"put\", key, value] or [\"get\", key].",
+    "outputFormat": "Return the list of values produced by every get operation, in order; a miss returns -1.",
+    "constraints": [
+      "1 <= capacity <= 3000",
+      "0 <= key, value <= 10^4",
+      "At most 2 * 10^4 calls total; each must run in O(1)"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1) per operation",
+    "optimalSpace": "O(capacity)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "capacity": 2,
+        "operations": [["put", 1, 1], ["put", 2, 2], ["get", 1], ["put", 3, 3], ["get", 2], ["put", 4, 4], ["get", 1], ["get", 3], ["get", 4]]
+      },
+      "expected": [1, -1, -1, 3, 4],
+      "isPublic": true,
+      "explanation": "Putting 3 evicts the stale key 2; putting 4 evicts key 1 since reading it made 3 fresher."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "capacity": 1,
+        "operations": [["put", 5, 50], ["get", 5], ["put", 6, 60], ["get", 5], ["get", 6]]
+      },
+      "expected": [50, -1, 60],
+      "isPublic": true,
+      "explanation": "A capacity-1 cache forgets the old key the moment a new one arrives."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "capacity": 2,
+        "operations": [["put", 1, 1], ["put", 2, 2], ["put", 1, 10], ["get", 1], ["put", 3, 3], ["get", 2]]
+      },
+      "expected": [10, -1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class LRUCache:\n    def __init__(self, capacity: int):\n        self.capacity = capacity\n        self.data = {}  # dicts preserve insertion order\n\n    def get(self, key: int) -> int:\n        if key not in self.data:\n            return -1\n        val = self.data.pop(key)\n        self.data[key] = val          # re-insert as most recent\n        return val\n\n    def put(self, key: int, value: int) -> None:\n        if key in self.data:\n            self.data.pop(key)\n        elif len(self.data) == self.capacity:\n            self.data.pop(next(iter(self.data)))  # evict oldest\n        self.data[key] = value",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass LRUCache {\nprivate:\n    int capacity;\n    list<pair<int, int>> order;  // front = most recent\n    unordered_map<int, list<pair<int, int>>::iterator> pos;\npublic:\n    LRUCache(int capacity) : capacity(capacity) {}\n\n    int get(int key) {\n        auto it = pos.find(key);\n        if (it == pos.end()) return -1;\n        order.splice(order.begin(), order, it->second);\n        return order.front().second;\n    }\n\n    void put(int key, int value) {\n        auto it = pos.find(key);\n        if (it != pos.end()) {\n            order.splice(order.begin(), order, it->second);\n            order.front().second = value;\n            return;\n        }\n        if ((int)pos.size() == capacity) {\n            pos.erase(order.back().first);\n            order.pop_back();\n        }\n        order.push_front({key, value});\n        pos[key] = order.begin();\n    }\n};",
+    "java": "import java.util.LinkedHashMap;\nimport java.util.Map;\n\nclass LRUCache {\n    private final int capacity;\n    private final Map<Integer, Integer> data = new LinkedHashMap<>(16, 0.75f, true);\n\n    public LRUCache(int capacity) {\n        this.capacity = capacity;\n    }\n\n    public int get(int key) {\n        Integer val = data.get(key);\n        return val == null ? -1 : val;\n    }\n\n    public void put(int key, int value) {\n        data.put(key, value);\n        if (data.size() > capacity) {\n            int eldest = data.keySet().iterator().next();\n            data.remove(eldest);\n        }\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["design", "hash-map", "doubly-linked-list", "lru-cache"],
+    "hintLevels": [
+      "Level 1: Two questions per operation — where is the key, and who becomes the eviction victim?",
+      "Level 2: A hash map answers the first in O(1); a recency-ordered list answers the second.",
+      "Level 3: Reads must refresh recency too — forgetting that in get() is the classic bug this problem hunts."
+    ]
+  }
+}

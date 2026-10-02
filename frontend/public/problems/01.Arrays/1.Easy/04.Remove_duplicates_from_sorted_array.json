@@ -1,0 +1,61 @@
+{
+  "id": "remove-duplicates-from-sorted-array",
+  "index": 4,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Remove duplicates from sorted array",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Remove%20duplicates%20from%20sorted%20array",
+    "sourceFilePath": "01.Arrays/1.Easy/04.Remove_duplicates_from_sorted_array.cpp"
+  },
+  "narrative": {
+    "title": "Compacting a Deduplicated Sensor Timeline",
+    "scenario": "An edge gateway stores minute-stamped sensor events in a fixed-size RAM slab that is already sorted by timestamp but littered with repeated ticks. Memory is too tight to allocate a second slab, so the repeated ticks must be squeezed out in place. Report how many leading slots now hold distinct timestamps.",
+    "inputFormat": "An array nums of n integers, sorted in non-decreasing order.",
+    "outputFormat": "An integer k. The first k slots of nums must hold the distinct values in their original order; anything beyond k is ignored.",
+    "constraints": [
+      "1 <= n <= 3 * 10^4",
+      "-100 <= nums[i] <= 100",
+      "nums is sorted in non-decreasing order"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 1, 2] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "After compaction the slab begins [1, 2], so k = 2 distinct timestamps survive."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [0, 0, 1, 1, 1, 2, 2, 3, 3, 4] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "The distinct values are 0,1,2,3,4 and they are packed into the first five slots."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [5] },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def removeDuplicates(self, nums: list[int]) -> int:\n        # TODO: compact the distinct values into the front of nums and return k.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int removeDuplicates(vector<int>& nums) {\n        // TODO: compact the distinct values into the front of nums and return k.\n    }\n};",
+    "java": "class Solution {\n    public int removeDuplicates(int[] nums) {\n        // TODO: compact the distinct values into the front of nums and return k.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "in-place", "two-pointers", "deduplication"],
+    "hintLevels": [
+      "Level 1: Since the slab is already sorted, equal timestamps are always neighbours, so one writer position plus one reader position is enough.",
+      "Level 2: Keep a write index pointing at the last kept value and advance the reader; when the reader sees a value different from the last kept one, place it at the next write slot.",
+      "Level 3: The count you return is one more than the final write index, and a slab holding a single value must return 1 rather than 0."
+    ]
+  }
+}

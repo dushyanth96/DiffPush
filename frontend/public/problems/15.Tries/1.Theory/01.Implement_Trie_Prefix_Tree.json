@@ -1,0 +1,62 @@
+{
+  "id": "implement-trie-prefix-tree",
+  "index": 1,
+  "topic": "15.Tries",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Implement Trie (Prefix Tree)",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=implement+trie+prefix+tree",
+    "sourceFilePath": "15. Tries/1. Theory/01. Implement Trie (Prefix Tree).cpp"
+  },
+  "narrative": {
+    "title": "The Airport Gate Directory",
+    "scenario": "An airport builds a type-ahead directory for gate labels: staff type a label fragment and the kiosk must confirm whether a full label exists, or whether any label begins with that fragment. The directory is rebuilt per shift, so it needs fast insert, exact lookup, and prefix lookup — all sharing one letter-by-letter structure.",
+    "inputFormat": "A list of operations, each either [\"insert\", word], [\"search\", word], or [\"startsWith\", prefix]. The first operation is always [\"Trie\"].",
+    "outputFormat": "Return one entry per search or startsWith operation: true or false. insert yields null.",
+    "constraints": [
+      "1 <= number of operations <= 3 * 10^4",
+      "1 <= len(word), len(prefix) <= 2000",
+      "words and prefixes use lowercase English letters",
+      "all inserted words are distinct"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(L) per operation",
+    "optimalSpace": "O(total inserted characters)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "ops": [["Trie"], ["insert", "apple"], ["search", "apple"], ["search", "app"], ["startsWith", "app"], ["insert", "app"], ["search", "app"]] },
+      "expected": [null, null, true, false, true, null, true],
+      "isPublic": true,
+      "explanation": "\"apple\" is stored exactly; \"app\" only becomes a full label after its own insert."
+    },
+    {
+      "id": "tc-2",
+      "input": { "ops": [["Trie"], ["insert", "gate"], ["startsWith", "ga"], ["search", "ga"], ["startsWith", "gb"]] },
+      "expected": [null, null, true, false, false],
+      "isPublic": true,
+      "explanation": "The prefix \"ga\" matches, but \"ga\" alone is not a stored label."
+    },
+    {
+      "id": "tc-3",
+      "input": { "ops": [["Trie"], ["insert", "a"], ["search", "a"], ["startsWith", "a"]] },
+      "expected": [null, null, true, true],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Trie:\n    def __init__(self):\n        pass\n\n    def insert(self, word):\n        pass\n\n    def search(self, word):\n        # Return True when word was inserted exactly.\n        pass\n\n    def startsWith(self, prefix):\n        # Return True when some stored word starts with prefix.\n        pass",
+    "cpp": "#include <string>\n\nclass Trie {\npublic:\n    Trie();\n\n    void insert(const std::string& word);\n    // Return true when word was inserted exactly.\n    bool search(const std::string& word);\n    // Return true when some stored word starts with prefix.\n    bool startsWith(const std::string& prefix);\n};",
+    "java": "class Trie {\n    public Trie() {\n    }\n\n    public void insert(String word) {\n    }\n\n    // Return true when word was inserted exactly.\n    public boolean search(String word) {\n        return false;\n    }\n\n    // Return true when some stored word starts with prefix.\n    public boolean startsWith(String prefix) {\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["tries", "design", "prefix-tree", "implement-trie"],
+    "hintLevels": [
+      "Level 1: Each node holds 26 child slots and a flag that says a word ends here.",
+      "Level 2: Walk letters down the tree; insert creates missing nodes, search additionally checks the end flag.",
+      "Level 3: startsWith is search without the end-flag requirement — factor the walk into a shared helper."
+    ]
+  }
+}

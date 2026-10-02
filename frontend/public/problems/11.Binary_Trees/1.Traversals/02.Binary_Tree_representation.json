@@ -1,0 +1,60 @@
+{
+  "id": "build-tree-from-level-order",
+  "index": 2,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Binary Tree Representation",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=construct+binary+tree+from+level+order+array",
+    "sourceFilePath": "11. Binary Trees/1. Traversals/02. Binary Tree representation.cpp"
+  },
+  "narrative": {
+    "title": "The Storage-Bin Checkpoint Map",
+    "scenario": "A fulfillment center keeps seven emergency supply bins laid out in a strict hierarchy: one master checkpoint, two wing supervisors beneath it, and four aisle wardens below them. The safety board receives the bin labels as a flat list in top-to-bottom, left-to-right order and must rebuild the physical hierarchy from it. To confirm the rebuild is wired correctly, the inspector walks the structure root-first and records labels as they are visited.",
+    "inputFormat": "An array of 7 integers given in level order — index 0 is the root, then its two children, then the four grandchildren.",
+    "outputFormat": "Return the preorder traversal (root, left subtree, right subtree) of the constructed tree as an array.",
+    "constraints": [
+      "The array contains exactly 7 integer values",
+      "-1000 <= value <= 1000"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "levelOrder": [1, 2, 3, 4, 5, 6, 7] },
+      "expected": [1, 2, 4, 5, 3, 6, 7],
+      "isPublic": true,
+      "explanation": "Root 1, left subtree {2,4,5} visited root-first, then right subtree {3,6,7}."
+    },
+    {
+      "id": "tc-2",
+      "input": { "levelOrder": [10, 20, 30, 40, 50, 60, 70] },
+      "expected": [10, 20, 40, 50, 30, 60, 70],
+      "isPublic": true,
+      "explanation": "Same shape as tc-1 — preorder is root, then the entire left wing, then the right wing."
+    },
+    {
+      "id": "tc-3",
+      "input": { "levelOrder": [-5, 0, 5, -10, 10, -1, 1] },
+      "expected": [-5, 0, -10, 10, 5, -1, 1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, level_order):\n        # Build the tree from the 7-value level-order array.\n        # Return the preorder traversal of the constructed tree.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Build the tree from the 7-value level-order array.\n    // Return the preorder traversal of the constructed tree.\n    std::vector<int> solve(std::vector<int>& levelOrder);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Build the tree from the 7-value level-order array.\n    // Return the preorder traversal of the constructed tree.\n    public int[] solve(int[] levelOrder) {\n        // TODO\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["trees", "binary-tree", "level-order", "construction", "build-tree-from-level-order"],
+    "hintLevels": [
+      "Level 1: A flat top-to-bottom, left-to-right list hides a two-dimensional family tree — each element is someone's child.",
+      "Level 2: For a node sitting at index i of the array, its children live at indices 2i+1 and 2i+2.",
+      "Level 3: Recurse on those child indices with an array-bounds guard, then emit the requested visit order from the rebuilt structure."
+    ]
+  }
+}

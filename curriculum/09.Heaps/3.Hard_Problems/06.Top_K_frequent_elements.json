@@ -1,0 +1,62 @@
+{
+  "id": "top-k-frequent-elements",
+  "index": 6,
+  "topic": "09.Heaps",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Top K Frequent Elements",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=top+k+frequent+elements",
+    "sourceFilePath": "09. Heaps/3. Hard Problems/06. Top K frequent elements.cpp"
+  },
+  "narrative": {
+    "title": "The Frequency Band Charter",
+    "scenario": "A spectrum monitor tallies how often each channel transmitted during a window, and the regulator chart lists the k busiest channels. Ties in traffic share the chart regardless of order, so the monitor only needs the correct set. A small shortlist evicts the quietest channel whenever a busier challenger arrives.",
+    "inputFormat": "An integer array nums and an integer k.",
+    "outputFormat": "Return the k most frequent values of nums, in any order.",
+    "constraints": [
+      "1 <= nums.length <= 10^5",
+      "-10^4 <= nums[i] <= 10^4",
+      "k is in the range [1, number of distinct values]",
+      "The answer set is guaranteed to be unique"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n log k)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 1, 1, 2, 2, 3], "k": 2 },
+      "expected": [1, 2],
+      "isPublic": true,
+      "explanation": "Channel 1 fired three times, channel 2 twice — the two busiest."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1], "k": 1 },
+      "expected": [1],
+      "isPublic": true,
+      "explanation": "One channel, one entry on the chart."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [4, 4, 4, 6, 6, 7], "k": 2 },
+      "expected": [4, 6],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\ndef top_k_frequent(nums, k):\n    freq = {}\n    for v in nums:\n        freq[v] = freq.get(v, 0) + 1\n    shortlist = []  # min-heap of (frequency, value)\n    for value, count in freq.items():\n        heapq.heappush(shortlist, (count, value))\n        if len(shortlist) > k:\n            heapq.heappop(shortlist)\n    return [value for _, value in shortlist]",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> topKFrequent(vector<int>& nums, int k) {\n    unordered_map<int, int> freq;\n    for (int v : nums) ++freq[v];\n    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;\n    for (auto& [value, count] : freq) {\n        pq.push({count, value});\n        if ((int)pq.size() > k) pq.pop();\n    }\n    vector<int> ans;\n    while (!pq.empty()) { ans.push_back(pq.top().second); pq.pop(); }\n    return ans;\n}",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int[] topKFrequent(int[] nums, int k) {\n        Map<Integer, Integer> freq = new HashMap<>();\n        for (int v : nums) freq.merge(v, 1, Integer::sum);\n        PriorityQueue<int[]> shortlist = new PriorityQueue<>((a, b) -> a[0] - b[0]);\n        for (Map.Entry<Integer, Integer> e : freq.entrySet()) {\n            shortlist.offer(new int[]{e.getValue(), e.getKey()});\n            if (shortlist.size() > k) shortlist.poll();\n        }\n        return shortlist.stream().mapToInt(p -> p[1]).toArray();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["heap", "top-k", "frequency-map", "top-k-frequent-elements"],
+    "hintLevels": [
+      "Level 1: Count first, select second — frequencies turn selection into a top-k problem.",
+      "Level 2: A min-heap of size k evicts the quietest channel; survivors form the chart.",
+      "Level 3: Ties make order ambiguous, so compare the result as a set when testing."
+    ]
+  }
+}

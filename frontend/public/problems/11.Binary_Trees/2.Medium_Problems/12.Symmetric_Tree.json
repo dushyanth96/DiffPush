@@ -1,0 +1,90 @@
+{
+  "id": "symmetric-tree-check",
+  "index": 12,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Symmetric Tree (Mirror of Itself)",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=symmetric+tree",
+    "sourceFilePath": "11. Binary Trees/2. Medium Problems/12. Symmetric Tree.cpp"
+  },
+  "narrative": {
+    "title": "The Mirror-Wing Kite Test",
+    "scenario": "A kite maker balances a two-wing kite and demands true mirror symmetry: the left wing's every fork must reflect the right wing's — left arms matching right arms, values identical at mirrored joints. Before the kite flies, one check certifies the whole frame as aerodynamically balanced or flags it for rebuild.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return true if the tree is a mirror image of itself around the root, false otherwise.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(h)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "tree": [
+          1,
+          2,
+          2,
+          3,
+          4,
+          4,
+          3
+        ]
+      },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Both wings fork identically with mirrored values 3 and 4."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "tree": [
+          1,
+          2,
+          2,
+          null,
+          3,
+          null,
+          3
+        ]
+      },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "Both 3s hang on the same side of their wings — not mirrored."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "tree": [
+          1
+        ]
+      },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return True if the tree is a mirror of itself.\n        pass",
+    "cpp": "#include <vector>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return true if the tree is a mirror of itself.\n    bool solve(TreeNode* root);\n};",
+    "java": "class TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return true if the tree is a mirror of itself.\n    public boolean solve(TreeNode root) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "trees",
+      "binary-tree",
+      "recursion",
+      "mirror-check",
+      "symmetric-tree-check"
+    ],
+    "hintLevels": [
+      "Level 1: Symmetry is a comparison between the two wings, not a traversal of one.",
+      "Level 2: Compare in mirrored lockstep: wing-one's left against wing-two's right, and vice versa.",
+      "Level 3: The null algebra mirrors the Same Tree pattern; anchor the check on the root's two children."
+    ]
+  }
+}

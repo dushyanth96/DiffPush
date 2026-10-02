@@ -1,0 +1,62 @@
+{
+  "id": "matrix-median",
+  "index": 5,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Matrix median",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Matrix%20median",
+    "sourceFilePath": "02.Binary Search/2D Arrays/5.Matrix_median.cpp"
+  },
+  "narrative": {
+    "title": "Median Load Across Banked Feeds",
+    "scenario": "A power monitor banks its readings row by row, each bank kept in ascending order, and the control room needs the median of every reading combined. Flattening all banks would blow the memory budget on large grids, so the median is hunted in the value domain: binary search a candidate value and count how many readings sit at or below it.",
+    "inputFormat": "An R x C matrix of integers, row-wise sorted, where R and C are both odd.",
+    "outputFormat": "The median of the R * C values in the matrix (the middle element of the sorted combination).",
+    "constraints": [
+      "1 <= R, C <= 200 (both odd in the canonical judge)",
+      "1 <= matrix[i][j] <= 2000",
+      "R * C is always odd, so the median is a single element",
+      "The intended solution is better than flattening and sorting"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(R * log C * log(max - min))",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "R": 3, "C": 3, "matrix": [[1, 3, 5], [2, 6, 9], [3, 6, 9]] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "Sorting the nine readings gives 1,2,3,3,5,6,6,9,9 and the middle one is 5."
+    },
+    {
+      "id": "tc-2",
+      "input": { "R": 1, "C": 3, "matrix": [[1, 2, 3]] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "A single bank of three readings is already sorted, so the median is its middle entry."
+    },
+    {
+      "id": "tc-3",
+      "input": { "R": 3, "C": 1, "matrix": [[9], [1], [5]] },
+      "expected": 5,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def median(self, matrix: list[list[int]], R: int, C: int) -> int:\n        # TODO: binary search the value domain, counting elements <= mid per row.\n        pass",
+    "cpp": "#include <vector>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    int median(vector<vector<int>>& matrix, int R, int C) {\n        // TODO: binary search the value domain, counting elements <= mid per row.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int median(int[][] matrix, int R, int C) {\n        // TODO: binary search the value domain, counting elements <= mid per row.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "matrix", "value-domain-search", "rank-counting", "matrix-median"],
+    "hintLevels": [
+      "Level 1: Search over values rather than positions - the answer is the smallest value with at least half the readings at or below it.",
+      "Level 2: Bound the search by the smallest first element and largest last element across rows, and for each candidate count elements at or below it in every sorted row with an upper-bound probe.",
+      "Level 3: The required rank is (R * C + 1) / 2, and when the count meets or passes that rank the candidate is recorded and the search continues leftward so the smallest qualifying value wins."
+    ]
+  }
+}

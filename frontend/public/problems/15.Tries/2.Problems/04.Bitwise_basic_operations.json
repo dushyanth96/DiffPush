@@ -1,0 +1,97 @@
+{
+  "id": "bitwise-basic-operations",
+  "index": 4,
+  "topic": "15.Tries",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Bitwise Basic Operations",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=bitwise+basic+operations+xor+get+set+bit",
+    "sourceFilePath": "15. Tries/2. Problems/04. Bitwise basic operations.cpp"
+  },
+  "narrative": {
+    "title": "The Signal Gate Bench Test",
+    "scenario": "A hardware lab certifies three micro-operations on its logic probe: a difference-flip between two signal words (XOR), a read of one bit position, and a write that switches a bit on. Each probe routine runs in constant time and is exercised with concrete word values before sign-off.",
+    "inputFormat": "Integers a, b for the XOR test; c (bit index), d (word) for the read test; e (bit index), f (word) for the write test.",
+    "outputFormat": "Return a triple: a XOR b; then 1 if bit c of d is set else 0; then f with bit e forced on.",
+    "constraints": [
+      "0 <= a, b, c, d, e, f <= 10^9",
+      "all operations must run in O(1)"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(1)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "a": 5,
+        "b": 3,
+        "c": 1,
+        "d": 6,
+        "e": 0,
+        "f": 8
+      },
+      "expected": [
+        6,
+        1,
+        9
+      ],
+      "isPublic": true,
+      "explanation": "5^3 = 6; bit 1 of 6 (110) is 1; 8 with bit 0 set becomes 9."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "a": 12,
+        "b": 10,
+        "c": 0,
+        "d": 4,
+        "e": 1,
+        "f": 4
+      },
+      "expected": [
+        6,
+        0,
+        6
+      ],
+      "isPublic": true,
+      "explanation": "12^10 = 6 (1100 vs 1010 differ in two bits); bit 0 of 4 is unset; forcing bit 1 on gives 4 | 2 = 6."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "a": 7,
+        "b": 7,
+        "c": 3,
+        "d": 5,
+        "e": 2,
+        "f": 16
+      },
+      "expected": [
+        0,
+        0,
+        20
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, a, b, c, d, e, f):\n        # Return [a XOR b, bit c of d, f with bit e set].\n        pass",
+    "cpp": "class Solution {\npublic:\n    // Return {a XOR b, bit c of d, f with bit e set}.\n    std::vector<int> solve(int a, int b, int c, int d, int e, int f);\n};",
+    "java": "class Solution {\n    // Return [a XOR b, bit c of d, f with bit e set].\n    public int[] solve(int a, int b, int c, int d, int e, int f) {\n        // TODO\n        return new int[3];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "bit-manipulation",
+      "bitwise-operators",
+      "constant-time"
+    ],
+    "hintLevels": [
+      "Level 1: Three primitives: ^ flips differing bits, >> n moves bit n to position 0, | with a one-hot mask forces a bit on.",
+      "Level 2: Reading bit c is (d >> c) & 1; writing is f | (1 << e), which is harmless when the bit is already set.",
+      "Level 3: No branching is needed anywhere — all three answers are single expressions."
+    ]
+  }
+}

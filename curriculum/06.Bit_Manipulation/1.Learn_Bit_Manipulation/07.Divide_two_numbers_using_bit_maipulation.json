@@ -1,0 +1,60 @@
+{
+  "id": "divide-two-numbers-using-bit-maipulation",
+  "index": 7,
+  "topic": "06.Bit_Manipulation",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Divide two numbers using bit maipulation",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Divide%20two%20numbers%20using%20bit%20maipulation",
+    "sourceFilePath": "06.Bit Manipulation/1. Learn Bit Manipulation/07.Divide two numbers using bit maipulation.cpp"
+  },
+  "narrative": {
+    "title": "Subdividing the Stockroom Shelf Without a Calculator",
+    "scenario": "A stockroom robot must split a shelf of length `dividend` into bays of length `divisor` — but its controller has no multiply, divide, or modulo circuit. It can only double and shift. The robot repeatedly finds the largest doubled divisor that still fits, peels that block off, and records how many such blocks each doubling step contributed, until the shelf is fully subdivided.",
+    "inputFormat": "Two integers dividend and divisor (divisor is never zero).",
+    "outputFormat": "The quotient, truncated toward zero.",
+    "constraints": [
+      "-10^9 <= dividend, divisor <= 10^9",
+      "divisor != 0"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log n) over the absolute dividend",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "dividend": 10, "divisor": 3 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Three full bays of 3 fit with a remainder of 1."
+    },
+    {
+      "id": "tc-2",
+      "input": { "dividend": 43, "divisor": -8 },
+      "expected": -5,
+      "isPublic": true,
+      "explanation": "Opposite signs flip the quotient; 43 / 8 truncates to 5, so the answer is -5."
+    },
+    {
+      "id": "tc-3",
+      "input": { "dividend": 1, "divisor": 1 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def divideTwoInteger(self, dividend: int, divisor: int) -> int:\n        # TODO: shift-and-subtract on absolute values; apply the sign at the end.\n        pass",
+    "cpp": "#include <cstdlib>\nusing namespace std;\n\nclass Solution {\npublic:\n    int divideTwoInteger(int dividend, int divisor) {\n        // TODO: double the divisor to find the largest fitting block, subtract, repeat.\n    }\n};",
+    "java": "class Solution {\n    public int divideTwoInteger(int dividend, int divisor) {\n        // TODO: shift-and-subtract on absolute values; apply the sign at the end.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["bit-manipulation", "division", "shifting", "divide-two-numbers-using-bit-maipulation"],
+    "hintLevels": [
+      "Level 1: Division is repeated subtraction — shifting just lets you subtract big doubled chunks at once.",
+      "Level 2: While the dividend fits, grow the shifted divisor b << q and bank 1 << q blocks per peel.",
+      "Level 3: Work on absolute values and decide the sign at the end; truncation toward zero, not floor, is the contract."
+    ]
+  }
+}

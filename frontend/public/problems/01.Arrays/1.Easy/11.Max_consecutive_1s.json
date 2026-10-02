@@ -1,0 +1,60 @@
+{
+  "id": "max-consecutive-1-s",
+  "index": 11,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Max consecutive 1's",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Max%20consecutive%201%27s",
+    "sourceFilePath": "01.Arrays/1.Easy/11.Max_consecutive_1s.cpp"
+  },
+  "narrative": {
+    "title": "Uptime Streak in the Sensor Bitmap",
+    "scenario": "A health monitor records one bit per minute, where 1 means the node was reachable and 0 means it dropped. The reliability report needs the longest uninterrupted uptime streak in that bitmap. Report the length of the longest run of ones.",
+    "inputFormat": "An array nums of n binary values (only 0 and 1).",
+    "outputFormat": "The length of the longest contiguous run of 1s, or 0 when no minute was healthy.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "nums[i] is 0 or 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 1, 0, 1, 1, 1] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The final three minutes form the longest healthy run, beating the opening pair."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1, 0, 1, 1, 0, 1] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Healthy minutes are split by drops, and the best run is the middle pair of length 2."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [0, 0] },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findMaxConsecutiveOnes(self, nums: list[int]) -> int:\n        # TODO: return the length of the longest contiguous run of 1s.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findMaxConsecutiveOnes(vector<int>& nums) {\n        // TODO: return the length of the longest contiguous run of 1s.\n    }\n};",
+    "java": "class Solution {\n    public int findMaxConsecutiveOnes(int[] nums) {\n        // TODO: return the length of the longest contiguous run of 1s.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "linear-scan", "running-streak", "max-consecutive-ones"],
+    "hintLevels": [
+      "Level 1: One pass is enough - keep a streak counter that grows on healthy minutes and a best-so-far value.",
+      "Level 2: Reset the streak to zero whenever a drop appears, and update the best after each healthy minute.",
+      "Level 3: An all-drop bitmap must report 0, and the best value has to be refreshed even when the run ends at the final minute."
+    ]
+  }
+}

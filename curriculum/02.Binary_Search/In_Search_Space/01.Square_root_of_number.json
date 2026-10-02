@@ -1,0 +1,60 @@
+{
+  "id": "square-root-of-number",
+  "index": 1,
+  "topic": "02.Binary_Search",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Square root of number",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Square%20root%20of%20number",
+    "sourceFilePath": "02.Binary Search/In Search Space/01.Square_root_of_number.cpp"
+  },
+  "narrative": {
+    "title": "Sizing a Square Server Rack Footprint",
+    "scenario": "A datacenter planner receives a floor area in square units and wants the side of the largest square rack cluster that fits exactly or smaller. When the area is not a perfect square, the planner floors the side length. Search the side-length range directly rather than calling a floating-point library routine.",
+    "inputFormat": "A single long integer x, the area.",
+    "outputFormat": "floor(sqrt(x)), the largest integer whose square does not exceed x.",
+    "constraints": [
+      "1 <= x <= 2^31 - 1",
+      "The result must be exact integer arithmetic, not floating point"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(log x)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "x": 5 },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "2 squared is 4, which fits, while 3 squared overshoots 5 - so the floored side is 2."
+    },
+    {
+      "id": "tc-2",
+      "input": { "x": 4 },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "The area is a perfect square and the side is exactly 2."
+    },
+    {
+      "id": "tc-3",
+      "input": { "x": 1 },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def floorSqrt(self, x: int) -> int:\n        # TODO: binary search the largest side whose square fits the area.\n        pass",
+    "cpp": "class Solution {\npublic:\n    long long int floorSqrt(long long int x) {\n        // TODO: binary search the largest side whose square fits the area.\n    }\n};",
+    "java": "class Solution {\n    public long floorSqrt(long x) {\n        // TODO: binary search the largest side whose square fits the area.\n        return 0L;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["binary-search", "answer-space", "integer-arithmetic", "monotonic-predicate", "square-root-of-number"],
+    "hintLevels": [
+      "Level 1: The predicate 'does this side fit the area' is monotonic - once a side fails, every larger side fails too.",
+      "Level 2: Search sides from 1 up to x, carrying the best fitting side as the answer and probing the midpoint each round.",
+      "Level 3: Squaring the midpoint can overflow narrow integer types, so widen it, and an exact hit should return immediately rather than continuing to search."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "count-the-number-of-provinces",
+  "index": 1,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Number of Provinces",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=number+of+provinces",
+    "sourceFilePath": "13. Graphs/2. Traversal Problems/01. Count the number of provinces.cpp"
+  },
+  "narrative": {
+    "title": "Counting the Connected Depot Clusters",
+    "scenario": "A courier network's control room keeps an n x n handshake table: row i, column j shows whether depot i can hand parcels directly to depot j. Two depots belong to the same cluster when a chain of handshakes — however long — links them. Dispatch needs the number of separate clusters, because each cluster needs its own coordinator.",
+    "inputFormat": "An n x n binary matrix isConnected where isConnected[i][j] is 1 if depot i and depot j are directly linked.",
+    "outputFormat": "Return the number of connected clusters (provinces).",
+    "constraints": [
+      "1 <= n <= 10^3",
+      "isConnected[i][i] == 1",
+      "isConnected[i][j] == isConnected[j][i]"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "isConnected": [[1, 1, 0], [1, 1, 0], [0, 0, 1]] },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Depots 0 and 1 shake hands with each other; depot 2 stands alone."
+    },
+    {
+      "id": "tc-2",
+      "input": { "isConnected": [[1, 0, 0], [0, 1, 0], [0, 0, 1]] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "No cross-links at all — every depot is its own province."
+    },
+    {
+      "id": "tc-3",
+      "input": { "isConnected": [[1, 1, 1], [1, 1, 1], [1, 1, 1]] },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, isConnected):\n        # Return the number of connected clusters in the handshake matrix.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the number of connected clusters in the handshake matrix.\n    int solve(std::vector<std::vector<int>>& isConnected);\n};",
+    "java": "class Solution {\n    // Return the number of connected clusters in the handshake matrix.\n    public int solve(int[][] isConnected) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dfs", "connected-components", "matrix-graph", "count-the-number-of-provinces"],
+    "hintLevels": [
+      "Level 1: Each unvisited depot opens a new cluster; sweep the whole roster to catch every one.",
+      "Level 2: One DFS from any depot claims its entire chain of handshakes as visited.",
+      "Level 3: The matrix is just an adjacency structure — walking it row by row avoids building a second copy."
+    ]
+  }
+}

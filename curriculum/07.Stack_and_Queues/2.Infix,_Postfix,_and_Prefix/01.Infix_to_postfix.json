@@ -1,0 +1,61 @@
+{
+  "id": "infix-to-postfix",
+  "index": 1,
+  "topic": "07.Stack_and_Queues",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Infix to Postfix Conversion",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=infix+to+postfix+conversion",
+    "sourceFilePath": "07.Stack and Queues/2. Infix, Postfix, and Prefix/01. Infix to postfix.cpp"
+  },
+  "narrative": {
+    "title": "The Compiler's Rearrangement Desk",
+    "scenario": "A calculator firmware evaluates expressions on a stack machine that wants operators after their operands, yet engineers type expressions the human way with operators in between and parentheses overriding precedence. The firmware's translation desk rewrites each expression so that `a + b` becomes `a b +` while honoring that `^` outranks `*` and `/`, which outrank `+` and `-`.",
+    "inputFormat": "A string expression in infix form using single alphanumeric operands, the operators + - * / ^, and parentheses.",
+    "outputFormat": "Return the equivalent postfix (Reverse Polish) expression as a string.",
+    "constraints": [
+      "1 <= expression.length <= 10^5",
+      "Operands are single letters or digits",
+      "Precedence order: ^ > * = / > + = -"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "expression": "a+b*(c^d-e)^(f+g*h)-i" },
+      "expected": "abcd^e-fgh*+^*+i-",
+      "isPublic": true,
+      "explanation": "Parenthesized sub-expressions are resolved first, then multiplication/addition levels unwrap per precedence."
+    },
+    {
+      "id": "tc-2",
+      "input": { "expression": "A*(B+C)/D" },
+      "expected": "ABC+*D/",
+      "isPublic": true,
+      "explanation": "B+C emits first; * then / follow, and equal precedence pops left-to-right."
+    },
+    {
+      "id": "tc-3",
+      "input": { "expression": "x^y^z" },
+      "expected": "xy^z^",
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def infix_to_postfix(expression: str) -> str:\n    prec = {'^': 3, '*': 2, '/': 2, '+': 1, '-': 1}\n    out, stack = [], []\n    for ch in expression:\n        if ch.isalnum():\n            out.append(ch)\n        elif ch == '(':\n            stack.append(ch)\n        elif ch == ')':\n            while stack and stack[-1] != '(':\n                out.append(stack.pop())\n            stack.pop()  # discard '('\n        else:\n            while stack and stack[-1] != '(' and prec[stack[-1]] >= prec[ch]:\n                out.append(stack.pop())\n            stack.append(ch)\n    while stack:\n        out.append(stack.pop())\n    return ''.join(out)",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstring infixToPostfix(string s) {\n    unordered_map<char, int> prec{{'^', 3}, {'*', 2}, {'/', 2}, {'+', 1}, {'-', 1}};\n    string ans;\n    stack<char> st;\n    for (char c : s) {\n        if (isalnum((unsigned char)c)) ans.push_back(c);\n        else if (c == '(') st.push(c);\n        else if (c == ')') {\n            while (!st.empty() && st.top() != '(') { ans.push_back(st.top()); st.pop(); }\n            st.pop();\n        } else {\n            while (!st.empty() && st.top() != '(' && prec[st.top()] >= prec[c]) {\n                ans.push_back(st.top()); st.pop();\n            }\n            st.push(c);\n        }\n    }\n    while (!st.empty()) { ans.push_back(st.top()); st.pop(); }\n    return ans;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\nimport java.util.Map;\n\nclass Solution {\n    public String infixToPostfix(String s) {\n        Map<Character, Integer> prec = Map.of('^', 3, '*', 2, '/', 2, '+', 1, '-', 1);\n        StringBuilder out = new StringBuilder();\n        Deque<Character> stack = new ArrayDeque<>();\n        for (char c : s.toCharArray()) {\n            if (Character.isLetterOrDigit(c)) out.append(c);\n            else if (c == '(') stack.push(c);\n            else if (c == ')') {\n                while (!stack.isEmpty() && stack.peek() != '(') out.append(stack.pop());\n                stack.pop();\n            } else {\n                while (!stack.isEmpty() && stack.peek() != '(' &&\n                       prec.get(stack.peek()) >= prec.get(c)) out.append(stack.pop());\n                stack.push(c);\n            }\n        }\n        while (!stack.isEmpty()) out.append(stack.pop());\n        return out.toString();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["stack", "string-parsing", "expression-conversion", "infix-to-postfix"],
+    "hintLevels": [
+      "Level 1: Operands go straight to output; operators wait on a stack until something of lower rank arrives.",
+      "Level 2: A closing parenthesis flushes the stack back to its matching opener; end of input flushes everything.",
+      "Level 3: Pop while the stack top has greater-or-equal precedence — the equal case preserves left-to-right evaluation."
+    ]
+  }
+}

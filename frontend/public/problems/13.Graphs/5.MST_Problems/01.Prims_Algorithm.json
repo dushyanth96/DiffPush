@@ -1,0 +1,62 @@
+{
+  "id": "prim-s-algorithm",
+  "index": 1,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Prim's Algorithm — Minimum Spanning Tree Weight",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=min+cost+to+connect+all+points",
+    "sourceFilePath": "13. Graphs/5. MST Problems/01. Prim's Algorithm.cpp"
+  },
+  "narrative": {
+    "title": "Trenching the Cheapest Power Grid",
+    "scenario": "A substation cluster must be wired into one grid at minimum trenching cost: pick a subset of cable links so every substation is powered and no link is wasted. Starting from any substation, the planner always extends the grid through the cheapest cable that reaches new ground — a priority queue serves up that cable — until the whole cluster is lit.",
+    "inputFormat": "An integer n (vertices 0..n-1) and an edge list edges where [u, v, w] is an undirected link of cost w.",
+    "outputFormat": "Return the total weight of the minimum spanning tree.",
+    "constraints": [
+      "1 <= n <= 10^3",
+      "1 <= edges.length <= n * (n - 1) / 2",
+      "1 <= w <= 10^6",
+      "The graph is connected and undirected"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(E log E)",
+    "optimalSpace": "O(V + E)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 3, "edges": [[0, 1, 5], [1, 2, 3], [0, 2, 1]] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The 1-cost and 3-cost links connect all three stations for a total of 4."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 4, "edges": [[0, 1, 1], [1, 2, 2], [2, 3, 3], [3, 0, 4], [0, 2, 5]] },
+      "expected": 6,
+      "isPublic": true,
+      "explanation": "Links 1, 2 and 3 chain every station together; nothing heavier is needed."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 2, "edges": [[0, 1, 7]] },
+      "expected": 7,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "import heapq\n\nclass Solution:\n    def solve(self, n, edges):\n        # Return the MST total weight.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the MST total weight.\n    int solve(int n, std::vector<std::vector<int>>& edges);\n};",
+    "java": "class Solution {\n    // Return the MST total weight.\n    public int solve(int n, int[][] edges) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "mst", "prim", "priority-queue", "prim-s-algorithm"],
+    "hintLevels": [
+      "Level 1: Grow one connected blob; never add a link whose far end is already inside the blob.",
+      "Level 2: Push every frontier link into a min-heap; the pop that lands on new ground joins the tree.",
+      "Level 3: Add each vertex once — the sum of the settling weights is the MST total."
+    ]
+  }
+}

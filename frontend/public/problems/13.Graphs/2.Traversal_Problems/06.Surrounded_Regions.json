@@ -1,0 +1,60 @@
+{
+  "id": "surrounded-regions",
+  "index": 6,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Surrounded Regions",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=surrounded+regions",
+    "sourceFilePath": "13. Graphs/2. Traversal Problems/06. Surrounded Regions.cpp"
+  },
+  "narrative": {
+    "title": "Quarantining the Inland Storage Yards",
+    "scenario": "A security grid marks fenced yards (X) and open yards (O). Any open yard that can trace a chain of open neighbours to the outer boundary stays open — it has an escape route to the perimeter. Open pockets entirely walled in, though, get converted to fenced yards in a single lockdown sweep. Only inland pockets flip; border-touching chains never do.",
+    "inputFormat": "An m x n board of characters 'X' and 'O'.",
+    "outputFormat": "Return the board after flipping every 'O' region that is 4-directionally surrounded by 'X' to 'X'.",
+    "constraints": [
+      "1 <= m, n <= 200",
+      "board[i][j] is 'X' or 'O'"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m * n)",
+    "optimalSpace": "O(m * n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "board": [["X", "X", "X", "X"], ["X", "O", "O", "X"], ["X", "X", "O", "X"], ["X", "O", "X", "X"]] },
+      "expected": [["X", "X", "X", "X"], ["X", "X", "X", "X"], ["X", "X", "X", "X"], ["X", "O", "X", "X"]],
+      "isPublic": true,
+      "explanation": "The inland pocket flips, but the bottom 'O' touches the border and survives."
+    },
+    {
+      "id": "tc-2",
+      "input": { "board": [["O", "O"], ["O", "O"]] },
+      "expected": [["O", "O"], ["O", "O"]],
+      "isPublic": true,
+      "explanation": "Every open yard already touches the boundary — nothing is surrounded."
+    },
+    {
+      "id": "tc-3",
+      "input": { "board": [["X", "X", "X"], ["X", "O", "X"], ["X", "X", "X"]] },
+      "expected": [["X", "X", "X"], ["X", "X", "X"], ["X", "X", "X"]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, board):\n        # Flip every fully surrounded 'O' region to 'X'; return the board.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Flip every fully surrounded 'O' region to 'X'; return the board.\n    std::vector<std::vector<char>> solve(std::vector<std::vector<char>>& board);\n};",
+    "java": "class Solution {\n    // Flip every fully surrounded 'O' region to 'X'; return the board.\n    public char[][] solve(char[][] board) {\n        // TODO\n        return board;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "dfs", "boundary-flood", "grid", "surrounded-regions"],
+    "hintLevels": [
+      "Level 1: Hunting surrounded regions directly is hard — invert the question and spare everything that can reach the border.",
+      "Level 2: Flood from every border 'O' inward, marking survivors; anything unmarked afterwards is truly enclosed.",
+      "Level 3: A single marker pass plus one flip pass gives two linear sweeps — no per-region bookkeeping."
+    ]
+  }
+}

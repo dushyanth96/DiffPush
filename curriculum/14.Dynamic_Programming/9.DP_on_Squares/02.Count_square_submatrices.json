@@ -1,0 +1,60 @@
+{
+  "id": "count-square-submatrices",
+  "index": 2,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Count Square Submatrices with All Ones",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=count+square+submatrices+with+all+ones",
+    "sourceFilePath": "14. Dynamic Programming/9. DP on Squares/02. Count square submatrices.cpp"
+  },
+  "narrative": {
+    "title": "The Turf Mosaic Inventory",
+    "scenario": "A stadium groundskeeper maps a grass grid where 1 marks healthy turf and 0 marks worn patches. Maintenance orders are sized in square sections, and any all-healthy square — of any size, anywhere — can be turfed in one work order. The scheduler counts every all-ones square block in the grid to size the season's workload.",
+    "inputFormat": "An m x n binary matrix matrix of 0s and 1s.",
+    "outputFormat": "Return the number of square submatrices (of all sizes) consisting entirely of 1s.",
+    "constraints": [
+      "1 <= m, n <= 300",
+      "matrix[i][j] is 0 or 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m*n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "matrix": [[0, 1, 1, 1], [1, 1, 1, 1], [0, 1, 1, 1]] },
+      "expected": 15,
+      "isPublic": true,
+      "explanation": "Ten 1x1 squares, four 2x2 squares, and one 3x3 square — 15 total."
+    },
+    {
+      "id": "tc-2",
+      "input": { "matrix": [[1, 0, 1], [1, 1, 0], [1, 1, 0]] },
+      "expected": 7,
+      "isPublic": true,
+      "explanation": "Five 1x1 squares plus two 2x2 squares."
+    },
+    {
+      "id": "tc-3",
+      "input": { "matrix": [[1, 1], [1, 1]] },
+      "expected": 5,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, matrix):\n        # Return the count of all-ones square submatrices.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the count of all-ones square submatrices.\n    int solve(std::vector<std::vector<int>>& matrix);\n};",
+    "java": "class Solution {\n    // Return the count of all-ones square submatrices.\n    public int solve(int[][] matrix) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "squares", "grid-dp", "counting-dp"],
+    "hintLevels": [
+      "Level 1: Same cell recurrence as maximal square — but each cell's value is itself a count contribution.",
+      "Level 2: side[i][j] counts squares of every size whose bottom-right corner lands at (i, j); sum them all.",
+      "Level 3: A side-s value at a corner implies exactly s new squares ending there — one of each size up to s."
+    ]
+  }
+}

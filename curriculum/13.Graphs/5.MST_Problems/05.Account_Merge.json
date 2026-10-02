@@ -1,0 +1,62 @@
+{
+  "id": "account-merge",
+  "index": 5,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Accounts Merge",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=accounts+merge",
+    "sourceFilePath": "13. Graphs/5. MST Problems/05. Account Merge.cpp"
+  },
+  "narrative": {
+    "title": "Consolidating the Customer Identity Cards",
+    "scenario": "A bank's onboarding system holds identity cards, each listing a name plus that card's email addresses. Cards belong to the same customer whenever they share even one email; shared names prove nothing. Compliance wants one consolidated card per customer — name first, then every distinct email sorted — regardless of how many raw cards fed it.",
+    "inputFormat": "A list accounts where accounts[i] is [name, email1, email2, ...].",
+    "outputFormat": "Return the merged accounts: each begins with the name followed by that person's emails in sorted order; the list order itself is free.",
+    "constraints": [
+      "1 <= accounts.length <= 1000",
+      "2 <= accounts[i].length <= 10",
+      "1 <= name length, email length <= 30",
+      "An email appears in at most one initial card's list more than once; names may repeat"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N * M α(N) + E log E)",
+    "optimalSpace": "O(N * M)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "accounts": [["John", "johnsmith@mail.com", "john00@mail.com"], ["John", "johnnybravo@mail.com"], ["John", "johnsmith@mail.com", "john_newyork@mail.com"], ["Mary", "mary@mail.com"]] },
+      "expected": [["John", "john00@mail.com", "john_newyork@mail.com", "johnsmith@mail.com"], ["John", "johnnybravo@mail.com"], ["Mary", "mary@mail.com"]],
+      "isPublic": true,
+      "explanation": "The first and third John cards share an email and merge; the second John stays separate despite the name."
+    },
+    {
+      "id": "tc-2",
+      "input": { "accounts": [["Gabe", "gabe0@x.com", "gabe1@x.com"], ["Kevin", "kevin@x.com"], ["Gabe", "gabe1@x.com", "gabe2@x.com"]] },
+      "expected": [["Gabe", "gabe0@x.com", "gabe1@x.com", "gabe2@x.com"], ["Kevin", "kevin@x.com"]],
+      "isPublic": true,
+      "explanation": "A shared middle email chains the two Gabe cards into one sorted identity."
+    },
+    {
+      "id": "tc-3",
+      "input": { "accounts": [["A", "a@x.com"], ["A", "a@x.com"]] },
+      "expected": [["A", "a@x.com"]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, accounts):\n        # Return the merged, sorted account list.\n        pass",
+    "cpp": "#include <string>\n#include <vector>\n\nclass Solution {\npublic:\n    // Return the merged, sorted account list.\n    std::vector<std::vector<std::string>> solve(\n        std::vector<std::vector<std::string>>& accounts);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return the merged, sorted account list.\n    public List<List<String>> solve(List<List<String>> accounts) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "disjoint-set", "string-hashing", "grouping", "account-merge"],
+    "hintLevels": [
+      "Level 1: Emails are the true identity keys — names are decoration.",
+      "Level 2: Map each email to a card index; any email seen under two cards unions those cards.",
+      "Level 3: Regroup emails by each card's union-find root, sort each group, and re-attach the name."
+    ]
+  }
+}

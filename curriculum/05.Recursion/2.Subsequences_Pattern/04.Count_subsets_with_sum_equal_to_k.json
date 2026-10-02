@@ -1,0 +1,88 @@
+{
+  "id": "count-subsets-with-sum-equal-to-k",
+  "index": 4,
+  "topic": "05.Recursion",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Count subsets with sum equal to k",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Count%20subsets%20with%20sum%20equal%20to%20k",
+    "sourceFilePath": "05.Recursion/2.Subsequences Pattern/04.Count subsets with sum equal to k.cpp"
+  },
+  "narrative": {
+    "title": "Assembling Payload Kits that Hit the Target Weight",
+    "scenario": "A logistics bench holds crates of known weights and must know how many distinct kit combinations hit an exact payload target. Each crate is either in a kit or out, and the auditor counts kits — not arrangements — so two kits differing only in crate order are the same. Every time the running selection lands exactly on the target, the counter ticks; the answer is reported modulo 10^9 + 7.",
+    "inputFormat": "An array arr of n non-negative integers and an integer sum, the target.",
+    "outputFormat": "The number of subsets summing to the target, modulo 10^9 + 7.",
+    "constraints": [
+      "1 <= n <= 10^3",
+      "0 <= arr[i] <= 10^3",
+      "0 <= sum <= 10^3"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n * sum) with memoization (the bare source recursion is exponential)",
+    "optimalSpace": "O(n * sum) memo table"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "arr": [
+          2,
+          3,
+          5,
+          6,
+          8,
+          10
+        ],
+        "sum": 10
+      },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The kits are {2, 3, 5}, {2, 8}, and {10}."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "arr": [
+          1,
+          1,
+          4
+        ],
+        "sum": 5
+      },
+      "expected": 2,
+      "isPublic": true,
+      "explanation": "Both 1s are distinct crates, so {1a, 4} and {1b, 4} each count."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "arr": [
+          9
+        ],
+        "sum": 5
+      },
+      "expected": 0,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def perfectSum(self, arr: list[int], n: int, sum: int) -> int:\n        # TODO: count include/exclude branches that land exactly on the target.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int perfectSum(vector<int>& arr, int n, int sum) {\n        // TODO: recurse include/exclude; count leaves where the remaining sum is 0.\n    }\n};",
+    "java": "class Solution {\n    public int perfectSum(int[] arr, int n, int sum) {\n        // TODO: count include/exclude branches that land exactly on the target.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "subset-sum",
+      "counting",
+      "count-subsets-with-sum-equal-to-k"
+    ],
+    "hintLevels": [
+      "Level 1: Each crate has a binary choice; a kit is complete when the unspent target hits exactly zero.",
+      "Level 2: Recurse over the index with the remaining target: take the crate and subtract, or skip and keep; add the two branch counts.",
+      "Level 3: The (index, remaining) pair repeats constantly — memoize it, or this becomes exponential even for small arrays."
+    ]
+  }
+}

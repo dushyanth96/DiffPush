@@ -1,0 +1,90 @@
+{
+  "id": "frog-jump",
+  "index": 2,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Frog Jump",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=frog+jump+with+costs+minimal+energy",
+    "sourceFilePath": "14. Dynamic Programming/2. 1D DP/02. Frog Jump.cpp"
+  },
+  "narrative": {
+    "title": "The Courier's Energy Ledger",
+    "scenario": "A delivery drone hops across n rooftop pads to reach the last one, and every hop between pads i and j drains battery equal to the absolute height difference of the two roofs. The drone can advance either one pad or two pads per hop. Dispatch wants the cheapest battery plan, so the flight computer must compute the minimum total energy for the crossing.",
+    "inputFormat": "An integer n and an array height of n integers, where height[i] is the elevation of pad i.",
+    "outputFormat": "Return the minimum total energy to travel from pad 0 to pad n-1 using 1-step or 2-step hops.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "0 <= height[i] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "n": 4,
+        "height": [
+          10,
+          20,
+          30,
+          10
+        ]
+      },
+      "expected": 20,
+      "isPublic": true,
+      "explanation": "Hop 0 to 2 (cost 20) then 2 to 3 (cost 0), for 20 total."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "n": 3,
+        "height": [
+          10,
+          50,
+          10
+        ]
+      },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "The drone clears pad 1 entirely: 0 to 2 costs |10-10| = 0."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "n": 6,
+        "height": [
+          30,
+          10,
+          60,
+          10,
+          60,
+          50
+        ]
+      },
+      "expected": 40,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, height):\n        # Return the minimum total energy from pad 0 to pad n-1.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the minimum total energy from pad 0 to pad n-1.\n    int solve(int n, std::vector<int>& height);\n};",
+    "java": "class Solution {\n    // Return the minimum total energy from pad 0 to pad n-1.\n    public int solve(int n, int[] height) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "1d-dp",
+      "min-cost-path",
+      "frog-jump"
+    ],
+    "hintLevels": [
+      "Level 1: To land on pad i, the drone came from i-1 or i-2; take the cheaper landing plus that hop's cost.",
+      "Level 2: best[i] = min(best[i-1] + |h[i] - h[i-1]|, best[i-2] + |h[i] - h[i-2]|), with best[0] = 0.",
+      "Level 3: Two rolling variables replace the array; watch the i-2 guard for n <= 2."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "number-of-operations-to-make-network",
+  "index": 3,
+  "topic": "13.Graphs",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Number of Operations to Make Network Connected",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=number+of+operations+to+make+network+connected",
+    "sourceFilePath": "13. Graphs/5. MST Problems/03. Number of Operations to make Network.cpp"
+  },
+  "narrative": {
+    "title": "Re-cabling the Server Hall",
+    "scenario": "A server hall's racks are linked by cables, some of them redundant. Technicians may unplug a cable between two already-linked racks and re-run it between any disconnected pair. The facilities lead needs the fewest such re-cabling moves to make the whole hall one network — or proof that there simply aren't enough cables to go round.",
+    "inputFormat": "An integer n (racks 0..n-1) and a list connections where [a, b] is a link between racks a and b.",
+    "outputFormat": "Return the minimum number of cable moves needed to connect all racks, or -1 if impossible.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= connections.length <= 10^5",
+      "No duplicate or self links"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(E + V α(V))",
+    "optimalSpace": "O(V)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4, "connections": [[0, 1], [0, 2], [1, 2]] },
+      "expected": 1,
+      "isPublic": true,
+      "explanation": "Racks 0-1-2 form one cluster and rack 3 is isolated; the loop's spare cable reaches it."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 6, "connections": [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5]] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "The hub already links every rack."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 4, "connections": [[0, 1]] },
+      "expected": -1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, connections):\n        # Return the minimum number of cable moves, or -1.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the minimum number of cable moves, or -1.\n    int solve(int n, std::vector<std::vector<int>>& connections);\n};",
+    "java": "class Solution {\n    // Return the minimum number of cable moves, or -1.\n    public int solve(int n, int[][] connections) {\n        // TODO\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "disjoint-set", "connected-components", "counting", "number-of-operations-to-make-network"],
+    "hintLevels": [
+      "Level 1: Each isolated cluster needs exactly one incoming cable, and one cable can serve one cluster.",
+      "Level 2: Count components with union-find; the answer is components minus one.",
+      "Level 3: Feasibility first — fewer than n-1 cables can never connect n racks, whatever the shape."
+    ]
+  }
+}

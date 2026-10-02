@@ -1,0 +1,62 @@
+{
+  "id": "4-sum",
+  "index": 4,
+  "topic": "01.Arrays",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "4Sum",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=4Sum",
+    "sourceFilePath": "01.Arrays/3.Hard/04.4_sum.cpp"
+  },
+  "narrative": {
+    "title": "Four-Way Calibration to a Target Offset",
+    "scenario": "A calibration rig adjusts four independent dials recorded as signed integers and needs every distinct combination of four readings that lands exactly on a target offset. Each reading may be used at most once per combination, and combinations are reported by their values so reorderings count once.",
+    "inputFormat": "An array nums of n integers and an integer target.",
+    "outputFormat": "All distinct quadruples of values from nums that sum to target, with no duplicates and order not significant.",
+    "constraints": [
+      "1 <= n <= 200",
+      "-10^9 <= nums[i] <= 10^9",
+      "-10^9 <= target <= 10^9",
+      "The quadruple requires four distinct indices"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^3)",
+    "optimalSpace": "O(1) auxiliary (excluding the output)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 0, -1, 0, -2, 2], "target": 0 },
+      "expected": [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]],
+      "isPublic": true,
+      "explanation": "Three distinct value sets reach the target, with the repeated zero used at two different positions in one of them."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [2, 2, 2, 2, 2], "target": 8 },
+      "expected": [[2, 2, 2, 2]],
+      "isPublic": true,
+      "explanation": "Only one distinct quadruple exists even though the value 2 can be chosen in many ways."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [0, 0, 0, 0], "target": 0 },
+      "expected": [[0, 0, 0, 0]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def fourSum(self, nums: list[int], target: int) -> list[list[int]]:\n        # TODO: return every distinct quadruple summing to target.\n        pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> fourSum(vector<int>& nums, int target) {\n        // TODO: return every distinct quadruple summing to target.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public List<List<Integer>> fourSum(int[] nums, int target) {\n        // TODO: return every distinct quadruple summing to target.\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "sorting", "two-pointers", "quadruplet-sum", "overflow-safety"],
+    "hintLevels": [
+      "Level 1: Extend the pair-anchor idea one level: pin two readings and the problem collapses to finding a pair with a known complement.",
+      "Level 2: Sort, then loop over the first two anchors and converge two pointers on the suffix, recording a quadruple whenever the running pair sum matches the residual target.",
+      "Level 3: Skipping duplicates is needed at every level, not just on the middle pointers, and combining four readings near the integer limit can overflow a 32-bit sum, so widen the arithmetic before comparing."
+    ]
+  }
+}

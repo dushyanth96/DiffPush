@@ -1,0 +1,126 @@
+{
+  "id": "combination-sum-2",
+  "index": 8,
+  "topic": "05.Recursion",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Combination Sum 2",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Combination%20Sum%202",
+    "sourceFilePath": "05.Recursion/2.Subsequences Pattern/08.Combination Sum 2.cpp"
+  },
+  "narrative": {
+    "title": "Bundling Grant Line Items, Once Each",
+    "scenario": "A finance clerk bundles expense line items toward an exact grant total, but each line item on the sheet may be used at most once — even when two items carry the same amount, they are separate lines. After sorting the sheet, the clerk builds bundles by taking an item and moving on, or skipping ahead; when several identical amounts sit side by side, only the first may open a branch at that depth, so no bundle is ever filed twice.",
+    "inputFormat": "An array candidates of positive integers (duplicates allowed) and an integer target.",
+    "outputFormat": "Every unique combination summing to target, sorted lexicographically by the verifier.",
+    "constraints": [
+      "1 <= candidates.length <= 100",
+      "1 <= candidates[i] <= 50",
+      "1 <= target <= 30"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(2^n) branch walks in the worst case",
+    "optimalSpace": "O(target) recursion depth beyond the output"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "candidates": [
+          10,
+          1,
+          2,
+          7,
+          6,
+          1,
+          5
+        ],
+        "target": 8
+      },
+      "expected": [
+        [
+          1,
+          1,
+          6
+        ],
+        [
+          1,
+          2,
+          5
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "Four unique bundles; the two 1s are distinct items, which is why [1, 1, 6] exists but no bundle appears twice."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "candidates": [
+          2,
+          5,
+          2,
+          1,
+          2
+        ],
+        "target": 5
+      },
+      "expected": [
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          5
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "The 5 alone works, and one pair of 2s joins the single 1; duplicate 2-branches collapse."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "candidates": [
+          3,
+          3
+        ],
+        "target": 6
+      },
+      "expected": [
+        [
+          3,
+          3
+        ]
+      ],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def combinationSum2(self, candidates: list[int], target: int) -> list[list[int]]:\n        # TODO: sort; take-and-advance, then skip the equal-neighbour run.\n        pass",
+    "cpp": "#include <algorithm>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {\n        // TODO: recurse (index, remaining); after backtracking, hop over duplicates.\n    }\n};",
+    "java": "class Solution {\n    public java.util.List<java.util.List<Integer>> combinationSum2(int[] candidates, int target) {\n        // TODO: sort; take-and-advance, then skip the equal-neighbour run.\n        return new java.util.ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "combinations",
+      "deduplication",
+      "combination-sum-2"
+    ],
+    "hintLevels": [
+      "Level 1: Two rules separate this from unlimited reuse: a taken item advances the index, and equal neighbours may not both open branches.",
+      "Level 2: Sort first. On the take branch recurse with index + 1 and the reduced target; on the skip branch, step the index past every twin of the current value.",
+      "Level 3: The twin-skip loop runs after backtracking, before the exclusion call — that placement is what makes the dedup work at every depth, not just the top."
+    ]
+  }
+}

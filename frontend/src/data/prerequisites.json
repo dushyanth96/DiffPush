@@ -1,0 +1,62 @@
+{
+  "id": "prep-work",
+  "label": "Step 0: Foundations & Sorting",
+  "tag": "Prep Work",
+  "blurb": "Zero-DIFF prep work — references and routines that make the 369 problems feel smaller.",
+  "modules": [
+    {
+      "id": "foundations",
+      "title": "Foundations",
+      "sections": [
+        {
+          "id": "language-basics",
+          "title": "Language Basics",
+          "items": [
+            { "title": "Python — official tutorial", "url": "https://docs.python.org/3/tutorial/", "note": "Syntax, data structures, comprehensions" },
+            { "title": "JavaScript — MDN guide", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide", "note": "Arrays, maps, closures" },
+            { "title": "Java — Oracle trail", "url": "https://docs.oracle.com/javase/tutorial/", "note": "Collections, generics" },
+            { "title": "C++ — learncpp.com", "url": "https://www.learncpp.com/", "note": "STL vectors, maps, iterators" }
+          ]
+        },
+        {
+          "id": "math-bitwise",
+          "title": "Math & Bitwise",
+          "items": [
+            { "title": "cp-algorithms — math", "url": "https://cp-algorithms.com/", "note": "GCD, primes, modular arithmetic" },
+            { "title": "Bitwise tricks — HackerRank", "url": "https://www.hackerrank.com/domains/tutorials/cracking-the-coding-interview", "note": "XOR, masks, bit counting" }
+          ]
+        },
+        {
+          "id": "big-o",
+          "title": "Big-O",
+          "items": [
+            { "title": "Big-O cheat sheet", "url": "https://www.bigocheatsheet.com/", "note": "Complexities for every data structure" },
+            { "title": "cp-algorithms — why O(n log n)", "url": "https://cp-algorithms.com/", "note": "The sorting floor and what breaks it" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sorting",
+      "title": "Sorting Routines",
+      "sections": [
+        {
+          "id": "sorting-breakdown",
+          "title": "The Breakdown",
+          "items": [
+            { "title": "Visualgo — sorting visualizer", "url": "https://visualgo.net/en/sorting", "note": "Watch bubble → quick → merge → heap" },
+            { "title": "GfG — sorting algorithms", "url": "https://www.geeksforgeeks.org/sorting-algorithms/", "note": "Complexity table + when to use which" }
+          ]
+        },
+        {
+          "id": "github-practice",
+          "title": "GitHub Practice References",
+          "items": [
+            { "title": "TheAlgorithms/Python — sorts", "url": "https://github.com/TheAlgorithms/Python/tree/master/sorts", "note": "Clean reference implementations" },
+            { "title": "keon/algorithms — sort", "url": "https://github.com/keon/algorithms/tree/master/algorithms/sort", "note": "Pythonic, well-tested" }
+          ]
+        }
+      ]
+    }
+  ]
+}

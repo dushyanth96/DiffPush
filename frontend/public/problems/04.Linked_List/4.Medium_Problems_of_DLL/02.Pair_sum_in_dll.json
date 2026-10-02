@@ -1,0 +1,61 @@
+{
+  "id": "pair-sum-in-dll",
+  "index": 2,
+  "topic": "04.Linked_List",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Pair sum in dll",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Pair%20sum%20in%20dll",
+    "sourceFilePath": "04.Linked List/4.Medium Problems of DLL/02.Pair_sum_in_dll.cpp"
+  },
+  "narrative": {
+    "title": "Two Pickers Closing in from Both Ends",
+    "scenario": "A warehouse keeps its sorted roster of bin weights on a doubly linked rail, and dispatch needs every pair of bins that together hit an exact truck payload of `target`. Because the rail is two-way, one picker starts at the lightest end and another at the heaviest end, and they walk toward each other — advancing the light picker when the pair under-loads the truck and retreating the heavy picker when it over-loads. Every combination can be checked without ever comparing a bin against itself.",
+    "inputFormat": "An array head of n distinct positive node values forming a sorted doubly linked list, and an integer target.",
+    "outputFormat": "A list of [value1, value2] pairs, each summing to target, in the order the two pointers discover them.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= head[i] <= 10^6",
+      "1 <= target <= 2 * 10^6"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1) extra beyond the output"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [1, 2, 4, 5, 6, 8, 9], "target": 7 },
+      "expected": [[1, 6], [2, 5]],
+      "isPublic": true,
+      "explanation": "The closing pointers land on (1,6) first, then (2,5); both pairs sum to 7."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [1, 5, 6], "target": 6 },
+      "expected": [[1, 5]],
+      "isPublic": true,
+      "explanation": "Only (1,5) hits the payload; the pointer walk stops once the pickers cross."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [2, 4, 6], "target": 100 },
+      "expected": [],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def findPairsWithGivenSum(self, head: list[int], target: int) -> list[list[int]]:\n        # TODO: return every pair [a, b] with a + b == target, in discovery order.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node *prev, *next;\n    Node(int d) : data(d), prev(nullptr), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    vector<pair<int, int>> findPairsWithGivenSum(Node* head, int target) {\n        // TODO: two-pointer walk from both ends; return all pairs summing to target.\n    }\n};",
+    "java": "class Solution {\n    public int[][] findPairsWithGivenSum(int[] head, int target) {\n        // TODO: return every pair with a + b == target, in discovery order.\n        return new int[0][];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "doubly-linked-list", "two-pointers", "pair-sum-in-dll"],
+    "hintLevels": [
+      "Level 1: The list is already sorted — pairs are formed by matching the lightest remaining value against the heaviest.",
+      "Level 2: Walk one pointer forward from the head and another backward from the tail; move whichever side pushes the sum the right way.",
+      "Level 3: Stop the moment the pickers cross (start value >= end value) — continuing would pair a bin with itself and double-count matches."
+    ]
+  }
+}

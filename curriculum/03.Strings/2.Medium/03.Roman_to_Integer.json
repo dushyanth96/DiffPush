@@ -1,0 +1,61 @@
+{
+  "id": "roman-to-integer",
+  "index": 3,
+  "topic": "03.Strings",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Roman to Integer",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Roman%20to%20Integer",
+    "sourceFilePath": "03.Strings/2.Medium/03.Roman_to_Integer.cpp"
+  },
+  "narrative": {
+    "title": "Decoding the Engraver's Numeral Bands",
+    "scenario": "A heritage engraving workshop receives restoration orders whose dates are carved as Roman numeral bands, and the CNC controller needs plain integers before it can program a job. The shop follows the standard convention: a smaller symbol placed before a larger one is subtractive, everything else adds up. The controller parses the band left to right, adding symbol values and flipping to subtraction whenever a smaller symbol precedes a larger.",
+    "inputFormat": "A string s representing a Roman numeral, using the symbols I, V, X, L, C, D and M.",
+    "outputFormat": "The integer value the numeral denotes.",
+    "constraints": [
+      "1 <= s.length <= 15",
+      "s contains only the characters 'I', 'V', 'X', 'L', 'C', 'D', 'M'",
+      "s is guaranteed to be a valid Roman numeral in the range [1, 3999]"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "III" },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Three additive I symbols, no subtractive pairs."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "LVIII" },
+      "expected": 58,
+      "isPublic": true,
+      "explanation": "L is 50, V is 5 and III is 3; no symbol precedes a larger one, so everything adds."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "MCMXCIV" },
+      "expected": 1994,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def romanToInt(self, s: str) -> int:\n        # TODO: convert the Roman numeral s to its integer value.\n        pass",
+    "cpp": "#include <string>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    int romanToInt(string s) {\n        // TODO: convert the Roman numeral s to its integer value.\n    }\n};",
+    "java": "class Solution {\n    public int romanToInt(String s) {\n        // TODO: convert the Roman numeral s to its integer value.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["strings", "symbol-table", "greedy-scan", "roman-to-integer"],
+    "hintLevels": [
+      "Level 1: Every symbol has a fixed value; the only wrinkle is a smaller value standing just before a bigger one.",
+      "Level 2: Scan left to right — add the current symbol's value, but subtract it instead when the next symbol is larger.",
+      "Level 3: The subtractive pairs are exactly IV, IX, XL, XC, CD and CM; equivalently, subtract when value[i] < value[i+1] — and don't forget the final symbol still adds."
+    ]
+  }
+}

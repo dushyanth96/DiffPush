@@ -1,0 +1,61 @@
+{
+  "id": "implement-atoi-via-recursion",
+  "index": 1,
+  "topic": "05.Recursion",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Implement atoi via recursion",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Implement%20atoi%20via%20recursion",
+    "sourceFilePath": "05.Recursion/1.Get Strong Hold/01.Implement_atoi_via_recursion.cpp"
+  },
+  "narrative": {
+    "title": "The Legacy Meter's Recursive Decoder",
+    "scenario": "A field sensor from an older product line transmits its reading as a raw digit string, and the new firmware's parser must reproduce the legacy decoder exactly. The decoder walks the string from its right end, folding each digit into the running value one position at a time, and refuses the whole transmission the moment any character is not a digit. A single leading minus flips the result negative.",
+    "inputFormat": "A string str of ASCII characters, optionally starting with '-'.",
+    "outputFormat": "The integer value of str when every character (after an optional leading '-') is a digit; otherwise -1.",
+    "constraints": [
+      "1 <= str.length <= 10",
+      "str consists of ASCII characters",
+      "the numeric value fits in a 32-bit int"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n) recursion stack"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "str": "123" },
+      "expected": 123,
+      "isPublic": true,
+      "explanation": "Three digits fold left from the right: 3, then 23, then 123."
+    },
+    {
+      "id": "tc-2",
+      "input": { "str": "21a" },
+      "expected": -1,
+      "isPublic": true,
+      "explanation": "The trailing letter fails the digit check, so the entire reading is rejected."
+    },
+    {
+      "id": "tc-3",
+      "input": { "str": "-45" },
+      "expected": -45,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def atoi(self, s: str) -> int:\n        # TODO: fold digits in recursively from the right; return -1 on any non-digit.\n        pass",
+    "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int atoi(string str) {\n        // TODO: recursive digit fold from the last index; -1 marks invalid input.\n    }\n};",
+    "java": "class Solution {\n    public int atoi(String str) {\n        // TODO: recursive digit fold from the right; -1 marks invalid input.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["recursion", "string-parsing", "atoi", "implement-atoi-via-recursion"],
+    "hintLevels": [
+      "Level 1: Work from the last character backwards — each digit multiplies everything before it by ten.",
+      "Level 2: The recursion returns the number formed by the prefix before index i; the current step appends digit i as prev * 10 + digit.",
+      "Level 3: Use a sentinel (a value no valid parse can produce) to propagate 'invalid' up the call chain, and handle the leading '-' by negating only after a valid parse."
+    ]
+  }
+}

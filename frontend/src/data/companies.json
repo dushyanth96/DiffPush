@@ -1,0 +1,82 @@
+[
+  {
+    "id": "google",
+    "name": "Google",
+    "blurb": "Core Google set — strings, graphs and DP from public interview reports.",
+    "problems": [
+      "valid-anagram", "longest-common-prefix", "isomorphic-string", "check-for-rotated-string",
+      "reverse-words-in-string", "find-x-in-sorted-array", "linear-search", "largest-element-in-array",
+      "longest-substring-without-repeating-characters", "longest-palindromic-substring", "rotten-oranges",
+      "count-the-number-of-provinces", "detect-cycle-in-undirected-graph", "bipartite-graph",
+      "surrounded-regions", "01-matrix", "house-robber", "unique-paths",
+      "number-of-subarray-sum-equal-k", "next-permutation", "jump-game", "top-k-frequent-elements",
+      "word-ladder", "median-in-a-stream", "largest-rectangle-in-histogram", "sliding-window-maximum",
+      "minimum-window-substring", "maximum-path-sum-binary-tree", "lowest-common-ancestor-binary-tree",
+      "alien-dictonary"
+    ]
+  },
+  {
+    "id": "amazon",
+    "name": "Amazon",
+    "blurb": "Core Amazon set — arrays, linked lists and trees from public interview reports.",
+    "problems": [
+      "largest-element-in-array", "second-largest-element-in-array", "move-0-s-to-end", "missing-number",
+      "reverse-words-in-string", "valid-parenthesis", "search-in-bst", "intro-to-bst",
+      "sum-problem", "stock-buy-sell", "kadane-s-algorithm", "reverse-ll",
+      "find-mid-of-ll", "detect-loop-in-ll", "diameter-of-binary-tree", "balanced-binary-tree",
+      "height-of-binary-tree", "binary-tree-level-order-traversal", "jump-game", "insert-interval",
+      "longest-substring-without-repeating-characters", "top-k-frequent-elements",
+      "3-sum", "4-sum", "merge-overlapping-subinterval", "copy-ll-with-random-pointers",
+      "lowest-common-ancestor-binary-tree", "min-time-to-burn-binary-tree", "kth-largest-element-in-stream",
+      "word-break"
+    ]
+  },
+  {
+    "id": "meta",
+    "name": "Meta",
+    "blurb": "Core Meta set — strings, two pointers and DP from public interview reports.",
+    "problems": [
+      "valid-anagram", "longest-common-prefix", "reverse-words-in-string", "check-for-rotated-string",
+      "largest-odd-number-in-string", "move-0-s-to-end", "find-x-in-sorted-array", "search-insert-position",
+      "longest-substring-without-repeating-characters", "longest-palindromic-substring", "sum-problem",
+      "number-of-subarray-sum-equal-k", "jump-game", "house-robber",
+      "unique-paths", "minimum-path-sum", "diameter-of-binary-tree", "same-tree-check",
+      "valid-parenthesis-string", "binary-subarrays-with-sum", "longest-repeating-character", "next-permutation",
+      "minimum-window-substring", "median-in-a-stream", "largest-rectangle-in-histogram", "word-break",
+      "sudoku-solver", "n-queens", "shortest-palindrome", "longest-happy-prefix"
+    ]
+  },
+  {
+    "id": "microsoft",
+    "name": "Microsoft",
+    "blurb": "Core Microsoft set — trees, graphs and linked lists from public interview reports.",
+    "problems": [
+      "binary-tree-inorder-traversal", "binary-tree-preorder-traversal", "search-in-bst", "intro-to-bst",
+      "bfs", "dfs", "flood-fill-algorithm", "valid-parenthesis",
+      "reverse-ll", "find-mid-of-ll", "odd-even-ll",
+      "check-for-palindrome-ll", "height-of-binary-tree", "balanced-binary-tree",
+      "validate-bst", "lca-in-bst", "rotten-oranges",
+      "count-the-number-of-provinces", "01-matrix", "house-robber-2",
+      "ninja-training", "frog-k-jumps",
+      "lowest-common-ancestor-binary-tree", "maximum-path-sum-binary-tree", "vertical-order-traversal-binary-tree",
+      "all-nodes-at-distance-k", "word-ladder", "bellman-ford-algorithm",
+      "copy-ll-with-random-pointers", "recover-bst"
+    ]
+  },
+  {
+    "id": "apple",
+    "name": "Apple",
+    "blurb": "Core Apple set — arrays, strings and clean DP from public interview reports.",
+    "problems": [
+      "largest-element-in-array", "missing-number", "max-consecutive-1-s", "longest-common-prefix",
+      "isomorphic-string", "remove-outer-parenthesis", "find-peak-element", "search-insert-position",
+      "stock-buy-sell", "majority-element", "sort-0-1-2", "next-permutation",
+      "longest-palindromic-substring", "implement-atoi", "unique-paths-2", "minimum-path-in-triangle",
+      "diameter-of-binary-tree", "same-tree-check", "fruit-into-baskets", "count-the-number-of-nice-subarrays",
+      "task-scheduler", "merge-k-sorted-lists",
+      "3-sum", "largest-subarray-with-0sum", "flatten-ll",
+      "rotate-ll-k-times", "vertical-order-traversal-binary-tree", "wildcard-matching",
+      "distinct-subsequences", "shortest-common-supersequence"
+    ]
+  }
+]

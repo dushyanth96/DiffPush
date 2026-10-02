@@ -1,0 +1,60 @@
+{
+  "id": "print-lis",
+  "index": 2,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Printing Longest Increasing Subsequence",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=print+longest+increasing+subsequence",
+    "sourceFilePath": "14. Dynamic Programming/7. DP on LIS/02. Print LIS.cpp"
+  },
+  "narrative": {
+    "title": "The Relay Route Printout",
+    "scenario": "The relay planner's follow-up request: don't just count the longest handoff chain — print one. Dispatch wants the actual station tags in order so drivers can rehearse the run. When several chains tie for longest, any one of them is acceptable.",
+    "inputFormat": "An integer n and an array arr of n integers.",
+    "outputFormat": "Return one longest strictly increasing subsequence of arr as an array of its values.",
+    "constraints": [
+      "1 <= n <= 1000",
+      "1 <= arr[i] <= 10^5"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 8, "arr": [10, 9, 2, 5, 3, 7, 101, 18] },
+      "expected": [2, 3, 7, 18],
+      "isPublic": true,
+      "explanation": "One valid length-4 chain; [2, 5, 7, 101] is equally correct."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 6, "arr": [5, 4, 11, 1, 16, 8] },
+      "expected": [5, 11, 16],
+      "isPublic": true,
+      "explanation": "Three rising tags; [4, 11, 16] and [5, 11, 16] both qualify."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 1, "arr": [42] },
+      "expected": [42],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, arr):\n        # Return one longest strictly increasing subsequence.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return one longest strictly increasing subsequence.\n    std::vector<int> solve(int n, std::vector<int>& arr);\n};",
+    "java": "class Solution {\n    // Return one longest strictly increasing subsequence.\n    public int[] solve(int n, int[] arr) {\n        // TODO\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "lis", "reconstruction"],
+    "hintLevels": [
+      "Level 1: Fill the usual length table, but also remember, for each index, who its best predecessor was.",
+      "Level 2: Keep a parent array; on each improvement dp[i] = dp[prev] + 1, store parent[i] = prev.",
+      "Level 3: Start at the table maximum and follow parents backwards, then reverse the collected values."
+    ]
+  }
+}

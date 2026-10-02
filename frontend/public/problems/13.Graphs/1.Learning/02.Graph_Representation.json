@@ -1,0 +1,61 @@
+{
+  "id": "graph-representation",
+  "index": 2,
+  "topic": "13.Graphs",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Graph Representation: Matrix to Adjacency List",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=adjacency+list+graph+representation",
+    "sourceFilePath": "13. Graphs/1. Learning/02. Graph Representation.cpp"
+  },
+  "narrative": {
+    "title": "Reboxing the Warehouse Pairing Ledger",
+    "scenario": "A logistics coordinator keeps pairing records as an edge list — every corridor linking two bays appears exactly once. For the routing software, though, each bay needs its own index card that opens with the bay's own number and then lists every bay directly linked to it, in the order the pairings were logged.",
+    "inputFormat": "An integer n (vertices labelled 0..n-1) and an edge list — each edge is a pair [u, v] of an undirected graph.",
+    "outputFormat": "Return the adjacency list: entry i starts with i followed by all neighbours of i in the order edges were supplied (each undirected edge contributes both directions).",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "0 <= m <= min(n*(n-1)/2, 2 * 10^5)",
+      "No self-loops or duplicate edges"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n + m)",
+    "optimalSpace": "O(n + m)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 4, "edges": [[0, 1], [1, 2], [2, 3]] },
+      "expected": [[0, 1], [1, 0, 2], [2, 1, 3], [3, 2]],
+      "isPublic": true,
+      "explanation": "Each card opens with its own bay, then the linked bays in log order."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 5, "edges": [[0, 1], [0, 4], [1, 4], [2, 3]] },
+      "expected": [[0, 1, 4], [1, 0, 4], [2, 3], [3, 2], [4, 0, 1]],
+      "isPublic": true,
+      "explanation": "Vertex 4 picks up neighbours 0 then 1 as its two pairings are processed."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 3, "edges": [] },
+      "expected": [[0], [1], [2]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, edges):\n        # Return the adjacency list with each vertex leading its own entry.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the adjacency list with each vertex leading its own entry.\n    std::vector<std::vector<int>> solve(int n, std::vector<std::vector<int>>& edges);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return the adjacency list with each vertex leading its own entry.\n    public List<List<Integer>> solve(int n, int[][] edges) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "representation", "adjacency-list", "graph-representation"],
+    "hintLevels": [
+      "Level 1: This is pure re-shelving: turn a pair log into per-vertex cards.",
+      "Level 2: Seed every list with its own vertex id first, then append each edge in both directions as you read it.",
+      "Level 3: Preserve arrival order — no sorting — so the output mirrors the ledger's sequence."
+    ]
+  }
+}

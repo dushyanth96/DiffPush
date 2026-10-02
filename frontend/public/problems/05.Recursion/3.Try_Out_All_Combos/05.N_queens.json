@@ -1,0 +1,87 @@
+{
+  "id": "n-queens",
+  "index": 5,
+  "topic": "05.Recursion",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "N queens",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=N%20queens",
+    "sourceFilePath": "05.Recursion/3.Try Out All Combos/05.N queens.cpp"
+  },
+  "narrative": {
+    "title": "Scheduling Patrols Across a Compound Grid",
+    "scenario": "A security grid places n patrol drones so that no two share a column, a row, or any diagonal — one drone per file, and no clear line of sight along a slope. The dispatcher fills the grid one column at a time, trying each row in the current column, and keeps three occupancy ledgers: rows taken, diagonals sloping one way, and diagonals sloping the other. When all n columns hold a drone, the layout is archived.",
+    "inputFormat": "An integer n, the grid size and drone count.",
+    "outputFormat": "Every distinct layout as n row-strings, each 'Q' marking a drone and '.' an empty cell.",
+    "constraints": [
+      "1 <= n <= 9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n!) upper bound — column-by-column placement with diagonal pruning",
+    "optimalSpace": "O(n^2) to store each board plus O(n) recursion depth"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "n": 4
+      },
+      "expected": [
+        [
+          ".Q..",
+          "...Q",
+          "Q...",
+          "..Q."
+        ],
+        [
+          "..Q.",
+          "Q...",
+          "...Q",
+          ".Q.."
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "The 4-grid has exactly two distinct layouts, mirror images of each other."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "n": 1
+      },
+      "expected": [
+        [
+          "Q"
+        ]
+      ],
+      "isPublic": true,
+      "explanation": "A single drone is trivially safe."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "n": 3
+      },
+      "expected": [],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solveNQueens(self, n: int) -> list[list[str]]:\n        # TODO: place per column; track rows and both diagonal families.\n        pass",
+    "cpp": "#include <string>\n#include <unordered_map>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<string>> solveNQueens(int n) {\n        // TODO: recurse column by column; ledger rows, row+col, row-col.\n    }\n};",
+    "java": "class Solution {\n    public java.util.List<java.util.List<String>> solveNQueens(int n) {\n        // TODO: place per column; track rows and both diagonal families.\n        return new java.util.ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "recursion",
+      "backtracking",
+      "n-queens",
+      "n-queens"
+    ],
+    "hintLevels": [
+      "Level 1: One queen per column removes an entire axis of conflict — only rows and diagonals remain to check.",
+      "Level 2: For the current column, test each row against three ledgers: the row, the anti-diagonal indexed by row + col, and the main diagonal by row - col.",
+      "Level 3: Offset the row - col index by n to keep it non-negative in an array-backed ledger; set and unset the ledger entry around the recursive call."
+    ]
+  }
+}

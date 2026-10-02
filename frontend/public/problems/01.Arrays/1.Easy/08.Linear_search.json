@@ -1,0 +1,61 @@
+{
+  "id": "linear-search",
+  "index": 8,
+  "topic": "01.Arrays",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Linear search",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Linear%20search",
+    "sourceFilePath": "01.Arrays/1.Easy/08.Linear_search.cpp"
+  },
+  "narrative": {
+    "title": "Scanning Telemetry for a Fault Code",
+    "scenario": "An onboard diagnostics unit receives an unsorted batch of error codes and must confirm whether a specific fault code was reported. Because the batch arrives in arbitrary order there is nothing to exploit, so the lookup has to walk the readings until the code shows up. Report where the first matching reading sits, or -1 when the code never appears.",
+    "inputFormat": "An integer n, an array arr of n integers, and an integer k to look for.",
+    "outputFormat": "The 0-indexed position of the first occurrence of k, or -1 if k is absent.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= arr[i] <= 10^9",
+      "-10^9 <= k <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "n": 6, "arr": [9, 7, 2, 16, 4, 18], "k": 16 },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "The readings are unsorted, so the scan advances until 16 appears at index 3."
+    },
+    {
+      "id": "tc-2",
+      "input": { "n": 5, "arr": [1, 2, 3, 4, 5], "k": 5 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The match is the final reading, so the scan has to reach the end of the batch."
+    },
+    {
+      "id": "tc-3",
+      "input": { "n": 4, "arr": [-3, 0, 5, 9], "k": 7 },
+      "expected": -1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def search(self, arr: list[int], n: int, k: int) -> int:\n        # TODO: return the first index holding k, or -1 when k is absent.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int search(const vector<int>& arr, int n, int k) {\n        // TODO: return the first index holding k, or -1 when k is absent.\n    }\n};",
+    "java": "class Solution {\n    public int search(int[] arr, int n, int k) {\n        // TODO: return the first index holding k, or -1 when k is absent.\n        return -1;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "linear-scan", "early-exit", "search"],
+    "hintLevels": [
+      "Level 1: Nothing about the batch is ordered, so every reading is a candidate until one matches.",
+      "Level 2: Walk index by index and compare each reading with the target; as soon as one matches, hand back that index.",
+      "Level 3: If the loop finishes without a match you must still produce a value, and it must not collide with a legal index, which is why -1 is used as the sentinel."
+    ]
+  }
+}

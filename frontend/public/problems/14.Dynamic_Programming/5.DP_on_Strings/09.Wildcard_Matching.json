@@ -1,0 +1,61 @@
+{
+  "id": "wildcard-matching",
+  "index": 9,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Wildcard Matching",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=wildcard+matching",
+    "sourceFilePath": "14. Dynamic Programming/5. DP on Strings/09. Wildcard Matching.cpp"
+  },
+  "narrative": {
+    "title": "The Access Log Filter",
+    "scenario": "A security appliance matches access-log lines against admin-supplied filters. A filter may contain '?' standing for exactly one arbitrary character and '*' standing for any run of characters — including none. The whole line must satisfy the filter, not just a fragment. The matching engine decides, for every (line, filter) pair, whether the pattern covers the line end to end.",
+    "inputFormat": "A string s (the log line) and a pattern p containing letters, '?', and '*'.",
+    "outputFormat": "Return true when p matches the entirety of s under the wildcard rules, otherwise false.",
+    "constraints": [
+      "0 <= len(s), len(p) <= 2000",
+      "s contains only lowercase English letters",
+      "p contains lowercase English letters, '?', and '*'"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*m)",
+    "optimalSpace": "O(m)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "aa", "p": "a" },
+      "expected": false,
+      "isPublic": true,
+      "explanation": "A lone 'a' cannot cover two characters."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "aa", "p": "*" },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "'*' absorbs the whole line, including the empty run."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": "abcde", "p": "a*c?e" },
+      "expected": true,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, s, p):\n        # Return True when pattern p matches all of s.\n        pass",
+    "cpp": "#include <string>\n\nclass Solution {\npublic:\n    // Return true when pattern p matches all of s.\n    bool solve(std::string s, std::string p);\n};",
+    "java": "class Solution {\n    // Return true when pattern p matches all of s.\n    public boolean solve(String s, String p) {\n        // TODO\n        return false;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "strings", "pattern-matching", "wildcard"],
+    "hintLevels": [
+      "Level 1: '?' consumes exactly one character; '*' is the fork — it either eats one more character or vanishes.",
+      "Level 2: match[i][j] = match[i-1][j-1] on literal/'?' match; on '*', match[i-1][j] or match[i][j-1].",
+      "Level 3: A pattern prefix made only of stars matches an empty string — seed that edge before filling."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "valid-parenthesis-string",
+  "index": 4,
+  "topic": "10.Greedy_Approach",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Valid Parenthesis String",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=valid+parenthesis+string",
+    "sourceFilePath": "10. Greedy Approach/1. Easy/04. Valid Parenthesis String.cpp"
+  },
+  "narrative": {
+    "title": "The Wildcard Ledger Reconciliation",
+    "scenario": "A reconciliation script parses ledger lines containing opens, closes, and wildcard tokens that may act as either — or vanish entirely. A line is acceptable if some assignment of the wildcards makes the brackets balance in order. The auditor tracks the lowest and highest plausible open-count while scanning, and accepts the line only if zero opens remains reachable at the end.",
+    "inputFormat": "A string s containing only '(', ')' and '*'.",
+    "outputFormat": "Return true if s can be a valid parenthesis sequence under some wildcard assignment.",
+    "constraints": [
+      "1 <= s.length <= 100",
+      "s[i] is '(', ')' or '*'"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "s": "(*))" },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "The wildcard plays the opener, matching the two closers that follow."
+    },
+    {
+      "id": "tc-2",
+      "input": { "s": "(*)" },
+      "expected": true,
+      "isPublic": true,
+      "explanation": "Here the wildcard acts as the closer."
+    },
+    {
+      "id": "tc-3",
+      "input": { "s": ")(" },
+      "expected": false,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "def check_valid_string(s: str) -> bool:\n    low = high = 0   # loosest/tightest plausible open counts\n    for ch in s:\n        if ch == '(':\n            low += 1\n            high += 1\n        elif ch == ')':\n            high -= 1\n            low = max(low - 1, 0)\n        else:  # '*'\n            high += 1        # treat as '('\n            low = max(low - 1, 0)  # or as ')'\n        if high < 0:\n            return False\n    return low == 0",
+    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool checkValidString(string s) {\n    int low = 0, high = 0;\n    for (char ch : s) {\n        if (ch == '(') { ++low; ++high; }\n        else if (ch == ')') { --high; low = max(low - 1, 0); }\n        else { ++high; low = max(low - 1, 0); }\n        if (high < 0) return false;\n    }\n    return low == 0;\n}",
+    "java": "class Solution {\n    public boolean checkValidString(String s) {\n        int low = 0, high = 0;\n        for (char ch : s.toCharArray()) {\n            if (ch == '(') { ++low; ++high; }\n            else if (ch == ')') { --high; low = Math.max(low - 1, 0); }\n            else { ++high; low = Math.max(low - 1, 0); }\n            if (high < 0) return false;\n        }\n        return low == 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["greedy", "range-tracking", "parenthesis", "valid-parenthesis-string"],
+    "hintLevels": [
+      "Level 1: Instead of trying assignments, track the interval of achievable open-counts.",
+      "Level 2: '(' shifts the interval up; ')' shifts it down; '*' widens it by one on both ends.",
+      "Level 3: Clamp the low end at 0 (wildcards can vanish) and fail only when even the high end goes negative."
+    ]
+  }
+}

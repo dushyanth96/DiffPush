@@ -1,0 +1,62 @@
+{
+  "id": "coin-change-2",
+  "index": 9,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Coin Change II",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=coin+change+ii+combinations",
+    "sourceFilePath": "14. Dynamic Programming/4. DP on Subsequences/09. Coin Change 2.cpp"
+  },
+  "narrative": {
+    "title": "The Vending Route Ledger",
+    "scenario": "A vending operator settles the day's coin boxes and wants to know in how many distinct ways each till total can be composed from the denominations on hand. Hoppers hold unlimited stock of every denomination, and order does not matter — a pile with two 2s and one 1 is the same composition regardless of counting sequence. The ledger reports one number per till: the count of compositions.",
+    "inputFormat": "An integer amount and an array coins of distinct denominations.",
+    "outputFormat": "Return the number of combinations of coins that sum to amount, where each denomination may repeat and order is irrelevant.",
+    "constraints": [
+      "1 <= len(coins) <= 300",
+      "1 <= coins[i] <= 5000",
+      "0 <= amount <= 5000",
+      "the answer fits in a 32-bit signed integer"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*amount)",
+    "optimalSpace": "O(amount)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "amount": 5, "coins": [1, 2, 5] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "5; 2+2+1; 2+1+1+1; 1+1+1+1+1 — four unordered compositions."
+    },
+    {
+      "id": "tc-2",
+      "input": { "amount": 3, "coins": [2] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "Odd totals are impossible with only 2s."
+    },
+    {
+      "id": "tc-3",
+      "input": { "amount": 4, "coins": [1, 2, 3] },
+      "expected": 4,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, amount, coins):\n        # Return the number of unordered combinations making amount.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the number of unordered combinations making amount.\n    int solve(int amount, std::vector<int>& coins);\n};",
+    "java": "class Solution {\n    // Return the number of unordered combinations making amount.\n    public int solve(int amount, int[] coins) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "subsequences", "unbounded", "counting-dp", "coin-change-2"],
+    "hintLevels": [
+      "Level 1: Process denominations one at a time so a composition is never counted in a different order twice.",
+      "Level 2: ways[a] += ways[a - c] sweeping a upward, per coin, keeps combinations ordered by coin identity.",
+      "Level 3: Swapping the loop order (amounts outer, coins inner) would count permutations instead — that's the classic trap."
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "longest-subarray-with-sum-k-containg-ves-and-ves",
+  "index": 13,
+  "topic": "01.Arrays",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Longest subarray with sum k containg +ves and  ves",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Longest%20subarray%20with%20sum%20k%20containing%20positives%20and%20negatives",
+    "sourceFilePath": "01.Arrays/3.Hard/13.Longest_subarray_with_sum_k_containg_ves_and_ves.cpp"
+  },
+  "narrative": {
+    "title": "Widest Reconciled Window in a Signed Ledger",
+    "scenario": "A treasury ledger records signed adjustments per period, so both debits and credits appear in the same stream. The compliance team wants the widest contiguous stretch of periods whose adjustments net out to an exact settlement amount. Because negatives appear, cumulative totals can rise and fall unpredictably.",
+    "inputFormat": "An integer N, an array A of N signed integers, and an integer K, the target net amount.",
+    "outputFormat": "The number of periods in the longest contiguous subarray whose sum equals K, or 0 when no such subarray exists.",
+    "constraints": [
+      "1 <= N <= 10^5",
+      "-10^4 <= A[i] <= 10^4",
+      "-10^9 <= K <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(N)",
+    "optimalSpace": "O(N)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "N": 6, "A": [10, 5, 2, 7, 1, 9], "K": 15 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The stretch 5,2,7,1 nets to 15 and spans four periods, wider than the single 15-like alternatives."
+    },
+    {
+      "id": "tc-2",
+      "input": { "N": 5, "A": [1, -1, 5, -2, 3], "K": 3 },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "The first four periods combine to 3 and still beat the shorter trailing stretch that also nets 3."
+    },
+    {
+      "id": "tc-3",
+      "input": { "N": 2, "A": [0, 0], "K": 0 },
+      "expected": 2,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def lenOfLongSubarr(self, A: list[int], N: int, K: int) -> int:\n        # TODO: return the longest window whose sum equals K, allowing negatives.\n        pass",
+    "cpp": "#include <vector>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    int lenOfLongSubarr(vector<int>& A, int N, int K) {\n        // TODO: return the longest window whose sum equals K, allowing negatives.\n    }\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int lenOfLongSubarr(int[] A, int N, int K) {\n        // TODO: return the longest window whose sum equals K, allowing negatives.\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "prefix-sum", "hash-map", "negative-values", "longest-subarray"],
+    "hintLevels": [
+      "Level 1: A sliding window cannot work here because shrinking the window does not reliably lower the total once debits are allowed.",
+      "Level 2: Compare running totals instead: a window nets to K when two prefixes differ by exactly K, so record the earliest index for each prefix.",
+      "Level 3: Only the first occurrence of a prefix should be stored so the window stays as wide as possible, and the empty prefix must be seeded at index -1 while a target of K equal to a prefix length requirement is handled separately for windows touching the start."
+    ]
+  }
+}

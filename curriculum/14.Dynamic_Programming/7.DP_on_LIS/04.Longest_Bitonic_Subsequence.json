@@ -1,0 +1,60 @@
+{
+  "id": "longest-bitonic-subsequence",
+  "index": 4,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Longest Bitonic Subsequence",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=longest+bitonic+subsequence",
+    "sourceFilePath": "14. Dynamic Programming/7. DP on LIS/04. Longest Bitonic Subsequence.cpp"
+  },
+  "narrative": {
+    "title": "The Cable-Car Ridge Profile",
+    "scenario": "A mountain railway records the elevations of n pylons. A scenic route must climb strictly over a stretch of pylons and then descend strictly over the rest — a mountain shape. The survey team wants the longest such ride measured in pylons visited; a pure climb or a pure descent also counts as scenic.",
+    "inputFormat": "An array nums of n positive integers (pylon elevations).",
+    "outputFormat": "Return the length of the longest subsequence that is strictly increasing then strictly decreasing (either flank may be empty).",
+    "constraints": [
+      "1 <= n <= 1000",
+      "1 <= nums[i] <= 10^5"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [1, 2, 1, 5, 4, 2, 6, 4] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "1, 2, 5, 4, 2 — climb to 5 then fall to 2."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [1, 2, 3, 4, 5] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "A pure climb qualifies with an empty descent flank."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [5, 4, 3, 2, 1] },
+      "expected": 5,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, nums):\n        # Return the longest bitonic (rise then fall) subsequence length.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the longest bitonic (rise then fall) subsequence length.\n    int solve(std::vector<int>& nums);\n};",
+    "java": "class Solution {\n    // Return the longest bitonic (rise then fall) subsequence length.\n    public int solve(int[] nums) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["dynamic-programming", "lis", "bitonic", "two-pass"],
+    "hintLevels": [
+      "Level 1: Every bitonic chain has one summit — measure the climb into it and the fall out of it separately.",
+      "Level 2: Compute LIS ending at i and LDS starting at i; combine as left[i] + right[i] - 1.",
+      "Level 3: The -1 removes the double-counted summit; scan all summits and take the max."
+    ]
+  }
+}

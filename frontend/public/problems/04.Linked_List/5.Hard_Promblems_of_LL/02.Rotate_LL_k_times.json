@@ -1,0 +1,61 @@
+{
+  "id": "rotate-ll-k-times",
+  "index": 2,
+  "topic": "04.Linked_List",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Rotate LL k times",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Rotate%20linked%20list%20k%20times",
+    "sourceFilePath": "04.Linked List/5.Hard Promblems of LL/02.Rotate_LL_k_times.cpp"
+  },
+  "narrative": {
+    "title": "Shunting the Print Queue to the Back of the Line",
+    "scenario": "A print farm's job queue is a single chain, and every shift change the last k jobs are moved — in their existing order — to the front, so long-waiting jobs print first. A counter records the queue length while the tail is temporarily looped back to the head, which turns the chain into a ring: the shift then becomes a single cut at the right spot of that ring rather than k separate moves. Jobs past the cut become the new front, and the ring is cut open again.",
+    "inputFormat": "An array head of n node values and an integer k, the number of right rotations (possibly larger than n).",
+    "outputFormat": "The values of the list after rotating right by k places.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "0 <= k <= 10^9",
+      "-10^9 <= head[i] <= 10^9"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(1)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "head": [1, 2, 3, 4, 5], "k": 2 },
+      "expected": [4, 5, 1, 2, 3],
+      "isPublic": true,
+      "explanation": "The last two jobs (4, 5) move to the front in order; the cut on the ring lands after node 3."
+    },
+    {
+      "id": "tc-2",
+      "input": { "head": [0, 1, 2], "k": 4 },
+      "expected": [2, 0, 1],
+      "isPublic": true,
+      "explanation": "Four rotations on a length-3 queue collapse to one effective rotation via modulo."
+    },
+    {
+      "id": "tc-3",
+      "input": { "head": [1, 2], "k": 2 },
+      "expected": [1, 2],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def rotateRight(self, head: list[int], k: int) -> list[int]:\n        # TODO: rotate right by k places; k may exceed the list length.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nstruct Node {\n    int data;\n    Node* next;\n    Node(int d) : data(d), next(nullptr) {}\n};\n\nclass Solution {\npublic:\n    Node* rotateRight(Node* head, int k) {\n        // TODO: close the ring, cut after (len - k mod len) nodes, return the new head.\n    }\n};",
+    "java": "class Solution {\n    public int[] rotateRight(int[] head, int k) {\n        // TODO: rotate right by k places; k may exceed the list length.\n        return new int[0];\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["linked-list", "rotation", "circular-list", "rotate-ll-k-times"],
+    "hintLevels": [
+      "Level 1: Rotating right by k just means the last k nodes lead — find where to cut after one walk, not k walks.",
+      "Level 2: Measure the length while looping the tail back to the head; the effective shift is k mod length.",
+      "Level 3: The new tail sits at position (len - k mod len - 1) from the old head; sever it, promote its next, and remember to break the ring you closed."
+    ]
+  }
+}

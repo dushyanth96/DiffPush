@@ -1,0 +1,61 @@
+{
+  "id": "flood-fill-algorithm",
+  "index": 3,
+  "topic": "13.Graphs",
+  "difficulty": "Easy",
+  "canonical": {
+    "title": "Flood Fill",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=flood+fill",
+    "sourceFilePath": "13. Graphs/2. Traversal Problems/03. Flood-Fill Algorithm.cpp"
+  },
+  "narrative": {
+    "title": "Repainting the Contiguous Rack Zones",
+    "scenario": "A paint robot on a warehouse mezzanine receives one coordinate and a new shade. It repaints the crate under the nozzle, then rolls to the four edge-adjacent crates — but only across crates that currently wear the exact same shade as the starting one — continuing the spread until the whole matching zone wears the new colour. Crates of a different shade, even a step away, stay untouched.",
+    "inputFormat": "An m x n integer grid image, a start cell (sr, sc), and an integer color.",
+    "outputFormat": "Return the grid after repainting every cell 4-directionally connected to the start that shared the start's original colour.",
+    "constraints": [
+      "1 <= m, n <= 500",
+      "0 <= image[i][j], color <= 10^5",
+      "0 <= sr < m, 0 <= sc < n"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(m * n)",
+    "optimalSpace": "O(m * n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "image": [[1, 1, 1], [1, 1, 0], [1, 0, 1]], "sr": 1, "sc": 1, "color": 2 },
+      "expected": [[2, 2, 2], [2, 2, 0], [2, 0, 1]],
+      "isPublic": true,
+      "explanation": "The connected 1-zone around (1,1) turns 2; the far 1 is diagonally cut off and keeps its colour."
+    },
+    {
+      "id": "tc-2",
+      "input": { "image": [[0, 0], [0, 1]], "sr": 0, "sc": 0, "color": 0 },
+      "expected": [[0, 0], [0, 1]],
+      "isPublic": true,
+      "explanation": "Repainting a zone with its own shade is a no-op everywhere."
+    },
+    {
+      "id": "tc-3",
+      "input": { "image": [[1, 2, 3], [4, 5, 6]], "sr": 0, "sc": 1, "color": 9 },
+      "expected": [[1, 9, 3], [4, 5, 6]],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass Solution:\n    def solve(self, image, sr, sc, color):\n        # Return the grid after the flood fill.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the grid after the flood fill.\n    std::vector<std::vector<int>> solve(\n        std::vector<std::vector<int>>& image, int sr, int sc, int color\n    );\n};",
+    "java": "class Solution {\n    // Return the grid after the flood fill.\n    public int[][] solve(int[][] image, int sr, int sc, int color) {\n        // TODO\n        return image;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "bfs", "flood-fill", "grid", "flood-fill-algorithm"],
+    "hintLevels": [
+      "Level 1: It is a connected-component recolour anchored at one cell.",
+      "Level 2: Capture the start's original shade first; spread only while a neighbour matches that exact shade.",
+      "Level 3: The 'not already the new colour' guard both prevents loops when color equals the source and short-circuits no-op fills."
+    ]
+  }
+}

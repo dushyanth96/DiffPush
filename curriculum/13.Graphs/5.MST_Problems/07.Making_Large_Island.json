@@ -1,0 +1,60 @@
+{
+  "id": "making-large-island",
+  "index": 7,
+  "topic": "13.Graphs",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Making A Large Island",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=making+a+large+island",
+    "sourceFilePath": "13. Graphs/5. MST Problems/07. Making Large Island.cpp"
+  },
+  "narrative": {
+    "title": "One Reclamation, Maximum Harbour",
+    "scenario": "A port authority may reclaim exactly one water cell into usable dock. Planners want the resulting largest connected dock region: measure every existing region, then test each candidate water cell — reclaiming it merges every distinct region touching its four sides, plus the cell itself. If the harbour is already seamless, the answer is simply its full size.",
+    "inputFormat": "An n x n binary matrix grid where 1 is dock and 0 is water.",
+    "outputFormat": "Return the size of the largest island after converting at most one 0 to 1.",
+    "constraints": [
+      "1 <= n <= 500",
+      "grid[i][j] is 0 or 1"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n^2 α(n^2))",
+    "optimalSpace": "O(n^2)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "grid": [[1, 0], [0, 1]] },
+      "expected": 3,
+      "isPublic": true,
+      "explanation": "Reclaiming either water cell bridges the two 1-regions into a size-3 harbour."
+    },
+    {
+      "id": "tc-2",
+      "input": { "grid": [[1, 1], [1, 1]] },
+      "expected": 4,
+      "isPublic": true,
+      "explanation": "No water exists to reclaim — the whole grid is already one island."
+    },
+    {
+      "id": "tc-3",
+      "input": { "grid": [[0, 0], [0, 0]] },
+      "expected": 1,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, grid):\n        # Return the largest island size after one reclamation.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the largest island size after one reclamation.\n    int solve(std::vector<std::vector<int>>& grid);\n};",
+    "java": "class Solution {\n    // Return the largest island size after one reclamation.\n    public int solve(int[][] grid) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "disjoint-set", "island", "grid", "making-large-island"],
+    "hintLevels": [
+      "Level 1: Brute force refills each water cell and re-floods — too slow; measure regions once instead.",
+      "Level 2: Union-find every land region, then for each 0 sum the distinct neighbouring root sizes plus one.",
+      "Level 3: Deduplicate neighbour roots with a set — two sides of the same island must not be double-counted — and never forget the no-water case."
+    ]
+  }
+}

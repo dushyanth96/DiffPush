@@ -1,0 +1,61 @@
+{
+  "id": "rearange-elements-by-sign",
+  "index": 7,
+  "topic": "01.Arrays",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Rearange elements by sign",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=Rearange%20elements%20by%20sign",
+    "sourceFilePath": "01.Arrays/2.Medium/07.Rearange_elements_by_sign.cpp"
+  },
+  "narrative": {
+    "title": "Alternating Charge and Draw in a Battery Cycle Log",
+    "scenario": "A battery test rig records charge steps as positive battery values and discharge steps as negative ones, with equal counts of each. To visualize the cycling profile, the log must be rewritten so charge and draw alternate, the sequence starts on a charge step, and steps of the same polarity keep their original relative order.",
+    "inputFormat": "An array nums of n integers with even length n, containing exactly n/2 positive and n/2 negative values.",
+    "outputFormat": "A rearranged array where values alternate signs starting with a positive one, preserving the original order within each polarity.",
+    "constraints": [
+      "2 <= n <= 2 * 10^5, n is even",
+      "-10^4 <= nums[i] <= 10^4, and nums[i] != 0",
+      "Exactly n/2 values are positive and n/2 are negative"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n) for the output (O(1) if written into the given array)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "nums": [3, 1, -2, -5, 2, -4] },
+      "expected": [3, -2, 1, -5, 2, -4],
+      "isPublic": true,
+      "explanation": "Positives keep the order 3,1,2 and negatives keep -2,-5,-4, interleaved at even and odd slots."
+    },
+    {
+      "id": "tc-2",
+      "input": { "nums": [-1, 1] },
+      "expected": [1, -1],
+      "isPublic": true,
+      "explanation": "The single pair is placed positive-first even though the input leads with a negative value."
+    },
+    {
+      "id": "tc-3",
+      "input": { "nums": [-3, -1, 2, 4] },
+      "expected": [2, -3, 4, -1],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def rearrangeArray(self, nums: list[int]) -> list[int]:\n        # TODO: interleave positives and negatives, preserving order within each group.\n        pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> rearrangeArray(vector<int>& nums) {\n        // TODO: interleave positives and negatives, preserving order within each group.\n    }\n};",
+    "java": "class Solution {\n    public int[] rearrangeArray(int[] nums) {\n        // TODO: interleave positives and negatives, preserving order within each group.\n        return nums;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["arrays", "two-write-pointers", "stable-partition", "sign-alternation"],
+    "hintLevels": [
+      "Level 1: Every value has exactly one legal slot, so the destination of each reading can be computed from which polarity it has.",
+      "Level 2: Keep one write index for the even slots and another for the odd slots, then sweep the log once: positives go to the first writer, negatives to the second, each advancing by two.",
+      "Level 3: Preserving the original order only works if you never disturb the read order while writing, and the input may start with a negative value even though the output must start positive."
+    ]
+  }
+}

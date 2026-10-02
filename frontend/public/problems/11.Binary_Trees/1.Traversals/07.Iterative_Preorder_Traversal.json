@@ -1,0 +1,61 @@
+{
+  "id": "iterative-preorder-traversal",
+  "index": 7,
+  "topic": "11.Binary_Trees",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Iterative Preorder Traversal of Binary Tree",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=binary+tree+preorder+traversal+iterative",
+    "sourceFilePath": "11. Binary Trees/1. Traversals/07. Iterative Preorder Traversal.cpp"
+  },
+  "narrative": {
+    "title": "The Courier's Return-Address Stack",
+    "scenario": "A night-shift courier audits a delivery franchise's hub-and-branch chart without a guide — no recursive dispatchers allowed after midnight. Armed with a clipboard stack of pending stops, he stamps a hub the moment he reaches it and jots its two branches as pending return addresses. By popping the left branch before the right, his stamp order mirrors the official root-first audit sheet.",
+    "inputFormat": "The root of a binary tree given as a level-order array where null marks a missing child.",
+    "outputFormat": "Return an array of node values in preorder, produced without recursion.",
+    "constraints": [
+      "1 <= number of nodes <= 10^5",
+      "-100 <= node value <= 100",
+      "No recursive calls allowed — the traversal must run on an explicit stack"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "tree": [1, 2, 3, 4, 5, null, 6] },
+      "expected": [1, 2, 4, 5, 3, 6],
+      "isPublic": true,
+      "explanation": "Identical to recursive preorder: root, left wing, right wing."
+    },
+    {
+      "id": "tc-2",
+      "input": { "tree": [7] },
+      "expected": [7],
+      "isPublic": true,
+      "explanation": "One node, one stamp — the stack empties immediately after."
+    },
+    {
+      "id": "tc-3",
+      "input": { "tree": [1, 2, 3, 4, null, null, 5] },
+      "expected": [1, 2, 4, 3, 5],
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def solve(self, root):\n        # Return the preorder traversal using an explicit stack (no recursion).\n        pass",
+    "cpp": "#include <vector>\n#include <stack>\n\nstruct TreeNode {\n    int val;\n    TreeNode* left;\n    TreeNode* right;\n    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nclass Solution {\npublic:\n    // Return the preorder traversal using an explicit stack (no recursion).\n    std::vector<int> solve(TreeNode* root);\n};",
+    "java": "import java.util.*;\n\nclass TreeNode {\n    int val;\n    TreeNode left, right;\n    TreeNode(int v) { val = v; }\n}\n\nclass Solution {\n    // Return the preorder traversal using an explicit Deque (no recursion).\n    public List<Integer> solve(TreeNode root) {\n        // TODO\n        return new ArrayList<>();\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["trees", "binary-tree", "traversal", "stack", "iterative-preorder-traversal"],
+    "hintLevels": [
+      "Level 1: Recursion's call stack is doing the bookkeeping for you — replicate it with a real stack data structure.",
+      "Level 2: Pop a node, record it, then push its right child before its left so the left surfaces on top and is handled first.",
+      "Level 3: Push children only when they exist; the loop ends the moment the stack drains, which is your termination signal."
+    ]
+  }
+}

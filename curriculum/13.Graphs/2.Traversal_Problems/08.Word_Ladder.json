@@ -1,0 +1,63 @@
+{
+  "id": "word-ladder",
+  "index": 8,
+  "topic": "13.Graphs",
+  "difficulty": "Hard",
+  "canonical": {
+    "title": "Word Ladder — Shortest Transformation Length",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=word+ladder",
+    "sourceFilePath": "13. Graphs/2. Traversal Problems/08. Word Ladder.cpp"
+  },
+  "narrative": {
+    "title": "The One-Toggle Relay Upgrade Path",
+    "scenario": "A network operations team maintains firmware configs as fixed-length strings, and a change window allows flipping exactly one character slot per deploy. Every intermediate config must come from the approved repository. Given a starting config and a target, the change board wants the minimum number of deploys' worth of configs in a legal upgrade path — or proof that the target is unreachable under the one-toggle rule.",
+    "inputFormat": "Strings beginWord and endWord of equal length, and a list wordList of approved words.",
+    "outputFormat": "Return how many words a valid chain contains from beginWord through to endWord (endpoints included), or 0 when no chain exists.",
+    "constraints": [
+      "1 <= beginWord.length <= 10",
+      "1 <= wordList.length <= 5000",
+      "wordList[i].length == beginWord.length",
+      "All words consist of lowercase English letters",
+      "beginWord does not need to be in wordList; endWord must be for a path to exist"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n * m^2)",
+    "optimalSpace": "O(n * m)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": { "beginWord": "hit", "endWord": "cog", "wordList": ["hot", "dot", "dog", "lot", "log", "cog"] },
+      "expected": 5,
+      "isPublic": true,
+      "explanation": "hit -> hot -> dot -> dog -> cog is the shortest five-word ladder."
+    },
+    {
+      "id": "tc-2",
+      "input": { "beginWord": "hit", "endWord": "cog", "wordList": ["hot", "dot", "dog", "lot", "log"] },
+      "expected": 0,
+      "isPublic": true,
+      "explanation": "The target config was never approved, so no ladder can terminate on it."
+    },
+    {
+      "id": "tc-3",
+      "input": { "beginWord": "a", "endWord": "c", "wordList": ["a", "b", "c"] },
+      "expected": 2,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "from collections import deque\n\nclass Solution:\n    def solve(self, beginWord, endWord, wordList):\n        # Return the shortest ladder length in words, or 0.\n        pass",
+    "cpp": "#include <string>\n#include <vector>\n\nclass Solution {\npublic:\n    // Return the shortest ladder length in words, or 0.\n    int solve(std::string beginWord, std::string endWord,\n              std::vector<std::string>& wordList);\n};",
+    "java": "import java.util.*;\n\nclass Solution {\n    // Return the shortest ladder length in words, or 0.\n    public int solve(String beginWord, String endWord, List<String> wordList) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": ["graphs", "bfs", "implicit-graph", "string", "word-ladder"],
+    "hintLevels": [
+      "Level 1: Words are nodes; a single-character difference is an edge. The question is just shortest path.",
+      "Level 2: Generate neighbours by trying every letter in every slot and checking dictionary membership — far cheaper than pairwise comparisons.",
+      "Level 3: BFS level counting gives the answer directly; dequeuing the endWord returns its level."
+    ]
+  }
+}

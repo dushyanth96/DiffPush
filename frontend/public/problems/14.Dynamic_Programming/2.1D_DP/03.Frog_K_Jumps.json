@@ -1,0 +1,98 @@
+{
+  "id": "frog-k-jumps",
+  "index": 3,
+  "topic": "14.Dynamic_Programming",
+  "difficulty": "Medium",
+  "canonical": {
+    "title": "Frog Jump with K Distances",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=frog+jump+with+k+distances",
+    "sourceFilePath": "14. Dynamic Programming/2. 1D DP/03. Frog K Jumps.cpp"
+  },
+  "narrative": {
+    "title": "The Field Scout's Sprint Budget",
+    "scenario": "A rescue scout traverses n ridge markers and may leap over up to k markers in a single bound. Crossing from marker i to marker j burns stamina equal to the absolute elevation difference between them. The expedition lead needs the least-strenuous itinerary across the ridge, so the scout's wrist computer must report the minimum stamina for the full traverse.",
+    "inputFormat": "Integers n and k, plus an array height of n integers giving each marker's elevation.",
+    "outputFormat": "Return the minimum total stamina to travel from marker 0 to marker n-1 with jumps of at most k.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= k <= 100",
+      "0 <= height[i] <= 10^4"
+    ]
+  },
+  "complexity": {
+    "optimalTime": "O(n*k)",
+    "optimalSpace": "O(n)"
+  },
+  "testCases": [
+    {
+      "id": "tc-1",
+      "input": {
+        "n": 4,
+        "k": 2,
+        "height": [
+          10,
+          40,
+          30,
+          10
+        ]
+      },
+      "expected": 40,
+      "isPublic": true,
+      "explanation": "0 to 2 costs |10-30| = 20, then 2 to 3 costs |30-10| = 20 — total 40."
+    },
+    {
+      "id": "tc-2",
+      "input": {
+        "n": 5,
+        "k": 3,
+        "height": [
+          10,
+          40,
+          50,
+          20,
+          60
+        ]
+      },
+      "expected": 50,
+      "isPublic": true,
+      "explanation": "Hop 0 to 3 directly (|10-20| = 10), then 3 to 4 (|60-20| = 40) — total 50; every other route lands at 50 or worse."
+    },
+    {
+      "id": "tc-3",
+      "input": {
+        "n": 8,
+        "k": 4,
+        "height": [
+          40,
+          10,
+          20,
+          50,
+          30,
+          10,
+          60,
+          20
+        ]
+      },
+      "expected": 20,
+      "isPublic": false
+    }
+  ],
+  "starterCode": {
+    "python": "class Solution:\n    def solve(self, n, k, height):\n        # Return the minimum total stamina from marker 0 to marker n-1.\n        pass",
+    "cpp": "#include <vector>\n\nclass Solution {\npublic:\n    // Return the minimum total stamina from marker 0 to marker n-1.\n    int solve(int n, int k, std::vector<int>& height);\n};",
+    "java": "class Solution {\n    // Return the minimum total stamina from marker 0 to marker n-1.\n    public int solve(int n, int k, int[] height) {\n        // TODO\n        return 0;\n    }\n}"
+  },
+  "aiContext": {
+    "intentTags": [
+      "dynamic-programming",
+      "1d-dp",
+      "min-cost-path",
+      "frog-jump-k"
+    ],
+    "hintLevels": [
+      "Level 1: Same landing logic as the two-hop frog, but now every landing spot within k steps back competes.",
+      "Level 2: best[i] = min over j in 1..k of best[i-j] + |h[i] - h[i-j]|.",
+      "Level 3: Keep the inner loop bounded by i so the first k markers are handled without sentinel values."
+    ]
+  }
+}
