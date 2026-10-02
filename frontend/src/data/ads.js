@@ -12,6 +12,15 @@
 export const MONDIAD_TAG_URL = ''
 export const AADS_TAG_URL = ''
 
+// Mondiad banner delivery (head-loaded via index.html):
+// banner.js scans for divs carrying a data-mndbanid slot id and fills them.
+// This id is assigned to the AI-chat vertical banner slot only.
+export const MONDIAD_BANNER_JS = 'https://ss.mrmnd.com/banner.js'
+export const MONDIAD_VERTICAL_BANNER_ID = '06d8e32a-a0cc-4d2e-a9c5-21b383311e1d'
+
+// How long to wait for a network creative before falling back, per attempt.
+export const AD_FILL_TIMEOUT_MS = 3000
+
 export const HOUSE_PROMO = {
   title: 'Deploy Serverless Redis',
   body: 'Get $100 in cloud credits for your side projects.',
