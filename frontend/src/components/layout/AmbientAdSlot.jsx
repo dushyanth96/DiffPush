@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID, AD_FILL_TIMEOUT_MS } from '../../data/ads.js'
+import { MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID, AD_FILL_TIMEOUT_MS, rescanMondiadSlots } from '../../data/ads.js'
 import { MONDIAD_TAG_URL, AADS_TAG_URL, HOUSE_PROMO, loadAdTag } from '../../data/ads.js'
 
 // Three-stage ad adapter shared by every slot:
@@ -99,6 +99,16 @@ export function AmbientAdSlot({ fitHeight = false }) {
   )
 }
 
+// Queues a Mondiad tag rescan now that this slot's div is in the DOM.
+// Every data-mndbanid slot calls this on mount (the rescan itself fires
+// at most once per page load — see rescanMondiadSlots).
+function useMondiadRescan() {
+  useEffect(() => {
+    const t = setTimeout(rescanMondiadSlots, 0)
+    return () => clearTimeout(t)
+  }, [])
+}
+
 // Vertical banner for the collapsed coach rail (160x600 class). Serves the
 // Mondiad AI-chat banner slot: head-loaded banner.js fills div[data-mndbanid].
 // Fallback-safe: polls for an injected creative; if the slot stays empty
@@ -108,6 +118,7 @@ export function VerticalAdSlot() {
   // null = checking, true = network creative live, false = house fallback
   const [live, setLive] = useState(null)
   const slotRef = useRef(null)
+  useMondiadRescan()
 
   useEffect(() => {
     let cancelled = false
@@ -154,6 +165,7 @@ export function DashboardBannerSlot() {
   // null = checking, true = network creative live, false = house fallback
   const [live, setLive] = useState(null)
   const slotRef = useRef(null)
+  useMondiadRescan()
 
   useEffect(() => {
     let cancelled = false
@@ -206,6 +218,7 @@ export function SidebarBannerSlot() {
   // null = checking, true = network creative live, false = house fallback
   const [live, setLive] = useState(null)
   const slotRef = useRef(null)
+  useMondiadRescan()
 
   useEffect(() => {
     let cancelled = false

@@ -24,6 +24,24 @@ export const MONDIAD_SIDEBAR_BANNER_ID = 'bb4e890f-5d15-408f-aea7-353fa89ee5b8'
 // How long to wait for a network creative before falling back, per attempt.
 export const AD_FILL_TIMEOUT_MS = 3000
 
+// Re-triggers the head-loaded Mondiad tag so it picks up slot divs that
+// mounted after its initial scan. banner.js scans for div[data-mndbanid]
+// once at load and does not observe later DOM mutations, so React-rendered
+// slots (which mount after the tag runs) are never filled without this.
+// Safe to call from every slot; the rescan fires at most once per page load.
+let mondiadRescanQueued = false
+export function rescanMondiadSlots() {
+  try {
+    if (mondiadRescanQueued || !document.querySelector('div[data-mndbanid]')) return
+    mondiadRescanQueued = true
+    const script = document.createElement('script')
+    script.src = MONDIAD_BANNER_JS
+    script.async = true
+    script.dataset.mndRescan = '1'
+    document.head.appendChild(script)
+  } catch {}
+}
+
 export const HOUSE_PROMO = {
   title: 'Deploy Serverless Redis',
   body: 'Get $100 in cloud credits for your side projects.',
