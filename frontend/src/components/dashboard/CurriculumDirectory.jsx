@@ -2,7 +2,7 @@ import React, { useMemo, useState, Fragment } from 'react'
 import { Check, ChevronDown, ChevronRight, Star, Circle } from 'lucide-react'
 import { getTopics, getByTopic, getProblemMeta } from '../../data/curriculum.js'
 import { FIRST_BLOOD_PATHS, GOALS } from '../../hooks/useTracker.js'
-import { SlimAdSlot, DashboardBannerSlot } from '../layout/AmbientAdSlot.jsx'
+import { DashboardBannerSlot } from '../layout/AmbientAdSlot.jsx'
 import { PrepWorkCard } from './PrepWorkCard.jsx'
 
 const DIFF_STYLE = {
@@ -234,8 +234,9 @@ export function CurriculumDirectory({ tracker }) {
         {visibleTopics.map((t, i) => (
           <Fragment key={t.id}>
             <TopicAccordion topic={t} tracker={tracker} />
-            {(i + 1) % 6 === 3 && i + 1 < visibleTopics.length && <DashboardBannerSlot />}
-            {(i + 1) % 6 === 0 && i + 1 < visibleTopics.length && <SlimAdSlot />}
+            {/* Single in-feed banner: one Mondiad slot after the 3rd topic.
+                Together with the sidebar slot that's the only 2 ads on home. */}
+            {i === 2 && i + 1 < visibleTopics.length && <DashboardBannerSlot />}
           </Fragment>
         ))}
         {visibleTopics.length === 0 && (
