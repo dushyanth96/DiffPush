@@ -8,7 +8,7 @@ import { getProblemMeta, getByTopic, loadManifest } from '../../data/curriculum.
 import { LANGUAGES, langById, loadCode, saveCode, starterFor } from '../../data/languages.js'
 import { useRunner, ENGINES } from '../../hooks/useRunner.js'
 import { useRoomLive } from '../../hooks/useRoomLive.js'
-import { submitSolve } from '../../data/solve.js'
+import { submitSolve, commitExtras } from '../../data/solve.js'
 import { fetchRoomMeta, LOBBY_CODE } from '../../data/rooms.js'
 import { defineObsidian } from '../workspace/Workspace.jsx'
 import { VictoryModal } from '../modals/VictoryModal.jsx'
@@ -153,6 +153,7 @@ function ArenaInner({ code, tracker, github, onBack }) {
       try {
         ({ result, commitInfo: ci } = await submitSolve({
           tracker, github, slug: selId, meta, problem, code: codeText, totalMs, language: langId,
+          ...commitExtras(selId, payload),
         }))
       } catch { /* offline / commit failed — still celebrate the pass */ }
       setVictoryMs(totalMs)

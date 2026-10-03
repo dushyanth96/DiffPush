@@ -11,8 +11,8 @@ const LS_MODELS = 'builtdiff:llm:models'
 
 const FALLBACK_PROVIDERS = [
   { id: 'gemini', label: 'Google Gemini', models: ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash-lite', 'gemini-2.5-flash-lite'], default: 'gemini-3.8-flash', keyUrl: 'https://aistudio.google.com/apikey', note: 'Free tier — if 3.8 is busy, drop to a lite model' },
-  { id: 'groq', label: 'Groq', models: ['llama-3.1-8b-instant', 'openai/gpt-oss-20b', 'llama-3.3-70b-versatile', 'openai/gpt-oss-120b'], default: 'llama-3.1-8b-instant', keyUrl: 'https://console.groq.com/keys', note: 'Free tier, very fast inference' },
-  { id: 'openrouter', label: 'OpenRouter', models: ['meta-llama/llama-3.3-70b-instruct:free', 'deepseek/deepseek-chat-v3-0324:free'], default: 'meta-llama/llama-3.3-70b-instruct:free', keyUrl: 'https://openrouter.ai/keys', note: 'Free :free-suffixed models', anyModel: true },
+  { id: 'groq', label: 'Groq', models: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b', 'moonshotai/kimi-k2-instruct'], default: 'openai/gpt-oss-20b', keyUrl: 'https://console.groq.com/keys', note: 'Free tier, very fast inference' },
+  { id: 'openrouter', label: 'OpenRouter', models: ['qwen/qwen3-8-27b:free', 'cohere/north-mini-code:free', 'thinkingmachines/inkling-small:free', 'google/gemma-4-26b-a4b-it:free', 'nvidia/nemotron-3-super-120b-a12b:free'], default: 'qwen/qwen3-8-27b:free', keyUrl: 'https://openrouter.ai/keys', note: 'Free :free-suffixed models — Qwen default, North for code', anyModel: true },
 ]
 
 // Sanitize a saved model against the (rotating) provider catalog:

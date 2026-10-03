@@ -17,6 +17,42 @@ def _safe_segment(s: str) -> str:
     return re.sub(r"[^A-Za-z0-9._-]+", "-", (s or "").strip()).strip("-") or "general"
 
 
+def _comment_prefix(ext: str) -> str:
+    return "#" if ext == "py" else "//"
+
+
+def _compact(value, limit: int = 180) -> str:
+    """One-line JSON-ish rendering for test case values in comments."""
+    try:
+        s = json.dumps(value, ensure_ascii=False, sort_keys=True)
+    except Exception:
+        s = str(value)
+    s = " ".join(s.split())
+    return s if len(s) <= limit else s[: limit - 1] + "…"
+
+
+def format_solution_file(*, title: str, topic: str, question_url: str,
+                         code: str, ext: str, passed_tests) -> str:
+    """Wrap raw solution code with the DiffPush header/footer comment block:
+
+    header: question title + topic, full-question link on our site.
+    footer: the test cases that passed, as comments.
+    """
+    p = _comment_prefix(ext)
+    lines = [f"{p} {title} — {topic}"]
+    if (question_url or "").strip():
+        lines.append(f"{p} For full question visit: {question_url.strip()}")
+    lines.append(f"{p} Solved via DiffPush — pushed from the workspace on green.")
+    body = (code or "").rstrip("\n")
+    tests = [t for t in (passed_tests or []) if isinstance(t, dict)][:8]
+    if tests:
+        footer = [f"{p} Passed test cases:"]
+        for i, t in enumerate(tests, 1):
+            footer.append(f"{p} {i}. Input: {_compact(t.get('input'))} => Expected: {_compact(t.get('expected'))}")
+        return "\n".join(lines) + "\n" + body + "\n" + "\n".join(footer) + "\n"
+    return "\n".join(lines) + "\n" + body + "\n"
+
+
 class GitHubError(Exception):
     def __init__(self, message, status=None, retriable=False):
         super().__init__(message)
@@ -163,7 +199,15 @@ async def push_solution_commit(access_token: str, owner: str, repo_name: str,
     sol_path = f"{topic}/{level}/{index}_{slug}.{ext}" if level != "general" else f"{topic}/{index}_{slug}.{ext}"
     tc, sc = commit_data.get("timeComplexity", "?"), commit_data.get("spaceComplexity", "?")
     sol_msg = f"feat({topic}): solve {commit_data['canonicalTitle']} [Time: {tc} | Space: {sc}]"
-    sol_b64 = base64.b64encode(commit_data["code"].encode("utf-8")).decode()
+    sol_text = format_solution_file(
+        title=commit_data["canonicalTitle"],
+        topic=topic,
+        question_url=commit_data.get("questionUrl") or "",
+        code=commit_data["code"],
+        ext=ext,
+        passed_tests=commit_data.get("passedTests") or [],
+    )
+    sol_b64 = base64.b64encode(sol_text.encode("utf-8")).decode()
 
     headers = _headers(access_token)
     async with httpx.AsyncClient(timeout=30) as client:

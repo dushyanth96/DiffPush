@@ -234,9 +234,8 @@ export function CurriculumDirectory({ tracker }) {
         {visibleTopics.map((t, i) => (
           <Fragment key={t.id}>
             <TopicAccordion topic={t} tracker={tracker} />
-            {/* Single in-feed banner: one Mondiad slot after the 3rd topic.
-                Together with the sidebar slot that's the only 2 ads on home. */}
-            {i === 2 && i + 1 < visibleTopics.length && <DashboardBannerSlot />}
+            {/* In-feed banners below the 3rd and 13th topics. */}
+            {(i === 2 || i === 12) && <DashboardBannerSlot />}
           </Fragment>
         ))}
         {visibleTopics.length === 0 && (

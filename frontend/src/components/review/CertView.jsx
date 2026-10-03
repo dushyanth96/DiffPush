@@ -19,8 +19,8 @@ export function CertView({ username, onBack }) {
         if (!r.ok) throw new Error('GitHub user not found')
         return r.json()
       }),
-      fetch(`https://api.github.com/repos/${username}/builtdiff-solutions/contents/.builtdiff/tracker.json`).then((r) => {
-        if (!r.ok) throw new Error('No public BuiltDiff solutions repo')
+      fetch(`https://api.github.com/repos/${username}/diffpush-solutions/contents/.builtdiff/tracker.json`).then((r) => {
+        if (!r.ok) throw new Error('No public DiffPush solutions repo')
         return r.json()
       }).then((j) => JSON.parse(decodeB64(j.content))),
     ])

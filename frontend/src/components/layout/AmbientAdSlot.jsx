@@ -113,10 +113,12 @@ function useMondiadRescan() {
 // not the slot div: banner.js mutates/removes div[data-mndbanid] behind
 // React's back, so that node must never be reconciled (conditionally
 // unmounting it throws removeChild NotFoundError and blanks the page).
-// Anything the tag renders lands inside the frame, so scanning the frame
-// also survives the tag replacing the slot node outright. Note: `a` is
-// deliberately excluded — our always-mounted fallback promo contains a link,
-// and only real creatives (iframe/img/ins/video/canvas) count as live.
+// Detection is content-based, not tag-based: anything the tag renders
+// counts — real creatives (iframe/img/ins/video/canvas), demo-mode testing
+// placeholders (plain elements/text), or a replacement node the tag swaps
+// in beside our own. Our own nodes are marked (data-mndbanid / data-house)
+// so a foreign node is unambiguous signal. Note: `a` is excluded from the
+// creative selector — our always-mounted fallback promo contains a link.
 function useMondiadFill(frameRef) {
   // null = checking, true = network creative live, false = house fallback
   const [live, setLive] = useState(null)
@@ -126,8 +128,15 @@ function useMondiadFill(frameRef) {
     let giveUp = 0
     const isFilled = () => {
       try {
-        const n = frameRef.current
-        return !!n && n.querySelector('iframe, img, ins, video, canvas') !== null
+        const f = frameRef.current
+        if (!f) return false
+        if (f.querySelector('iframe, img, ins, video, canvas')) return true
+        const slot = f.querySelector('div[data-mndbanid]')
+        if (slot && (slot.childElementCount > 0 || slot.innerHTML.trim())) return true
+        for (const child of f.children) {
+          if (!child.hasAttribute('data-mndbanid') && !child.hasAttribute('data-house')) return true
+        }
+        return false
       } catch { return false }
     }
     const stop = () => { clearInterval(poll); clearTimeout(giveUp) }
@@ -162,7 +171,7 @@ export function VerticalAdSlot() {
       <p className="eyebrow text-center mb-1.5 shrink-0">PARTNER</p>
       <div ref={frameRef} className="flex-1 min-h-[140px] rounded-md bg-raised hairline overflow-hidden flex flex-col items-center justify-between gap-3 py-4">
         <div data-mndbanid={MONDIAD_VERTICAL_BANNER_ID} className={`w-full h-full min-h-[120px]${live === false ? ' hidden' : ''}`} />
-        <div className={live === false ? 'contents' : 'hidden'}>
+        <div data-house="1" className={live === false ? 'contents' : 'hidden'}>
           <HousePromo vertical />
         </div>
       </div>
@@ -187,8 +196,8 @@ export function DashboardBannerSlot() {
       style={{ contain: 'layout' }}
       aria-label="Sponsor"
     >
-      <div data-mndbanid={MONDIAD_DASHBOARD_BANNER_ID} className={`w-full h-full${live === false ? ' hidden' : ''}`} />
-      <div className={live === false ? 'contents' : 'hidden'}>
+      <div data-mndbanid={MONDIAD_DASHBOARD_BANNER_ID} className={`w-full h-full flex items-center justify-center${live === false ? ' hidden' : ''}`} />
+      <div data-house="1" className={live === false ? 'contents' : 'hidden'}>
         <HousePromo className="hidden sm:flex items-center justify-center gap-3 h-full px-4" />
         <HousePromo className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
       </div>
@@ -217,7 +226,7 @@ export function SidebarBannerSlot() {
         aria-label="Sponsor"
       >
         <div data-mndbanid={MONDIAD_SIDEBAR_BANNER_ID} className={`w-full h-full${live === false ? ' hidden' : ''}`} />
-        <div className={live === false ? 'contents' : 'hidden'}>
+        <div data-house="1" className={live === false ? 'contents' : 'hidden'}>
           <HousePromo className="hidden sm:flex flex-col justify-between p-3 h-full" />
           <HousePromo className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
         </div>

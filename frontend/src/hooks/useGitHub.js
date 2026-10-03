@@ -53,6 +53,48 @@ function mergeSquares(a = {}, b = {}) {
   return out
 }
 
+const GH_API = 'https://api.github.com'
+const SOLUTIONS_REPO = 'diffpush-solutions'
+const LANG_EXTS = { python: 'py', cpp: 'cpp', java: 'java', javascript: 'js' }
+
+function safeSegment(s) {
+  return String(s ?? '').replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'general'
+}
+
+// Fetch the solution file this user previously pushed for a problem.
+// Mirrors the backend push path (topic/level/index_slug.ext). Tries the
+// requested language first, then every other known extension (the push may
+// predate a language switch). Returns { code, path } or null.
+export async function fetchPushedSolution({ token, login, slug, meta, language }) {
+  if (!token || !login || !slug || !meta?.topic) return null
+  const level = safeSegment(meta.level || '')
+  const index = String(meta.index ?? 0).padStart(3, '0')
+  const dir = level !== 'general' ? `${meta.topic}/${level}` : `${meta.topic}`
+  const exts = [LANG_EXTS[language] ?? 'py', ...Object.values(LANG_EXTS)]
+    .filter((e, i, a) => a.indexOf(e) === i)
+  for (const ext of exts) {
+    const path = `${dir}/${index}_${slug}.${ext}`
+    let res
+    try {
+      res = await fetch(`${GH_API}/repos/${login}/${SOLUTIONS_REPO}/contents/${path}?ref=main`, {
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
+      })
+    } catch { return null }
+    if (res.status === 404) continue
+    if (!res.ok) return null
+    try {
+      const data = await res.json()
+      if (!data.content) return null
+      const bin = atob(String(data.content).replace(/\s/g, ''))
+      const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0))
+      const code = new TextDecoder().decode(bytes)
+      if (code.trim()) return { code, path }
+      return null
+    } catch { return null }
+  }
+  return null
+}
+
 export function useGitHub(tracker) {
   const [token, setTokenState] = useState(() => localStorage.getItem(TOKEN_KEY))
   const [profile, setProfile] = useState(null)

@@ -21,6 +21,8 @@ class CommitPayload(BaseModel):
     language: str = "python"
     timeComplexity: str = "?"
     spaceComplexity: str = "?"
+    questionUrl: str = ""
+    passedTests: list = []
     trackerState: dict
 
 

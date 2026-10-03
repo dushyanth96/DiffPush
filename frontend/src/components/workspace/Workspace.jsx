@@ -13,13 +13,14 @@ import {
   askAI, buildMentorSystem,
 } from '../../data/chat.js'
 import { REPO_URL } from '../../data/repo.js'
-import { submitSolve } from '../../data/solve.js'
-import { AmbientAdSlot, VerticalAdSlot } from '../layout/AmbientAdSlot.jsx'
+import { submitSolve, commitExtras } from '../../data/solve.js'
+import { fetchPushedSolution } from '../../hooks/useGitHub.js'
+import { SidebarBannerSlot, VerticalAdSlot } from '../layout/AmbientAdSlot.jsx'
 import { VictoryModal, LanguageRequestModal, nextUnsolvedInTopic } from '../modals/VictoryModal.jsx'
 const DIFF_STYLE = {
   Baseline: 'text-diff-emerald border-diff-emerald/30 bg-diff-emerald/10',
   'Standard Bar': 'text-diff-amber border-diff-amber/30 bg-diff-amber/10',
-  'BuiltDiff Tier': 'text-diff-rose border-diff-rose/30 bg-diff-rose/10',
+  'DiffPush Tier': 'text-diff-rose border-diff-rose/30 bg-diff-rose/10',
 }
 
 export function defineObsidian(monaco) {
@@ -89,8 +90,11 @@ export function Workspace({ slug, tracker, github, onBack }) {
   const [coachKey, setCoachKey] = useState('')
   const [showKey, setShowKey] = useState(false)
   const [coachSaved, setCoachSaved] = useState(false)
+  const [pushedLoaded, setPushedLoaded] = useState(false)
+  const pushedTried = useRef(new Set())
 
   const editorRef = useRef(null)
+  const chatScrollRef = useRef(null)
   const { run: codeRun } = useRunner()
 
   // load manifest entry + full problem JSON (code follows via the language effect)
@@ -115,14 +119,39 @@ export function Workspace({ slug, tracker, github, onBack }) {
 
   // per-language code: saved draft first, else the language starter.
   // Reloads on language switch (the old buffer is snapshotted first).
+  // If the problem is already solved + pushed and there is no local draft,
+  // pull the pushed solution back down from the user's GitHub repo.
   useEffect(() => {
     if (!problem) return
     let cancelled = false
+    setPushedLoaded(false)
     loadCode(slug, langPick.id, problem)
-      .then((c) => { if (!cancelled) setCode(c) })
+      .then(async (c) => {
+        if (cancelled) return
+        setCode(c)
+        try {
+          const starter = starterFor(problem, langPick.id)
+          const hasDraft = c && c !== starter
+          const key = `${slug}::${langPick.id}`
+          if (!hasDraft && !pushedTried.current.has(key)
+            && tracker.isSolved(slug) && github.connected && github.profile?.login && meta) {
+            pushedTried.current.add(key)
+            const remote = await fetchPushedSolution({
+              token: github.token, login: github.profile.login,
+              slug, meta, language: langPick.id,
+            })
+            if (!cancelled && remote?.code) {
+              saveCode(slug, langPick.id, remote.code)
+              setCode(remote.code)
+              setPushedLoaded(true)
+            }
+          }
+        } catch {}
+      })
       .catch(() => {})
     return () => { cancelled = true }
-  }, [problem, slug, langPick.id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [problem, slug, langPick.id, github.connected])
 
   const switchLanguage = (l) => {
     if (l.id === langPick.id) { setLangMenu(false); return }
@@ -152,6 +181,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
       try {
         ({ result, commitInfo: ci } = await submitSolve({
           tracker, github, slug, meta, problem, code, totalMs, language: langPick.id,
+          ...commitExtras(slug, payload),
         }))
       } catch { /* offline / commit failed — still celebrate the pass */ }
       setVictoryMs(totalMs)
@@ -171,6 +201,14 @@ export function Workspace({ slug, tracker, github, onBack }) {
     window.addEventListener('keydown', h)
     return () => window.removeEventListener('keydown', h)
   })
+
+  // Coach chat follows new messages: every send/reply/error lands in view.
+  useEffect(() => {
+    try {
+      const n = chatScrollRef.current
+      if (n) n.scrollTop = n.scrollHeight
+    } catch {}
+  }, [mentor])
 
   const passedCount = useMemo(
     () => (runResult?.results ?? []).filter((r) => r.passed).length,
@@ -300,6 +338,11 @@ export function Workspace({ slug, tracker, github, onBack }) {
           <span className="text-slate-700">/</span>{' '}
           <span className="text-slate-200 font-medium">{meta.canonicalTitle}</span>
         </span>
+        {pushedLoaded && (
+          <span className="font-mono text-[11px] text-diff-emerald" title="Loaded the solution you previously pushed to your diffpush-solutions repo">
+            · GitHub solution loaded
+          </span>
+        )}
         <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${DIFF_STYLE[meta.difficulty] ?? ''}`}>{meta.difficulty}</span>
         <span className="hidden md:inline font-mono text-[11px] text-slate-500 ml-2">
           Optimal: {meta.optimalTime} · {meta.optimalSpace}
@@ -424,10 +467,11 @@ export function Workspace({ slug, tracker, github, onBack }) {
             </div>
             </div>
           </div>
-          {/* sponsor takes the remaining 30% of the question column */}
+          {/* sponsor takes the remaining 30% of the question column —
+              same square Mondiad banner as the dashboard sidebar */}
           <div className="flex min-h-0 border-t border-border p-2 lg:flex-[30] lg:min-h-0">
-            <div className="w-full h-full min-h-0">
-              <AmbientAdSlot fitHeight />
+            <div className="w-full h-full min-h-0 overflow-y-auto">
+              <SidebarBannerSlot />
             </div>
           </div>
         </section>
@@ -636,6 +680,12 @@ export function Workspace({ slug, tracker, github, onBack }) {
                     </span>
                   </div>
                   <p className="mt-2 text-[11px] leading-snug text-slate-600">Keys stay in this browser only — sent per-request in headers, never stored on any server.</p>
+                  <p className="mt-1.5 text-[11px] leading-snug text-slate-600">
+                    If a model fails, switch to another model. If nothing works,{' '}
+                    <a href={`${REPO_URL}/issues/new`} target="_blank" rel="noreferrer" className="text-diff-emerald hover:underline">
+                      raise a request here <ExternalLink size={10} className="inline" />
+                    </a>
+                  </p>
                 </>
               )}
             </div>
@@ -649,7 +699,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
               <button key={kind} onClick={() => askMentor(kind)} className="btn-ghost shrink-0 px-2.5 h-7 rounded-md text-[12px] text-slate-300">{label}</button>
             ))}
           </div>
-          <div className="flex-1 lg:overflow-y-auto px-3 py-2 space-y-2 min-h-0">
+          <div ref={chatScrollRef} className="flex-1 lg:overflow-y-auto px-3 py-2 space-y-2 min-h-0">
             {mentor.map((m, i) => (
               <div key={i} className={`rounded-md p-2.5 text-[12px] leading-relaxed whitespace-pre-wrap ${m.pending ? 'opacity-70 ' : ''}${m.role === 'mentor' ? 'bg-surface hairline text-slate-300' : 'bg-raised text-slate-400 ml-6'}`}>
                 {m.role === 'mentor' && <p className="font-mono text-[10px] text-diff-emerald mb-1">MENTOR</p>}
