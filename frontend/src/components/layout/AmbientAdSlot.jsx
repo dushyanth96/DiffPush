@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { MONDIAD_VERTICAL_BANNER_ID, AD_FILL_TIMEOUT_MS } from '../../data/ads.js'
+import { MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID, AD_FILL_TIMEOUT_MS } from '../../data/ads.js'
 import { MONDIAD_TAG_URL, AADS_TAG_URL, HOUSE_PROMO, loadAdTag } from '../../data/ads.js'
 
 // Three-stage ad adapter shared by every slot:
@@ -140,6 +140,113 @@ export function VerticalAdSlot() {
         {live === false
           ? <HousePromo vertical />
           : <div ref={slotRef} data-mndbanid={MONDIAD_VERTICAL_BANNER_ID} className="w-full h-full min-h-[120px]" />}
+      </div>
+    </div>
+  )
+}
+
+// In-feed Mondiad leaderboard for the dashboard curriculum list.
+// Serves MONDIAD_DASHBOARD_BANNER_ID: head-loaded banner.js fills
+// div[data-mndbanid]. Same contract as VerticalAdSlot — poll for an injected
+// creative, fall back to the static house promo on block/timeout/no-fill,
+// fixed frame so neither outcome shifts layout.
+export function DashboardBannerSlot() {
+  // null = checking, true = network creative live, false = house fallback
+  const [live, setLive] = useState(null)
+  const slotRef = useRef(null)
+
+  useEffect(() => {
+    let cancelled = false
+    let poll = 0
+    let giveUp = 0
+    const node = () => slotRef.current
+    const isFilled = () => {
+      try {
+        const n = node()
+        return !!n && n.querySelector('iframe, img, ins, a, video, canvas') !== null
+      } catch { return false }
+    }
+    const stop = () => { clearInterval(poll); clearTimeout(giveUp) }
+    if (isFilled()) { setLive(true); return }
+    poll = setInterval(() => {
+      if (cancelled) return
+      if (isFilled()) { stop(); if (!cancelled) setLive(true) }
+    }, 500)
+    giveUp = setTimeout(() => {
+      stop()
+      if (!cancelled) setLive((v) => (v === true ? v : false))
+    }, AD_FILL_TIMEOUT_MS)
+    return () => { cancelled = true; stop() }
+  }, [])
+
+  return (
+    <div
+      className="mx-auto overflow-hidden rounded-md bg-surface hairline h-[50px] w-full max-w-[320px] sm:h-[90px] sm:max-w-[728px] my-1"
+      style={{ contain: 'layout' }}
+      aria-label="Sponsor"
+    >
+      {live === false
+        ? (
+          <>
+            <HousePromo className="hidden sm:flex items-center justify-center gap-3 h-full px-4" />
+            <HousePromo className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
+          </>
+        )
+        : <div ref={slotRef} data-mndbanid={MONDIAD_DASHBOARD_BANNER_ID} className="w-full h-full" />}
+    </div>
+  )
+}
+
+// Sidebar Mondiad banner for the dashboard command-center rail.
+// Serves MONDIAD_SIDEBAR_BANNER_ID: head-loaded banner.js fills
+// div[data-mndbanid]. Same frame as AmbientAdSlot (300x250 desktop,
+// 320x50 mobile, contain:layout) and same fallback contract — poll for an
+// injected creative, swap to the static house promo on block/timeout/no-fill.
+export function SidebarBannerSlot() {
+  // null = checking, true = network creative live, false = house fallback
+  const [live, setLive] = useState(null)
+  const slotRef = useRef(null)
+
+  useEffect(() => {
+    let cancelled = false
+    let poll = 0
+    let giveUp = 0
+    const node = () => slotRef.current
+    const isFilled = () => {
+      try {
+        const n = node()
+        return !!n && n.querySelector('iframe, img, ins, a, video, canvas') !== null
+      } catch { return false }
+    }
+    const stop = () => { clearInterval(poll); clearTimeout(giveUp) }
+    if (isFilled()) { setLive(true); return }
+    poll = setInterval(() => {
+      if (cancelled) return
+      if (isFilled()) { stop(); if (!cancelled) setLive(true) }
+    }, 500)
+    giveUp = setTimeout(() => {
+      stop()
+      if (!cancelled) setLive((v) => (v === true ? v : false))
+    }, AD_FILL_TIMEOUT_MS)
+    return () => { cancelled = true; stop() }
+  }, [])
+
+  return (
+    <div className="card p-3">
+      <p className="eyebrow mb-2">PARTNER SPONSOR</p>
+      <div
+        className="mx-auto overflow-hidden rounded-md bg-raised hairline w-full h-[50px] max-w-[320px] sm:h-[250px] sm:max-w-[300px]"
+        style={{ contain: 'layout' }}
+        aria-label="Sponsor"
+      >
+        {live === false
+          ? (
+            <>
+              <HousePromo className="hidden sm:flex flex-col justify-between p-3 h-full" />
+              <HousePromo className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
+            </>
+          )
+          : <div ref={slotRef} data-mndbanid={MONDIAD_SIDEBAR_BANNER_ID} className="w-full h-full" />}
       </div>
     </div>
   )

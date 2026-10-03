@@ -4,7 +4,7 @@ import { useTracker } from './hooks/useTracker.js'
 import { useGitHub } from './hooks/useGitHub.js'
 import { Navbar } from './components/layout/Navbar.jsx'
 import { MasterProgressCard, RecallCard, SafetyCard } from './components/dashboard/TelemetryDeck.jsx'
-import { AmbientAdSlot } from './components/layout/AmbientAdSlot.jsx'
+import { SidebarBannerSlot } from './components/layout/AmbientAdSlot.jsx'
 import { ShieldsNotice } from './components/layout/ShieldsNotice.jsx'
 import { CurriculumDirectory } from './components/dashboard/CurriculumDirectory.jsx'
 import { PlatformIntro } from './components/dashboard/PlatformIntro.jsx'
@@ -196,7 +196,7 @@ export default function App() {
                   <div className="col-span-1 lg:col-span-4 min-w-0 lg:sticky lg:top-24 flex flex-col gap-4">
                 <IdentityCard tracker={tracker} github={github} />
                 <MasterProgressCard tracker={tracker} />
-                <AmbientAdSlot />
+                <SidebarBannerSlot />
                 <RecallCard tracker={tracker} />
                 <SafetyCard tracker={tracker} />
                 <SupportCard />
