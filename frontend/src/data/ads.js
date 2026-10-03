@@ -28,17 +28,41 @@ export const AD_FILL_TIMEOUT_MS = 3000
 // mounted after its initial scan. banner.js scans for div[data-mndbanid]
 // once at load and does not observe later DOM mutations, so React-rendered
 // slots (which mount after the tag runs) are never filled without this.
-// Safe to call from every slot; the rescan fires at most once per page load.
-let mondiadRescanQueued = false
+// Dashboard slots mount in waves (sidebar immediately, in-feed after the
+// manifest fetch), so besides the immediate first scan every mount also
+// (re)schedules a trailing scan that picks up later waves. Bounded: at most
+// 3 tag executions per page load, scans at least 4s apart. Safe to call
+// from every slot on mount.
+let mondiadRescans = 0
+let lastMondiadRescan = 0
+let mondiadRescanTimer = 0
+
+function fireMondiadRescan() {
+  mondiadRescans += 1
+  lastMondiadRescan = Date.now()
+  const script = document.createElement('script')
+  script.src = MONDIAD_BANNER_JS
+  script.async = true
+  script.dataset.mndRescan = String(mondiadRescans)
+  document.head.appendChild(script)
+}
+
 export function rescanMondiadSlots() {
   try {
-    if (mondiadRescanQueued || !document.querySelector('div[data-mndbanid]')) return
-    mondiadRescanQueued = true
-    const script = document.createElement('script')
-    script.src = MONDIAD_BANNER_JS
-    script.async = true
-    script.dataset.mndRescan = '1'
-    document.head.appendChild(script)
+    if (mondiadRescans >= 3) return
+    if (!document.querySelector('div[data-mndbanid]')) return
+    if (mondiadRescans === 0 || Date.now() - lastMondiadRescan >= 4000) {
+      fireMondiadRescan()
+    }
+    clearTimeout(mondiadRescanTimer)
+    mondiadRescanTimer = setTimeout(() => {
+      try {
+        if (mondiadRescans >= 3) return
+        if (Date.now() - lastMondiadRescan < 4000) return
+        if (!document.querySelector('div[data-mndbanid]')) return
+        fireMondiadRescan()
+      } catch {}
+    }, 4500)
   } catch {}
 }
 
