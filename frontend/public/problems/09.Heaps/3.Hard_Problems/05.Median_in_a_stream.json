@@ -26,32 +26,117 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "operations": [["add", 1], ["add", 2], ["findMedian"], ["add", 3], ["findMedian"]] },
-      "expected": [1.5, 2],
+      "input": {
+        "operations": [
+          [
+            "add",
+            1
+          ],
+          [
+            "add",
+            2
+          ],
+          [
+            "findMedian"
+          ],
+          [
+            "add",
+            3
+          ],
+          [
+            "findMedian"
+          ]
+        ]
+      },
+      "expected": [
+        1.5,
+        2
+      ],
       "isPublic": true,
       "explanation": "Two readings split the median halfway; the third reading makes 2 the true middle."
     },
     {
       "id": "tc-2",
-      "input": { "operations": [["add", 5], ["findMedian"], ["add", 15], ["findMedian"], ["add", 1], ["findMedian"]] },
-      "expected": [5, 10, 5],
+      "input": {
+        "operations": [
+          [
+            "add",
+            5
+          ],
+          [
+            "findMedian"
+          ],
+          [
+            "add",
+            15
+          ],
+          [
+            "findMedian"
+          ],
+          [
+            "add",
+            1
+          ],
+          [
+            "findMedian"
+          ]
+        ]
+      },
+      "expected": [
+        5,
+        10,
+        5
+      ],
       "isPublic": true,
       "explanation": "Each median is the middle of {5}, then {1,5,15} → 5... specifically 5, 10, 5."
     },
     {
       "id": "tc-3",
-      "input": { "operations": [["add", -1], ["findMedian"], ["add", -2], ["findMedian"], ["add", -3], ["findMedian"]] },
-      "expected": [-1, -1.5, -2],
+      "input": {
+        "operations": [
+          [
+            "add",
+            -1
+          ],
+          [
+            "findMedian"
+          ],
+          [
+            "add",
+            -2
+          ],
+          [
+            "findMedian"
+          ],
+          [
+            "add",
+            -3
+          ],
+          [
+            "findMedian"
+          ]
+        ]
+      },
+      "expected": [
+        -1,
+        -1.5,
+        -2
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "import heapq\n\nclass MedianFinder:\n    def __init__(self):\n        self.lower = []   # max-heap (negated): smaller half\n        self.upper = []   # min-heap: larger half\n\n    def add(self, num):\n        heapq.heappush(self.lower, -num)\n        heapq.heappush(self.upper, -heapq.heappop(self.lower))\n        if len(self.upper) > len(self.lower):\n            heapq.heappush(self.lower, -heapq.heappop(self.upper))\n\n    def find_median(self):\n        if len(self.lower) > len(self.upper):\n            return float(-self.lower[0])\n        return (-self.lower[0] + self.upper[0]) / 2",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass MedianFinder {\n    priority_queue<int> lower;                             // smaller half\n    priority_queue<int, vector<int>, greater<int>> upper;  // larger half\npublic:\n    void addNum(int num) {\n        lower.push(num);\n        upper.push(lower.top()); lower.pop();\n        if (upper.size() > lower.size()) {\n            lower.push(upper.top()); upper.pop();\n        }\n    }\n    double findMedian() {\n        if (lower.size() > upper.size()) return lower.top();\n        return (lower.top() + upper.top()) / 2.0;\n    }\n};",
-    "java": "import java.util.Collections;\nimport java.util.PriorityQueue;\n\nclass MedianFinder {\n    private final PriorityQueue<Integer> lower = new PriorityQueue<>(Collections.reverseOrder());\n    private final PriorityQueue<Integer> upper = new PriorityQueue<>();\n\n    public void add(int num) {\n        lower.offer(num);\n        upper.offer(lower.poll());\n        if (upper.size() > lower.size()) lower.offer(upper.poll());\n    }\n\n    public double findMedian() {\n        if (lower.size() > upper.size()) return lower.peek();\n        return (lower.peek() + upper.peek()) / 2.0;\n    }\n}"
+    "python": "class MedianFinder:\n    def __init__(self):\n        \"\"\"lower = max-heap half, upper = min-heap half (|sizes| differ by <= 1).\"\"\"\n        # TODO: implement\n        pass\n\n    def add(self, num):\n        # TODO: push into one half, rebalance\n        pass\n\n    def find_median(self):\n        \"\"\"Return the median so far (average of two middles when sizes are equal).\"\"\"\n        # TODO: implement\n        pass",
+    "cpp": "#include <queue>\n#include <vector>\n#include <functional>\nusing namespace std;\n\nclass MedianFinder {\nprivate:\n    priority_queue<int> lower;                                  // max-heap\n    priority_queue<int, vector<int>, greater<int>> upper;       // min-heap\npublic:\n    void addNum(int num) {\n        // TODO: push into one half, rebalance sizes\n    }\n\n    double findMedian() {\n        // TODO: top of the bigger half, or the average of both tops\n        return 0.0;\n    }\n};",
+    "java": "import java.util.PriorityQueue;\nimport java.util.Collections;\n\nclass MedianFinder {\n    private PriorityQueue<Integer> lower = new PriorityQueue<>(Collections.reverseOrder());\n    private PriorityQueue<Integer> upper = new PriorityQueue<>();\n\n    public void addNum(int num) {\n        // TODO: push into one half, rebalance sizes\n    }\n\n    public double findMedian() {\n        // TODO: top of the bigger half, or the average of both tops\n        return 0.0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["heap", "two-heaps", "streaming", "median-in-a-stream"],
+    "intentTags": [
+      "heap",
+      "two-heaps",
+      "streaming",
+      "median-in-a-stream"
+    ],
     "hintLevels": [
       "Level 1: Split the data into a smaller half and a larger half; the median lives at their boundary.",
       "Level 2: A max-heap guards the lower half, a min-heap the upper half; keep sizes within one.",

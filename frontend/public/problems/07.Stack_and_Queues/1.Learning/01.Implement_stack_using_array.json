@@ -26,32 +26,106 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "operations": [["push", 2], ["push", 3], ["pop"], ["push", 4], ["pop"]] },
-      "expected": [3, 4],
+      "input": {
+        "operations": [
+          [
+            "push",
+            2
+          ],
+          [
+            "push",
+            3
+          ],
+          [
+            "pop"
+          ],
+          [
+            "push",
+            4
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        3,
+        4
+      ],
       "isPublic": true,
       "explanation": "Push 2 then 3; pop returns the last pushed value 3. Push 4; pop returns 4."
     },
     {
       "id": "tc-2",
-      "input": { "operations": [["push", 7], ["pop"], ["pop"]] },
-      "expected": [7, -1],
+      "input": {
+        "operations": [
+          [
+            "push",
+            7
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        7,
+        -1
+      ],
       "isPublic": true,
       "explanation": "The first pop yields 7; the second finds an empty stack and returns -1."
     },
     {
       "id": "tc-3",
-      "input": { "operations": [["pop"], ["push", -5], ["push", 9], ["pop"], ["pop"], ["pop"]] },
-      "expected": [-1, 9, -5, -1],
+      "input": {
+        "operations": [
+          [
+            "pop"
+          ],
+          [
+            "push",
+            -5
+          ],
+          [
+            "push",
+            9
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        -1,
+        9,
+        -5,
+        -1
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def run_stack_ops(operations):\n    # Simulate the array-backed stack; return list of pop results (-1 when empty).\n    stack = []\n    results = []\n    for op in operations:\n        if op[0] == \"push\":\n            stack.append(op[1])\n        else:\n            results.append(stack.pop() if stack else -1)\n    return results",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass MyStack {\nprivate:\n    vector<int> arr;\npublic:\n    void push(int x) { arr.push_back(x); }\n    int pop() {\n        if (arr.empty()) return -1;\n        int val = arr.back();\n        arr.pop_back();\n        return val;\n    }\n};",
-    "java": "import java.util.ArrayList;\nimport java.util.List;\n\nclass MyStack {\n    private List<Integer> arr = new ArrayList<>();\n\n    public void push(int x) { arr.add(x); }\n\n    public int pop() {\n        if (arr.isEmpty()) return -1;\n        return arr.remove(arr.size() - 1);\n    }\n}"
+    "python": "def run_stack_ops(operations):\n    \"\"\"Process ['push', x] / ['pop'] ops; return each pop result (-1 when empty).\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass MyStack {\nprivate:\n    vector<int> arr;\npublic:\n    void push(int x) {\n        // TODO: append x to the backing array\n    }\n\n    int pop() {\n        // TODO: remove and return the last element, or -1 if empty\n        return -1;\n    }\n};",
+    "java": "import java.util.ArrayList;\nimport java.util.List;\n\nclass MyStack {\n    private List<Integer> arr = new ArrayList<>();\n\n    public void push(int x) {\n        // TODO: append x to the backing list\n    }\n\n    public int pop() {\n        // TODO: remove and return the last element, or -1 if empty\n        return -1;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["stack", "design", "array", "lifo", "implement-stack-using-array"],
+    "intentTags": [
+      "stack",
+      "design",
+      "array",
+      "lifo",
+      "implement-stack-using-array"
+    ],
     "hintLevels": [
       "Level 1: A stack is just a sequence where all activity happens at one end.",
       "Level 2: Keep a single top marker; push extends it, pop retracts it.",

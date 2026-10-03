@@ -25,32 +25,43 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "s": "()[]{}" },
+      "input": {
+        "s": "()[]{}"
+      },
       "expected": true,
       "isPublic": true,
       "explanation": "Each bracket pair is well-formed and the three pairs sit side by side."
     },
     {
       "id": "tc-2",
-      "input": { "s": "(]" },
+      "input": {
+        "s": "(]"
+      },
       "expected": false,
       "isPublic": true,
       "explanation": "A round opener cannot be sealed by a square closer."
     },
     {
       "id": "tc-3",
-      "input": { "s": "([)]" },
+      "input": {
+        "s": "([)]"
+      },
       "expected": false,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def is_valid(s: str) -> bool:\n    pairs = {')': '(', ']': '[', '}': '{'}\n    stack = []\n    for ch in s:\n        if ch in '([{':\n            stack.append(ch)\n        elif not stack or stack.pop() != pairs[ch]:\n            return False\n    return not stack",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool isValid(string& s) {\n    stack<char> st;\n    for (char c : s) {\n        if (c == '(' || c == '[' || c == '{') st.push(c);\n        else {\n            if (st.empty()) return false;\n            char open = st.top();\n            if ((open == '(' && c == ')') || (open == '[' && c == ']') ||\n                (open == '{' && c == '}')) st.pop();\n            else return false;\n        }\n    }\n    return st.empty();\n}",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public boolean isValid(String s) {\n        Deque<Character> stack = new ArrayDeque<>();\n        for (char c : s.toCharArray()) {\n            if (c == '(' || c == '[' || c == '{') stack.push(c);\n            else if (stack.isEmpty()) return false;\n            else {\n                char open = stack.pop();\n                if ((c == ')' && open != '(') || (c == ']' && open != '[') ||\n                    (c == '}' && open != '{')) return false;\n            }\n        }\n        return stack.isEmpty();\n    }\n}"
+    "python": "def is_valid(s: str) -> bool:\n    \"\"\"Return True when every bracket in s closes in the correct order.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <string>\n#include <stack>\nusing namespace std;\n\nbool isValid(string& s) {\n    // TODO: push openers, match closers, and require an empty stack at the end\n    return false;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public boolean isValid(String s) {\n        // TODO: push openers, match closers, and require an empty stack at the end\n        return false;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["stack", "string", "matching", "valid-parenthesis"],
+    "intentTags": [
+      "stack",
+      "string",
+      "matching",
+      "valid-parenthesis"
+    ],
     "hintLevels": [
       "Level 1: The most recently opened bracket must be the first one closed — a stack.",
       "Level 2: Push openers; on a closer, demand that the stack top be its exact partner.",

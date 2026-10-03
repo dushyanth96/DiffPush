@@ -86,9 +86,9 @@
     }
   ],
   "starterCode": {
-    "python": "from collections import deque\n\ndef max_sliding_window(nums, k):\n    # TODO: implement — return the max of each sliding window of size k\n    pass",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> maxSlidingWindow(vector<int>& nums, int k) {\n    // TODO: implement — return the max of each sliding window of size k\n    return {};\n}",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int[] maxSlidingWindow(int[] nums, int k) {\n        // TODO: implement — return the max of each sliding window of size k\n        return new int[0];\n    }\n}"
+    "python": "def max_sliding_window(nums, k):\n    \"\"\"Return the maximum of every size-k window in nums, left to right.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <deque>\nusing namespace std;\n\nvector<int> maxSlidingWindow(vector<int>& nums, int k) {\n    // TODO: monotonic deque of indices, kept in decreasing value order\n    return {};\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int[] maxSlidingWindow(int[] nums, int k) {\n        // TODO: monotonic deque of indices, kept in decreasing value order\n        return new int[Math.max(0, nums.length - k + 1)];\n    }\n}"
   },
   "aiContext": {
     "intentTags": [

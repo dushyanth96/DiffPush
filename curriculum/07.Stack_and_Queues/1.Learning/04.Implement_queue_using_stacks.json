@@ -26,32 +26,114 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "operations": [["enqueue", 1], ["enqueue", 2], ["dequeue"], ["enqueue", 3], ["dequeue"], ["dequeue"]] },
-      "expected": [1, 2, 3],
+      "input": {
+        "operations": [
+          [
+            "enqueue",
+            1
+          ],
+          [
+            "enqueue",
+            2
+          ],
+          [
+            "dequeue"
+          ],
+          [
+            "enqueue",
+            3
+          ],
+          [
+            "dequeue"
+          ],
+          [
+            "dequeue"
+          ]
+        ]
+      },
+      "expected": [
+        1,
+        2,
+        3
+      ],
       "isPublic": true,
       "explanation": "Pure FIFO behavior: 1 leaves first even though it sits at the bottom of the in-stack."
     },
     {
       "id": "tc-2",
-      "input": { "operations": [["enqueue", 9], ["dequeue"], ["dequeue"]] },
-      "expected": [9, -1],
+      "input": {
+        "operations": [
+          [
+            "enqueue",
+            9
+          ],
+          [
+            "dequeue"
+          ],
+          [
+            "dequeue"
+          ]
+        ]
+      },
+      "expected": [
+        9,
+        -1
+      ],
       "isPublic": true,
       "explanation": "One letter is delivered, then the next request finds both drawers empty."
     },
     {
       "id": "tc-3",
-      "input": { "operations": [["enqueue", 4], ["dequeue"], ["enqueue", 8], ["enqueue", -2], ["dequeue"], ["dequeue"], ["dequeue"]] },
-      "expected": [4, 8, -2, -1],
+      "input": {
+        "operations": [
+          [
+            "enqueue",
+            4
+          ],
+          [
+            "dequeue"
+          ],
+          [
+            "enqueue",
+            8
+          ],
+          [
+            "enqueue",
+            -2
+          ],
+          [
+            "dequeue"
+          ],
+          [
+            "dequeue"
+          ],
+          [
+            "dequeue"
+          ]
+        ]
+      },
+      "expected": [
+        4,
+        8,
+        -2,
+        -1
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def run_queue_via_stacks(operations):\n    # Simulate a queue backed by two stacks; return dequeue results (-1 when empty).\n    inbox, outbox = [], []\n    results = []\n    for op in operations:\n        if op[0] == \"enqueue\":\n            inbox.append(op[1])\n        else:\n            if not outbox:\n                while inbox:\n                    outbox.append(inbox.pop())\n            results.append(outbox.pop() if outbox else -1)\n    return results",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass MyQueue {\nprivate:\n    stack<int> inbox, outbox;\n    void transfer() {\n        if (outbox.empty())\n            while (!inbox.empty()) { outbox.push(inbox.top()); inbox.pop(); }\n    }\npublic:\n    void enqueue(int x) { inbox.push(x); }\n    int dequeue() {\n        if (inbox.empty() && outbox.empty()) return -1;\n        transfer();\n        int val = outbox.top();\n        outbox.pop();\n        return val;\n    }\n};",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass MyQueue {\n    private Deque<Integer> inbox = new ArrayDeque<>();\n    private Deque<Integer> outbox = new ArrayDeque<>();\n\n    public void enqueue(int x) { inbox.push(x); }\n\n    public int dequeue() {\n        if (inbox.isEmpty() && outbox.isEmpty()) return -1;\n        if (outbox.isEmpty())\n            while (!inbox.isEmpty()) outbox.push(inbox.pop());\n        return outbox.pop();\n    }\n}"
+    "python": "def run_queue_via_stacks(operations):\n    \"\"\"Process ['enqueue', x] / ['pop'] ops FIFO-style; return each pop result (-1 when empty).\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <stack>\nusing namespace std;\n\nclass MyQueue {\nprivate:\n    stack<int> inbox, outbox;\n\n    void transfer() {\n        // TODO: pour inbox into outbox only when outbox is empty\n    }\npublic:\n    void enqueue(int x) {\n        // TODO: push x onto inbox\n    }\n\n    int dequeue() {\n        // TODO: pop from outbox (transfer first if needed), or -1 if empty\n        return -1;\n    }\n};",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass MyQueue {\n    private Deque<Integer> inbox = new ArrayDeque<>();\n    private Deque<Integer> outbox = new ArrayDeque<>();\n\n    private void transfer() {\n        // TODO: pour inbox into outbox only when outbox is empty\n    }\n\n    public void enqueue(int x) {\n        // TODO: push x onto inbox\n    }\n\n    public int dequeue() {\n        // TODO: pop from outbox (transfer first if needed), or -1 if empty\n        return -1;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["queue", "stack", "design", "amortized", "implement-queue-using-stacks"],
+    "intentTags": [
+      "queue",
+      "stack",
+      "design",
+      "amortized",
+      "implement-queue-using-stacks"
+    ],
     "hintLevels": [
       "Level 1: Two reversals cancel out — stack order flipped twice is queue order.",
       "Level 2: Pour the in-stack into the out-stack only when the out-stack runs dry, not on every dequeue.",

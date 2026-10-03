@@ -25,32 +25,67 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "height": [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1] },
+      "input": {
+        "height": [
+          0,
+          1,
+          0,
+          2,
+          1,
+          0,
+          1,
+          3,
+          2,
+          1,
+          2,
+          1
+        ]
+      },
       "expected": 6,
       "isPublic": true,
       "explanation": "Valleys at indices 2, 4-6, 9 hold units bounded by the surrounding tall panels, totalling 6."
     },
     {
       "id": "tc-2",
-      "input": { "height": [4, 2, 0, 3, 2, 5] },
+      "input": {
+        "height": [
+          4,
+          2,
+          0,
+          3,
+          2,
+          5
+        ]
+      },
       "expected": 9,
       "isPublic": true,
       "explanation": "The deepest pools sit over the low ground between the 4 and the 5."
     },
     {
       "id": "tc-3",
-      "input": { "height": [3, 3, 3] },
+      "input": {
+        "height": [
+          3,
+          3,
+          3
+        ]
+      },
       "expected": 0,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def trap(height):\n    left, right = 0, len(height) - 1\n    left_max = right_max = 0\n    water = 0\n    while left <= right:\n        if height[left] < height[right]:\n            if height[left] >= left_max:\n                left_max = height[left]\n            else:\n                water += left_max - height[left]\n            left += 1\n        else:\n            if height[right] >= right_max:\n                right_max = height[right]\n            else:\n                water += right_max - height[right]\n            right -= 1\n    return water",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint trap(vector<int>& height) {\n    int leftMax = 0, rightMax = 0;\n    int left = 0, right = (int)height.size() - 1;\n    int ans = 0;\n    while (left <= right) {\n        if (height[left] < height[right]) {\n            if (height[left] > leftMax) leftMax = height[left];\n            else ans += leftMax - height[left];\n            ++left;\n        } else {\n            if (height[right] > rightMax) rightMax = height[right];\n            else ans += rightMax - height[right];\n            --right;\n        }\n    }\n    return ans;\n}",
-    "java": "class Solution {\n    public int trap(int[] height) {\n        int left = 0, right = height.length - 1;\n        int leftMax = 0, rightMax = 0, water = 0;\n        while (left <= right) {\n            if (height[left] < height[right]) {\n                if (height[left] >= leftMax) leftMax = height[left];\n                else water += leftMax - height[left];\n                ++left;\n            } else {\n                if (height[right] >= rightMax) rightMax = height[right];\n                else water += rightMax - height[right];\n                --right;\n            }\n        }\n        return water;\n    }\n}"
+    "python": "def trap(height):\n    \"\"\"Return total water trapped between the bars of `height`.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nint trap(vector<int>& height) {\n    // TODO: two pointers with running left-max and right-max, or a monotonic stack\n    return 0;\n}",
+    "java": "class Solution {\n    public int trap(int[] height) {\n        // TODO: two pointers with running left-max and right-max, or a monotonic stack\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["two-pointers", "arrays", "monotonic-stack", "trapping-rainwater"],
+    "intentTags": [
+      "two-pointers",
+      "arrays",
+      "monotonic-stack",
+      "trapping-rainwater"
+    ],
     "hintLevels": [
       "Level 1: Water above any bar equals min(tallest left wall, tallest right wall) minus its height.",
       "Level 2: Move the pointer on the shorter side inward — that side's bound is already settled by the opposite wall.",

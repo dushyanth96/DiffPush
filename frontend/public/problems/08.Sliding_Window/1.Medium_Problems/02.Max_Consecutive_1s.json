@@ -26,32 +26,69 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "nums": [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], "k": 2 },
+      "input": {
+        "nums": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        "k": 2
+      },
       "expected": 6,
       "isPublic": true,
       "explanation": "Flipping two zeros welds the tail into six consecutive healthy readings."
     },
     {
       "id": "tc-2",
-      "input": { "nums": [1, 0, 1, 1, 0, 1], "k": 1 },
+      "input": {
+        "nums": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "k": 1
+      },
       "expected": 4,
       "isPublic": true,
       "explanation": "One flip covers either fault, but both zeros can never sit inside the same frame."
     },
     {
       "id": "tc-3",
-      "input": { "nums": [0, 0, 0], "k": 0 },
+      "input": {
+        "nums": [
+          0,
+          0,
+          0
+        ],
+        "k": 0
+      },
       "expected": 0,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def longest_ones(nums, k):\n    start = zeros = best = 0\n    for i, v in enumerate(nums):\n        zeros += v == 0\n        while zeros > k:\n            zeros -= nums[start] == 0\n            start += 1\n        best = max(best, i - start + 1)\n    return best",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint longestOnes(vector<int>& nums, int k) {\n    int zeros = 0, start = 0, ans = 0;\n    for (int i = 0; i < (int)nums.size(); ++i) {\n        zeros += nums[i] == 0;\n        while (zeros > k) {\n            zeros -= nums[start] == 0;\n            ++start;\n        }\n        ans = max(ans, i - start + 1);\n    }\n    return ans;\n}",
-    "java": "class Solution {\n    public int longestOnes(int[] nums, int k) {\n        int start = 0, zeros = 0, best = 0;\n        for (int i = 0; i < nums.length; ++i) {\n            if (nums[i] == 0) ++zeros;\n            while (zeros > k) {\n                if (nums[start] == 0) --zeros;\n                ++start;\n            }\n            best = Math.max(best, i - start + 1);\n        }\n        return best;\n    }\n}"
+    "python": "def longest_ones(nums, k):\n    \"\"\"Longest run of 1s obtainable by flipping at most k zeros.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nint longestOnes(vector<int>& nums, int k) {\n    // TODO: expand the window; move left only while zero-count exceeds k\n    return 0;\n}",
+    "java": "class Solution {\n    public int longestOnes(int[] nums, int k) {\n        // TODO: expand the window; move left only while zero-count exceeds k\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["sliding-window", "arrays", "flip-budget", "max-consecutive-1-s"],
+    "intentTags": [
+      "sliding-window",
+      "arrays",
+      "flip-budget",
+      "max-consecutive-1-s"
+    ],
     "hintLevels": [
       "Level 1: Reframe the question — find the widest window holding at most k zeros.",
       "Level 2: Expand rightward freely; when zeros exceed k, advance the left edge until one zero exits.",

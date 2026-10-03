@@ -26,32 +26,106 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "operations": [["push", 2], ["push", 3], ["pop"], ["push", 4], ["pop"]] },
-      "expected": [2, 3],
+      "input": {
+        "operations": [
+          [
+            "push",
+            2
+          ],
+          [
+            "push",
+            3
+          ],
+          [
+            "pop"
+          ],
+          [
+            "push",
+            4
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        2,
+        3
+      ],
       "isPublic": true,
       "explanation": "First-in-first-out: the 2 leaves before the 3, then the 4 follows."
     },
     {
       "id": "tc-2",
-      "input": { "operations": [["push", 7], ["pop"], ["pop"]] },
-      "expected": [7, -1],
+      "input": {
+        "operations": [
+          [
+            "push",
+            7
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        7,
+        -1
+      ],
       "isPublic": true,
       "explanation": "The single crate leaves first; the next release finds the belt empty."
     },
     {
       "id": "tc-3",
-      "input": { "operations": [["pop"], ["push", -5], ["push", 9], ["pop"], ["pop"], ["pop"]] },
-      "expected": [-1, -5, 9, -1],
+      "input": {
+        "operations": [
+          [
+            "pop"
+          ],
+          [
+            "push",
+            -5
+          ],
+          [
+            "push",
+            9
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        -1,
+        -5,
+        9,
+        -1
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "from collections import deque\n\ndef run_queue_ops(operations):\n    # Simulate the array-backed queue; return list of pop results (-1 when empty).\n    queue = deque()\n    results = []\n    for op in operations:\n        if op[0] == \"push\":\n            queue.append(op[1])\n        else:\n            results.append(queue.popleft() if queue else -1)\n    return results",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass MyQueue {\nprivate:\n    vector<int> arr;\n    int front = 0;\npublic:\n    void push(int x) { arr.push_back(x); }\n    int pop() {\n        if (front >= (int)arr.size()) return -1;\n        return arr[front++];\n    }\n};",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass MyQueue {\n    private Deque<Integer> queue = new ArrayDeque<>();\n\n    public void push(int x) { queue.addLast(x); }\n\n    public int pop() {\n        Integer head = queue.pollFirst();\n        return head == null ? -1 : head;\n    }\n}"
+    "python": "def run_queue_ops(operations):\n    \"\"\"Process ['push', x] / ['pop'] ops FIFO-style; return each pop result (-1 when empty).\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nclass MyQueue {\nprivate:\n    vector<int> arr;\n    int front = 0;\npublic:\n    void push(int x) {\n        // TODO: append x to the backing array\n    }\n\n    int pop() {\n        // TODO: remove and return the oldest element, or -1 if empty\n        return -1;\n    }\n};",
+    "java": "import java.util.ArrayList;\nimport java.util.List;\n\nclass MyQueue {\n    private List<Integer> arr = new ArrayList<>();\n    private int front = 0;\n\n    public void push(int x) {\n        // TODO: append x to the backing list\n    }\n\n    public int pop() {\n        // TODO: remove and return the oldest element, or -1 if empty\n        return -1;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["queue", "design", "array", "fifo", "implement-queue-using-array"],
+    "intentTags": [
+      "queue",
+      "design",
+      "array",
+      "fifo",
+      "implement-queue-using-array"
+    ],
     "hintLevels": [
       "Level 1: A queue is a waiting line: join at the back, leave from the front.",
       "Level 2: Track two cursors — one for the next departure, one for the next arrival.",

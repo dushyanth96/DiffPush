@@ -26,32 +26,66 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "cardPoints": [1, 2, 3, 4, 5, 6, 1], "k": 3 },
+      "input": {
+        "cardPoints": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          1
+        ],
+        "k": 3
+      },
       "expected": 12,
       "isPublic": true,
       "explanation": "Claiming 1+6+5 from the ends beats any other split of three picks."
     },
     {
       "id": "tc-2",
-      "input": { "cardPoints": [2, 2, 2], "k": 2 },
+      "input": {
+        "cardPoints": [
+          2,
+          2,
+          2
+        ],
+        "k": 2
+      },
       "expected": 4,
       "isPublic": true,
       "explanation": "All cards score alike, so any two picks yield the same total."
     },
     {
       "id": "tc-3",
-      "input": { "cardPoints": [9, 7, 7, 9, 7, 7, 9], "k": 7 },
+      "input": {
+        "cardPoints": [
+          9,
+          7,
+          7,
+          9,
+          7,
+          7,
+          9
+        ],
+        "k": 7
+      },
       "expected": 55,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def max_score(card_points, k):\n    total = sum(card_points)\n    keep = len(card_points) - k          # cards left unclaimed form a block\n    window = sum(card_points[:keep])\n    best = window\n    for i in range(keep, len(card_points)):\n        window += card_points[i] - card_points[i - keep]\n        best = min(best, window)\n    return total - best",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint maxScore(vector<int>& cardPoints, int k) {\n    int n = cardPoints.size(), keep = n - k;\n    int total = accumulate(cardPoints.begin(), cardPoints.end(), 0);\n    int window = accumulate(cardPoints.begin(), cardPoints.begin() + keep, 0);\n    int best = window;\n    for (int i = keep; i < n; ++i) {\n        window += cardPoints[i] - cardPoints[i - keep];\n        best = min(best, window);\n    }\n    return total - best;\n}",
-    "java": "class Solution {\n    public int maxScore(int[] cardPoints, int k) {\n        int n = cardPoints.length, keep = n - k;\n        int total = 0, window = 0;\n        for (int v : cardPoints) total += v;\n        for (int i = 0; i < keep; ++i) window += cardPoints[i];\n        int best = window;\n        for (int i = keep; i < n; ++i) {\n            window += cardPoints[i] - cardPoints[i - keep];\n            best = Math.min(best, window);\n        }\n        return total - best;\n    }\n}"
+    "python": "def max_score(card_points, k):\n    \"\"\"Max points from taking exactly k cards, only from either end.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <numeric>\n#include <algorithm>\nusing namespace std;\n\nint maxScore(vector<int>& cardPoints, int k) {\n    // TODO: total sum minus the minimum (n - k)-length middle window\n    return 0;\n}",
+    "java": "class Solution {\n    public int maxScore(int[] cardPoints, int k) {\n        // TODO: total sum minus the minimum (n - k)-length middle window\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["sliding-window", "fixed-window", "prefix-suffix", "maximum-points-you-can-obtaln-form-the-card"],
+    "intentTags": [
+      "sliding-window",
+      "fixed-window",
+      "prefix-suffix",
+      "maximum-points-you-can-obtaln-form-the-card"
+    ],
     "hintLevels": [
       "Level 1: Taking k from the ends equals leaving one contiguous block of n-k cards behind.",
       "Level 2: Slide a fixed-size window of length n-k and minimize its sum.",

@@ -26,32 +26,43 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "expression": "ab*c+" },
+      "input": {
+        "expression": "ab*c+"
+      },
       "expected": "((a*b)+c)",
       "isPublic": true,
       "explanation": "The * joins a and b first; the + then wraps that whole group with c."
     },
     {
       "id": "tc-2",
-      "input": { "expression": "ABC/-AK/L-*" },
+      "input": {
+        "expression": "ABC/-AK/L-*"
+      },
       "expected": "((A-(B/C))*((A/K)-L))",
       "isPublic": true,
       "explanation": "Forward scanning rebuilds the exact infix tree the prefix conversion produced in reverse."
     },
     {
       "id": "tc-3",
-      "input": { "expression": "abc++" },
+      "input": {
+        "expression": "abc++"
+      },
       "expected": "(a+(b+c))",
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def postfix_to_infix(expression: str) -> str:\n    stack = []\n    for ch in expression:\n        if ch.isalnum():\n            stack.append(ch)\n        else:\n            a = stack.pop()   # right operand\n            b = stack.pop()   # left operand\n            stack.append(f\"({b}{ch}{a})\")\n    return stack[0]",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstring postToInfix(string exp) {\n    stack<string> st;\n    for (char ch : exp) {\n        if (isalnum((unsigned char)ch)) st.push(string(1, ch));\n        else {\n            string a = st.top(); st.pop();\n            string b = st.top(); st.pop();\n            st.push(\"(\" + b + ch + a + \")\");\n        }\n    }\n    return st.top();\n}",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public String postToInfix(String exp) {\n        Deque<String> stack = new ArrayDeque<>();\n        for (char ch : exp.toCharArray()) {\n            if (Character.isLetterOrDigit(ch)) stack.push(String.valueOf(ch));\n            else {\n                String a = stack.pop(), b = stack.pop();\n                stack.push(\"(\" + b + ch + a + \")\");\n            }\n        }\n        return stack.peek();\n    }\n}"
+    "python": "def postfix_to_infix(expression: str) -> str:\n    \"\"\"Convert a postfix expression back to fully parenthesized infix.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <string>\n#include <stack>\nusing namespace std;\n\nstring postToInfix(string exp) {\n    // TODO: scan left-to-right; on an operator join (left)(op)(right) with parentheses\n    return \"\";\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public String postToInfix(String exp) {\n        // TODO: scan left-to-right; on an operator join (left)(op)(right) with parentheses\n        return \"\";\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["stack", "string-parsing", "expression-conversion", "postfix-to-infix"],
+    "intentTags": [
+      "stack",
+      "string-parsing",
+      "expression-conversion",
+      "postfix-to-infix"
+    ],
     "hintLevels": [
       "Level 1: In postfix the operator arrives after its operands — both are already on the clipboard.",
       "Level 2: The first pop is the RIGHT operand, the second is the LEFT; the wrapper puts left-operator-right.",

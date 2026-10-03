@@ -26,32 +26,76 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "start": [1, 3, 0, 5, 8, 5], "end": [2, 4, 6, 7, 9, 9] },
+      "input": {
+        "start": [
+          1,
+          3,
+          0,
+          5,
+          8,
+          5
+        ],
+        "end": [
+          2,
+          4,
+          6,
+          7,
+          9,
+          9
+        ]
+      },
       "expected": 4,
       "isPublic": true,
       "explanation": "Selecting (1,2), (3,4), (5,7), (8,9) keeps the stage continuously productive with four shoots."
     },
     {
       "id": "tc-2",
-      "input": { "start": [10, 12, 20], "end": [20, 25, 30] },
+      "input": {
+        "start": [
+          10,
+          12,
+          20
+        ],
+        "end": [
+          20,
+          25,
+          30
+        ]
+      },
       "expected": 1,
       "isPublic": true,
       "explanation": "Every pair collides: (20,30) meets (10,20) exactly at the boundary, which the strict-start rule forbids."
     },
     {
       "id": "tc-3",
-      "input": { "start": [1, 3, 5], "end": [2, 4, 6] },
+      "input": {
+        "start": [
+          1,
+          3,
+          5
+        ],
+        "end": [
+          2,
+          4,
+          6
+        ]
+      },
       "expected": 3,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def max_meetings(start, end):\n    meetings = sorted(zip(end, start))   # earliest finish first\n    count, last_end = 0, -1\n    for finish, begin in meetings:\n        if begin > last_end:\n            count += 1\n            last_end = finish\n    return count",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint maxMeetings(vector<int>& start, vector<int>& end) {\n    int n = start.size();\n    vector<pair<int, int>> meetings;  // {end, start}\n    for (int i = 0; i < n; ++i) meetings.push_back({end[i], start[i]});\n    sort(meetings.begin(), meetings.end());\n    int count = 0, lastEnd = -1;\n    for (auto& [finish, begin] : meetings) {\n        if (begin > lastEnd) {\n            ++count;\n            lastEnd = finish;\n        }\n    }\n    return count;\n}",
-    "java": "import java.util.*;\n\nclass Solution {\n    public int maxMeetings(int[] start, int[] end) {\n        int n = start.length;\n        int[][] meetings = new int[n][2];\n        for (int i = 0; i < n; ++i) { meetings[i][0] = end[i]; meetings[i][1] = start[i]; }\n        Arrays.sort(meetings, (a, b) -> a[0] - b[0]);\n        int count = 0, lastEnd = -1;\n        for (int[] m : meetings) {\n            if (m[1] > lastEnd) {\n                ++count;\n                lastEnd = m[0];\n            }\n        }\n        return count;\n    }\n}"
+    "python": "def max_meetings(start, end):\n    \"\"\"Maximum number of non-overlapping meetings that fit in the room.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nint maxMeetings(vector<int>& start, vector<int>& end) {\n    // TODO: sort by end time; keep a meeting whenever it starts after the last kept end\n    return 0;\n}",
+    "java": "import java.util.Arrays;\n\nclass Solution {\n    public int maxMeetings(int[] start, int[] end) {\n        // TODO: sort by end time; keep a meeting whenever it starts after the last kept end\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["greedy", "interval-scheduling", "sorting", "n-meetings-in-one-room"],
+    "intentTags": [
+      "greedy",
+      "interval-scheduling",
+      "sorting",
+      "n-meetings-in-one-room"
+    ],
     "hintLevels": [
       "Level 1: Freeing the room earliest leaves the most room for everything else.",
       "Level 2: Sort by end time and greedily take every meeting that starts strictly after the last chosen end.",

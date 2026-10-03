@@ -27,10 +27,34 @@
       "id": "tc-1",
       "input": {
         "matrix": [
-          [1, 0, 1, 0, 0],
-          [1, 0, 1, 1, 1],
-          [1, 1, 1, 1, 1],
-          [1, 0, 0, 1, 0]
+          [
+            1,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            0
+          ]
         ]
       },
       "expected": 6,
@@ -39,25 +63,47 @@
     },
     {
       "id": "tc-2",
-      "input": { "matrix": [[0]] },
+      "input": {
+        "matrix": [
+          [
+            0
+          ]
+        ]
+      },
       "expected": 0,
       "isPublic": true,
       "explanation": "No free bay exists, so no rectangle can be reserved."
     },
     {
       "id": "tc-3",
-      "input": { "matrix": [[1, 1], [1, 1]] },
+      "input": {
+        "matrix": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
       "expected": 4,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def _largest_in_histogram(heights):\n    stack, best = [], 0\n    for i, h in enumerate(heights + [0]):\n        start = i\n        while stack and stack[-1][1] > h:\n            idx, hgt = stack.pop()\n            best = max(best, hgt * (i - idx))\n            start = idx\n        stack.append((start, h))\n    return best\n\ndef maximal_rectangle(matrix):\n    if not matrix or not matrix[0]:\n        return 0\n    cols = len(matrix[0])\n    heights = [0] * cols\n    best = 0\n    for row in matrix:\n        for j in range(cols):\n            heights[j] = heights[j] + 1 if row[j] == 1 else 0\n        best = max(best, _largest_in_histogram(heights))\n    return best",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint largestRectangleArea(vector<int>& heights) {\n    int n = heights.size(), ans = 0;\n    stack<int> st;\n    for (int i = 0; i <= n; ++i) {\n        int cur = i == n ? 0 : heights[i];\n        while (!st.empty() && heights[st.top()] > cur) {\n            int h = heights[st.top()]; st.pop();\n            int left = st.empty() ? -1 : st.top();\n            ans = max(ans, h * (i - left - 1));\n        }\n        st.push(i);\n    }\n    return ans;\n}\n\nint maximalRectangle(vector<vector<int>>& matrix) {\n    if (matrix.empty() || matrix[0].empty()) return 0;\n    int cols = matrix[0].size();\n    vector<int> heights(cols, 0), prev(cols, 0);\n    int maxArea = 0;\n    for (auto& row : matrix) {\n        for (int j = 0; j < cols; ++j)\n            heights[j] = row[j] == 1 ? prev[j] + 1 : 0;\n        maxArea = max(maxArea, largestRectangleArea(heights));\n        prev = heights;\n    }\n    return maxArea;\n}",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int maximalRectangle(int[][] matrix) {\n        if (matrix.length == 0 || matrix[0].length == 0) return 0;\n        int cols = matrix[0].length, maxArea = 0;\n        int[] heights = new int[cols];\n        for (int[] row : matrix) {\n            for (int j = 0; j < cols; ++j)\n                heights[j] = row[j] == 1 ? heights[j] + 1 : 0;\n            maxArea = Math.max(maxArea, largestInHistogram(heights));\n        }\n        return maxArea;\n    }\n\n    private int largestInHistogram(int[] heights) {\n        int n = heights.length, ans = 0;\n        Deque<Integer> stack = new ArrayDeque<>();\n        for (int i = 0; i <= n; ++i) {\n            int cur = i == n ? 0 : heights[i];\n            while (!stack.isEmpty() && heights[stack.peek()] > cur) {\n                int h = heights[stack.pop()];\n                int left = stack.isEmpty() ? -1 : stack.peek();\n                ans = Math.max(ans, h * (i - left - 1));\n            }\n            stack.push(i);\n        }\n        return ans;\n    }\n}"
+    "python": "def largest_in_histogram(heights):\n    \"\"\"Helper: largest rectangle under one histogram row.\"\"\"\n    # TODO: implement\n    pass\n\n\ndef maximal_rectangle(matrix):\n    \"\"\"Return the area of the largest all-1s rectangle in the binary matrix.\"\"\"\n    # TODO: accumulate row heights, then reuse largest_in_histogram per row\n    pass",
+    "cpp": "#include <vector>\n#include <string>\n#include <stack>\nusing namespace std;\n\nint largestRectangleArea(vector<int>& heights) {\n    // TODO: reuse the histogram technique from the previous problem\n    return 0;\n}\n\nint maximalRectangle(vector<vector<char>>& matrix) {\n    // TODO: build running heights per row, then call largestRectangleArea\n    return 0;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    private int largestRectangleArea(int[] heights) {\n        // TODO: reuse the histogram technique from the previous problem\n        return 0;\n    }\n\n    public int maximalRectangle(char[][] matrix) {\n        // TODO: build running heights per row, then call largestRectangleArea\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["monotonic-stack", "matrix", "histogram", "maximal-rectangle-in-binary-matrix"],
+    "intentTags": [
+      "monotonic-stack",
+      "matrix",
+      "histogram",
+      "maximal-rectangle-in-binary-matrix"
+    ],
     "hintLevels": [
       "Level 1: Every maximal all-ones rectangle touches some row as its bottom edge.",
       "Level 2: Accumulate per-column heights of consecutive ones, resetting on 0, and solve a histogram per row.",

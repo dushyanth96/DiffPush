@@ -25,32 +25,43 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "s": "abcabc" },
+      "input": {
+        "s": "abcabc"
+      },
       "expected": 10,
       "isPublic": true,
       "explanation": "Every stretch ending at index 3 or later qualifies; the count follows each right edge's earliest legal start."
     },
     {
       "id": "tc-2",
-      "input": { "s": "aaacb" },
+      "input": {
+        "s": "aaacb"
+      },
       "expected": 3,
       "isPublic": true,
       "explanation": "Only stretches that reach the final 'c' and also touch 'a' and 'b' qualify."
     },
     {
       "id": "tc-3",
-      "input": { "s": "abc" },
+      "input": {
+        "s": "abc"
+      },
       "expected": 1,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def number_of_substrings(s: str) -> int:\n    # For each right edge, find the last position where all three letters\n    # have appeared; every start at or before it yields a valid substring.\n    last = {'a': -1, 'b': -1, 'c': -1}\n    total = 0\n    for i, ch in enumerate(s):\n        last[ch] = i\n        if min(last.values()) >= 0:\n            total += min(last.values()) + 1\n    return total",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint numberOfSubstrings(string s) {\n    int last[3] = {-1, -1, -1};\n    long long total = 0;\n    for (int i = 0; i < (int)s.size(); ++i) {\n        last[s[i] - 'a'] = i;\n        int earliest = min({last[0], last[1], last[2]});\n        if (earliest >= 0) total += earliest + 1;\n    }\n    return (int)total;\n}",
-    "java": "class Solution {\n    public int numberOfSubstrings(String s) {\n        int[] last = {-1, -1, -1};\n        long total = 0;\n        for (int i = 0; i < s.length(); ++i) {\n            last[s.charAt(i) - 'a'] = i;\n            int earliest = Math.min(last[0], Math.min(last[1], last[2]));\n            if (earliest >= 0) total += earliest + 1;\n        }\n        return (int) total;\n    }\n}"
+    "python": "def number_of_substrings(s: str) -> int:\n    \"\"\"Count substrings of s that contain 'a', 'b', and 'c' at least once.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <string>\n#include <array>\nusing namespace std;\n\nint numberOfSubstrings(string s) {\n    // TODO: for each right end, find the smallest valid left; add left + 1\n    return 0;\n}",
+    "java": "class Solution {\n    public int numberOfSubstrings(String s) {\n        // TODO: for each right end, find the smallest valid left; add left + 1\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["sliding-window", "string", "subarray-counting", "number-of-substrings-containing-all-3-characters"],
+    "intentTags": [
+      "sliding-window",
+      "string",
+      "subarray-counting",
+      "number-of-substrings-containing-all-3-characters"
+    ],
     "hintLevels": [
       "Level 1: Fix the right edge and ask how far left the start may sit while still seeing all three letters.",
       "Level 2: Track the latest index of each letter; the minimum of the three is the furthest legal start.",

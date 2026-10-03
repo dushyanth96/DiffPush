@@ -26,32 +26,58 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "asteroids": [5, 10, -5] },
-      "expected": [5, 10],
+      "input": {
+        "asteroids": [
+          5,
+          10,
+          -5
+        ]
+      },
+      "expected": [
+        5,
+        10
+      ],
       "isPublic": true,
       "explanation": "10 absorbs the incoming -5; the two right-movers never meet."
     },
     {
       "id": "tc-2",
-      "input": { "asteroids": [8, -8] },
+      "input": {
+        "asteroids": [
+          8,
+          -8
+        ]
+      },
       "expected": [],
       "isPublic": true,
       "explanation": "Equal masses annihilate on contact, leaving nothing."
     },
     {
       "id": "tc-3",
-      "input": { "asteroids": [10, 2, -5] },
-      "expected": [10],
+      "input": {
+        "asteroids": [
+          10,
+          2,
+          -5
+        ]
+      },
+      "expected": [
+        10
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def asteroid_collision(asteroids):\n    stack = []\n    for rock in asteroids:\n        alive = True\n        while alive and stack and stack[-1] > 0 and rock < 0:\n            if stack[-1] < -rock:\n                stack.pop()          # top loses, attacker continues\n            elif stack[-1] == -rock:\n                stack.pop()          # mutual annihilation\n                alive = False\n            else:\n                alive = False        # attacker loses\n        if alive:\n            stack.append(rock)\n    return stack",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> asteroidCollision(vector<int>& asteroids) {\n    vector<int> st;  // doubles as the stack\n    for (int rock : asteroids) {\n        bool alive = true;\n        while (alive && !st.empty() && st.back() > 0 && rock < 0) {\n            if (st.back() < -rock) { st.pop_back(); }\n            else if (st.back() == -rock) { st.pop_back(); alive = false; }\n            else { alive = false; }\n        }\n        if (alive) st.push_back(rock);\n    }\n    return st;\n}",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int[] asteroidCollision(int[] asteroids) {\n        Deque<Integer> stack = new ArrayDeque<>();\n        for (int rock : asteroids) {\n            boolean alive = true;\n            while (alive && !stack.isEmpty() && stack.peek() > 0 && rock < 0) {\n                if (stack.peek() < -rock) stack.pop();\n                else if (stack.peek() == -rock) { stack.pop(); alive = false; }\n                else alive = false;\n            }\n            if (alive) stack.push(rock);\n        }\n        int[] ans = new int[stack.size()];\n        for (int i = ans.length - 1; i >= 0; --i) ans[i] = stack.pop();\n        return ans;\n    }\n}"
+    "python": "def asteroid_collision(asteroids):\n    \"\"\"Return the surviving asteroids after all same-size opposite-direction collisions.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <stack>\nusing namespace std;\n\nvector<int> asteroidCollision(vector<int>& asteroids) {\n    // TODO: push right-movers; resolve left-movers against the stack top\n    return {};\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int[] asteroidCollision(int[] asteroids) {\n        // TODO: push right-movers; resolve left-movers against the stack top\n        return new int[] {};\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["stack", "simulation", "asteroids-collision"],
+    "intentTags": [
+      "stack",
+      "simulation",
+      "asteroids-collision"
+    ],
     "hintLevels": [
       "Level 1: Only a left-mover can collide with anything — right-movers just pile up.",
       "Level 2: Resolve the attacker in a loop: pop smaller right-movers, stop on a tie or a bigger defender.",

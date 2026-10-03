@@ -26,32 +26,84 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "M": [[0, 1, 0], [0, 0, 0], [0, 1, 0]] },
+      "input": {
+        "M": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ]
+      },
       "expected": 1,
       "isPublic": true,
       "explanation": "Guests 0 and 2 both know guest 1, who knows nobody — person 1 is the informant."
     },
     {
       "id": "tc-2",
-      "input": { "M": [[0, 1], [1, 0]] },
+      "input": {
+        "M": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ]
+        ]
+      },
       "expected": -1,
       "isPublic": true,
       "explanation": "Each guest knows the other, so neither can be the informant."
     },
     {
       "id": "tc-3",
-      "input": { "M": [[0, 0, 1], [0, 0, 1], [1, 0, 0]] },
+      "input": {
+        "M": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ]
+      },
       "expected": -1,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def find_celebrity(M):\n    n = len(M)\n    stack = list(range(n))\n    while len(stack) > 1:\n        a, b = stack.pop(), stack.pop()\n        if M[a][b] == 1 and M[b][a] == 0:\n            stack.append(b)   # a knows b -> a is out\n        elif M[b][a] == 1 and M[a][b] == 0:\n            stack.append(a)   # b knows a -> b is out\n    if not stack:\n        return -1\n    cand = stack[0]\n    return cand if all(\n        M[i][cand] == 1 and M[cand][i] == 0 for i in range(n) if i != cand\n    ) else -1",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint celebrity(vector<vector<int>>& M, int n) {\n    stack<int> st;\n    for (int i = 0; i < n; ++i) st.push(i);\n    while (st.size() > 1) {\n        int a = st.top(); st.pop();\n        int b = st.top(); st.pop();\n        if (M[a][b] == 1 && M[b][a] == 0) st.push(b);\n        else if (M[b][a] == 1 && M[a][b] == 0) st.push(a);\n    }\n    if (st.empty()) return -1;\n    int cand = st.top();\n    for (int i = 0; i < n; ++i)\n        if (i != cand && (M[i][cand] == 0 || M[cand][i] == 1)) return -1;\n    return cand;\n}",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int celebrity(int[][] M, int n) {\n        Deque<Integer> stack = new ArrayDeque<>();\n        for (int i = 0; i < n; ++i) stack.push(i);\n        while (stack.size() > 1) {\n            int a = stack.pop(), b = stack.pop();\n            if (M[a][b] == 1 && M[b][a] == 0) stack.push(b);\n            else if (M[b][a] == 1 && M[a][b] == 0) stack.push(a);\n        }\n        if (stack.isEmpty()) return -1;\n        int cand = stack.peek();\n        for (int i = 0; i < n; ++i)\n            if (i != cand && (M[i][cand] == 0 || M[cand][i] == 1)) return -1;\n        return cand;\n    }\n}"
+    "python": "def find_celebrity(M):\n    \"\"\"Return the celebrity index (known by all, knows nobody) or -1.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <stack>\nusing namespace std;\n\nint celebrity(vector<vector<int>>& M) {\n    // TODO: eliminate one candidate per comparison, then verify the survivor\n    return -1;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int celebrity(int[][] M) {\n        // TODO: eliminate one candidate per comparison, then verify the survivor\n        return -1;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["stack", "elimination", "two-phase", "celebrity-problem"],
+    "intentTags": [
+      "stack",
+      "elimination",
+      "two-phase",
+      "celebrity-problem"
+    ],
     "hintLevels": [
       "Level 1: Any single knowing relationship eliminates exactly one of the two people involved.",
       "Level 2: Pairwise duels leave one candidate; the duel loser is whoever knows the other.",

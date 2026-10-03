@@ -25,32 +25,54 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "nums": [1, 2, 3] },
+      "input": {
+        "nums": [
+          1,
+          2,
+          3
+        ]
+      },
       "expected": 4,
       "isPublic": true,
       "explanation": "Ranges are 0,0,0 for singles, 1 and 1 for the pairs, and 2 for the full array: total 4."
     },
     {
       "id": "tc-2",
-      "input": { "nums": [1, 3, 3] },
+      "input": {
+        "nums": [
+          1,
+          3,
+          3
+        ]
+      },
       "expected": 4,
       "isPublic": true,
       "explanation": "Duplicates count as separate positions; the pairs (1,3) contribute 2 each and the full array contributes 2."
     },
     {
       "id": "tc-3",
-      "input": { "nums": [4, -2, 9] },
+      "input": {
+        "nums": [
+          4,
+          -2,
+          9
+        ]
+      },
       "expected": 28,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def sub_array_ranges(nums):\n    def contribution(target):\n        # True -> sum as maximum; False -> sum as minimum\n        n = len(nums)\n        prev = [-1] * n\n        nxt = [n] * n\n        stack = []\n        for i in range(n):\n            while stack and (\n                (nums[stack[-1]] < nums[i]) if target else (nums[stack[-1]] > nums[i])\n            ):\n                stack.pop()\n            prev[i] = stack[-1] if stack else -1\n            stack.append(i)\n        stack = []\n        for i in range(n - 1, -1, -1):\n            while stack and (\n                (nums[stack[-1]] <= nums[i]) if target else (nums[stack[-1]] >= nums[i])\n            ):\n                stack.pop()\n            nxt[i] = stack[-1] if stack else n\n            stack.append(i)\n        return sum((i - prev[i]) * (nxt[i] - i) * nums[i] for i in range(n))\n\n    return contribution(True) - contribution(False)",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nlong long subArrayRanges(vector<int>& arr) {\n    auto bounds = [&](bool asMax) {\n        int n = arr.size();\n        vector<int> prev(n, -1), nxt(n, n);\n        stack<int> st;\n        for (int i = 0; i < n; ++i) {\n            while (!st.empty() && (asMax ? arr[st.top()] < arr[i] : arr[st.top()] > arr[i])) st.pop();\n            if (!st.empty()) prev[i] = st.top();\n            st.push(i);\n        }\n        while (!st.empty()) st.pop();\n        for (int i = n - 1; i >= 0; --i) {\n            while (!st.empty() && (asMax ? arr[st.top()] <= arr[i] : arr[st.top()] >= arr[i])) st.pop();\n            if (!st.empty()) nxt[i] = st.top();\n            st.push(i);\n        }\n        long long sum = 0;\n        for (int i = 0; i < n; ++i)\n            sum += (long long)(i - prev[i]) * (nxt[i] - i) * arr[i];\n        return sum;\n    };\n    return bounds(true) - bounds(false);\n}",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public long subArrayRanges(int[] nums) {\n        return contribution(nums, true) - contribution(nums, false);\n    }\n\n    private long contribution(int[] a, boolean asMax) {\n        int n = a.length;\n        int[] prev = new int[n], nxt = new int[n];\n        java.util.Arrays.fill(prev, -1);\n        java.util.Arrays.fill(nxt, n);\n        Deque<Integer> stack = new ArrayDeque<>();\n        for (int i = 0; i < n; ++i) {\n            while (!stack.isEmpty() &&\n                   (asMax ? a[stack.peek()] < a[i] : a[stack.peek()] > a[i])) stack.pop();\n            if (!stack.isEmpty()) prev[i] = stack.peek();\n            stack.push(i);\n        }\n        stack.clear();\n        for (int i = n - 1; i >= 0; --i) {\n            while (!stack.isEmpty() &&\n                   (asMax ? a[stack.peek()] <= a[i] : a[stack.peek()] >= a[i])) stack.pop();\n            if (!stack.isEmpty()) nxt[i] = stack.peek();\n            stack.push(i);\n        }\n        long sum = 0;\n        for (int i = 0; i < n; ++i)\n            sum += (long)(i - prev[i]) * (nxt[i] - i) * a[i];\n        return sum;\n    }\n}"
+    "python": "def sub_array_ranges(nums):\n    \"\"\"Return the sum of (max - min) over every contiguous subarray of nums.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <stack>\nusing namespace std;\n\nlong long subArrayRanges(vector<int>& nums) {\n    // TODO: sum subarray maxima and subtract the sum of subarray minima\n    return 0;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public long subArrayRanges(int[] nums) {\n        // TODO: sum subarray maxima and subtract the sum of subarray minima\n        return 0L;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["monotonic-stack", "contribution-technique", "sum-of-range-of-all-subarray"],
+    "intentTags": [
+      "monotonic-stack",
+      "contribution-technique",
+      "sum-of-range-of-all-subarray"
+    ],
     "hintLevels": [
       "Level 1: max-sum minus min-sum is the range sum — each half is the same counting problem.",
       "Level 2: Reuse the subarray-minimum machinery with comparison directions flipped for maxima.",

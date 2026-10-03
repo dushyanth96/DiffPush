@@ -26,32 +26,62 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "nums": [1, 0, 1, 0, 1], "goal": 2 },
+      "input": {
+        "nums": [
+          1,
+          0,
+          1,
+          0,
+          1
+        ],
+        "goal": 2
+      },
       "expected": 4,
       "isPublic": true,
       "explanation": "The qualifying stretches are [1,0,1], [1,0,1,0], [0,1,0,1] and [1,0,1] again at a later start."
     },
     {
       "id": "tc-2",
-      "input": { "nums": [0, 0, 0, 0, 0], "goal": 0 },
+      "input": {
+        "nums": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "goal": 0
+      },
       "expected": 15,
       "isPublic": true,
       "explanation": "Every one of the 15 contiguous stretches sums to zero."
     },
     {
       "id": "tc-3",
-      "input": { "nums": [1, 1, 1], "goal": 2 },
+      "input": {
+        "nums": [
+          1,
+          1,
+          1
+        ],
+        "goal": 2
+      },
       "expected": 2,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def num_subarrays_with_sum(nums, goal):\n    seen = {0: 1}   # prefix sum -> how many prefixes have it\n    prefix = total = 0\n    for v in nums:\n        prefix += v\n        total += seen.get(prefix - goal, 0)\n        seen[prefix] = seen.get(prefix, 0) + 1\n    return total",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint numSubarraysWithSum(vector<int>& nums, int goal) {\n    unordered_map<int, int> seen;\n    seen[0] = 1;\n    int prefix = 0;\n    long long total = 0;\n    for (int v : nums) {\n        prefix += v;\n        auto it = seen.find(prefix - goal);\n        if (it != seen.end()) total += it->second;\n        ++seen[prefix];\n    }\n    return (int)total;\n}",
-    "java": "import java.util.HashMap;\nimport java.util.Map;\n\nclass Solution {\n    public int numSubarraysWithSum(int[] nums, int goal) {\n        Map<Integer, Integer> seen = new HashMap<>();\n        seen.put(0, 1);\n        int prefix = 0, total = 0;\n        for (int v : nums) {\n            prefix += v;\n            total += seen.getOrDefault(prefix - goal, 0);\n            seen.merge(prefix, 1, Integer::sum);\n        }\n        return total;\n    }\n}"
+    "python": "def num_subarrays_with_sum(nums, goal):\n    \"\"\"Count binary subarrays whose sum equals goal.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <unordered_map>\nusing namespace std;\n\nint numSubarraysWithSum(vector<int>& nums, int goal) {\n    // TODO: prefix-sum counter, or atMost(goal) - atMost(goal - 1)\n    return 0;\n}",
+    "java": "import java.util.HashMap;\nimport java.util.Map;\n\nclass Solution {\n    public int numSubarraysWithSum(int[] nums, int goal) {\n        // TODO: prefix-sum counter, or atMost(goal) - atMost(goal - 1)\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["prefix-sum", "hash-map", "subarray-counting", "binary-subarrays-with-sum"],
+    "intentTags": [
+      "prefix-sum",
+      "hash-map",
+      "subarray-counting",
+      "binary-subarrays-with-sum"
+    ],
     "hintLevels": [
       "Level 1: A subarray sum is a difference of two prefix sums — count matching prefix pairs.",
       "Level 2: While scanning, ask how many earlier prefixes equal (current prefix - goal).",

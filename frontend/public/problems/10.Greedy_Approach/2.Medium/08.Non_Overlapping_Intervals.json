@@ -26,32 +26,86 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "intervals": [[1, 2], [2, 3], [3, 4], [1, 3]] },
+      "input": {
+        "intervals": [
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      },
       "expected": 1,
       "isPublic": true,
       "explanation": "Dropping [1,3] leaves the chain [1,2], [2,3], [3,4], where touching endpoints don't count as overlap."
     },
     {
       "id": "tc-2",
-      "input": { "intervals": [[1, 2], [1, 2], [1, 2]] },
+      "input": {
+        "intervals": [
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            2
+          ]
+        ]
+      },
       "expected": 2,
       "isPublic": true,
       "explanation": "Three identical blocks: two must go."
     },
     {
       "id": "tc-3",
-      "input": { "intervals": [[1, 100], [2, 3], [3, 4]] },
+      "input": {
+        "intervals": [
+          [
+            1,
+            100
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ]
+        ]
+      },
       "expected": 1,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def erase_overlap_intervals(intervals):\n    intervals.sort(key=lambda iv: iv[1])   # earliest finish first\n    removed = 0\n    last_end = float(\"-inf\")\n    for start, end in intervals:\n        if start < last_end:\n            removed += 1                   # overlap: drop this one\n        else:\n            last_end = end\n    return removed",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint eraseOverlapIntervals(vector<vector<int>>& intervals) {\n    sort(intervals.begin(), intervals.end(),\n         [](auto& a, auto& b) { return a[1] < b[1]; });\n    int removed = 0;\n    long long lastEnd = LLONG_MIN;\n    for (auto& iv : intervals) {\n        if (iv[0] < lastEnd) ++removed;\n        else lastEnd = iv[1];\n    }\n    return removed;\n}",
-    "java": "import java.util.Arrays;\n\nclass Solution {\n    public int eraseOverlapIntervals(int[][] intervals) {\n        Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));\n        int removed = 0;\n        long lastEnd = Long.MIN_VALUE;\n        for (int[] iv : intervals) {\n            if (iv[0] < lastEnd) ++removed;\n            else lastEnd = iv[1];\n        }\n        return removed;\n    }\n}"
+    "python": "def erase_overlap_intervals(intervals):\n    \"\"\"Minimum intervals to remove so the rest are non-overlapping.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nint eraseOverlapIntervals(vector<vector<int>>& intervals) {\n    // TODO: sort by end; drop any interval starting before the last kept end\n    return 0;\n}",
+    "java": "import java.util.Arrays;\n\nclass Solution {\n    public int eraseOverlapIntervals(int[][] intervals) {\n        // TODO: sort by end; drop any interval starting before the last kept end\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["greedy", "interval-scheduling", "sorting", "non-overlapping-intervals"],
+    "intentTags": [
+      "greedy",
+      "interval-scheduling",
+      "sorting",
+      "non-overlapping-intervals"
+    ],
     "hintLevels": [
       "Level 1: Removing fewest = keeping the maximum non-overlapping set — the activity-selection dual.",
       "Level 2: Sort by end time; keep an interval only when it starts at or after the kept frontier.",

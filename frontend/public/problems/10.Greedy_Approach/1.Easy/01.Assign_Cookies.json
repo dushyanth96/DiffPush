@@ -25,32 +25,68 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "g": [1, 2, 3], "s": [1, 1] },
+      "input": {
+        "g": [
+          1,
+          2,
+          3
+        ],
+        "s": [
+          1,
+          1
+        ]
+      },
       "expected": 1,
       "isPublic": true,
       "explanation": "Both tokens are strength 1, so only the greediest-of-three's weakest demand can be met."
     },
     {
       "id": "tc-2",
-      "input": { "g": [1, 2], "s": [1, 2, 3] },
+      "input": {
+        "g": [
+          1,
+          2
+        ],
+        "s": [
+          1,
+          2,
+          3
+        ]
+      },
       "expected": 2,
       "isPublic": true,
       "explanation": "Tokens 1 and 2 cover both jobs; the spare token sits unused."
     },
     {
       "id": "tc-3",
-      "input": { "g": [2, 2, 2], "s": [1, 2, 3] },
+      "input": {
+        "g": [
+          2,
+          2,
+          2
+        ],
+        "s": [
+          1,
+          2,
+          3
+        ]
+      },
       "expected": 2,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def find_content_children(g, s):\n    g.sort()\n    s.sort()\n    child = 0\n    for token in s:\n        if child < len(g) and token >= g[child]:\n            child += 1\n    return child",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint findContentChildren(vector<int>& g, vector<int>& s) {\n    sort(g.begin(), g.end());\n    sort(s.begin(), s.end());\n    int child = 0;\n    for (int i = 0; i < (int)s.size() && child < (int)g.size(); ++i)\n        if (s[i] >= g[child]) ++child;\n    return child;\n}",
-    "java": "import java.util.Arrays;\n\nclass Solution {\n    public int findContentChildren(int[] g, int[] s) {\n        Arrays.sort(g);\n        Arrays.sort(s);\n        int child = 0;\n        for (int token : s) {\n            if (child < g.length && token >= g[child]) ++child;\n        }\n        return child;\n    }\n}"
+    "python": "def find_content_children(g, s):\n    \"\"\"Max children contented when each child g[i] needs a cookie of size >= g[i].\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nint findContentChildren(vector<int>& g, vector<int>& s) {\n    // TODO: sort both; satisfy the least-demanding child with the smallest sufficient cookie\n    return 0;\n}",
+    "java": "import java.util.Arrays;\n\nclass Solution {\n    public int findContentChildren(int[] g, int[] s) {\n        // TODO: sort both; satisfy the least-demanding child with the smallest sufficient cookie\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["greedy", "sorting", "two-pointer", "assign-cookies"],
+    "intentTags": [
+      "greedy",
+      "sorting",
+      "two-pointer",
+      "assign-cookies"
+    ],
     "hintLevels": [
       "Level 1: Waste the smallest acceptable resource on the easiest demand — never over-spend a big token early.",
       "Level 2: Sort both arrays; walk tokens left to right, advancing the job pointer on each match.",

@@ -26,32 +26,105 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "operations": [["push", 10], ["push", 20], ["pop"], ["push", 30], ["pop"], ["pop"]] },
-      "expected": [20, 30, 10],
+      "input": {
+        "operations": [
+          [
+            "push",
+            10
+          ],
+          [
+            "push",
+            20
+          ],
+          [
+            "pop"
+          ],
+          [
+            "push",
+            30
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        20,
+        30,
+        10
+      ],
       "isPublic": true,
       "explanation": "Head insertion means the most recent tag is always removed first."
     },
     {
       "id": "tc-2",
-      "input": { "operations": [["pop"], ["push", 3], ["pop"]] },
-      "expected": [-1, 3],
+      "input": {
+        "operations": [
+          [
+            "pop"
+          ],
+          [
+            "push",
+            3
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        -1,
+        3
+      ],
       "isPublic": true,
       "explanation": "Removing from an empty rope yields -1 before any tag exists."
     },
     {
       "id": "tc-3",
-      "input": { "operations": [["push", -1], ["pop"], ["pop"], ["push", 0], ["pop"]] },
-      "expected": [-1, -1, 0],
+      "input": {
+        "operations": [
+          [
+            "push",
+            -1
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ],
+          [
+            "push",
+            0
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        -1,
+        -1,
+        0
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def run_stack_via_list(operations):\n    # Simulate a linked-list stack (head insert/remove); return pop results (-1 when empty).\n    head = None  # each node is [value, next]\n    results = []\n    for op in operations:\n        if op[0] == \"push\":\n            head = [op[1], head]\n        else:\n            if head is None:\n                results.append(-1)\n            else:\n                results.append(head[0])\n                head = head[1]\n    return results",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass MyStack {\nprivate:\n    struct StackNode { int data; StackNode* next; };\n    StackNode* top = nullptr;\npublic:\n    void push(int x) { top = new StackNode{x, top}; }\n    int pop() {\n        if (!top) return -1;\n        int val = top->data;\n        StackNode* dead = top;\n        top = top->next;\n        delete dead;\n        return val;\n    }\n};",
-    "java": "class MyStack {\n    private static class StackNode {\n        int data; StackNode next;\n        StackNode(int d, StackNode n) { data = d; next = n; }\n    }\n    private StackNode top = null;\n\n    public void push(int x) { top = new StackNode(x, top); }\n\n    public int pop() {\n        if (top == null) return -1;\n        int val = top.data;\n        top = top.next;\n        return val;\n    }\n}"
+    "python": "def run_stack_via_list(operations):\n    \"\"\"Simulate a linked-list-backed stack; return each pop result (-1 when empty).\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "using namespace std;\n\nclass MyStack {\nprivate:\n    struct StackNode {\n        int data;\n        StackNode* next;\n    };\n    StackNode* top = nullptr;\npublic:\n    void push(int x) {\n        // TODO: link a new node in front of the current top\n    }\n\n    int pop() {\n        // TODO: unlink and return the top node's data, or -1 if empty\n        return -1;\n    }\n};",
+    "java": "class MyStack {\n    private static class StackNode {\n        int data;\n        StackNode next;\n        StackNode(int d, StackNode n) { data = d; next = n; }\n    }\n    private StackNode top = null;\n\n    public void push(int x) {\n        // TODO: link a new node in front of the current top\n    }\n\n    public int pop() {\n        // TODO: unlink and return the top node's data, or -1 if empty\n        return -1;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["stack", "linked-list", "design", "implement-stack-using-linked-list"],
+    "intentTags": [
+      "stack",
+      "linked-list",
+      "design",
+      "implement-stack-using-linked-list"
+    ],
     "hintLevels": [
       "Level 1: The stack top and the list head can be the same node.",
       "Level 2: Push rewires one pointer (new node points at old head); pop advances the head.",

@@ -25,32 +25,56 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "heights": [2, 1, 5, 6, 2, 3] },
+      "input": {
+        "heights": [
+          2,
+          1,
+          5,
+          6,
+          2,
+          3
+        ]
+      },
       "expected": 10,
       "isPublic": true,
       "explanation": "Columns 5 and 6 together form a 2-wide, 5-tall rectangle of area 10."
     },
     {
       "id": "tc-2",
-      "input": { "heights": [2, 4] },
+      "input": {
+        "heights": [
+          2,
+          4
+        ]
+      },
       "expected": 4,
       "isPublic": true,
       "explanation": "The full-width bar of height 2 gives 4, matching the single column of height 4."
     },
     {
       "id": "tc-3",
-      "input": { "heights": [5, 5, 5] },
+      "input": {
+        "heights": [
+          5,
+          5,
+          5
+        ]
+      },
       "expected": 15,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def largest_rectangle_area(heights):\n    # Single-pass stack of indices with heights in non-decreasing order.\n    stack = []\n    best = 0\n    extended = heights + [0]  # sentinel flushes the stack at the end\n    for i, h in enumerate(extended):\n        start = i\n        while stack and stack[-1][1] > h:\n            idx, hgt = stack.pop()\n            best = max(best, hgt * (i - idx))\n            start = idx\n        stack.append((start, h))\n    return best",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint largestRectangleArea(vector<int>& heights) {\n    int n = heights.size();\n    stack<int> st;\n    int ans = 0;\n    for (int i = 0; i <= n; ++i) {\n        int cur = i == n ? 0 : heights[i];  // sentinel height 0\n        while (!st.empty() && heights[st.top()] > cur) {\n            int h = heights[st.top()];\n            st.pop();\n            int left = st.empty() ? -1 : st.top();\n            ans = max(ans, h * (i - left - 1));\n        }\n        st.push(i);\n    }\n    return ans;\n}",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int largestRectangleArea(int[] heights) {\n        int n = heights.length, ans = 0;\n        Deque<Integer> stack = new ArrayDeque<>();\n        for (int i = 0; i <= n; ++i) {\n            int cur = i == n ? 0 : heights[i];\n            while (!stack.isEmpty() && heights[stack.peek()] > cur) {\n                int h = heights[stack.pop()];\n                int left = stack.isEmpty() ? -1 : stack.peek();\n                ans = Math.max(ans, h * (i - left - 1));\n            }\n            stack.push(i);\n        }\n        return ans;\n    }\n}"
+    "python": "def largest_rectangle_area(heights):\n    \"\"\"Return the largest rectangle that fits under the histogram `heights`.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <stack>\nusing namespace std;\n\nint largestRectangleArea(vector<int>& heights) {\n    // TODO: monotonic increasing stack; pop and expand when a shorter bar arrives\n    return 0;\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int largestRectangleArea(int[] heights) {\n        // TODO: monotonic increasing stack; pop and expand when a shorter bar arrives\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["monotonic-stack", "histogram", "largest-rectangle-in-histogram"],
+    "intentTags": [
+      "monotonic-stack",
+      "histogram",
+      "largest-rectangle-in-histogram"
+    ],
     "hintLevels": [
       "Level 1: Every bar wants to know how far it can spread before a shorter bar blocks each side.",
       "Level 2: A stack of indices with non-decreasing heights pops when a shorter bar arrives, computing widths on the way out.",

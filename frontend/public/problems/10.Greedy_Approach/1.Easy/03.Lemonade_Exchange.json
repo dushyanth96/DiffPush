@@ -25,32 +25,62 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "bills": [5, 5, 5, 10, 20] },
+      "input": {
+        "bills": [
+          5,
+          5,
+          5,
+          10,
+          20
+        ]
+      },
       "expected": true,
       "isPublic": true,
       "explanation": "Three 5s bank enough change: the 10 takes one 5, the 20 takes a 10 and a 5."
     },
     {
       "id": "tc-2",
-      "input": { "bills": [5, 5, 10, 10, 20] },
+      "input": {
+        "bills": [
+          5,
+          5,
+          10,
+          10,
+          20
+        ]
+      },
       "expected": false,
       "isPublic": true,
       "explanation": "The final 20 arrives with no 5s left to combine with the 10."
     },
     {
       "id": "tc-3",
-      "input": { "bills": [5, 5, 10, 10, 20, 5] },
+      "input": {
+        "bills": [
+          5,
+          5,
+          10,
+          10,
+          20,
+          5
+        ]
+      },
       "expected": false,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def lemonade_change(bills):\n    fives = tens = 0\n    for bill in bills:\n        if bill == 5:\n            fives += 1\n        elif bill == 10:\n            tens += 1\n            fives -= 1\n        else:\n            if tens:\n                tens -= 1\n                fives -= 1\n            else:\n                fives -= 3\n        if fives < 0:\n            return False\n    return True",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool lemonadeChange(vector<int>& bills) {\n    int fives = 0, tens = 0;\n    for (int bill : bills) {\n        if (bill == 5) ++fives;\n        else if (bill == 10) { ++tens; --fives; }\n        else {\n            if (tens) { --tens; --fives; }\n            else fives -= 3;\n        }\n        if (fives < 0) return false;\n    }\n    return true;\n}",
-    "java": "class Solution {\n    public boolean lemonadeChange(int[] bills) {\n        int fives = 0, tens = 0;\n        for (int bill : bills) {\n            if (bill == 5) ++fives;\n            else if (bill == 10) { ++tens; --fives; }\n            else {\n                if (tens > 0) { --tens; --fives; }\n                else fives -= 3;\n            }\n            if (fives < 0) return false;\n        }\n        return true;\n    }\n}"
+    "python": "def lemonade_change(bills):\n    \"\"\"True when every customer can be given correct change from prior payments.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nbool lemonadeChange(vector<int>& bills) {\n    // TODO: track $5/$10 counts; prefer giving a $10 + $5 as change over three $5s\n    return false;\n}",
+    "java": "class Solution {\n    public boolean lemonadeChange(int[] bills) {\n        // TODO: track $5/$10 counts; prefer giving a $10 + $5 as change over three $5s\n        return false;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["greedy", "simulation", "change-making", "lemonade-exchange"],
+    "intentTags": [
+      "greedy",
+      "simulation",
+      "change-making",
+      "lemonade-exchange"
+    ],
     "hintLevels": [
       "Level 1: Only the count of 5s and 10s matters — 20s are never useful as change.",
       "Level 2: For a 20, prefer giving a 10+5; saving 5s is what keeps future customers servable.",

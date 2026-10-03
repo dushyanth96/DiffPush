@@ -26,32 +26,43 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "expression": "*-A/BC-/AKL" },
+      "input": {
+        "expression": "*-A/BC-/AKL"
+      },
       "expected": "((A-(B/C))*((A/K)-L))",
       "isPublic": true,
       "explanation": "Scanning backwards, each operator wraps the two groups already on the shelf, rebuilding the parenthesized tree."
     },
     {
       "id": "tc-2",
-      "input": { "expression": "+AB" },
+      "input": {
+        "expression": "+AB"
+      },
       "expected": "(A+B)",
       "isPublic": true,
       "explanation": "The minimal case: one operator, two operands, one pair of parentheses."
     },
     {
       "id": "tc-3",
-      "input": { "expression": "/-ab+cd" },
+      "input": {
+        "expression": "/-ab+cd"
+      },
       "expected": "((a-b)/(c+d))",
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def prefix_to_infix(expression: str) -> str:\n    stack = []\n    for ch in reversed(expression):\n        if ch.isalnum():\n            stack.append(ch)\n        else:\n            a = stack.pop()\n            b = stack.pop()\n            stack.append(f\"({a}{ch}{b})\")\n    return stack[0]",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstring preToInfix(string pre_exp) {\n    stack<string> st;\n    for (int i = (int)pre_exp.size() - 1; i >= 0; --i) {\n        char ch = pre_exp[i];\n        if (isalnum((unsigned char)ch)) st.push(string(1, ch));\n        else {\n            string a = st.top(); st.pop();\n            string b = st.top(); st.pop();\n            st.push(\"(\" + a + ch + b + \")\");\n        }\n    }\n    return st.top();\n}",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public String preToInfix(String pre) {\n        Deque<String> stack = new ArrayDeque<>();\n        for (int i = pre.length() - 1; i >= 0; --i) {\n            char ch = pre.charAt(i);\n            if (Character.isLetterOrDigit(ch)) stack.push(String.valueOf(ch));\n            else {\n                String a = stack.pop(), b = stack.pop();\n                stack.push(\"(\" + a + ch + b + \")\");\n            }\n        }\n        return stack.peek();\n    }\n}"
+    "python": "def prefix_to_infix(expression: str) -> str:\n    \"\"\"Convert a prefix expression back to fully parenthesized infix.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <string>\n#include <stack>\nusing namespace std;\n\nstring preToInfix(string pre_exp) {\n    // TODO: scan right-to-left; combine two operand strings whenever an operator appears\n    return \"\";\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public String preToInfix(String pre) {\n        // TODO: scan right-to-left; combine two operand strings whenever an operator appears\n        return \"\";\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["stack", "string-parsing", "expression-conversion", "prefix-to-infix"],
+    "intentTags": [
+      "stack",
+      "string-parsing",
+      "expression-conversion",
+      "prefix-to-infix"
+    ],
     "hintLevels": [
       "Level 1: Every operator needs exactly two operand groups — the shelf always provides them.",
       "Level 2: Scan right-to-left so operands are already waiting when their operator arrives.",

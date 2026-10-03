@@ -1,6 +1,6 @@
 import { get, set, del } from 'idb-keyval'
 
-const keyFor = (problemId) => `builtdiff:draft:${problemId}`
+const keyFor = (problemId) => `builtdiff:draft:v2:${problemId}`
 
 // Zero-latency local draft engine (IndexedDB). No network.
 export async function saveDraft(problemId, code) {

@@ -25,32 +25,65 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "fruits": [2, 1, 2] },
+      "input": {
+        "fruits": [
+          2,
+          1,
+          2
+        ]
+      },
       "expected": 3,
       "isPublic": true,
       "explanation": "Two types across three trees fit the two crates exactly."
     },
     {
       "id": "tc-2",
-      "input": { "fruits": [1, 2, 3, 2, 2] },
+      "input": {
+        "fruits": [
+          1,
+          2,
+          3,
+          2,
+          2
+        ]
+      },
       "expected": 4,
       "isPublic": true,
       "explanation": "Starting at tree 1 lets the picker ride types 2 and 3 through four trees."
     },
     {
       "id": "tc-3",
-      "input": { "fruits": [3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4] },
+      "input": {
+        "fruits": [
+          3,
+          3,
+          3,
+          1,
+          2,
+          1,
+          1,
+          2,
+          3,
+          3,
+          4
+        ]
+      },
       "expected": 5,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def total_fruits(fruits):\n    count = {}      # fruit type -> trees seen in window\n    start = best = 0\n    for i, f in enumerate(fruits):\n        count[f] = count.get(f, 0) + 1\n        while len(count) > 2:\n            count[fruits[start]] -= 1\n            if count[fruits[start]] == 0:\n                del count[fruits[start]]\n            start += 1\n        best = max(best, i - start + 1)\n    return best",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint totalFruits(vector<int>& fruits) {\n    unordered_map<int, int> count;\n    int start = 0, ans = 0;\n    for (int i = 0; i < (int)fruits.size(); ++i) {\n        ++count[fruits[i]];\n        while ((int)count.size() > 2) {\n            if (--count[fruits[start]] == 0) count.erase(fruits[start]);\n            ++start;\n        }\n        ans = max(ans, i - start + 1);\n    }\n    return ans;\n}",
-    "java": "import java.util.HashMap;\nimport java.util.Map;\n\nclass Solution {\n    public int totalFruits(int[] fruits) {\n        Map<Integer, Integer> count = new HashMap<>();\n        int start = 0, best = 0;\n        for (int i = 0; i < fruits.length; ++i) {\n            count.merge(fruits[i], 1, Integer::sum);\n            while (count.size() > 2) {\n                int left = fruits[start];\n                if (count.merge(left, -1, Integer::sum) == 0) count.remove(left);\n                ++start;\n            }\n            best = Math.max(best, i - start + 1);\n        }\n        return best;\n    }\n}"
+    "python": "def total_fruits(fruits):\n    \"\"\"Longest stretch of trees holding at most two fruit types.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <unordered_map>\nusing namespace std;\n\nint totalFruits(vector<int>& fruits) {\n    // TODO: classic at-most-2-types window with a shrinking hashmap\n    return 0;\n}",
+    "java": "import java.util.HashMap;\nimport java.util.Map;\n\nclass Solution {\n    public int totalFruits(int[] fruits) {\n        // TODO: classic at-most-2-types window with a shrinking hashmap\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["sliding-window", "arrays", "at-most-k-distinct", "fruit-into-baskets"],
+    "intentTags": [
+      "sliding-window",
+      "arrays",
+      "at-most-k-distinct",
+      "fruit-into-baskets"
+    ],
     "hintLevels": [
       "Level 1: Two baskets means the answer window may hold at most two distinct values.",
       "Level 2: Track type frequencies in the window; a third type forces evictions from the left.",

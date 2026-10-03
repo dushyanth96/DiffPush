@@ -26,32 +26,79 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "A": [3, 2], "B": [1, 4], "K": 2 },
-      "expected": [7, 6],
+      "input": {
+        "A": [
+          3,
+          2
+        ],
+        "B": [
+          1,
+          4
+        ],
+        "K": 2
+      },
+      "expected": [
+        7,
+        6
+      ],
       "isPublic": true,
       "explanation": "3+4=7 leads; the runner-up is 2+4=6."
     },
     {
       "id": "tc-2",
-      "input": { "A": [1, 4, 2, 3], "B": [2, 5, 1, 6], "K": 4 },
-      "expected": [10, 9, 9, 8],
+      "input": {
+        "A": [
+          1,
+          4,
+          2,
+          3
+        ],
+        "B": [
+          2,
+          5,
+          1,
+          6
+        ],
+        "K": 4
+      },
+      "expected": [
+        10,
+        9,
+        9,
+        8
+      ],
       "isPublic": true,
       "explanation": "The strongest pairings all anchor on B's largest values."
     },
     {
       "id": "tc-3",
-      "input": { "A": [5], "B": [5], "K": 1 },
-      "expected": [10],
+      "input": {
+        "A": [
+          5
+        ],
+        "B": [
+          5
+        ],
+        "K": 1
+      },
+      "expected": [
+        10
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "import heapq\n\ndef max_combinations(A, B, K):\n    A, B = sorted(A), sorted(B)\n    n = len(A)\n    # Max-heap via negation: (sum, a_index, b_index)\n    heap = [(-(A[i] + B[n - 1]), i, n - 1) for i in range(n)]\n    heapq.heapify(heap)\n    result = []\n    while heap and K > 0:\n        neg, x, y = heapq.heappop(heap)\n        result.append(-neg)\n        K -= 1\n        if y > 0:\n            heapq.heappush(heap, (-(A[x] + B[y - 1]), x, y - 1))\n    return result",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> maxCombinations(int N, int K, vector<int>& A, vector<int>& B) {\n    sort(A.begin(), A.end());\n    sort(B.begin(), B.end());\n    priority_queue<tuple<int, int, int>> pq;  // {sum, aIdx, bIdx}\n    for (int i = 0; i < N; ++i) pq.push({A[i] + B[N - 1], i, N - 1});\n    vector<int> ans;\n    while (!pq.empty() && K-- > 0) {\n        auto [sum, x, y] = pq.top(); pq.pop();\n        ans.push_back(sum);\n        if (y > 0) pq.push({A[x] + B[y - 1], x, y - 1});\n    }\n    return ans;\n}",
-    "java": "import java.util.*;\n\nclass Solution {\n    public int[] maxCombinations(int[] A, int[] B, int K) {\n        Arrays.sort(A); Arrays.sort(B);\n        int n = A.length;\n        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[0] - a[0]);  // {sum, aIdx, bIdx}\n        for (int i = 0; i < n; ++i) pq.offer(new int[]{A[i] + B[n - 1], i, n - 1});\n        int[] ans = new int[K];\n        for (int i = 0; i < K && !pq.isEmpty(); ++i) {\n            int[] top = pq.poll();\n            ans[i] = top[0];\n            if (top[2] > 0) pq.offer(new int[]{A[top[1]] + B[top[2] - 1], top[1], top[2] - 1});\n        }\n        return ans;\n    }\n}"
+    "python": "def max_combinations(A, B, K):\n    \"\"\"Return the K largest a+b sums, taking one element from each array per pair.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <queue>\n#include <algorithm>\n#include <set>\nusing namespace std;\n\nvector<int> maxCombinations(vector<int>& A, vector<int>& B, int K) {\n    // TODO: sort both; max-heap over (A[i]+B[j]) with visited-pair tracking\n    return {};\n}",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int[] maxCombinations(int[] A, int[] B, int K) {\n        // TODO: sort both; max-heap over (A[i]+B[j]) with visited-pair tracking\n        return new int[] {};\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["heap", "top-k", "pair-sums", "maximum-k-sum-combinations"],
+    "intentTags": [
+      "heap",
+      "top-k",
+      "pair-sums",
+      "maximum-k-sum-combinations"
+    ],
     "hintLevels": [
       "Level 1: Sorting both arrays turns every row of the pair-sum matrix into a descending sequence.",
       "Level 2: Seed with (a_i, b_max) for every i; each pop promotes that row's next candidate.",

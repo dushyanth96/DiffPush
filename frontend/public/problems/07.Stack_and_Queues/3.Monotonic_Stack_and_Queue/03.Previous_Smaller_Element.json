@@ -25,32 +25,74 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "arr": [1, 6, 2] },
-      "expected": [-1, 1, 1],
+      "input": {
+        "arr": [
+          1,
+          6,
+          2
+        ]
+      },
+      "expected": [
+        -1,
+        1,
+        1
+      ],
       "isPublic": true,
       "explanation": "Nothing sits left of 1; both 6 and 2 look back to the 1 as their nearest smaller value."
     },
     {
       "id": "tc-2",
-      "input": { "arr": [5, 4, 3, 2, 1] },
-      "expected": [-1, -1, -1, -1, -1],
+      "input": {
+        "arr": [
+          5,
+          4,
+          3,
+          2,
+          1
+        ]
+      },
+      "expected": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
       "isPublic": true,
       "explanation": "A strictly decreasing row never finds a smaller value to its left."
     },
     {
       "id": "tc-3",
-      "input": { "arr": [3, 2, 10, 4, 4] },
-      "expected": [-1, -1, 2, 2, 2],
+      "input": {
+        "arr": [
+          3,
+          2,
+          10,
+          4,
+          4
+        ]
+      },
+      "expected": [
+        -1,
+        -1,
+        2,
+        2,
+        2
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def previous_smaller_element(arr):\n    ans, stack = [], []\n    for x in arr:\n        while stack and stack[-1] >= x:\n            stack.pop()\n        ans.append(stack[-1] if stack else -1)\n        stack.append(x)\n    return ans",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> leftSmaller(vector<int>& arr) {\n    int n = arr.size();\n    vector<int> ans(n, -1);\n    stack<int> st;\n    for (int i = 0; i < n; ++i) {\n        while (!st.empty() && st.top() >= arr[i]) st.pop();\n        if (!st.empty()) ans[i] = st.top();\n        st.push(arr[i]);\n    }\n    return ans;\n}",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int[] leftSmaller(int[] arr) {\n        int n = arr.length;\n        int[] ans = new int[n];\n        java.util.Arrays.fill(ans, -1);\n        Deque<Integer> stack = new ArrayDeque<>();\n        for (int i = 0; i < n; ++i) {\n            while (!stack.isEmpty() && stack.peek() >= arr[i]) stack.pop();\n            if (!stack.isEmpty()) ans[i] = stack.peek();\n            stack.push(arr[i]);\n        }\n        return ans;\n    }\n}"
+    "python": "def previous_smaller_element(arr):\n    \"\"\"For each element return the nearest smaller value to its left (-1 if none).\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <stack>\nusing namespace std;\n\nvector<int> leftSmaller(vector<int>& arr) {\n    // TODO: monotonic stack keeping strictly smaller candidates on the left\n    return {};\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int[] leftSmaller(int[] arr) {\n        // TODO: monotonic stack keeping strictly smaller candidates on the left\n        return new int[arr.length];\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["monotonic-stack", "arrays", "previous-smaller-element"],
+    "intentTags": [
+      "monotonic-stack",
+      "arrays",
+      "previous-smaller-element"
+    ],
     "hintLevels": [
       "Level 1: It is the mirror image of next-greater: sweep forward instead of backward.",
       "Level 2: Pop while the stack top is >= current; whatever survives is strictly smaller and nearest.",

@@ -25,32 +25,56 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "arr": [4, 3, 2, 6] },
+      "input": {
+        "arr": [
+          4,
+          3,
+          2,
+          6
+        ]
+      },
       "expected": 29,
       "isPublic": true,
       "explanation": "Splice 2+3=5, then 4+5=9, then 6+9=15; the bill totals 29."
     },
     {
       "id": "tc-2",
-      "input": { "arr": [1, 2, 3, 4, 5] },
+      "input": {
+        "arr": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
       "expected": 33,
       "isPublic": true,
       "explanation": "Splices are 1+2=3, 3+3=6, 4+5=9 and 6+9=15 — bills of 3, 6, 9, 15 totalling 33."
     },
     {
       "id": "tc-3",
-      "input": { "arr": [8] },
+      "input": {
+        "arr": [
+          8
+        ]
+      },
       "expected": 0,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "import heapq\n\ndef connect_ropes(arr):\n    heap = list(arr)\n    heapq.heapify(heap)\n    cost = 0\n    while len(heap) > 1:\n        a = heapq.heappop(heap)\n        b = heapq.heappop(heap)\n        cost += a + b\n        heapq.heappush(heap, a + b)\n    return cost",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nlong long connectRopes(vector<int>& arr) {\n    priority_queue<int, vector<int>, greater<int>> pq;\n    for (int v : arr) pq.push(v);\n    long long cost = 0;\n    while (pq.size() > 1) {\n        int a = pq.top(); pq.pop();\n        int b = pq.top(); pq.pop();\n        cost += a + b;\n        pq.push(a + b);\n    }\n    return cost;\n}",
-    "java": "import java.util.PriorityQueue;\n\nclass Solution {\n    public long connectRopes(int[] arr) {\n        PriorityQueue<Integer> pq = new PriorityQueue<>();\n        for (int v : arr) pq.offer(v);\n        long cost = 0;\n        while (pq.size() > 1) {\n            int a = pq.poll(), b = pq.poll();\n            cost += a + b;\n            pq.offer(a + b);\n        }\n        return cost;\n    }\n}"
+    "python": "def connect_ropes(arr):\n    \"\"\"Minimum total cost of joining all ropes; each join costs the sum of the lengths.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <queue>\n#include <functional>\nusing namespace std;\n\nlong long connectRopes(vector<int>& arr) {\n    // TODO: min-heap; always join the two shortest ropes first\n    return 0;\n}",
+    "java": "import java.util.PriorityQueue;\n\nclass Solution {\n    public long connectRopes(int[] arr) {\n        // TODO: min-heap; always join the two shortest ropes first\n        return 0L;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["heap", "greedy", "huffman-style", "minimum-cost-to-join-n-ropes"],
+    "intentTags": [
+      "heap",
+      "greedy",
+      "huffman-style",
+      "minimum-cost-to-join-n-ropes"
+    ],
     "hintLevels": [
       "Level 1: Every rope's length is charged once per splice it survives — late splices are cheap for big ropes.",
       "Level 2: Always fuse the two shortest current runs; a min-heap serves them instantly.",

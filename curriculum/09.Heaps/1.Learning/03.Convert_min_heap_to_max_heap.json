@@ -26,32 +26,75 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "arr": [3, 5, 6, 9, 12] },
-      "expected": [12, 9, 6, 3, 5],
+      "input": {
+        "arr": [
+          3,
+          5,
+          6,
+          9,
+          12
+        ]
+      },
+      "expected": [
+        12,
+        9,
+        6,
+        3,
+        5
+      ],
       "isPublic": true,
       "explanation": "Sifting down from the last internal node lifts 12 to the root and settles the rest into max order."
     },
     {
       "id": "tc-2",
-      "input": { "arr": [1, 3, 2, 7, 6, 5, 4] },
-      "expected": [7, 6, 5, 3, 1, 2, 4],
+      "input": {
+        "arr": [
+          1,
+          3,
+          2,
+          7,
+          6,
+          5,
+          4
+        ]
+      },
+      "expected": [
+        7,
+        6,
+        5,
+        3,
+        1,
+        2,
+        4
+      ],
       "isPublic": true,
       "explanation": "The Floyd build pass rearranges every subtree bottom-up."
     },
     {
       "id": "tc-3",
-      "input": { "arr": [2] },
-      "expected": [2],
+      "input": {
+        "arr": [
+          2
+        ]
+      },
+      "expected": [
+        2
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def convert_min_to_max(arr):\n    n = len(arr)\n\n    def sift_down(node):\n        left, right, largest = 2 * node + 1, 2 * node + 2, node\n        if left < n and arr[left] > arr[largest]:\n            largest = left\n        if right < n and arr[right] > arr[largest]:\n            largest = right\n        if largest != node:\n            arr[node], arr[largest] = arr[largest], arr[node]\n            sift_down(largest)\n\n    for i in range(n // 2 - 1, -1, -1):\n        sift_down(i)\n    return arr",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvoid heapify(vector<int>& arr, int node) {\n    int left = 2 * node + 1, right = 2 * node + 2, largest = node;\n    int n = arr.size();\n    if (left < n && arr[left] > arr[largest]) largest = left;\n    if (right < n && arr[right] > arr[largest]) largest = right;\n    if (largest != node) {\n        swap(arr[node], arr[largest]);\n        heapify(arr, largest);\n    }\n}\n\nvoid convertMinToMaxHeap(vector<int>& arr, int N) {\n    for (int i = (N / 2) - 1; i >= 0; --i) heapify(arr, i);\n}",
-    "java": "import java.util.Arrays;\n\nclass Solution {\n    public int[] convertMinToMaxHeap(int[] arr) {\n        int n = arr.length;\n        for (int i = n / 2 - 1; i >= 0; --i) siftDown(arr, i, n);\n        return arr;\n    }\n\n    private void siftDown(int[] arr, int node, int n) {\n        int left = 2 * node + 1, right = 2 * node + 2, largest = node;\n        if (left < n && arr[left] > arr[largest]) largest = left;\n        if (right < n && arr[right] > arr[largest]) largest = right;\n        if (largest != node) {\n            int tmp = arr[node]; arr[node] = arr[largest]; arr[largest] = tmp;\n            siftDown(arr, largest, n);\n        }\n    }\n}"
+    "python": "def convert_min_to_max(arr):\n    \"\"\"Return arr re-arranged into a valid max-heap.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nvector<int> convertMinToMax(vector<int> arr) {\n    // TODO: sift down each internal node, last parent to root\n    return arr;\n}",
+    "java": "import java.util.Arrays;\nimport java.util.List;\n\nclass Solution {\n    public int[] convertMinToMax(int[] arr) {\n        // TODO: sift down each internal node, last parent to root\n        return arr;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["heap", "in-place", "heapify", "convert-min-heap-to-max-heap"],
+    "intentTags": [
+      "heap",
+      "in-place",
+      "heapify",
+      "convert-min-heap-to-max-heap"
+    ],
     "hintLevels": [
       "Level 1: Building a heap bottom-up is cheaper than n separate insertions.",
       "Level 2: Start at the last internal node (n/2 - 1) and sift each node down toward the max orientation.",

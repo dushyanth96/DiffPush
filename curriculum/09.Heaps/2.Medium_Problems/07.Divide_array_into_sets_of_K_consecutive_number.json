@@ -26,32 +26,67 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "nums": [1, 2, 3, 3, 4, 4, 5, 6], "k": 4 },
+      "input": {
+        "nums": [
+          1,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          6
+        ],
+        "k": 4
+      },
       "expected": true,
       "isPublic": true,
       "explanation": "Blocks [1,2,3,4] and [3,4,5,6] consume every room exactly once."
     },
     {
       "id": "tc-2",
-      "input": { "nums": [1, 2, 3, 4], "k": 3 },
+      "input": {
+        "nums": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "k": 3
+      },
       "expected": false,
       "isPublic": true,
       "explanation": "Four rooms cannot split into blocks of three."
     },
     {
       "id": "tc-3",
-      "input": { "nums": [1, 1, 2, 2, 3, 3], "k": 2 },
+      "input": {
+        "nums": [
+          1,
+          1,
+          2,
+          2,
+          3,
+          3
+        ],
+        "k": 2
+      },
       "expected": false,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "from collections import Counter\n\ndef is_possible_divide(nums, k):\n    if len(nums) % k:\n        return False\n    count = Counter(nums)\n    for num in sorted(nums):\n        if count[num] > 0:\n            need = count[num]\n            for nxt in range(num, num + k):\n                if count[nxt] < need:\n                    return False\n                count[nxt] -= need\n    return True",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool isPossibleDivide(vector<int>& nums, int k) {\n    if (nums.size() % k) return false;\n    map<int, int> count;\n    for (int v : nums) ++count[v];\n    for (auto [num, need] : count) {\n        while (count[num] > 0) {\n            for (int nxt = num; nxt < num + k; ++nxt) {\n                if (count[nxt] < count[num]) return false;\n                count[nxt] -= count[num];\n            }\n        }\n    }\n    return true;\n}",
-    "java": "import java.util.*;\n\nclass Solution {\n    public boolean isPossibleDivide(int[] nums, int k) {\n        if (nums.length % k != 0) return false;\n        TreeMap<Integer, Integer> count = new TreeMap<>();\n        for (int v : nums) count.merge(v, 1, Integer::sum);\n        for (int num : new ArrayList<>(count.keySet())) {\n            int need;\n            while ((need = count.getOrDefault(num, 0)) > 0) {\n                for (int nxt = num; nxt < num + k; ++nxt) {\n                    int have = count.getOrDefault(nxt, 0);\n                    if (have < need) return false;\n                    if (have == need) count.remove(nxt); else count.put(nxt, have - need);\n                }\n            }\n        }\n        return true;\n    }\n}"
+    "python": "def is_possible_divide(nums, k):\n    \"\"\"True when nums splits into groups of k consecutive values.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <map>\nusing namespace std;\n\nbool isPossibleDivide(vector<int>& nums, int k) {\n    // TODO: consume counts from the smallest remaining value upward\n    return false;\n}",
+    "java": "import java.util.TreeMap;\n\nclass Solution {\n    public boolean isPossibleDivide(int[] nums, int k) {\n        // TODO: consume counts from the smallest remaining value upward\n        return false;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["heap", "greedy", "consecutive-groups", "divide-array-into-sets-of-k-consecutive-number"],
+    "intentTags": [
+      "heap",
+      "greedy",
+      "consecutive-groups",
+      "divide-array-into-sets-of-k-consecutive-number"
+    ],
     "hintLevels": [
       "Level 1: Scan values in ascending order; the smallest unclaimed value must start a block.",
       "Level 2: When value v starts a block, all of v+1..v+k-1 must be available in matching quantity.",

@@ -25,32 +25,57 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "ratings": [1, 0, 2] },
+      "input": {
+        "ratings": [
+          1,
+          0,
+          2
+        ]
+      },
       "expected": 5,
       "isPublic": true,
       "explanation": "Payouts 2, 1, 2 satisfy both neighbor rules at minimum total."
     },
     {
       "id": "tc-2",
-      "input": { "ratings": [1, 2, 2] },
+      "input": {
+        "ratings": [
+          1,
+          2,
+          2
+        ]
+      },
       "expected": 4,
       "isPublic": true,
       "explanation": "The tie between the last two needs no differentiation: 1, 2, 1 suffices."
     },
     {
       "id": "tc-3",
-      "input": { "ratings": [5, 4, 3, 2, 1] },
+      "input": {
+        "ratings": [
+          5,
+          4,
+          3,
+          2,
+          1
+        ]
+      },
       "expected": 15,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def candy(ratings):\n    n = len(ratings)\n    units = [1] * n\n    for i in range(1, n):                      # left neighbor rule\n        if ratings[i] > ratings[i - 1]:\n            units[i] = units[i - 1] + 1\n    for i in range(n - 2, -1, -1):             # right neighbor rule\n        if ratings[i] > ratings[i + 1]:\n            units[i] = max(units[i], units[i + 1] + 1)\n    return sum(units)",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint candy(vector<int>& ratings) {\n    int n = ratings.size();\n    vector<int> units(n, 1);\n    for (int i = 1; i < n; ++i)\n        if (ratings[i] > ratings[i - 1]) units[i] = units[i - 1] + 1;\n    for (int i = n - 2; i >= 0; --i)\n        if (ratings[i] > ratings[i + 1]) units[i] = max(units[i], units[i + 1] + 1);\n    return accumulate(units.begin(), units.end(), 0);\n}",
-    "java": "class Solution {\n    public int candy(int[] ratings) {\n        int n = ratings.length;\n        int[] units = new int[n];\n        Arrays.fill(units, 1);\n        for (int i = 1; i < n; ++i)\n            if (ratings[i] > ratings[i - 1]) units[i] = units[i - 1] + 1;\n        for (int i = n - 2; i >= 0; --i)\n            if (ratings[i] > ratings[i + 1]) units[i] = Math.max(units[i], units[i + 1] + 1);\n        int total = 0;\n        for (int u : units) total += u;\n        return total;\n    }\n}"
+    "python": "def candy(ratings):\n    \"\"\"Min candies with every child getting more than equal-rated immediate neighbours.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\nusing namespace std;\n\nint candy(vector<int>& ratings) {\n    // TODO: one left-to-right pass, then a right-to-left pass taking the max\n    return 0;\n}",
+    "java": "class Solution {\n    public int candy(int[] ratings) {\n        // TODO: one left-to-right pass, then a right-to-left pass taking the max\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["greedy", "two-pass", "arrays", "candy"],
+    "intentTags": [
+      "greedy",
+      "two-pass",
+      "arrays",
+      "candy"
+    ],
     "hintLevels": [
       "Level 1: One direction at a time — each pass guarantees only its own neighbor rule.",
       "Level 2: Left pass rewards ascending runs; right pass patches descending runs by taking the max.",

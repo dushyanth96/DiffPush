@@ -26,32 +26,60 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "nums": [2, 3, 1, 1, 4] },
+      "input": {
+        "nums": [
+          2,
+          3,
+          1,
+          1,
+          4
+        ]
+      },
       "expected": 2,
       "isPublic": true,
       "explanation": "One hop reaches index 1, whose 3-hop range lands on the last index."
     },
     {
       "id": "tc-2",
-      "input": { "nums": [2, 3, 0, 1, 4] },
+      "input": {
+        "nums": [
+          2,
+          3,
+          0,
+          1,
+          4
+        ]
+      },
       "expected": 2,
       "isPublic": true,
       "explanation": "A different second hop (through index 1 to index 4) still needs only two waves."
     },
     {
       "id": "tc-3",
-      "input": { "nums": [1, 1, 1, 1] },
+      "input": {
+        "nums": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
       "expected": 3,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def jump(nums):\n    steps = end = farthest = 0\n    for i in range(len(nums) - 1):\n        farthest = max(farthest, i + nums[i])\n        if farthest >= len(nums) - 1:\n            return steps + 1\n        if i == end:\n            steps += 1\n            end = farthest\n    return steps",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint jump(vector<int>& nums) {\n    int steps = 0, end = 0, farthest = 0;\n    for (int i = 0; i < (int)nums.size() - 1; ++i) {\n        farthest = max(farthest, i + nums[i]);\n        if (farthest >= (int)nums.size() - 1) return steps + 1;\n        if (i == end) {\n            ++steps;\n            end = farthest;\n        }\n    }\n    return steps;\n}",
-    "java": "class Solution {\n    public int jump(int[] nums) {\n        int steps = 0, end = 0, farthest = 0;\n        for (int i = 0; i < nums.length - 1; ++i) {\n            farthest = Math.max(farthest, i + nums[i]);\n            if (farthest >= nums.length - 1) return steps + 1;\n            if (i == end) {\n                ++steps;\n                end = farthest;\n            }\n        }\n        return steps;\n    }\n}"
+    "python": "def jump(nums):\n    \"\"\"Minimum number of hops to reach the last index (guaranteed reachable).\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nint jump(vector<int>& nums) {\n    // TODO: BFS-like ladder: current window end, furthest next end, jumps counter\n    return 0;\n}",
+    "java": "class Solution {\n    public int jump(int[] nums) {\n        // TODO: BFS-like ladder: current window end, furthest next end, jumps counter\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["greedy", "bfs-layers", "arrays", "jump-game-2"],
+    "intentTags": [
+      "greedy",
+      "bfs-layers",
+      "arrays",
+      "jump-game-2"
+    ],
     "hintLevels": [
       "Level 1: Minimum hops is a level count — BFS in disguise over an implicit graph.",
       "Level 2: Sweep a wave: everything between `end` and the frontier belongs to the current level; `farthest` previews the next.",

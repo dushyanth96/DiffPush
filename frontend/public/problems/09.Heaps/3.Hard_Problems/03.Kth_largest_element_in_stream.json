@@ -27,32 +27,86 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "k": 3, "initial": [4, 5, 8, 2], "adds": [3, 5, 10, 9, 4] },
-      "expected": [4, 5, 5, 8, 8],
+      "input": {
+        "k": 3,
+        "initial": [
+          4,
+          5,
+          8,
+          2
+        ],
+        "adds": [
+          3,
+          5,
+          10,
+          9,
+          4
+        ]
+      },
+      "expected": [
+        4,
+        5,
+        5,
+        8,
+        8
+      ],
       "isPublic": true,
       "explanation": "Each append reshuffles the pen of the three highest prices; its weakest resident is reported."
     },
     {
       "id": "tc-2",
-      "input": { "k": 1, "initial": [], "adds": [-3, -2, -4, 0, 4] },
-      "expected": [-3, -2, -2, 0, 4],
+      "input": {
+        "k": 1,
+        "initial": [],
+        "adds": [
+          -3,
+          -2,
+          -4,
+          0,
+          4
+        ]
+      },
+      "expected": [
+        -3,
+        -2,
+        -2,
+        0,
+        4
+      ],
       "isPublic": true,
       "explanation": "With k=1 the display simply tracks the running maximum."
     },
     {
       "id": "tc-3",
-      "input": { "k": 2, "initial": [1], "adds": [2, 3] },
-      "expected": [1, 2],
+      "input": {
+        "k": 2,
+        "initial": [
+          1
+        ],
+        "adds": [
+          2,
+          3
+        ]
+      },
+      "expected": [
+        1,
+        2
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "import heapq\n\nclass KthLargest:\n    def __init__(self, k, nums):\n        self.k = k\n        self.pen = list(nums)\n        heapq.heapify(self.pen)\n        while len(self.pen) > k:\n            heapq.heappop(self.pen)\n\n    def add(self, val):\n        heapq.heappush(self.pen, val)\n        if len(self.pen) > self.k:\n            heapq.heappop(self.pen)\n        return self.pen[0]",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass KthLargest {\n    priority_queue<int, vector<int>, greater<int>> pen;\n    int k;\npublic:\n    KthLargest(int k, vector<int>& nums) : k(k) {\n        for (int v : nums) {\n            pen.push(v);\n            if ((int)pen.size() > k) pen.pop();\n        }\n    }\n    int add(int val) {\n        pen.push(val);\n        if ((int)pen.size() > k) pen.pop();\n        return pen.top();\n    }\n};",
-    "java": "import java.util.PriorityQueue;\n\nclass KthLargest {\n    private final PriorityQueue<Integer> pen = new PriorityQueue<>();\n    private final int k;\n\n    public KthLargest(int k, int[] nums) {\n        this.k = k;\n        for (int v : nums) {\n            pen.offer(v);\n            if (pen.size() > k) pen.poll();\n        }\n    }\n\n    public int add(int val) {\n        pen.offer(val);\n        if (pen.size() > k) pen.poll();\n        return pen.peek();\n    }\n}"
+    "python": "class KthLargest:\n    def __init__(self, k, nums):\n        \"\"\"Keep a size-k min-heap over the initial scores.\"\"\"\n        # TODO: implement\n        pass\n\n    def add(self, val):\n        \"\"\"Insert val and return the k-th largest so far.\"\"\"\n        # TODO: implement\n        pass",
+    "cpp": "#include <vector>\n#include <queue>\nusing namespace std;\n\nclass KthLargest {\nprivate:\n    int k;\n    priority_queue<int, vector<int>, greater<int>> pq;\npublic:\n    KthLargest(int k, vector<int>& nums) {\n        // TODO: keep only the k largest values in the min-heap\n    }\n\n    int add(int val) {\n        // TODO: push, trim to size k, return pq.top()\n        return 0;\n    }\n};",
+    "java": "import java.util.PriorityQueue;\n\nclass KthLargest {\n    private PriorityQueue<Integer> pq = new PriorityQueue<>();\n    private int k;\n\n    public KthLargest(int k, int[] nums) {\n        // TODO: keep only the k largest values in the min-heap\n    }\n\n    public int add(int val) {\n        // TODO: push, trim to size k, return pq.peek()\n        return 0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["heap", "streaming", "min-heap-of-size-k", "kth-largest-element-in-stream"],
+    "intentTags": [
+      "heap",
+      "streaming",
+      "min-heap-of-size-k",
+      "kth-largest-element-in-stream"
+    ],
     "hintLevels": [
       "Level 1: The answer only depends on the k best values seen so far — everything else is forgettable.",
       "Level 2: A min-heap of size k holds exactly those; the top is the kth largest.",

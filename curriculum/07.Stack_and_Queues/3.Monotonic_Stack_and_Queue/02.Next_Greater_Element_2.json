@@ -25,32 +25,71 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "nums": [1, 2, 1] },
-      "expected": [2, -1, 2],
+      "input": {
+        "nums": [
+          1,
+          2,
+          1
+        ]
+      },
+      "expected": [
+        2,
+        -1,
+        2
+      ],
       "isPublic": true,
       "explanation": "The second 1 wraps around to find 2; the maximum 2 finds nothing greater even going full circle."
     },
     {
       "id": "tc-2",
-      "input": { "nums": [5, 4, 3, 2, 1] },
-      "expected": [-1, 5, 5, 5, 5],
+      "input": {
+        "nums": [
+          5,
+          4,
+          3,
+          2,
+          1
+        ]
+      },
+      "expected": [
+        -1,
+        5,
+        5,
+        5,
+        5
+      ],
       "isPublic": true,
       "explanation": "Strictly decreasing layout: only the first element (wrapping) sees a greater value."
     },
     {
       "id": "tc-3",
-      "input": { "nums": [100, 1, 100] },
-      "expected": [-1, 100, -1],
+      "input": {
+        "nums": [
+          100,
+          1,
+          100
+        ]
+      },
+      "expected": [
+        -1,
+        100,
+        -1
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def next_greater_elements(nums):\n    n = len(nums)\n    ans, stack = [-1] * n, []\n    for i in range(2 * n - 1, -1, -1):\n        idx = i % n\n        while stack and nums[stack[-1]] <= nums[idx]:\n            stack.pop()\n        if stack:\n            ans[idx] = nums[stack[-1]]\n        stack.append(idx)\n    return ans",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> nextGreaterElements(vector<int>& nums) {\n    int n = nums.size();\n    vector<int> ans(n, -1);\n    stack<int> st;\n    for (int i = 2 * n - 1; i >= 0; --i) {\n        int idx = i % n;\n        while (!st.empty() && nums[st.top()] <= nums[idx]) st.pop();\n        if (!st.empty()) ans[idx] = nums[st.top()];\n        st.push(idx);\n    }\n    return ans;\n}",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int[] nextGreaterElements(int[] nums) {\n        int n = nums.length;\n        int[] ans = new int[n];\n        java.util.Arrays.fill(ans, -1);\n        Deque<Integer> stack = new ArrayDeque<>();\n        for (int i = 2 * n - 1; i >= 0; --i) {\n            int idx = i % n;\n            while (!stack.isEmpty() && nums[stack.peek()] <= nums[idx]) stack.pop();\n            if (!stack.isEmpty()) ans[idx] = nums[stack.peek()];\n            stack.push(idx);\n        }\n        return ans;\n    }\n}"
+    "python": "def next_greater_elements(nums):\n    \"\"\"Next greater element for each index, searching circularly (-1 if none).\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <stack>\nusing namespace std;\n\nvector<int> nextGreaterElements(vector<int>& nums) {\n    // TODO: iterate the array twice (2n - 1 steps) with a monotonic stack\n    return {};\n}",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass Solution {\n    public int[] nextGreaterElements(int[] nums) {\n        // TODO: iterate the array twice (2n - 1 steps) with a monotonic stack\n        return new int[nums.length];\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["monotonic-stack", "arrays", "circular", "next-greater-element-2"],
+    "intentTags": [
+      "monotonic-stack",
+      "arrays",
+      "circular",
+      "next-greater-element-2"
+    ],
     "hintLevels": [
       "Level 1: A circular scan is just the linear scan repeated twice.",
       "Level 2: Iterate 2n-1 down to 0 with index modulo n; the stack of indices survives across the wrap.",

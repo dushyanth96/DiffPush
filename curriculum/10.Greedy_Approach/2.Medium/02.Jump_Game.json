@@ -25,32 +25,58 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "nums": [2, 3, 1, 1, 4] },
+      "input": {
+        "nums": [
+          2,
+          3,
+          1,
+          1,
+          4
+        ]
+      },
       "expected": true,
       "isPublic": true,
       "explanation": "Hop to post 1, then its 3-hop range covers the final post."
     },
     {
       "id": "tc-2",
-      "input": { "nums": [3, 2, 1, 0, 4] },
+      "input": {
+        "nums": [
+          3,
+          2,
+          1,
+          0,
+          4
+        ]
+      },
       "expected": false,
       "isPublic": true,
       "explanation": "The zero post strands the parcel — every route dead-ends before index 4."
     },
     {
       "id": "tc-3",
-      "input": { "nums": [0, 1] },
+      "input": {
+        "nums": [
+          0,
+          1
+        ]
+      },
       "expected": false,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def can_jump(nums):\n    farthest = 0\n    for i, reach in enumerate(nums):\n        if farthest < i:\n            return False\n        farthest = max(farthest, i + reach)\n    return True",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool canJump(vector<int>& nums) {\n    int farthest = 0;\n    for (int i = 0; i < (int)nums.size(); ++i) {\n        if (farthest < i) return false;\n        farthest = max(farthest, i + nums[i]);\n    }\n    return true;\n}",
-    "java": "class Solution {\n    public boolean canJump(int[] nums) {\n        int farthest = 0;\n        for (int i = 0; i < nums.length; ++i) {\n            if (farthest < i) return false;\n            farthest = Math.max(farthest, i + nums[i]);\n        }\n        return true;\n    }\n}"
+    "python": "def can_jump(nums):\n    \"\"\"True when index 0 can reach the last index; nums[i] is the max hop length.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nbool canJump(vector<int>& nums) {\n    // TODO: carry the furthest reachable index; fail when i outruns it\n    return false;\n}",
+    "java": "class Solution {\n    public boolean canJump(int[] nums) {\n        // TODO: carry the furthest reachable index; fail when i outruns it\n        return false;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["greedy", "reachability", "arrays", "jump-game"],
+    "intentTags": [
+      "greedy",
+      "reachability",
+      "arrays",
+      "jump-game"
+    ],
     "hintLevels": [
       "Level 1: Ask only one question per index — is it inside the frontier built so far?",
       "Level 2: Maintain the farthest reachable index; a gap between frontier and current index is fatal.",

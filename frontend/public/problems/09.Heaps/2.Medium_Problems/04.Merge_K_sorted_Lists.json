@@ -27,32 +27,84 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "lists": [[1, 4, 5], [1, 3, 4], [2, 6]] },
-      "expected": [1, 1, 2, 3, 4, 4, 5, 6],
+      "input": {
+        "lists": [
+          [
+            1,
+            4,
+            5
+          ],
+          [
+            1,
+            3,
+            4
+          ],
+          [
+            2,
+            6
+          ]
+        ]
+      },
+      "expected": [
+        1,
+        1,
+        2,
+        3,
+        4,
+        4,
+        5,
+        6
+      ],
       "isPublic": true,
       "explanation": "The pool interleaves the three channels into one non-decreasing replay."
     },
     {
       "id": "tc-2",
-      "input": { "lists": [[], []] },
+      "input": {
+        "lists": [
+          [],
+          []
+        ]
+      },
       "expected": [],
       "isPublic": true,
       "explanation": "Empty channels contribute nothing to the pool."
     },
     {
       "id": "tc-3",
-      "input": { "lists": [[-1, 5], [0, 2]] },
-      "expected": [-1, 0, 2, 5],
+      "input": {
+        "lists": [
+          [
+            -1,
+            5
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      "expected": [
+        -1,
+        0,
+        2,
+        5
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "import heapq\n\ndef merge_k_lists(lists):\n    pool = [(lst[0], r, 0) for r, lst in enumerate(lists) if lst]\n    heapq.heapify(pool)\n    merged = []\n    while pool:\n        val, r, idx = heapq.heappop(pool)\n        merged.append(val)\n        if idx + 1 < len(lists[r]):\n            heapq.heappush(pool, (lists[r][idx + 1], r, idx + 1))\n    return merged",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nstruct ListNode { int val; ListNode* next; };\n\nListNode* mergeKLists(vector<ListNode*>& lists) {\n    using T = pair<int, ListNode*>;\n    priority_queue<T, vector<T>, greater<T>> pq;\n    for (auto node : lists) if (node) pq.push({node->val, node});\n    ListNode dummy; ListNode* tail = &dummy;\n    while (!pq.empty()) {\n        auto [val, node] = pq.top(); pq.pop();\n        tail->next = new ListNode(val);\n        tail = tail->next;\n        if (node->next) pq.push({node->next->val, node->next});\n    }\n    return dummy.next;\n}",
-    "java": "import java.util.PriorityQueue;\n\nclass Solution {\n    static class ListNode { int val; ListNode next; ListNode(int v) { val = v; } }\n\n    public ListNode mergeKLists(ListNode[] lists) {\n        PriorityQueue<ListNode> pq = new PriorityQueue<>((a, b) -> a.val - b.val);\n        for (ListNode node : lists) if (node != null) pq.offer(node);\n        ListNode dummy = new ListNode(0), tail = dummy;\n        while (!pq.isEmpty()) {\n            ListNode node = pq.poll();\n            tail.next = new ListNode(node.val);\n            tail = tail.next;\n            if (node.next != null) pq.offer(node.next);\n        }\n        return dummy.next;\n    }\n}"
+    "python": "def merge_k_lists(lists):\n    \"\"\"Merge k sorted linked lists into one sorted list; return its head.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <queue>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode* next;\n    ListNode(int x) : val(x), next(nullptr) {}\n};\n\nListNode* mergeKLists(vector<ListNode*>& lists) {\n    // TODO: min-heap of node pointers keyed by val; splice as you pop\n    return nullptr;\n}",
+    "java": "import java.util.PriorityQueue;\n\nclass ListNode {\n    int val;\n    ListNode next;\n    ListNode(int x) { val = x; }\n}\n\nclass Solution {\n    public ListNode mergeKLists(ListNode[] lists) {\n        // TODO: min-heap of nodes keyed by val; splice as you pop\n        return null;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["heap", "k-way-merge", "linked-list", "merge-k-sorted-lists"],
+    "intentTags": [
+      "heap",
+      "k-way-merge",
+      "linked-list",
+      "merge-k-sorted-lists"
+    ],
     "hintLevels": [
       "Level 1: Same interleave as merging arrays — heads compete, winner advances.",
       "Level 2: Heap entries carry the node; after emitting, offer node.next.",

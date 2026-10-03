@@ -26,32 +26,67 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "W": 50, "values": [60, 100, 120], "weights": [10, 20, 30] },
+      "input": {
+        "W": 50,
+        "values": [
+          60,
+          100,
+          120
+        ],
+        "weights": [
+          10,
+          20,
+          30
+        ]
+      },
       "expected": 240.0,
       "isPublic": true,
       "explanation": "Take the 10 and 20 weight items whole (160) plus two-thirds of the 30-weight item (80)."
     },
     {
       "id": "tc-2",
-      "input": { "W": 25, "values": [60, 100], "weights": [10, 20] },
+      "input": {
+        "W": 25,
+        "values": [
+          60,
+          100
+        ],
+        "weights": [
+          10,
+          20
+        ]
+      },
       "expected": 135.0,
       "isPublic": true,
       "explanation": "The denser item fills 10 units for 60; the remaining 15 units take three-quarters of the second item for 75 more."
     },
     {
       "id": "tc-3",
-      "input": { "W": 5, "values": [10], "weights": [2] },
+      "input": {
+        "W": 5,
+        "values": [
+          10
+        ],
+        "weights": [
+          2
+        ]
+      },
       "expected": 10.0,
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def fractional_knapsack(W, values, weights):\n    order = sorted(range(len(values)), key=lambda i: values[i] / weights[i], reverse=True)\n    loot = 0.0\n    for i in order:\n        if W <= 0:\n            break\n        if weights[i] > W:\n            loot += W * (values[i] / weights[i])\n            W = 0\n        else:\n            loot += values[i]\n            W -= weights[i]\n    return loot",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\ndouble fractionalKnapsack(int W, vector<pair<double, double>>& items) {\n    // items: {value, weight}; sort by value/weight descending\n    sort(items.begin(), items.end(), [](auto& a, auto& b) {\n        return a.first / a.second > b.first / b.second;\n    });\n    double loot = 0;\n    for (auto& [value, weight] : items) {\n        if (W <= 0) break;\n        if (weight > W) {\n            loot += W * (value / weight);\n            W = 0;\n        } else {\n            loot += value;\n            W -= (int)weight;\n        }\n    }\n    return loot;\n}",
-    "java": "import java.util.Arrays;\n\nclass Solution {\n    public double fractionalKnapsack(int W, int[] values, int[] weights) {\n        Integer[] order = new Integer[values.length];\n        for (int i = 0; i < order.length; ++i) order[i] = i;\n        Arrays.sort(order, (a, b) ->\n            Double.compare((double) values[b] / weights[b], (double) values[a] / weights[a]));\n        double loot = 0;\n        for (int idx : order) {\n            if (W <= 0) break;\n            if (weights[idx] > W) {\n                loot += W * ((double) values[idx] / weights[idx]);\n                W = 0;\n            } else {\n                loot += values[idx];\n                W -= weights[idx];\n            }\n        }\n        return loot;\n    }\n}"
+    "python": "def fractional_knapsack(W, values, weights):\n    \"\"\"Maximum loot value with capacity W; items may be taken fractionally.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\ndouble fractionalKnapsack(int W, vector<int>& values, vector<int>& weights) {\n    // TODO: sort by value/weight ratio; take whole items first, then a fraction\n    return 0.0;\n}",
+    "java": "import java.util.Arrays;\n\nclass Solution {\n    public double fractionalKnapsack(int W, int[] values, int[] weights) {\n        // TODO: sort by value/weight ratio; take whole items first, then a fraction\n        return 0.0;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["greedy", "knapsack", "ratio-sorting", "fractional-knapsack"],
+    "intentTags": [
+      "greedy",
+      "knapsack",
+      "ratio-sorting",
+      "fractional-knapsack"
+    ],
     "hintLevels": [
       "Level 1: Value per unit weight is the only ranking that matters when fractions are allowed.",
       "Level 2: Sort by density, take whole items while they fit, then top off with a fraction of the next.",

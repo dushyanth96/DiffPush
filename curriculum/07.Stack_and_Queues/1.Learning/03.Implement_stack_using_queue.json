@@ -26,32 +26,114 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "operations": [["push", 1], ["push", 2], ["pop"], ["push", 3], ["pop"], ["pop"]] },
-      "expected": [2, 3, 1],
+      "input": {
+        "operations": [
+          [
+            "push",
+            1
+          ],
+          [
+            "push",
+            2
+          ],
+          [
+            "pop"
+          ],
+          [
+            "push",
+            3
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        2,
+        3,
+        1
+      ],
       "isPublic": true,
       "explanation": "Pop rotates 1 to the back and serves 2; afterwards 3 then 1 leave in LIFO order."
     },
     {
       "id": "tc-2",
-      "input": { "operations": [["push", 5], ["pop"], ["pop"]] },
-      "expected": [5, -1],
+      "input": {
+        "operations": [
+          [
+            "push",
+            5
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        5,
+        -1
+      ],
       "isPublic": true,
       "explanation": "The lone element is served first; the second pop hits an empty queue."
     },
     {
       "id": "tc-3",
-      "input": { "operations": [["push", 4], ["push", 4], ["push", 4], ["pop"], ["pop"], ["pop"], ["pop"]] },
-      "expected": [4, 4, 4, -1],
+      "input": {
+        "operations": [
+          [
+            "push",
+            4
+          ],
+          [
+            "push",
+            4
+          ],
+          [
+            "push",
+            4
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ],
+          [
+            "pop"
+          ]
+        ]
+      },
+      "expected": [
+        4,
+        4,
+        4,
+        -1
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "from collections import deque\n\ndef run_stack_via_queue(operations):\n    # Simulate a stack backed by a single queue; return pop results (-1 when empty).\n    queue = deque()\n    results = []\n    for op in operations:\n        if op[0] == \"push\":\n            queue.append(op[1])\n        else:\n            if not queue:\n                results.append(-1)\n                continue\n            for _ in range(len(queue) - 1):\n                queue.append(queue.popleft())\n            results.append(queue.popleft())\n    return results",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass QueueStack {\nprivate:\n    queue<int> q;\npublic:\n    void push(int x) { q.push(x); }\n    int pop() {\n        if (q.empty()) return -1;\n        for (int i = 0; i < (int)q.size() - 1; ++i) {\n            q.push(q.front());\n            q.pop();\n        }\n        int val = q.front();\n        q.pop();\n        return val;\n    }\n};",
-    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass QueueStack {\n    private Deque<Integer> queue = new ArrayDeque<>();\n\n    public void push(int x) { queue.addLast(x); }\n\n    public int pop() {\n        if (queue.isEmpty()) return -1;\n        for (int i = 0; i < queue.size() - 1; ++i) {\n            queue.addLast(queue.pollFirst());\n        }\n        return queue.pollFirst();\n    }\n}"
+    "python": "def run_stack_via_queue(operations):\n    \"\"\"Simulate LIFO with a single queue; return each pop result (-1 when empty).\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <queue>\nusing namespace std;\n\nclass QueueStack {\nprivate:\n    queue<int> q;\npublic:\n    void push(int x) {\n        // TODO: enqueue x, then rotate so the newest element sits at the front\n    }\n\n    int pop() {\n        // TODO: dequeue and return the top, or -1 if empty\n        return -1;\n    }\n};",
+    "java": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nclass QueueStack {\n    private Deque<Integer> q = new ArrayDeque<>();\n\n    public void push(int x) {\n        // TODO: enqueue x, then rotate so the newest element sits at the front\n    }\n\n    public int pop() {\n        // TODO: dequeue and return the top, or -1 if empty\n        return -1;\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["stack", "queue", "design", "simulation", "implement-stack-using-queue"],
+    "intentTags": [
+      "stack",
+      "queue",
+      "design",
+      "simulation",
+      "implement-stack-using-queue"
+    ],
     "hintLevels": [
       "Level 1: FIFO and LIFO are opposites, so something must absorb the mismatch at pop time.",
       "Level 2: Before serving, rotate the first n-1 elements to the back so the newest element reaches the front.",

@@ -26,32 +26,112 @@
   "testCases": [
     {
       "id": "tc-1",
-      "input": { "intervals": [[1, 2], [3, 5], [6, 7], [8, 10], [12, 16]], "newInterval": [4, 8] },
-      "expected": [[1, 2], [3, 10], [12, 16]],
+      "input": {
+        "intervals": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            12,
+            16
+          ]
+        ],
+        "newInterval": [
+          4,
+          8
+        ]
+      },
+      "expected": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          12,
+          16
+        ]
+      ],
       "isPublic": true,
       "explanation": "[4,8] swallows [3,5], [6,7] and [8,10] into one stretched window."
     },
     {
       "id": "tc-2",
-      "input": { "intervals": [[1, 3], [6, 9]], "newInterval": [2, 5] },
-      "expected": [[1, 5], [6, 9]],
+      "input": {
+        "intervals": [
+          [
+            1,
+            3
+          ],
+          [
+            6,
+            9
+          ]
+        ],
+        "newInterval": [
+          2,
+          5
+        ]
+      },
+      "expected": [
+        [
+          1,
+          5
+        ],
+        [
+          6,
+          9
+        ]
+      ],
       "isPublic": true,
       "explanation": "[2,5] merges with [1,3] and stays clear of [6,9]."
     },
     {
       "id": "tc-3",
-      "input": { "intervals": [], "newInterval": [5, 7] },
-      "expected": [[5, 7]],
+      "input": {
+        "intervals": [],
+        "newInterval": [
+          5,
+          7
+        ]
+      },
+      "expected": [
+        [
+          5,
+          7
+        ]
+      ],
       "isPublic": false
     }
   ],
   "starterCode": {
-    "python": "def insert_interval(intervals, new_interval):\n    result = []\n    for start, end in intervals:\n        if end < new_interval[0]:          # current ends before new begins\n            result.append([start, end])\n        elif new_interval[1] < start:      # new ends before current begins\n            result.append(new_interval)\n            new_interval = [start, end]\n        else:                              # overlap: widen the new one\n            new_interval[0] = min(new_interval[0], start)\n            new_interval[1] = max(new_interval[1], end)\n    result.append(new_interval)\n    return result",
-    "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<vector<int>> insert(vector<vector<int>>& intervals, vector<int> newInterval) {\n    vector<vector<int>> ans;\n    for (auto& cur : intervals) {\n        if (cur[1] < newInterval[0]) {\n            ans.push_back(cur);\n        } else if (newInterval[1] < cur[0]) {\n            ans.push_back(newInterval);\n            newInterval = cur;\n        } else {\n            newInterval[0] = min(newInterval[0], cur[0]);\n            newInterval[1] = max(newInterval[1], cur[1]);\n        }\n    }\n    ans.push_back(newInterval);\n    return ans;\n}",
-    "java": "import java.util.*;\n\nclass Solution {\n    public int[][] insert(int[][] intervals, int[] newInterval) {\n        List<int[]> ans = new ArrayList<>();\n        for (int[] cur : intervals) {\n            if (cur[1] < newInterval[0]) {\n                ans.add(cur);\n            } else if (newInterval[1] < cur[0]) {\n                ans.add(newInterval);\n                newInterval = cur;\n            } else {\n                newInterval[0] = Math.min(newInterval[0], cur[0]);\n                newInterval[1] = Math.max(newInterval[1], cur[1]);\n            }\n        }\n        ans.add(newInterval);\n        return ans.toArray(new int[0][]);\n    }\n}"
+    "python": "def insert_interval(intervals, new_interval):\n    \"\"\"Insert new_interval into sorted non-overlapping intervals, merging as needed.\"\"\"\n    # TODO: implement\n    pass",
+    "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nvector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {\n    // TODO: add everything ending before newInterval, merge the overlap, add the rest\n    return {};\n}",
+    "java": "import java.util.*;\n\nclass Solution {\n    public int[][] insert(int[][] intervals, int[] newInterval) {\n        // TODO: add everything ending before newInterval, merge the overlap, add the rest\n        return new int[][] {};\n    }\n}"
   },
   "aiContext": {
-    "intentTags": ["greedy", "intervals", "merge", "insert-interval"],
+    "intentTags": [
+      "greedy",
+      "intervals",
+      "merge",
+      "insert-interval"
+    ],
     "hintLevels": [
       "Level 1: Three-way branching per interval: strictly before, strictly after, or overlapping.",
       "Level 2: On overlap, stretch the pending interval instead of appending anything yet.",
