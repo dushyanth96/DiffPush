@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID, AD_FILL_TIMEOUT_MS, rescanMondiadSlots } from '../../data/ads.js'
 import { MONDIAD_TAG_URL, AADS_TAG_URL, HOUSE_PROMO, loadAdTag } from '../../data/ads.js'
+import { loadDeals, pickDeal } from '../../data/deals.js'
 
 // Three-stage ad adapter shared by every slot:
 //   mondiad (live tag) → aads (house tag) → static house promo.
@@ -35,7 +36,57 @@ function useAdStage() {
   return stage
 }
 
-function HousePromo({ className = '', vertical = false }) {
+// Live deal for fallback slots: resolves once from the cached sheet feed.
+// Safe inside the crash-safe frames — the tag never touches our promo nodes,
+// so async content swaps here can't break reconciliation.
+function useDeal(category) {
+  const [deal, setDeal] = useState(null)
+  useEffect(() => {
+    let cancelled = false
+    loadDeals()
+      .then((items) => { if (!cancelled) setDeal(pickDeal(items, category)) })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [category])
+  return deal
+}
+
+// Sleek obsidian affiliate card: tag pill, title, 1-line description,
+// direct EarnKaro button. Matches the dark theme; never collapses — if the
+// feed is unreachable pickDeal falls back to the hardcoded combo1.
+function DealCard({ deal, className = '', vertical = false }) {
+  if (vertical) {
+    return (
+      <a href={deal.earnkaro_link} target="_blank" rel="noopener sponsored" className={`flex flex-col items-center justify-center text-center gap-1.5 h-full overflow-y-auto px-1 py-1 ${className}`} title={deal.title}>
+        <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-diff-amber border border-diff-amber/30 rounded px-1 py-px shrink-0">
+          [{deal.tag}]
+        </span>
+        <span className="text-[12px] font-bold text-slate-100 leading-snug break-words">
+          {deal.title}
+        </span>
+        <span className="font-mono text-[11px] text-diff-emerald shrink-0">
+          View Deal on Flipkart ↗
+        </span>
+      </a>
+    )
+  }
+  return (
+    <a href={deal.earnkaro_link} target="_blank" rel="noopener sponsored" className={className} title={deal.title}>
+      <div className="min-w-0 flex flex-col items-center text-center gap-1 my-auto max-h-full overflow-y-auto">
+        <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-diff-amber border border-diff-amber/30 rounded px-1 py-px shrink-0">
+          [{deal.tag}]
+        </span>
+        <p className="text-[13px] font-semibold text-slate-200 leading-snug break-words truncate sm:whitespace-normal">{deal.title}</p>
+        <p className="hidden sm:block text-[12px] text-slate-500 leading-snug break-words">{deal.description}</p>
+      </div>
+      <div className="font-mono text-[11px] text-diff-emerald shrink-0 my-auto">View Deal on Flipkart ↗</div>
+    </a>
+  )
+}
+
+function HousePromo({ className = '', vertical = false, category = '' }) {
+  const deal = useDeal(category)
+  if (deal) return <DealCard deal={deal} className={className} vertical={vertical} />
   return (
     <a
       href={HOUSE_PROMO.url}
@@ -44,24 +95,24 @@ function HousePromo({ className = '', vertical = false }) {
       className={className}
     >
       {vertical ? (
-        <>
-          <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-600" style={{ writingMode: 'vertical-rl' }}>
+        <span className="flex flex-col items-center justify-center text-center gap-1.5 h-full overflow-y-auto px-1 py-1">
+          <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-slate-600">
             Sponsored
           </span>
-          <span className="text-[13px] font-bold text-slate-100 leading-snug" style={{ writingMode: 'vertical-rl' }}>
+          <span className="text-[12px] font-bold text-slate-100 leading-snug break-words">
             {HOUSE_PROMO.title}
           </span>
-          <span className="font-mono text-[11px] text-diff-emerald shrink-0" style={{ writingMode: 'vertical-rl' }}>
+          <span className="font-mono text-[11px] text-diff-emerald shrink-0">
             {HOUSE_PROMO.cta}
           </span>
-        </>
+        </span>
       ) : (
         <>
-          <div>
-            <p className="text-[13px] font-semibold text-slate-200 leading-snug">{HOUSE_PROMO.title}</p>
-            <p className="text-[12px] text-slate-500 mt-1 leading-snug">{HOUSE_PROMO.body}</p>
+          <div className="flex flex-col items-center text-center gap-1 my-auto">
+            <p className="text-[13px] font-semibold text-slate-200 leading-snug break-words">{HOUSE_PROMO.title}</p>
+            <p className="text-[12px] text-slate-500 leading-snug break-words">{HOUSE_PROMO.body}</p>
           </div>
-          <div className="font-mono text-[11px] text-diff-emerald">{HOUSE_PROMO.cta}</div>
+          <div className="font-mono text-[11px] text-diff-emerald shrink-0 my-auto">{HOUSE_PROMO.cta}</div>
         </>
       )}
     </a>
@@ -77,14 +128,14 @@ export function AmbientAdSlot({ fitHeight = false }) {
 
   return (
     <div className={`card p-3 ${fitHeight ? 'h-full min-h-0 flex flex-col' : ''}`}>
-      <p className={`eyebrow ${fitHeight ? 'mb-1.5 shrink-0' : 'mb-2'}`}>PARTNER SPONSOR</p>
+      <p className={`eyebrow ${fitHeight ? 'mb-1.5 shrink-0' : 'mb-2'}`}>PARTNER PICKS</p>
       <div
         ref={frameRef}
         className={`mx-auto overflow-hidden rounded-md bg-raised hairline w-full ${fitHeight
           ? 'flex-1 min-h-[60px] max-h-[250px] sm:max-w-[300px]'
           : 'h-[50px] max-w-[320px] sm:h-[250px] sm:max-w-[300px]'}`}
         style={{ contain: 'layout' }}
-        aria-label="Sponsor"
+        aria-label="Partner picks"
       >
         {stage === 'mondiad' && <div id="mondiad-slot" className="w-full h-full" />}
         {stage === 'aads' && <div id="aads-slot" className="w-full h-full" />}
@@ -149,7 +200,18 @@ function useMondiadFill(frameRef) {
       stop()
       if (!cancelled) setLive((v) => (v === true ? v : false))
     }, AD_FILL_TIMEOUT_MS)
-    return () => { cancelled = true; stop() }
+    // Maintenance watch: a true latched on tag residue (empty wrapper,
+    // tracking pixel) that later disappears must fall back instead of
+    // sticking on a blank frame. Real creatives stay visible, so they
+    // are unaffected. Class toggles only — reconciliation-safe.
+    const watch = setInterval(() => {
+      if (cancelled) return
+      try {
+        const f = frameRef.current
+        if (f && !isFilled()) setLive((v) => (v === true ? false : v))
+      } catch {}
+    }, 2000)
+    return () => { cancelled = true; stop(); clearInterval(watch) }
   }, [frameRef])
   return live
 }
@@ -167,12 +229,12 @@ export function VerticalAdSlot() {
   useMondiadRescan()
 
   return (
-    <div className="card p-2 w-full h-full min-h-0 flex flex-col" style={{ contain: 'layout' }} aria-label="Sponsor">
-      <p className="eyebrow text-center mb-1.5 shrink-0">PARTNER</p>
+    <div className="card p-2 w-full h-full min-h-0 flex flex-col" style={{ contain: 'layout' }} aria-label="Partner picks">
+      <p className="eyebrow text-center mb-1.5 shrink-0">PARTNER PICKS</p>
       <div ref={frameRef} className="flex-1 min-h-[140px] rounded-md bg-raised hairline overflow-hidden flex flex-col items-center justify-between gap-3 py-4">
-        <div data-mndbanid={MONDIAD_VERTICAL_BANNER_ID} className={`w-full h-full min-h-[120px]${live === false ? ' hidden' : ''}`} />
-        <div data-house="1" className={live === false ? 'contents' : 'hidden'}>
-          <HousePromo vertical />
+        <div data-mndbanid={MONDIAD_VERTICAL_BANNER_ID} className={`w-full h-full min-h-[120px]${live === true ? '' : ' hidden'}`} />
+        <div data-house="1" className={live === true ? 'hidden' : 'contents'}>
+          <HousePromo vertical category="productivity" />
         </div>
       </div>
     </div>
@@ -194,12 +256,12 @@ export function DashboardBannerSlot() {
       ref={frameRef}
       className="mx-auto overflow-hidden rounded-md bg-surface hairline h-[50px] w-full max-w-[320px] sm:h-[90px] sm:max-w-[728px] my-1"
       style={{ contain: 'layout' }}
-      aria-label="Sponsor"
+      aria-label="Partner picks"
     >
-      <div data-mndbanid={MONDIAD_DASHBOARD_BANNER_ID} className={`w-full h-full flex items-center justify-center${live === false ? ' hidden' : ''}`} />
-      <div data-house="1" className={live === false ? 'contents' : 'hidden'}>
-        <HousePromo className="hidden sm:flex items-center justify-center gap-3 h-full px-4" />
-        <HousePromo className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
+      <div data-mndbanid={MONDIAD_DASHBOARD_BANNER_ID} className={`w-full h-full flex items-center justify-center${live === true ? '' : ' hidden'}`} />
+      <div data-house="1" className={live === true ? 'hidden' : 'contents'}>
+        <HousePromo category="productivity" className="hidden sm:flex items-center justify-center gap-3 h-full px-4" />
+        <HousePromo category="productivity" className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
       </div>
     </div>
   )
@@ -218,17 +280,17 @@ export function SidebarBannerSlot() {
 
   return (
     <div className="card p-3">
-      <p className="eyebrow mb-2">PARTNER SPONSOR</p>
+      <p className="eyebrow mb-2">PARTNER PICKS</p>
       <div
         ref={frameRef}
         className="mx-auto overflow-hidden rounded-md bg-raised hairline w-full h-[50px] max-w-[320px] sm:h-[250px] sm:max-w-[300px]"
         style={{ contain: 'layout' }}
-        aria-label="Sponsor"
+        aria-label="Partner picks"
       >
-        <div data-mndbanid={MONDIAD_SIDEBAR_BANNER_ID} className={`w-full h-full${live === false ? ' hidden' : ''}`} />
-        <div data-house="1" className={live === false ? 'contents' : 'hidden'}>
-          <HousePromo className="hidden sm:flex flex-col justify-between p-3 h-full" />
-          <HousePromo className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
+        <div data-mndbanid={MONDIAD_SIDEBAR_BANNER_ID} className={`w-full h-full${live === true ? '' : ' hidden'}`} />
+        <div data-house="1" className={live === true ? 'hidden' : 'contents'}>
+          <HousePromo category="desk" className="hidden sm:flex flex-col items-center justify-center text-center gap-1.5 p-3 h-full" />
+          <HousePromo category="desk" className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
         </div>
       </div>
     </div>
@@ -243,7 +305,7 @@ export function SlimAdSlot() {
     <div
       className="mx-auto overflow-hidden rounded-md bg-surface hairline h-[50px] w-full max-w-[320px] sm:h-[90px] sm:max-w-[728px] my-1"
       style={{ contain: 'layout' }}
-      aria-label="Sponsor"
+      aria-label="Partner picks"
     >
       {stage === 'mondiad' && <div id="mondiad-slot" className="w-full h-full" />}
       {stage === 'aads' && <div id="aads-slot" className="w-full h-full" />}
