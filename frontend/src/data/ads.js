@@ -21,11 +21,12 @@ export const MONDIAD_VERTICAL_BANNER_ID = '06d8e32a-a0cc-4d2e-a9c5-21b383311e1d'
 export const MONDIAD_DASHBOARD_BANNER_ID = '6d706f7b-8c76-402a-8784-1042f90102d4'
 export const MONDIAD_SIDEBAR_BANNER_ID = 'bb4e890f-5d15-408f-aea7-353fa89ee5b8'
 
-// AADS adaptive units, one per placement (embeds verified as provided).
+// AADS fixed-size units, one per placement (embeds verified as provided).
 // Served as the middle waterfall stage: Mondiad → AADS → house.
-export const AADS_SQUARE_ID = '2457407' // sidebar / IDE / arena square (Adaptive)
-export const AADS_INFEED_ID = '2457409' // dashboard leaderboard (Adaptive)
-export const AADS_RAIL_ID = '2457410' // coach rail (fixed 160x600)
+// NOTE: in-feed intentionally serves the 300x250 square unit per the
+// current AADS setup (see clipping warning in AadsUnit usage).
+export const AADS_SQUARE_ID = '2457407' // sidebar / IDE / arena square AND in-feed (300x250)
+export const AADS_RAIL_ID = '2457410' // coach rail (160x600)
 // How long Mondiad gets the slot alone per network phase before AADS mounts.
 export const AADS_DELAY_MS = 4000
 

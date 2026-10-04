@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID, AD_FILL_TIMEOUT_MS, HYBRID_NETWORK_MS, HYBRID_HOUSE_MS, AADS_SQUARE_ID, AADS_INFEED_ID, AADS_RAIL_ID, AADS_DELAY_MS, isAdTest, rescanMondiadSlots } from '../../data/ads.js'
+import { MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID, AD_FILL_TIMEOUT_MS, HYBRID_NETWORK_MS, HYBRID_HOUSE_MS, AADS_SQUARE_ID, AADS_RAIL_ID, AADS_DELAY_MS, isAdTest, rescanMondiadSlots } from '../../data/ads.js'
 import { MONDIAD_TAG_URL, AADS_TAG_URL, HOUSE_PROMO, loadAdTag } from '../../data/ads.js'
 import { loadDeals, pickDeal } from '../../data/deals.js'
 
@@ -161,32 +161,22 @@ function useMondiadRescan() {
   }, [])
 }
 
-// AADS units (embeds verified as provided). Static iframe HTML only — no
-// document.write, no DOM mutation — so mounting/unmounting is always
-// reconciliation-safe (only OUR OWN div is ever removed, and banner.js never
-// touches it). Served as the middle waterfall stage: Mondiad → AADS → house.
-// `adaptive` = fluid unit (sidebar / in-feed); `skyscraper` = fixed 160x600
-// for the coach rail, capped to the frame so short viewports clip gracefully.
-export function AadsUnit({ unitId = AADS_SQUARE_ID, layout = 'adaptive', className = '', hidden = false, onLoad } = {}) {
-  if (layout === 'skyscraper') {
-    return (
-      <div data-aads style={{ width: '160px', maxWidth: '100%', margin: 'auto', zIndex: 99998, maxHeight: '100%', overflow: 'hidden' }} className={`${className}${hidden ? ' hidden' : ''}`}>
-        <iframe
-          data-aa={unitId}
-          src={`https://ad.a-ads.com/${unitId}/?size=160x600&background_color=131A26&title_color=E6EAF2&title_hover_color=10B981&text_color=94A3B8&link_color=10B981&link_hover_color=34D399`}
-          style={{ border: 0, padding: 0, width: '160px', maxWidth: '100%', height: '600px', maxHeight: '100%', overflow: 'hidden', display: 'block', margin: 'auto' }}
-          title="Advertisement"
-          onLoad={onLoad}
-        />
-      </div>
-    )
-  }
+// AADS fixed-size units (embeds verified as provided). Static iframe HTML
+// only — no document.write, no DOM mutation — so mounting/unmounting is
+// always reconciliation-safe (only OUR OWN div is ever removed, and
+// banner.js never touches it). Served as the middle waterfall stage:
+// Mondiad → AADS → house.
+// `size` is the AADS size token AND the rendered pixel size ('300x250' or
+// '160x600'). `capHeight` keeps the tall rail unit from blowing out shorter
+// frames — excess clips gracefully at the bottom instead.
+export function AadsUnit({ unitId = AADS_SQUARE_ID, size = '300x250', capHeight = false, className = '', hidden = false, onLoad } = {}) {
+  const [w, h] = String(size).split('x').map(Number)
   return (
-    <div data-aads style={{ width: '100%', margin: 'auto', position: 'relative', zIndex: 99998 }} className={`${className}${hidden ? ' hidden' : ''}`}>
+    <div data-aads style={{ width: `${w}px`, maxWidth: '100%', margin: 'auto', zIndex: 99998, maxHeight: capHeight ? '100%' : undefined, overflow: capHeight ? 'hidden' : undefined }} className={`${className}${hidden ? ' hidden' : ''}`}>
       <iframe
         data-aa={unitId}
-        src={`https://acceptable.a-ads.com/${unitId}/?size=Adaptive&background_color=131A26&title_color=E6EAF2&title_hover_color=10B981&text_color=94A3B8&link_color=10B981&link_hover_color=34D399`}
-        style={{ border: 0, padding: 0, width: '70%', height: 'auto', overflow: 'hidden', display: 'block', margin: 'auto' }}
+        src={`https://ad.a-ads.com/${unitId}/?size=${size}`}
+        style={{ border: 0, padding: 0, width: `${w}px`, maxWidth: '100%', height: `${h}px`, maxHeight: capHeight ? '100%' : undefined, overflow: 'hidden', display: 'block', margin: 'auto' }}
         title="Advertisement"
         onLoad={onLoad}
       />
@@ -336,7 +326,7 @@ export function VerticalAdSlot({ network = true, mondiad = true, networkMs, hous
       <div ref={frameRef} className="flex-1 min-h-[140px] rounded-md bg-raised hairline overflow-hidden flex flex-col items-center justify-between gap-3 py-4">
         <div data-mndbanid={MONDIAD_VERTICAL_BANNER_ID} className={`w-full h-full min-h-[120px]${showMondiad ? '' : ' hidden'}`} />
         {aadsMounted ? (
-          <AadsUnit unitId={AADS_RAIL_ID} layout="skyscraper" onLoad={markAadsLoaded} hidden={!showAads} />
+          <AadsUnit unitId={AADS_RAIL_ID} size="160x600" capHeight onLoad={markAadsLoaded} hidden={!showAads} />
         ) : null}
         <div data-house="1" className={showMondiad || showAads ? 'hidden' : 'contents'}>
           <HousePromo vertical category="productivity" />
@@ -365,7 +355,7 @@ export function DashboardBannerSlot({ network = true, mondiad = true, networkMs,
     >
       <div data-mndbanid={MONDIAD_DASHBOARD_BANNER_ID} className={`w-full h-full flex items-center justify-center${showMondiad ? '' : ' hidden'}`} />
       {aadsMounted ? (
-        <AadsUnit unitId={AADS_INFEED_ID} onLoad={markAadsLoaded} hidden={!showAads} className="w-full h-full flex items-center justify-center" />
+        <AadsUnit unitId={AADS_SQUARE_ID} size="300x250" onLoad={markAadsLoaded} hidden={!showAads} className="w-full h-full flex items-center justify-center" />
       ) : null}
       <div data-house="1" className={showMondiad || showAads ? 'hidden' : 'contents'}>
         <HousePromo category="productivity" className="hidden sm:flex items-center justify-center gap-3 h-full px-4" />
