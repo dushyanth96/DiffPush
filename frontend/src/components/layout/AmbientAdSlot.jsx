@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID, AD_FILL_TIMEOUT_MS, HYBRID_NETWORK_MS, HYBRID_HOUSE_MS, AADS_SQUARE_ID, AADS_RAIL_ID, AADS_DELAY_MS, isAdTest, rescanMondiadSlots } from '../../data/ads.js'
+import { MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID, AD_FILL_TIMEOUT_MS, HYBRID_NETWORK_MS, HYBRID_HOUSE_MS, AADS_SQUARE_ID, AADS_INFEED_ID, AADS_RAIL_ID, AADS_DELAY_MS, isAdTest, rescanMondiadSlots } from '../../data/ads.js'
 import { MONDIAD_TAG_URL, AADS_TAG_URL, HOUSE_PROMO, loadAdTag } from '../../data/ads.js'
 import { loadDeals, pickDeal } from '../../data/deals.js'
 
@@ -355,7 +355,7 @@ export function DashboardBannerSlot({ network = true, mondiad = true, networkMs,
     >
       <div data-mndbanid={MONDIAD_DASHBOARD_BANNER_ID} className={`w-full h-full flex items-center justify-center${showMondiad ? '' : ' hidden'}`} />
       {aadsMounted ? (
-        <AadsUnit unitId={AADS_SQUARE_ID} size="300x250" onLoad={markAadsLoaded} hidden={!showAads} className="w-full h-full flex items-center justify-center" />
+        <AadsUnit unitId={AADS_INFEED_ID} size="728x90" onLoad={markAadsLoaded} hidden={!showAads} className="w-full h-full flex items-center justify-center" />
       ) : null}
       <div data-house="1" className={showMondiad || showAads ? 'hidden' : 'contents'}>
         <HousePromo category="productivity" className="hidden sm:flex items-center justify-center gap-3 h-full px-4" />

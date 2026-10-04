@@ -1,6 +1,6 @@
 import React from 'react'
 import { AadsUnit } from '../layout/AmbientAdSlot.jsx'
-import { AADS_SQUARE_ID, AADS_RAIL_ID } from '../../data/ads.js'
+import { AADS_SQUARE_ID, AADS_RAIL_ID, AADS_INFEED_ID } from '../../data/ads.js'
 
 // Public ad-verification page for networks (AADS bot checks only the exact
 // URL registered per unit — crawlers can't log in, so dashboard/IDE slots
@@ -19,7 +19,7 @@ export function AdsVerifyPage() {
 
         <h2 className="mt-8 text-[14px] font-semibold text-slate-200">Leaderboard · in-feed (dashboard)</h2>
         <div className="mt-2 mx-auto overflow-hidden rounded-md bg-surface hairline w-full max-w-[728px] min-h-[90px] flex items-center justify-center" style={{ contain: 'layout' }}>
-          <AadsUnit unitId={AADS_SQUARE_ID} size="300x250" />
+          <AadsUnit unitId={AADS_INFEED_ID} size="728x90" />
         </div>
 
         <h2 className="mt-8 text-[14px] font-semibold text-slate-200">Square · sidebar / IDE</h2>

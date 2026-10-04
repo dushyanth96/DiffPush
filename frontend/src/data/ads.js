@@ -25,7 +25,8 @@ export const MONDIAD_SIDEBAR_BANNER_ID = 'bb4e890f-5d15-408f-aea7-353fa89ee5b8'
 // Served as the middle waterfall stage: Mondiad → AADS → house.
 // NOTE: in-feed intentionally serves the 300x250 square unit per the
 // current AADS setup (see clipping warning in AadsUnit usage).
-export const AADS_SQUARE_ID = '2457407' // sidebar / IDE / arena square AND in-feed (300x250)
+export const AADS_SQUARE_ID = '2457407' // sidebar / IDE / arena square (300x250)
+export const AADS_INFEED_ID = '2457409' // dashboard leaderboard (728x90)
 export const AADS_RAIL_ID = '2457410' // coach rail (160x600)
 // How long Mondiad gets the slot alone per network phase before AADS mounts.
 export const AADS_DELAY_MS = 4000
