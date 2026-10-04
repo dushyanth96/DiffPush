@@ -19,6 +19,7 @@ import { GoalPicker } from './components/modals/GoalPicker.jsx'
 import { Workspace } from './components/workspace/Workspace.jsx'
 import { GitHubAuthModal } from './components/modals/GitHubAuthModal.jsx'
 import { AuthCallback } from './components/modals/AuthCallback.jsx'
+import { AdsVerifyPage } from './components/ads/AdsVerifyPage.jsx'
 import { CommandPalette } from './components/modals/CommandPalette.jsx'
 import { ReviewView } from './components/review/ReviewView.jsx'
 import { CertView } from './components/review/CertView.jsx'
@@ -160,6 +161,9 @@ export default function App() {
   } else if (route.name === 'user') {
     // Public certificate pages stay outside the guard (resume links work logged-out).
     content = <CertView username={route.username} onBack={goHub} />
+  } else if (route.name === 'ads-verify') {
+    // Public ad-verification page for network crawlers (no auth of any kind).
+    content = <AdsVerifyPage />
   } else if (route.name === 'dashboard' || (route.name === 'hub' && isAuthenticated)) {
     chrome = 'hub'
   } else if (!isAuthenticated) {

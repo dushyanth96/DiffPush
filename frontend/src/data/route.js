@@ -29,6 +29,9 @@ export function parseRoute() {
   // Public dashboard: renders for everyone (logged-out devices included) so
   // ad units are discoverable without login.
   if (path === '/dashboard') return { name: 'dashboard' }
+  // Public ad-verification page: all AADS units statically mounted for
+  // network crawlers (no auth, no waterfall delay, no rotation).
+  if (path === '/ads-verify') return { name: 'ads-verify' }
   const um = path.match(/^\/u\/([\w-]+)\/?$/)
   if (um) return { name: 'user', username: um[1] }
   const arena = path.match(/^\/room\/([\w-]+)\/arena\/?$/)
