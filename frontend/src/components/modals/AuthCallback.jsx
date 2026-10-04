@@ -20,11 +20,16 @@ export function AuthCallback() {
     }
     const msg = { type: 'builtdiff:oauth-code', code }
     if (window.opener) {
-      window.opener.postMessage(msg, window.location.origin)
+      // Target '*' deliberately: the opener may live on another frontend
+      // origin (local dev vs hosted share one OAuth callback URL). The code
+      // is single-use and useless without the server-side client secret, and
+      // the opener validates e.source === popup before accepting it.
+      try { window.opener.postMessage(msg, '*') } catch {}
     } else {
-      // Full-tab navigation (not a popup): hand the code to this window's
-      // own listener if present, then return to the app.
-      window.postMessage(msg, window.location.origin)
+      // Full-tab navigation (not a popup): stash the code for this window's
+      // own app boot to pick up, then return to the app. (A same-window
+      // postMessage would have no listener and the code would be lost.)
+      try { sessionStorage.setItem('builtdiff:oauth-code', code) } catch {}
       setTimeout(() => { window.location.pathname = '/' }, 800)
       return
     }

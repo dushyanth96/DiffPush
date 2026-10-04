@@ -471,7 +471,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
               same square Mondiad banner as the dashboard sidebar */}
           <div className="flex min-h-0 border-t border-border p-2 lg:flex-[30] lg:min-h-0">
             <div className="w-full h-full min-h-0 overflow-y-auto">
-              <SidebarBannerSlot />
+              <SidebarBannerSlot network={false} />
             </div>
           </div>
         </section>
@@ -573,9 +573,9 @@ export function Workspace({ slug, tracker, github, onBack }) {
             <p className="shrink-0 px-3 pt-1 pb-2 text-[11px] leading-snug text-slate-500 text-center">
               Stuck? <span className="text-slate-200 font-medium">Open AI Coach</span> for hints, Big-O checks &amp; debug traces.
             </p>
-            {/* rail freed up by the collapsed coach → vertical banner */}
+            {/* rail freed up by the collapsed coach → in-house banner (normal IDE never bids network) */}
             <div className="hidden lg:flex flex-1 min-h-0 px-2 pb-2">
-              <VerticalAdSlot />
+              <VerticalAdSlot network={false} />
             </div>
           </section>
         ) : (

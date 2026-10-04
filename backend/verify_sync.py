@@ -119,6 +119,10 @@ def test_commit_flow_mocked():
             short = "abc123" if "tracker" not in url else "def456"
             return FakeResp(201, {"commit": {"sha": short}})
 
+        async def patch(self, url, headers=None, json=None):
+            calls.append(("PATCH", url))
+            return FakeResp(200, {})
+
         async def post(self, url, headers=None, json=None):
             calls.append(("POST", url))
             return FakeResp(201, {})
@@ -145,6 +149,10 @@ def test_commit_flow_mocked():
     puts = [c for c in calls if c[0] == "PUT"]
     assert puts[0][3] is False, "new solution file must not send sha"
     assert puts[1][3] is True, "existing tracker.json must send sha (no 409)"
+    assert any(c[0] == "PUT" and c[1].endswith("/contents/README.md") for c in calls), \
+        "profile README must refresh on every push"
+    assert any(c[0] == "PATCH" and c[1].endswith("/repos/octo/diffpush-solutions") for c in calls), \
+        "repo blurb should update best-effort on every push"
     print("mocked init-user + commit flow OK (SHA handling verified)")
 
 
@@ -172,6 +180,17 @@ def test_validation_rejects_bad_payload():
     r = client.post("/api/github/commit", json={"access_token": "t"})
     assert r.status_code == 422
     print("request validation OK")
+
+
+def test_profile_readme_content():
+    body = github_service.build_profile_readme(
+        login="octo", solved_total=42, diff_score=8000, streak=5,
+        last_active="2026-10-03")
+    assert "octo" in body and "42" in body and "Kernel Hacker" in body
+    assert "https://diffpush.pages.dev" in body and "🔥 5" in body
+    assert github_service.tier_for(0) == "Script Kiddie"
+    assert github_service.tier_for(30000) == "Built Different"
+    print("profile README content OK")
 
 
 if __name__ == "__main__":

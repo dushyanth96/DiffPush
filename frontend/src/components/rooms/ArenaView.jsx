@@ -11,6 +11,7 @@ import { useRoomLive } from '../../hooks/useRoomLive.js'
 import { submitSolve, commitExtras } from '../../data/solve.js'
 import { fetchRoomMeta, LOBBY_CODE } from '../../data/rooms.js'
 import { defineObsidian } from '../workspace/Workspace.jsx'
+import { SidebarBannerSlot } from '../layout/AmbientAdSlot.jsx'
 import { VictoryModal } from '../modals/VictoryModal.jsx'
 import { RoomChat } from './RoomChat.jsx'
 
@@ -345,6 +346,10 @@ function ArenaInner({ code, tracker, github, onBack }) {
               </div>
             </>
           )}
+          {/* sponsor under the question column — hybrid rotation like the dashboard */}
+          <div className="shrink-0 border-t border-border p-2">
+            <SidebarBannerSlot />
+          </div>
         </section>
 
         {/* CENTER: IDE */}
@@ -416,8 +421,8 @@ function ArenaInner({ code, tracker, github, onBack }) {
                 </>
               ) : (
                 <p className="font-mono text-[11px] text-slate-600">Ctrl+Enter runs {problem?.testCases?.length ?? '…'} cases{langId === 'python' || langId === 'javascript' ? ' locally' : ' on a remote compiler'}.</p>
-              )}
-            </div>
+            )}
+          </div>
           </div>
         </section>
 

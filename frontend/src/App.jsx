@@ -89,6 +89,32 @@ export default function App() {
     loadManifest().then(() => setManifestReady(true)).catch((e) => setManifestError(e.message))
   }, [])
 
+  // Full-tab OAuth return: /auth/callback stashes the code in sessionStorage
+  // (same-window postMessage has no listener), so the boot exchange runs here.
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      let code = null
+      try { code = sessionStorage.getItem('builtdiff:oauth-code') } catch {}
+      if (!code) return
+      try { sessionStorage.removeItem('builtdiff:oauth-code') } catch {}
+      if (github.connected) return
+      try {
+        const API = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+        const res = await fetch(`${API}/api/auth/github/exchange`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code }),
+        })
+        const data = await res.json().catch(() => ({}))
+        if (!res.ok) throw new Error(data.detail ?? 'Exchange failed')
+        if (!cancelled) await github.connect(data.access_token)
+      } catch {}
+    })()
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Recall nudge: once per session, if cards are due and reminders were opted in.
   useEffect(() => {
     if (!manifestReady || !tracker.ready) return

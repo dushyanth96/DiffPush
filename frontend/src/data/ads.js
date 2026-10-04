@@ -21,8 +21,22 @@ export const MONDIAD_VERTICAL_BANNER_ID = '06d8e32a-a0cc-4d2e-a9c5-21b383311e1d'
 export const MONDIAD_DASHBOARD_BANNER_ID = '6d706f7b-8c76-402a-8784-1042f90102d4'
 export const MONDIAD_SIDEBAR_BANNER_ID = 'bb4e890f-5d15-408f-aea7-353fa89ee5b8'
 
+// AADS adaptive unit (verified embed). Served as the middle waterfall stage:
+// Mondiad first, AADS on Mondiad miss, in-house promo on double miss.
+export const AADS_AD_UNIT_ID = '2457407'
+// How long Mondiad gets the slot alone per network phase before AADS mounts.
+export const AADS_DELAY_MS = 4000
+
 // How long to wait for a network creative before falling back, per attempt.
 export const AD_FILL_TIMEOUT_MS = 3000
+
+// Hybrid rotation cadence: paid network ads show for NETWORK_MS, then the
+// in-house (EarnKaro/static) promo takes over for HOUSE_MS, then a fresh
+// network impression is requested. 60s/60s balances impression volume
+// against viewability and network refresh policies (most tags want >=30s
+// between refreshes; higher frequency risks fill penalties).
+export const HYBRID_NETWORK_MS = 60000
+export const HYBRID_HOUSE_MS = 60000
 
 // Re-triggers the head-loaded Mondiad tag so it picks up slot divs that
 // mounted after its initial scan. banner.js scans for div[data-mndbanid]
@@ -47,13 +61,13 @@ function fireMondiadRescan() {
   document.head.appendChild(script)
 }
 
-export function rescanMondiadSlots() {
+export function rescanMondiadSlots({ force = false } = {}) {
   try {
-    if (mondiadRescans >= 3) return
+    if (!force && mondiadRescans >= 3) return
+    if (!force && !(mondiadRescans === 0 || Date.now() - lastMondiadRescan >= 4000)) return
     if (!document.querySelector('div[data-mndbanid]')) return
-    if (mondiadRescans === 0 || Date.now() - lastMondiadRescan >= 4000) {
-      fireMondiadRescan()
-    }
+    fireMondiadRescan()
+    if (force) return // rotation-driven: no trailing scan, next cycle rescans
     clearTimeout(mondiadRescanTimer)
     mondiadRescanTimer = setTimeout(() => {
       try {

@@ -17,6 +17,30 @@ def _safe_segment(s: str) -> str:
     return re.sub(r"[^A-Za-z0-9._-]+", "-", (s or "").strip()).strip("-") or "general"
 
 
+# Elo tiers mirrored from frontend useTracker.js — shown on the profile README.
+TIERS = [
+    (0, "Script Kiddie"),
+    (2500, "Systems Operator"),
+    (7500, "Kernel Hacker"),
+    (15000, "Staff Architect"),
+    (30000, "Built Different"),
+]
+
+SITE_URL = "https://diffpush.pages.dev"
+
+
+def tier_for(score: int) -> str:
+    name = TIERS[0][1]
+    try:
+        score = int(score or 0)
+    except Exception:
+        score = 0
+    for minimum, tier_name in TIERS:
+        if score >= minimum:
+            name = tier_name
+    return name
+
+
 def _comment_prefix(ext: str) -> str:
     return "#" if ext == "py" else "//"
 
@@ -184,9 +208,46 @@ def merge_tracker_states(remote: dict, incoming: dict) -> dict:
     }
 
 
+def build_profile_readme(*, login: str, solved_total: int,
+                         diff_score: int = 0, streak: int = 0,
+                         last_active=None) -> str:
+    """Profile README for the solutions repo: markets the platform and shows
+    the owner's live status/progress to visitors. Refreshed on every push."""
+    try:
+        solved_total = int(solved_total or 0)
+    except Exception:
+        solved_total = 0
+    try:
+        streak = int(streak or 0)
+    except Exception:
+        streak = 0
+    last = str(last_active or "—")
+    return (
+        f"# 🧠 {login}'s DSA solutions — powered by [DiffPush]({SITE_URL})\n"
+        f"\n"
+        f"> Master the complete A2Z DSA sheet with zero-latency browser execution, "
+        f"automated GitHub commit pushing, and Leitner spaced repetition. "
+        f"100% open-source — [start tracking free]({SITE_URL}).\n"
+        f"\n"
+        f"## 📊 Live progress (auto-updated on every solve)\n"
+        f"\n"
+        f"| Problems solved | Tier | DIFF score | Day streak | Last active |\n"
+        f"|-- |-- |-- |-- |--|\n"
+        f"| **{solved_total}** | **{tier_for(diff_score)}** | **{diff_score or 0}** | **🔥 {streak}** | {last} |\n"
+        f"\n"
+        f"## 🗂️ Solutions\n"
+        f"\n"
+        f"Browse by topic folders above — every file carries its Big-O in the "
+        f"commit message, a header linking back to the full question on DiffPush, "
+        f"and the test cases it passed. Green squares below are real commits, "
+        f"earned one accepted solution at a time.\n"
+    )
+
+
 async def push_solution_commit(access_token: str, owner: str, repo_name: str,
                                commit_data: dict, branch: str = "main") -> dict:
-    """Push solution file + merged tracker.json. Returns SHAs + repo URL."""
+    """Push solution file + merged tracker.json + refreshed profile README.
+    Returns SHAs + repo URL."""
     for k in ("topic", "problemSlug", "canonicalTitle", "code", "language", "trackerState"):
         if not commit_data.get(k):
             raise GitHubError(f"commit_data missing required field: {k}", status=400)
@@ -217,6 +278,28 @@ async def push_solution_commit(access_token: str, owner: str, repo_name: str,
         tracker_b64 = base64.b64encode(json.dumps(merged, indent=2).encode("utf-8")).decode()
         trk = await _put_file(client, headers, owner, repo_name, TRACKER_PATH, tracker_b64,
                               "chore(sync): update DiffPush telemetry state", branch)
+        stats = merged.get("stats", {}) if isinstance(merged, dict) else {}
+        solved_total = len(merged.get("solvedMap", {}) or {})
+        readme_text = build_profile_readme(
+            login=owner,
+            solved_total=solved_total,
+            diff_score=stats.get("diffScore", 0),
+            streak=stats.get("currentStreak", 0),
+            last_active=stats.get("lastActiveDate"),
+        )
+        readme_b64 = base64.b64encode(readme_text.encode("utf-8")).decode()
+        await _put_file(client, headers, owner, repo_name, "README.md", readme_b64,
+                        f"docs(sync): refresh profile README — {solved_total} solved", branch)
+        # Best-effort repo blurb so the repo header markets the platform too.
+        # Never fails the push: a blurb is cosmetic, the solves are not.
+        try:
+            await client.patch(
+                f"{GITHUB_API}/repos/{owner}/{repo_name}",
+                headers=headers,
+                json={"description": f"🧠 {solved_total} DSA solutions · {stats.get('currentStreak', 0)}-day streak · powered by DiffPush — {SITE_URL}"},
+            )
+        except Exception:
+            pass
     return {
         "solutionCommitSha": (sol.get("commit") or {}).get("sha"),
         "solutionPath": sol_path,

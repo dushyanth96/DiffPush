@@ -29,9 +29,13 @@ export function GitHubAuthModal({ github, onClose }) {
       const popup = window.open(url, 'builtdiff-oauth', 'width=600,height=700,popup=1')
       if (!popup) throw new Error('Popup blocked — allow popups or use a PAT below.')
       // Exchange happens via redirect back to /auth/callback which postMessages the code.
+      // The callback may land on a different frontend origin than this window
+      // (single GitHub OAuth callback URL shared by local + hosted builds), so
+      // validate by SOURCE WINDOW (only the popup we opened can match) instead
+      // of by origin — postMessage itself is cross-origin safe.
       let gotCode = false
       const onMsg = async (e) => {
-        if (e.origin !== window.location.origin || e.data?.type !== 'builtdiff:oauth-code') return
+        if (e.source !== popup || e.data?.type !== 'builtdiff:oauth-code') return
         gotCode = true
         window.removeEventListener('message', onMsg)
         try {
