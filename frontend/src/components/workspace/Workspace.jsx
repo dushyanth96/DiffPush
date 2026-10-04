@@ -13,6 +13,7 @@ import {
   askAI, buildMentorSystem,
 } from '../../data/chat.js'
 import { REPO_URL } from '../../data/repo.js'
+import { navigate } from '../../data/route.js'
 import { submitSolve, commitExtras } from '../../data/solve.js'
 import { fetchPushedSolution } from '../../hooks/useGitHub.js'
 import { SidebarBannerSlot, VerticalAdSlot } from '../layout/AmbientAdSlot.jsx'
@@ -303,7 +304,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
   const goNext = () => {
     const next = nextUnsolvedInTopic(tracker, meta?.topic, slug)
     setVictoryOpen(false)
-    if (next) window.location.hash = `#/solve/${next.id}`
+    if (next) navigate(`/solve/${next.id}`)
     else onBack()
   }
 

@@ -32,7 +32,7 @@ function FirstBloodCard({ tracker }) {
           return (
             <li key={id}>
               <a
-                href={`#/solve/${id}`}
+                href={`/solve/${id}`}
                 className={`flex items-center gap-2.5 rounded-md px-2.5 py-1.5 transition-colors ${isNext ? 'bg-raised hairline' : 'hover:bg-raised'}`}
               >
                 <span className={`font-mono text-[11px] w-5 ${done ? 'text-diff-emerald' : isNext ? 'text-slate-200' : 'text-slate-600'}`}>
@@ -65,7 +65,7 @@ export function ProblemRow({ p, tracker }) {
             : <Circle size={14} className="text-slate-600" />}
       </span>
       <div className="flex-1 min-w-0">
-        <a href={`#/solve/${p.id}`} className="block text-[13px] font-medium text-slate-200 truncate hover:text-diff-emerald transition-colors">
+        <a href={`/solve/${p.id}`} className="block text-[13px] font-medium text-slate-200 truncate hover:text-diff-emerald transition-colors">
           {p.canonicalTitle ?? p.id}
         </a>
         <p className="text-[11px] text-slate-500 line-clamp-2 leading-snug">{p.title}</p>
@@ -84,7 +84,7 @@ export function ProblemRow({ p, tracker }) {
         <Star size={14} fill={starred ? '#F59E0B' : 'none'} className={starred ? 'text-diff-amber' : ''} />
       </button>
       <a
-        href={`#/solve/${p.id}`}
+        href={`/solve/${p.id}`}
         tabIndex={-1}
         aria-hidden="true"
         className="shrink-0 text-slate-600 hover:text-diff-emerald transition-colors"

@@ -6,7 +6,7 @@ import { getActiveRoom } from '../data/rooms.js'
 // Everything returned here must stay JSON-serializable (offline queue).
 export function commitExtras(slug, payload) {
   let questionUrl = ''
-  try { questionUrl = `${window.location.origin}/#/solve/${slug}` } catch {}
+  try { questionUrl = `${window.location.origin}/solve/${slug}` } catch {}
   const passedTests = (payload?.results ?? [])
     .filter((r) => r && r.passed)
     .slice(0, 8)

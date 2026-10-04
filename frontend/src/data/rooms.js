@@ -58,7 +58,7 @@ export function createRoom({ name, visibility = 'public', hours = 6 }) {
 }
 
 export function inviteLink(room) {
-  const base = `${window.location.origin}${window.location.pathname}#/room/${room.code}`
+  const base = `${window.location.origin}/room/${room.code}`
   const q = new URLSearchParams({
     n: room.name,
     p: (room.peers ?? []).join(','),

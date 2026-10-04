@@ -8,7 +8,7 @@ function decodeB64(b64) {
 }
 
 // Verifiable certificate page: reads the PUBLIC repo directly.
-// #/u/:username — no backend, no database.
+// /u/:username — no backend, no database.
 export function CertView({ username, onBack }) {
   const [state, setState] = useState({ loading: true })
 

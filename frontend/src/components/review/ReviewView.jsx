@@ -3,6 +3,7 @@ import { ArrowLeft, Flame, RotateCw, Shuffle, Check } from 'lucide-react'
 import { getProblemMeta, getProblems, loadManifest } from '../../data/curriculum.js'
 import { loadDraft } from '../../hooks/useCodeStore.js'
 import { BOX_INTERVALS } from '../../hooks/useTracker.js'
+import { navigate } from '../../data/route.js'
 
 const ago = (ts) => {
   if (!ts) return 'New card'
@@ -199,7 +200,7 @@ function ReviewHeader({ pos, total, streak, onBack, practice }) {
 
 export function RecallDrillButton() {
   return (
-    <button onClick={() => { window.location.hash = '#/review' }} className="btn-ghost flex items-center justify-center gap-1.5 h-8 rounded-md text-[13px] font-medium text-slate-200">
+          <button onClick={() => navigate('/review')} className="btn-ghost flex items-center justify-center gap-1.5 h-8 rounded-md text-[13px] font-medium text-slate-200">
       <RotateCw size={14} /> Start Recall Drill
     </button>
   )

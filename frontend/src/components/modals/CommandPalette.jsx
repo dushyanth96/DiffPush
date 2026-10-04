@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Search, Check, RotateCcw, Zap, RefreshCw, ChevronRight, Users, BadgeCheck, Target } from 'lucide-react'
 import { getProblems, searchProblems } from '../../data/curriculum.js'
+import { navigate } from '../../data/route.js'
 
 const FILTERS = ['All', 'Arrays', 'Graphs', 'DP', 'Due for Recall']
 
@@ -37,11 +38,11 @@ export function CommandPalette({ tracker, github, onClose }) {
   }, [query, filter, dueSet])
 
   const actions = [
-    { id: '__review', label: 'Start Recall Sprint', hint: 'review queue', icon: RotateCcw, run: () => { window.location.hash = '#/review' } },
+    { id: '__review', label: 'Start Recall Sprint', hint: 'review queue', icon: RotateCcw, run: () => navigate('/review') },
     { id: '__goal', label: 'Change training goal', hint: 'placements faang core target', icon: Target, run: () => { tracker.setGoal(null) } },
-    { id: '__room', label: 'Open Study Room', hint: 'friends peers leaderboard', icon: Users, run: () => { window.location.hash = '#/room' } },
+    { id: '__room', label: 'Open Study Room', hint: 'friends peers leaderboard', icon: Users, run: () => navigate('/room') },
     ...(github?.profile?.login
-      ? [{ id: '__cert', label: 'My certificate', hint: 'resume share proof', icon: BadgeCheck, run: () => { window.location.hash = `#/u/${github.profile.login}` } }]
+      ? [{ id: '__cert', label: 'My certificate', hint: 'resume share proof', icon: BadgeCheck, run: () => navigate(`/u/${github.profile.login}`) }]
       : []),
     { id: '__sync', label: github?.connected ? 'Sync to GitHub' : 'Connect GitHub', hint: 'github sync', icon: RefreshCw, run: () => { window.dispatchEvent(new CustomEvent('builtdiff:connect')) } },
   ].filter((a) => !query.trim() || (`${a.label} ${a.hint}`.toLowerCase().includes(query.trim().toLowerCase())))
@@ -59,7 +60,7 @@ export function CommandPalette({ tracker, github, onClose }) {
     if (!row) return
     if (row.kind === 'action') { onClose(); row.action.run(); return }
     onClose()
-    window.location.hash = `#/solve/${row.problem.id}`
+    navigate(`/solve/${row.problem.id}`)
   }
 
   const onKey = (e) => {

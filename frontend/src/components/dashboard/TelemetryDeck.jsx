@@ -1,6 +1,7 @@
 import React from 'react'
-import { Download, Repeat, Check } from 'lucide-react'
 
+import { Download, Repeat, Check } from 'lucide-react'
+import { navigate } from '../../data/route.js'
 function Ring({ pct }) {  const r = 26
   const c = 2 * Math.PI * r
   return (
@@ -105,7 +106,7 @@ export function RecallCard({ tracker }) {
         </p>
         <p className="text-[12px] text-slate-500">Reviews auto-scheduled at 1/3/7/14/30 days</p>
       </div>
-      <button onClick={() => { window.location.hash = '#/review' }} className="btn-ghost mt-3 flex items-center justify-center gap-1.5 h-8 rounded-md text-[13px] font-medium text-slate-200">
+      <button onClick={() => navigate('/review')} className="btn-ghost mt-3 flex items-center justify-center gap-1.5 h-8 rounded-md text-[13px] font-medium text-slate-200">
         <Repeat size={14} /> Start Recall Drill
       </button>
       <button onClick={enableRecallReminders} className="mt-1.5 w-full text-center font-mono text-[11px] text-slate-500 hover:text-slate-300 transition-colors">

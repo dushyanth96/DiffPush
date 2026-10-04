@@ -32,6 +32,12 @@ export const AADS_DELAY_MS = 4000
 // How long to wait for a network creative before falling back, per attempt.
 export const AD_FILL_TIMEOUT_MS = 3000
 
+// Deterministic ad verification: ?adtest=1 mounts AADS units immediately
+// (no Mondiad wait, no timers racing the crawler). For handing to networks.
+export function isAdTest() {
+  try { return new URLSearchParams(window.location.search).get('adtest') === '1' } catch { return false }
+}
+
 // Hybrid rotation cadence: paid network ads show for NETWORK_MS, then the
 // in-house (EarnKaro/static) promo takes over for HOUSE_MS, then a fresh
 // network impression is requested. 60s/60s balances impression volume

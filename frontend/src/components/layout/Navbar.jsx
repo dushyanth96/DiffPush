@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Search, Flame, Github, RefreshCw, LogOut, ExternalLink, Zap, Users, Star } from 'lucide-react'
 import { Logo } from './Logo.jsx'
 import { REPO_URL } from '../../data/repo.js'
+import { navigate } from '../../data/route.js'
 
 const MOD_KEY = typeof navigator !== 'undefined' && /mac/i.test(navigator.platform ?? '') ? 'Cmd' : 'Ctrl'
 
@@ -75,7 +76,7 @@ export function Navbar({ tracker, github, onPalette, onConnect }) {
             <Star size={11} className="text-diff-amber" fill="currentColor" />
           </a>
           <a
-            href="#/room"
+            href="/room"
             title="Study Room"
             aria-label="Open Study Room"
             className="hidden sm:flex items-center justify-center w-7 h-7 rounded-md text-slate-400 hover:text-slate-100 hover:bg-raised transition-colors"
@@ -99,7 +100,7 @@ export function Navbar({ tracker, github, onPalette, onConnect }) {
                     {github.syncState === 'syncing' ? 'syncing…' : github.syncState === 'queued' ? 'offline — commits queued' : github.error ?? 'in sync'}
                   </p>
                   <a
-                    href={`#/u/${github.profile.login}`}
+                    href={`/u/${github.profile.login}`}
                     onClick={() => setShowProfile(false)}
                     className="btn-ghost mt-2 w-full flex items-center justify-center gap-1.5 h-8 rounded-md text-[12px] text-slate-200"
                   >

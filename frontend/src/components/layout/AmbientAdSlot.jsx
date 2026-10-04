@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID, AD_FILL_TIMEOUT_MS, HYBRID_NETWORK_MS, HYBRID_HOUSE_MS, AADS_SQUARE_ID, AADS_INFEED_ID, AADS_RAIL_ID, AADS_DELAY_MS, rescanMondiadSlots } from '../../data/ads.js'
+import { MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID, AD_FILL_TIMEOUT_MS, HYBRID_NETWORK_MS, HYBRID_HOUSE_MS, AADS_SQUARE_ID, AADS_INFEED_ID, AADS_RAIL_ID, AADS_DELAY_MS, isAdTest, rescanMondiadSlots } from '../../data/ads.js'
 import { MONDIAD_TAG_URL, AADS_TAG_URL, HOUSE_PROMO, loadAdTag } from '../../data/ads.js'
 import { loadDeals, pickDeal } from '../../data/deals.js'
 
@@ -155,6 +155,7 @@ export function AmbientAdSlot({ fitHeight = false }) {
 // at most once per page load — see rescanMondiadSlots).
 function useMondiadRescan() {
   useEffect(() => {
+    if (isAdTest()) return undefined // ad-test mode: AADS only, zero Mondiad traffic
     const t = setTimeout(rescanMondiadSlots, 0)
     return () => clearTimeout(t)
   }, [])
@@ -207,21 +208,25 @@ function useHybridSlot({ network = true, mondiad = true, networkMs = HYBRID_NETW
   const frameRef = useRef(null)
   const [mondiadFilled, setMondiadFilled] = useState(false)
   const [aadsLoaded, setAadsLoaded] = useState(false)
-  const [source, setSource] = useState('mondiad') // 'mondiad' | 'aads'
+  // ?adtest=1 skips straight to AADS (deterministic verification, no timers).
+  const [source, setSource] = useState(() => (isAdTest() ? 'aads' : 'mondiad')) // 'mondiad' | 'aads'
+  const testMode = isAdTest()
   const phase = useHybridPhase(network, networkMs, houseMs)
   const mondiadRef = useRef(false)
   useEffect(() => { mondiadRef.current = mondiadFilled })
 
   useMondiadRescan()
-  // Fresh paid impression at the start of every network phase (Mondiad only).
+  // Fresh paid impression at the start of every network phase (Mondiad only;
+  // skipped in ad-test mode where AADS mounts immediately and deterministically).
   useEffect(() => {
+    if (testMode) return undefined
     if (network && mondiad && phase === 'network') rescanMondiadSlots({ force: true })
-  }, [network, mondiad, phase])
-  // New network phase → back to first priority (Mondiad, or AADS directly
-  // when Mondiad is disabled for this placement).
+  }, [network, mondiad, phase, testMode])
+  // New network phase → back to first priority (Mondiad, AADS directly when
+  // Mondiad is disabled for this placement, or in ad-test mode).
   useEffect(() => {
-    if (phase === 'network') { setSource(mondiad ? 'mondiad' : 'aads'); setAadsLoaded(false) }
-  }, [phase, mondiad])
+    if (phase === 'network') { setSource(testMode ? 'aads' : (mondiad ? 'mondiad' : 'aads')); setAadsLoaded(false) }
+  }, [phase, mondiad, testMode])
 
   // Mondiad fill poll (skipped entirely when Mondiad is disabled for this
   // placement — zero requests, zero timers): slot-div content, demo
@@ -231,7 +236,7 @@ function useHybridSlot({ network = true, mondiad = true, networkMs = HYBRID_NETW
   // that corrects both ways, so a slow-network fill always wins eventually
   // and teardowns fall back.
   useEffect(() => {
-    if (!network || !mondiad) return undefined
+    if (!network || !mondiad || testMode) return undefined
     let cancelled = false
     const checkMondiad = () => {
       try {
@@ -261,12 +266,12 @@ function useHybridSlot({ network = true, mondiad = true, networkMs = HYBRID_NETW
   // mounts if the slot div is still empty (skipped when Mondiad disabled —
   // AADS mounts immediately at phase start instead).
   useEffect(() => {
-    if (!network || !mondiad || phase !== 'network' || source !== 'mondiad') return undefined
+    if (!network || !mondiad || testMode || phase !== 'network' || source !== 'mondiad') return undefined
     const t = setTimeout(() => { if (!mondiadRef.current) setSource('aads') }, AADS_DELAY_MS)
     return () => clearTimeout(t)
-  }, [network, mondiad, phase, source])
+  }, [network, mondiad, testMode, phase, source])
   // Mondiad priority: a late fill reclaims the slot even mid-AADS.
-  useEffect(() => { if (mondiad && mondiadFilled) setSource('mondiad') }, [mondiad, mondiadFilled])
+  useEffect(() => { if (mondiad && !testMode && mondiadFilled) setSource('mondiad') }, [mondiad, testMode, mondiadFilled])
   // AADS serving: iframe onLoad, or assume-served after 8s (bounded exposure —
   // the rotation rescues the slot, and AADS backfills near-100% anyway).
   useEffect(() => {

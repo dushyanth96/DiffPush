@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react'
 import { CalendarCheck, Users, BadgeCheck, BarChart3 } from 'lucide-react'
 import { getDailyChallenge } from '../../data/daily.js'
+import { navigate } from '../../data/route.js'
 
 export function ArenaCard({ github }) {
   const login = github?.profile?.login
   const openCert = () => {
-    if (login) window.location.hash = `#/u/${login}`
+    if (login) navigate(`/u/${login}`)
     else window.dispatchEvent(new CustomEvent('builtdiff:connect'))
   }
   return (
@@ -13,7 +14,7 @@ export function ArenaCard({ github }) {
       <h3 className="text-[11px] font-semibold text-slate-400">Prove & Compete</h3>
       <div className="mt-2.5 space-y-1.5">
         <button
-          onClick={() => { window.location.hash = '#/room' }}
+            onClick={() => navigate('/room')}
           className="btn-ghost w-full flex items-center gap-2 px-3 h-9 rounded-md text-[13px] text-slate-200"
         >
           <Users size={14} className="text-diff-emerald" /> Study Room
@@ -50,7 +51,7 @@ export function DailyChallengeCard({ tracker }) {
       <p className="mt-2 text-[14px] font-semibold text-slate-100 leading-snug">{challenge.canonicalTitle}</p>
       <p className="text-[12px] text-slate-500 mt-0.5">{challenge.challengeDifficulty} · same problem for everyone today</p>
       <a
-        href={`#/solve/${challenge.id}`}
+        href={`/solve/${challenge.id}`}
         className={`${done ? 'btn-ghost text-slate-300' : 'btn-emerald'} mt-3 flex items-center justify-center h-9 rounded-md text-[13px] font-semibold`}
       >
         {done ? 'Solved — review it' : 'Take the challenge'}

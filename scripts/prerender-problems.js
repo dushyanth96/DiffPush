@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 /* BuiltDiff SEO: prerender one static HTML page per problem + sitemap.xml.
  * Runs AFTER `vite build` (vite empties dist/, so this must come second).
- * Output: dist/solve/<slug>/index.html (369 pages), dist/sitemap.xml
+ * Output: dist/p/<slug>/index.html (369 pages), dist/sitemap.xml
  * Each page carries OG tags, narrative, Big-O, public examples, and a
- * canonical link into the app. No fake content — straight from curriculum JSON.
+ * canonical link. The CTA deep-links into the SPA (/solve/<slug>); the
+ * /p/ prefix keeps these static pages from colliding with app routes.
+ * No fake content — straight from curriculum JSON.
  */
 const fs = require('fs');
 const path = require('path');
@@ -12,7 +14,7 @@ const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'frontend', 'dist');
 const PROBLEMS = path.join(ROOT, 'frontend', 'public', 'problems');
 const MANIFEST = path.join(ROOT, 'frontend', 'public', 'curriculum_manifest.json');
-const SITE = 'https://diffpush.com';
+const SITE = 'https://diffpush.pages.dev';
 
 const esc = (s) => String(s ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -21,8 +23,8 @@ const esc = (s) => String(s ?? '')
 function page(meta, full) {
   const title = `${meta.canonicalTitle} | DiffPush`;
   const desc = `${meta.title ?? ''} — ${meta.optimalTime ?? ''} time, ${meta.optimalSpace ?? ''} space. Solve in your browser, auto-commit to GitHub.`;
-  const url = `${SITE}/solve/${meta.id}/`;
-  const appUrl = `/#/solve/${meta.id}`;
+  const url = `${SITE}/p/${meta.id}/`;
+  const appUrl = `/solve/${meta.id}`;
   const pub = (full.testCases ?? []).filter((t) => t.isPublic).slice(0, 3);
   const examples = pub.map((t, i) =>
     `<h3>Example ${i + 1}</h3><pre>Input: ${esc(JSON.stringify(t.input))}\nOutput: ${esc(JSON.stringify(t.expected))}${t.explanation ? `\n${esc(t.explanation)}` : ''}</pre>`).join('\n');
@@ -71,10 +73,10 @@ function main() {
     const src = path.join(PROBLEMS, meta.filePath.replace('/problems/', ''));
     if (!fs.existsSync(src)) continue;
     const full = JSON.parse(fs.readFileSync(src, 'utf8'));
-    const dir = path.join(DIST, 'solve', meta.id);
+    const dir = path.join(DIST, 'p', meta.id);
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, 'index.html'), page(meta, full));
-    urls.push(`${SITE}/solve/${meta.id}/`);
+    urls.push(`${SITE}/p/${meta.id}/`);
     n += 1;
   }
   const sm = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc></url>`).join('\n')}\n</urlset>\n`;

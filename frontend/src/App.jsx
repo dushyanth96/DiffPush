@@ -25,43 +25,26 @@ import { CertView } from './components/review/CertView.jsx'
 import { RoomPage } from './components/rooms/RoomPage.jsx'
 import { ArenaView } from './components/rooms/ArenaView.jsx'
 import { getDailyChallenge } from './data/daily.js'
+import { parseRoute, navigate, migrateLegacyHash } from './data/route.js'
 import { WeeklyReport } from './components/modals/WeeklyReport.jsx'
 import { LandingPage } from './components/marketing/LandingPage.jsx'
 
 const GUEST_KEY = 'builtdiff:guest'
 
-function useHashRoute() {
-  const parse = () => {
-    // Path-based OAuth landing takes precedence: GitHub redirects the popup to
-    // /auth/callback?code=… (fragments are stripped per OAuth 2.0 RFC).
-    if (window.location.pathname === '/auth/callback') return { name: 'callback' }
-    const um = (window.location.hash || '').match(/^#\/u\/([\w-]+)/)
-    if (um) return { name: 'user', username: um[1] }
-    const rm = (window.location.hash || '').match(/^#\/room(?:\/([\w-]+))?(\?.*)?$/)
-    const arena = /^#\/room\/([\w-]+)\/arena/.exec(window.location.hash || '')
-    if (arena) return { name: 'arena', code: arena[1] }
-    if ((window.location.hash || '').startsWith('#/room')) {
-      return rm && rm[1]
-        ? { name: 'room', code: rm[1], query: rm[2] ?? '' }
-        : { name: 'rooms' }
-    }
-    if (window.location.hash.startsWith('#/review')) return { name: 'review' }
-    const m = (window.location.hash || '').match(/^#\/solve\/([\w-]+)/)
-    return m ? { name: 'solve', slug: m[1] } : { name: 'hub' }
-  }
-  const [route, setRoute] = useState(parse)
+function usePathRoute() {
+  const [route, setRoute] = useState(() => { migrateLegacyHash(); return parseRoute() })
   useEffect(() => {
-    const onChange = () => setRoute(parse())
-    window.addEventListener('hashchange', onChange)
-    return () => window.removeEventListener('hashchange', onChange)
+    const onChange = () => setRoute(parseRoute())
+    window.addEventListener('popstate', onChange)
+    return () => window.removeEventListener('popstate', onChange)
   }, [])
-  return [route, () => { window.location.hash = '#/' }]
+  return [route, () => navigate('/')]
 }
 
 export default function App() {
   const tracker = useTracker()
   const github = useGitHub(tracker)
-  const [route, goHub] = useHashRoute()
+  const [route, goHub] = usePathRoute()
   const [manifestReady, setManifestReady] = useState(false)
   const [manifestError, setManifestError] = useState(null)
   const [authOpen, setAuthOpen] = useState(false)
@@ -156,10 +139,20 @@ export default function App() {
   // Route content resolves first; global modals mount once below so auth/palette
   // work identically on every route (previously the auth modal only existed
   // on the dashboard branch — Connect buttons elsewhere fired into the void).
-  // Strict front-door guard: logged-out users get the landing page, except the
-  // OAuth callback and public certificate pages (no redirect loops, resume links work).
+  // Front-door rules:
+  // - /dashboard is PUBLIC (logged-out devices included) so ad units are
+  //   discoverable without login; interactive bits degrade to Connect prompts.
+  // - logged-in visits to / collapse to /dashboard (see redirect below).
+  // - everything else keeps the auth guard (OAuth callback + public
+  //   certificate pages stay outside it — no redirect loops, resume links work).
   const isAuthenticated = github.connected || guest
   const resolving = Boolean(github.token && !github.profile && !github.error) && !guest
+
+  // Logged-in visits to / collapse to the public dashboard.
+  useEffect(() => {
+    if (route.name === 'hub' && isAuthenticated) navigate('/dashboard', { replace: true })
+  }, [route.name, isAuthenticated])
+
   let content = null
   let chrome = 'bare' // 'bare' | 'hub'
   if (route.name === 'callback') {
@@ -167,6 +160,8 @@ export default function App() {
   } else if (route.name === 'user') {
     // Public certificate pages stay outside the guard (resume links work logged-out).
     content = <CertView username={route.username} onBack={goHub} />
+  } else if (route.name === 'dashboard' || (route.name === 'hub' && isAuthenticated)) {
+    chrome = 'hub'
   } else if (!isAuthenticated) {
     content = (resolving || !manifestReady) ? (
       <div className="min-h-screen bg-canvas text-slate-200 flex items-center justify-center">

@@ -9,6 +9,7 @@ import {
   isExpired, formatLeft,
 } from '../../data/rooms.js'
 import { getTopics, getByTopic } from '../../data/curriculum.js'
+import { navigate } from '../../data/route.js'
 import { useRoomLive } from '../../hooks/useRoomLive.js'
 import { RoomChat } from './RoomChat.jsx'
 
@@ -44,7 +45,7 @@ function roomProblemIds(room) {
   return ids
 }
 
-// #/room → lobby + create + browser · #/room/:code → live room.
+// /room → lobby + create + browser · /room/:code → live room.
 export function RoomPage({ code, query, tracker, github, onBack }) {
   if (!github?.connected) {
     return (
@@ -116,7 +117,7 @@ function RoomsInner({ code, query, tracker, github, onBack }) {
       setRooms(next)
       saveRooms(next)
       setName('')
-      window.location.hash = `#/room/${roomCode}`
+      navigate(`/room/${roomCode}`)
     } catch (e) {
       setCreateError(e.message)
     } finally {
@@ -144,7 +145,7 @@ function RoomsInner({ code, query, tracker, github, onBack }) {
       </div>
       <div className="max-w-[720px] mx-auto px-4 py-6 space-y-4">
         <button
-          onClick={() => { window.location.hash = '#/room/lobby' }}
+            onClick={() => navigate('/room/lobby')}
           className="card card-hover w-full p-4 flex items-center gap-3 text-left transition-colors border-diff-emerald/30"
         >
           <span className="w-9 h-9 rounded-md bg-raised hairline flex items-center justify-center shrink-0">
@@ -232,7 +233,7 @@ function RoomsInner({ code, query, tracker, github, onBack }) {
                     <p className="text-[13px] font-medium text-slate-200 truncate">{r.name}</p>
                     <p className="font-mono text-[10px] text-slate-500">#{r.code} · {r.visibility}</p>
                   </div>
-                  <button onClick={() => { window.location.hash = `#/room/${r.code}` }} className="btn-ghost ml-auto px-3 h-8 rounded-md text-[12px] text-slate-200 shrink-0">
+                  <button onClick={() => navigate(`/room/${r.code}`)} className="btn-ghost ml-auto px-3 h-8 rounded-md text-[12px] text-slate-200 shrink-0">
                     Join
                   </button>
                   <button onClick={() => drop(r.code)} className="text-slate-600 hover:text-diff-rose shrink-0" aria-label={`Delete ${r.name}`}>
@@ -272,7 +273,7 @@ function RoomsInner({ code, query, tracker, github, onBack }) {
                     {r.members} inside · {formatLeft((r.expiresAt ?? 0) - Date.now())}
                   </p>
                 </div>
-                <button onClick={() => { window.location.hash = `#/room/${r.code}` }} className="btn-emerald px-4 h-8 rounded-md text-[12px] font-semibold shrink-0">
+                <button onClick={() => navigate(`/room/${r.code}`)} className="btn-emerald px-4 h-8 rounded-md text-[12px] font-semibold shrink-0">
                   Join
                 </button>
               </div>
@@ -369,7 +370,7 @@ function ActiveRoom({ code, query, tracker, github, onBack }) {
 
   const copyInvite = async () => {
     try {
-      const base = `${window.location.origin}${window.location.pathname}#/room/${room.code}`
+      const base = `${window.location.origin}/room/${room.code}`
       const q = new URLSearchParams({ n: room.name, exp: String(room.expiresAt ?? 0) })
       await navigator.clipboard.writeText(`${base}?${q.toString()}`)
       setCopied(true)
@@ -438,13 +439,13 @@ function ActiveRoom({ code, query, tracker, github, onBack }) {
               </div>
             )}
             <div className="mt-2.5 flex gap-1.5">
-              <button onClick={() => { window.location.hash = `#/room/${room.code}/arena` }} className="btn-emerald flex items-center gap-1.5 px-3.5 h-8 rounded-md text-[12px] font-semibold">
+              <button onClick={() => navigate(`/room/${room.code}/arena`)} className="btn-emerald flex items-center gap-1.5 px-3.5 h-8 rounded-md text-[12px] font-semibold">
                 Enter arena
               </button>
               <button onClick={copyInvite} className="btn-ghost flex items-center gap-1.5 px-3 h-8 rounded-md text-[12px] text-slate-200">
                 {copied ? <Check size={13} className="text-diff-emerald" /> : <Copy size={13} />} {copied ? 'Copied' : 'Copy invite'}
               </button>
-              <button onClick={() => { window.location.hash = '#/room' }} className="font-mono text-[11px] text-slate-500 hover:text-slate-300 px-2">
+              <button onClick={() => navigate('/room')} className="font-mono text-[11px] text-slate-500 hover:text-slate-300 px-2">
                 ← all rooms
               </button>
             </div>
@@ -509,7 +510,7 @@ function ActiveRoom({ code, query, tracker, github, onBack }) {
                   Practice solo here
                 </button>
                 <button
-                  onClick={() => { window.location.hash = '#/room' }}
+                  onClick={() => navigate('/room')}
                   className="btn-ghost flex-1 h-9 rounded-md text-[13px] text-slate-200"
                 >
                   Browse rooms
