@@ -11,7 +11,7 @@ import { useRoomLive } from '../../hooks/useRoomLive.js'
 import { submitSolve, commitExtras } from '../../data/solve.js'
 import { fetchRoomMeta, LOBBY_CODE } from '../../data/rooms.js'
 import { defineObsidian } from '../workspace/Workspace.jsx'
-import { SidebarBannerSlot } from '../layout/AmbientAdSlot.jsx'
+import { SidebarBannerSlot, DashboardBannerSlot } from '../layout/AmbientAdSlot.jsx'
 import { VictoryModal } from '../modals/VictoryModal.jsx'
 import { RoomChat } from './RoomChat.jsx'
 
@@ -65,7 +65,18 @@ function ArenaInner({ code, tracker, github, onBack }) {
   const [commitInfo, setCommitInfo] = useState(null)
   const [showList, setShowList] = useState(true)
   const [specTab, setSpecTab] = useState('mission')
-  const [langId, setLangId] = useState('python')
+  // Persisted runner language: selecting a language saves it, and switching
+  // questions keeps it (never resets to python behind the user's back).
+  const [langId, setLangId] = useState(() => {
+    try {
+      const saved = localStorage.getItem('builtdiff:arena:lang')
+      if (saved && LANGUAGES.some((l) => l.id === saved && l.status === 'live')) return saved
+    } catch {}
+    return 'python'
+  })
+  const [remoteNoteHidden, setRemoteNoteHidden] = useState(() => {
+    try { return localStorage.getItem('builtdiff:remote-note-hidden') === '1' } catch { return false }
+  })
   const { run: codeRun } = useRunner()
 
   useEffect(() => {
@@ -99,13 +110,8 @@ function ArenaInner({ code, tracker, github, onBack }) {
     }
   }, [room])
 
-  useEffect(() => {
-    if (!selId && roomProblems.length) {
-      const first = roomProblems.find((p) => !tracker.isSolved(p.id))?.id ?? roomProblems[0].id
-      selectProblem(first, false)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roomProblems])
+  // No auto-select: the arena opens on the question list with an empty IDE.
+  // Ads stay off and no starter loads until the user picks a question.
 
   const selectProblem = async (id, fromUser = true) => {
     setSelId(id)
@@ -131,11 +137,18 @@ function ArenaInner({ code, tracker, github, onBack }) {
   const switchLanguage = (l) => {
     if (l === langId) return
     if (selId) saveCode(selId, langId, codeText)
+    try { localStorage.setItem('builtdiff:arena:lang', l) } catch {}
     setLangId(l)
     setRunResult(null)
     setActiveCase(0)
     if (problem && selId) loadCode(selId, l, problem).then(setCodeText).catch(() => {})
   }
+
+  const dismissRemoteNote = () => {
+    try { localStorage.setItem('builtdiff:remote-note-hidden', '1') } catch {}
+    setRemoteNoteHidden(true)
+  }
+  const showRemoteNote = !remoteNoteHidden && langById(langId)?.tag === 'remote'
 
   const run = async () => {
     if (!problem || running || victoryOpen || !meta) return
@@ -229,7 +242,12 @@ function ArenaInner({ code, tracker, github, onBack }) {
   }
 
   return (
-    <div className="pt-16 h-screen flex flex-col">
+    <div className="h-screen flex flex-col">
+      {/* top leaderboard strip — sits between browser chrome and nav controls
+          (no navbar renders on arena routes, so no pt-16 offset here) */}
+      <div className="shrink-0 border-b border-border px-4 py-1 flex justify-center overflow-hidden">
+        <DashboardBannerSlot />
+      </div>
       <div className="shrink-0 border-b border-border bg-canvas px-4 py-2.5 flex items-center gap-3 flex-wrap">
         <button onClick={onBack} className="flex items-center gap-1 text-[13px] text-slate-400 hover:text-slate-100">
           <ArrowLeft size={15} /> Hub
@@ -249,7 +267,7 @@ function ArenaInner({ code, tracker, github, onBack }) {
         {/* LEFT: all problems first, question after click */}
         <section className="border-b lg:border-b-0 lg:border-r border-border flex flex-col min-h-0 lg:overflow-hidden">
           {showList ? (
-            <div className="flex-1 lg:overflow-y-auto min-h-0 p-2">
+            <div className="flex-1 min-h-0 p-2 lg:flex-[65] lg:min-h-0 lg:overflow-y-auto">
               <p className="px-2 pt-1 font-mono text-[10px] text-slate-500">
                 {roomProblems.length} problems{room.code !== LOBBY_CODE && room.topics?.length ? ' · room scope' : ''}
               </p>
@@ -280,7 +298,7 @@ function ArenaInner({ code, tracker, github, onBack }) {
               </div>
             </div>
           ) : (
-            <>
+            <div className="flex-1 min-h-0 flex flex-col lg:flex-[65]">
               <div className="shrink-0 px-3 pt-2">
                 <button
                   onClick={() => setShowList(true)}
@@ -344,12 +362,14 @@ function ArenaInner({ code, tracker, github, onBack }) {
               </div>
             )}
               </div>
-            </>
+            </div>
           )}
-          {/* sponsor under the question column — hybrid rotation like the dashboard */}
-          <div className="shrink-0 border-t border-border p-2">
-            <SidebarBannerSlot />
-          </div>
+          {/* sponsor under the question column — hybrid rotation like the dashboard, only once a question is open */}
+          {!showList && (
+            <div className="flex-none border-t border-border p-2 lg:flex-[35] lg:min-h-0 lg:overflow-hidden">
+              <SidebarBannerSlot />
+            </div>
+          )}
         </section>
 
         {/* CENTER: IDE */}
@@ -367,10 +387,23 @@ function ArenaInner({ code, tracker, github, onBack }) {
               ))}
             </select>
             <span className="font-mono text-[11px] text-slate-600 truncate hidden md:inline">{meta?.canonicalTitle ?? ''}</span>
-            <button onClick={() => setCodeText(starterFor(problem, langId))} className="ml-auto flex items-center gap-1 text-[12px] text-slate-500 hover:text-slate-200" title="Reset to starter">
+            <button onClick={() => problem && setCodeText(starterFor(problem, langId))} disabled={!problem} className="ml-auto flex items-center gap-1 text-[12px] text-slate-500 hover:text-slate-200 disabled:opacity-40" title="Reset to starter">
               <RotateCcw size={13} /> Reset
             </button>
           </div>
+          {showRemoteNote && (
+            <div className="shrink-0 mx-3 mt-2 rounded-md bg-diff-amber/10 border border-diff-amber/30 px-3 py-2 flex items-start gap-2">
+              <p className="flex-1 text-[12px] text-slate-300 leading-snug">
+                <span className="font-semibold text-diff-amber">{langById(langId).label}</span> compiles on a <span className="font-semibold">remote server</span>, not locally — needs internet and may have some latency.
+              </p>
+              <label className="shrink-0 flex items-center gap-1.5 text-[11px] text-slate-500 cursor-pointer">
+                <input type="checkbox" checked={false} onChange={dismissRemoteNote} className="accent-[#F59E0B]" />
+                Don&apos;t show again
+              </label>
+            </div>
+          )}
+          {problem ? (
+          <>
           <div className="flex-1 min-h-[280px] lg:min-h-0">
             <Editor
               height="100%"
@@ -424,6 +457,15 @@ function ArenaInner({ code, tracker, github, onBack }) {
             )}
           </div>
           </div>
+          </>
+          ) : (
+            <div className="flex-1 min-h-[280px] lg:min-h-0 flex items-center justify-center px-4">
+              <div className="text-center">
+                <p className="text-[14px] font-semibold text-slate-200">Select a question to practice</p>
+                <p className="text-[12px] text-slate-500 mt-1">Pick any problem from the room list — the editor stays empty until then.</p>
+              </div>
+            </div>
+          )}
         </section>
 
         {/* RIGHT: side discussion */}

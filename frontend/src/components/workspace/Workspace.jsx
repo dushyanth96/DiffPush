@@ -414,7 +414,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
       <div className={`flex-1 min-h-0 grid grid-cols-1 ${mentorOpen ? 'lg:grid-cols-[30%_45%_25%]' : 'lg:grid-cols-[30%_56%_14%]'} overflow-y-auto lg:overflow-hidden`}>
         {/* LEFT: spec (70%) + sponsor (30%) */}
         <section className="border-b lg:border-b-0 lg:border-r border-border flex flex-col min-h-0 lg:overflow-hidden">
-          <div className="flex flex-col min-h-0 lg:flex-[70] lg:min-h-0 lg:overflow-hidden">
+          <div className="flex flex-col min-h-0 lg:flex-[65] lg:min-h-0 lg:overflow-hidden">
             <div className="shrink-0 flex gap-1 px-3 pt-2">
               {[
                 ['mission', 'Mission Narrative', BookOpen],
@@ -468,10 +468,11 @@ export function Workspace({ slug, tracker, github, onBack }) {
             </div>
           </div>
           {/* sponsor takes the remaining 30% of the question column —
-              same square Mondiad banner as the dashboard sidebar */}
-          <div className="flex min-h-0 border-t border-border p-2 lg:flex-[30] lg:min-h-0">
+              same square banner as the dashboard sidebar, in-house heavy:
+              AADS only, never Mondiad */}
+          <div className="flex min-h-0 border-t border-border p-2 lg:flex-[35] lg:min-h-0">
             <div className="w-full h-full min-h-0 overflow-y-auto">
-              <SidebarBannerSlot network={false} />
+              <SidebarBannerSlot mondiad={false} networkMs={30000} houseMs={90000} />
             </div>
           </div>
         </section>
@@ -573,9 +574,9 @@ export function Workspace({ slug, tracker, github, onBack }) {
             <p className="shrink-0 px-3 pt-1 pb-2 text-[11px] leading-snug text-slate-500 text-center">
               Stuck? <span className="text-slate-200 font-medium">Open AI Coach</span> for hints, Big-O checks &amp; debug traces.
             </p>
-            {/* rail freed up by the collapsed coach → in-house banner (normal IDE never bids network) */}
+            {/* rail freed up by the collapsed coach → in-house banner (normal IDE: AADS only, never Mondiad) */}
             <div className="hidden lg:flex flex-1 min-h-0 px-2 pb-2">
-              <VerticalAdSlot network={false} />
+              <VerticalAdSlot mondiad={false} networkMs={30000} houseMs={90000} />
             </div>
           </section>
         ) : (
