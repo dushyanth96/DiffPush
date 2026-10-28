@@ -73,8 +73,8 @@ export function PrivacyPage() {
           </p>
           <p>
             We do not send your code, GitHub token, GitHub username, OAuth codes, or raw URL query strings. Analytics
-            is blocked on /auth/callback and /ads-verify, and username paths are redacted. Umami Cloud retains Hobby
-            data for up to six months. Umami honors Do Not Track. See the{' '}
+            is blocked on /auth/callback and /ads-verify, and username paths and profile page titles are redacted.
+            Umami Cloud retains Hobby data for up to six months. Umami honors Do Not Track. See the{' '}
             <a href="https://umami.is/privacy" target="_blank" rel="noreferrer" className="text-diff-emerald hover:underline">Umami privacy policy</a>.
           </p>
           <p>

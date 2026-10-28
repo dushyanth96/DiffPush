@@ -71,6 +71,7 @@
         if (!safeUrl) return false
         payload.url = safeUrl
       }
+      if (redactPath(currentPath) !== currentPath) payload.title = 'DiffPush certificate'
       if (payload.referrer) payload.referrer = sanitizeReferrer(payload.referrer)
       if (payload.data && typeof payload.data === 'object') {
         Object.keys(payload.data).forEach(function (key) {

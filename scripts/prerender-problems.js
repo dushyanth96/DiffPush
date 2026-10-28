@@ -674,7 +674,7 @@ function privacyPage() {
 
 <h2>Analytics</h2>
 <p>We use Umami Cloud for aggregate traffic and product analytics. Umami does not use cookies and does not build a cross-site profile of you. We send page paths, referrers, UTM campaign parameters, and anonymous interaction events such as guest starts, problems opened, test runs, and GitHub connection or commit outcomes.</p>
-<p>We do not send your code, GitHub token, GitHub username, OAuth codes, or raw URL query strings. Analytics is blocked on /auth/callback and /ads-verify, and username paths are redacted. Umami Cloud retains Hobby data for up to six months. Umami honors Do Not Track. See the <a href="https://umami.is/privacy" target="_blank" rel="noopener">Umami privacy policy</a>.</p>
+<p>We do not send your code, GitHub token, GitHub username, OAuth codes, or raw URL query strings. Analytics is blocked on /auth/callback and /ads-verify, and username paths and profile page titles are redacted. Umami Cloud retains Hobby data for up to six months. Umami honors Do Not Track. See the <a href="https://umami.is/privacy" target="_blank" rel="noopener">Umami privacy policy</a>.</p>
 <p>The ad networks described above may still set their own cookies or identifiers; analytics choices do not change their behavior.</p>
 
 <h2>Your controls</h2>
