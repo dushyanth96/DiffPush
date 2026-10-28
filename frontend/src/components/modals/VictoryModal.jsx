@@ -215,10 +215,10 @@ export function VictoryModal({ meta, totalMs, totalCases, commitInfo, github, xp
           ))}
         </div>
 
-        {/* open-source star callout — peak dopamine moment */}
+        {/* repo star callout — peak dopamine moment */}
         <div className="mt-4 p-3 rounded-lg bg-surface hairline flex items-center justify-between gap-3">
           <p className="text-[12px] text-slate-400 leading-snug">
-            <span className="text-slate-100 font-medium">DiffPush is open-source.</span> Star the repo to support free, ad-free developer tools.
+            <span className="text-slate-100 font-medium">DiffPush is source-available and free for students.</span> Star the repo to support it.
           </p>
           <a
             href={REPO_URL}

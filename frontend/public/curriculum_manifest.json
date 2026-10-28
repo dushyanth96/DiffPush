@@ -452,7 +452,7 @@
     "levelName": "Medium",
     "levelOrder": 2,
     "title": "Reconciling Two Ledger Entries",
-    "canonicalTitle": "sum problem",
+    "canonicalTitle": "Two Sum",
     "difficulty": "Standard Bar",
     "difficultyRaw": "Medium",
     "optimalTime": "O(n)",
@@ -6093,7 +6093,7 @@
     "sourcePath": "curriculum/08.Sliding_Window/1.Medium_Problems/01.Longest_Substring_Without_Repeating_Characters.json"
   },
   {
-    "id": "max-consecutive-1-s",
+    "id": "max-consecutive-ones-iii",
     "index": 2,
     "topic": "08-sliding-window",
     "topicName": "Sliding Window",

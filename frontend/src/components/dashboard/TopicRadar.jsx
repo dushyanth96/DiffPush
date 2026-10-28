@@ -20,10 +20,10 @@ export function TopicRadar({ tracker }) {
 
   return (
     <div className="card p-4">
-      <h3 className="text-[11px] font-semibold text-slate-400">
+        <h2 className="text-[11px] font-semibold text-slate-400">
         <span className="mr-1.5 inline-block w-1.5 h-1.5 rounded-full bg-diff-violet align-middle" />
         Topic Radar
-      </h3>
+        </h2>
       {started.length === 0 ? (
         <p className="mt-2 text-[12px] text-slate-500 leading-relaxed">Solve your first problem to light up the radar.</p>
       ) : (

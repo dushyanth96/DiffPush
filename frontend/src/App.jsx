@@ -27,8 +27,14 @@ import { RoomPage } from './components/rooms/RoomPage.jsx'
 import { ArenaView } from './components/rooms/ArenaView.jsx'
 import { getDailyChallenge } from './data/daily.js'
 import { parseRoute, navigate, migrateLegacyHash } from './data/route.js'
+import { isPresentMode } from './data/ads.js'
 import { WeeklyReport } from './components/modals/WeeklyReport.jsx'
+import { GuestPromptModal } from './components/modals/GuestPromptModal.jsx'
 import { LandingPage } from './components/marketing/LandingPage.jsx'
+import { PrivacyPage } from './components/marketing/PrivacyPage.jsx'
+import { NotFoundPage } from './components/marketing/NotFoundPage.jsx'
+import { RouteSeo } from './components/layout/RouteSeo.jsx'
+import { track } from './lib/analytics.js'
 
 const GUEST_KEY = 'builtdiff:guest'
 
@@ -49,6 +55,7 @@ export default function App() {
   const [manifestReady, setManifestReady] = useState(false)
   const [manifestError, setManifestError] = useState(null)
   const [authOpen, setAuthOpen] = useState(false)
+  const [guestPrompt, setGuestPrompt] = useState(false)
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [reportOpen, setReportOpen] = useState(false)
   const [view, setView] = useState('curriculum')
@@ -56,9 +63,11 @@ export default function App() {
     try { return localStorage.getItem(GUEST_KEY) === '1' } catch { return false }
   })
 
-  const enterGuest = () => {
+  const enterGuest = (source = 'landing') => {
+    if (guest) return
     try { localStorage.setItem(GUEST_KEY, '1') } catch {}
     setGuest(true)
+    track('guest_start', { source })
   }
 
   // Successful OAuth clears the guest flag — the token is the identity now.
@@ -92,7 +101,10 @@ export default function App() {
         })
         const data = await res.json().catch(() => ({}))
         if (!res.ok) throw new Error(data.detail ?? 'Exchange failed')
-        if (!cancelled) await github.connect(data.access_token)
+        if (!cancelled) {
+          await github.connect(data.access_token)
+          track('github_connect', { method: 'oauth_tab' })
+        }
       } catch {}
     })()
     return () => { cancelled = true }
@@ -149,6 +161,21 @@ export default function App() {
   const isAuthenticated = github.connected || guest
   const resolving = Boolean(github.token && !github.profile && !github.error) && !guest
 
+  // Direct problem links (search results, shared URLs) start a local guest
+  // session so the editor opens immediately, then ask once whether to keep
+  // solving as guest or sign in. Either choice persists the guest flag, so
+  // reloads and later problem links skip this prompt.
+  useEffect(() => {
+    if (route.name !== 'solve') return
+    let storedGuest = false
+    try { storedGuest = localStorage.getItem(GUEST_KEY) === '1' } catch {}
+    if (storedGuest || guest || github.token) return
+    enterGuest('direct_problem')
+    setGuestPrompt(true)
+    // Initial-entry decision only — later route changes are internal.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Logged-in visits to / collapse to the public dashboard.
   useEffect(() => {
     if (route.name === 'hub' && isAuthenticated) navigate('/dashboard', { replace: true })
@@ -164,6 +191,10 @@ export default function App() {
   } else if (route.name === 'ads-verify') {
     // Public ad-verification page for network crawlers (no auth of any kind).
     content = <AdsVerifyPage />
+  } else if (route.name === 'privacy') {
+    content = <PrivacyPage />
+  } else if (route.name === 'notfound') {
+    content = <NotFoundPage />
   } else if (route.name === 'dashboard' || (route.name === 'hub' && isAuthenticated)) {
     chrome = 'hub'
   } else if (!isAuthenticated) {
@@ -174,7 +205,7 @@ export default function App() {
         </p>
       </div>
     ) : (
-      <LandingPage onConnect={() => setAuthOpen(true)} onGuest={enterGuest} />
+      <LandingPage onConnect={() => setAuthOpen(true)} onGuest={() => enterGuest('landing')} />
     )
   } else if (route.name === 'arena') {
     content = <ArenaView code={route.code} tracker={tracker} github={github} onBack={goHub} />
@@ -189,7 +220,8 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-canvas text-slate-200">
+    <div className="min-h-screen bg-canvas text-slate-200" data-present={isPresentMode() ? '1' : undefined}>
+      <RouteSeo route={route} />
       {chrome === 'hub' ? (
         <>
           <Navbar tracker={tracker} github={github} onPalette={() => setPaletteOpen(true)} onConnect={() => setAuthOpen(true)} />
@@ -233,6 +265,12 @@ export default function App() {
         </>
       ) : content}
       {authOpen && <GitHubAuthModal github={github} onClose={() => setAuthOpen(false)} />}
+      {guestPrompt && (
+        <GuestPromptModal
+          onClose={() => setGuestPrompt(false)}
+          onSignIn={() => { setGuestPrompt(false); setAuthOpen(true) }}
+        />
+      )}
       {paletteOpen && <CommandPalette tracker={tracker} github={github} onClose={() => setPaletteOpen(false)} />}
       {reportOpen && <WeeklyReport tracker={tracker} onClose={() => setReportOpen(false)} />}
       {chrome === 'hub' && tracker.ready && !tracker.goal && <GoalPicker onPick={(g) => tracker.setGoal(g)} />}

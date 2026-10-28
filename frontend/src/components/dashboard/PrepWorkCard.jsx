@@ -14,7 +14,7 @@ export function PrepWorkCard() {
         {open ? <ChevronDown size={15} className="text-slate-500 shrink-0 relative" /> : <ChevronRight size={15} className="text-slate-500 shrink-0 relative" />}
         <span className="font-mono text-[12px] text-slate-500 shrink-0 relative">00</span>
         <h2 className="text-sm font-semibold tracking-tight text-slate-100 truncate relative">{prep.label}</h2>
-        <span className="relative shrink-0 px-1.5 py-px rounded-md font-mono text-[10px] font-bold tracking-[0.12em] text-[#0B0714] bg-[#6366F1]">
+        <span className="relative shrink-0 px-1.5 py-px rounded-md font-mono text-[10px] font-bold tracking-[0.12em] text-black bg-[#6366F1]">
           {prep.tag.toUpperCase()}
         </span>
         <span className="pill ml-auto shrink-0 px-2 py-px font-mono text-[11px] text-slate-400 relative">

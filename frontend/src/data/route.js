@@ -24,8 +24,10 @@ export function migrateLegacyHash() {
 export function parseRoute() {
   // OAuth landing takes precedence: GitHub redirects the popup to
   // /auth/callback?code=… (fragments are stripped per OAuth 2.0 RFC).
-  const path = window.location.pathname || '/'
+  const raw = window.location.pathname || '/'
+  const path = raw.replace(/\/+$/, '') || '/'
   if (path === '/auth/callback') return { name: 'callback' }
+  if (path === '/privacy') return { name: 'privacy' }
   // Public dashboard: renders for everyone (logged-out devices included) so
   // ad units are discoverable without login.
   if (path === '/dashboard') return { name: 'dashboard' }
@@ -39,7 +41,8 @@ export function parseRoute() {
   if (path === '/room' || path === '/room/') return { name: 'rooms' }
   const rm = path.match(/^\/room\/([\w-]+)\/?$/)
   if (rm) return { name: 'room', code: rm[1], query: window.location.search ?? '' }
-  if (path === '/review' || path === '/review/') return { name: 'review' }
-  const m = path.match(/^\/solve\/([\w-]+)\/?$/)
-  return m ? { name: 'solve', slug: m[1] } : { name: 'hub' }
+  if (path === '/review') return { name: 'review' }
+  const m = path.match(/^\/solve\/([\w-]+)$/)
+  if (m) return { name: 'solve', slug: m[1] }
+  return path === '/' ? { name: 'hub' } : { name: 'notfound' }
 }

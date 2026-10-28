@@ -75,10 +75,20 @@ def test_merge_progression_fields():
 
 
 def test_rate_limit_maps_to_429():
-    r = client.post("/api/github/init-user", json={"access_token": "x"})
-    # real network blocked in test env -> expect a 502/429, never a 500 traceback leak
-    assert r.status_code in (429, 502), r.status_code
-    print("rate-limit/error mapping OK (no creds -> %s)" % r.status_code)
+    async def boom(_token):
+        raise github_service.GitHubError("GitHub rate limit exceeded", status=403, retriable=True)
+
+    with patch.object(github_service, "get_user_profile", boom):
+        r = client.post("/api/github/init-user", json={"access_token": "x"})
+    assert r.status_code == 429, r.status_code
+
+    async def bad_creds(_token):
+        raise github_service.GitHubError("Bad credentials", status=401)
+
+    with patch.object(github_service, "get_user_profile", bad_creds):
+        r = client.post("/api/github/init-user", json={"access_token": "x"})
+    assert r.status_code == 401, r.status_code
+    print("rate-limit/error mapping OK (retriable -> 429, auth -> 401)")
 
 
 def test_oauth_not_configured():
@@ -198,6 +208,7 @@ if __name__ == "__main__":
     test_merge_gamification_fields()
     test_merge_progression_fields()
     test_oauth_not_configured()
+    test_rate_limit_maps_to_429()
     test_commit_flow_mocked()
     test_unreachable_maps_to_503()
     test_validation_rejects_bad_payload()

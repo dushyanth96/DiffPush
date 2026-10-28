@@ -34,7 +34,7 @@ export function Navbar({ tracker, github, onPalette, onConnect }) {
       <div className="h-full px-4 sm:px-5 flex items-center gap-4">
         <div className="flex items-center gap-2 shrink-0">
           <Logo />
-          <span className="pill px-1.5 py-px text-[10px] font-mono text-slate-500">v1.0</span>
+          <span className="pill px-1.5 py-px text-[10px] font-mono text-slate-400">v1.0</span>
         </div>
 
         <button
@@ -68,7 +68,7 @@ export function Navbar({ tracker, github, onPalette, onConnect }) {
             href={REPO_URL}
             target="_blank"
             rel="noreferrer"
-            title="Star the open-source repo"
+            title="Star the repo"
             className="hidden sm:inline-flex items-center gap-1.5 px-2.5 h-7 rounded-md bg-surface hairline text-[12px] font-mono text-slate-300 hover:text-slate-100 hover:border-diff-amber/40 transition-colors"
           >
             <Github size={13} className="text-slate-400" />

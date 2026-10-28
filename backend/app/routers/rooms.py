@@ -10,10 +10,16 @@ import threading
 import time
 
 import httpx
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 
 from app.services import github_service
+from app.services.rate_limit import RateLimiter, enforce
+
+# Per-IP guard on top of the per-user message cooldown: tabs poll heartbeats
+# every few seconds, so the ceiling is generous but finite.
+_HEARTBEAT_LIMITER = RateLimiter(120, 60.0, "heartbeat")
+_MESSAGE_LIMITER = RateLimiter(30, 60.0, "messages")
 
 router = APIRouter(prefix="/api/rooms", tags=["rooms"])
 
@@ -177,7 +183,8 @@ async def room_meta(code: str):
 
 
 @router.post("/heartbeat")
-async def heartbeat(req: HeartbeatRequest):
+async def heartbeat(req: HeartbeatRequest, request: Request):
+    enforce(_HEARTBEAT_LIMITER, request, "SLOW_DOWN — too many heartbeats. Retry shortly.")
     profile = await _verify_token(req.token)
     login = profile["login"]
     now = time.time()
@@ -224,7 +231,8 @@ async def heartbeat(req: HeartbeatRequest):
 
 
 @router.post("/{code}/messages")
-async def post_message(code: str, req: MessageRequest):
+async def post_message(code: str, req: MessageRequest, request: Request):
+    enforce(_MESSAGE_LIMITER, request, "SLOW_DOWN — too many messages. Retry shortly.")
     profile = await _verify_token(req.token)
     login = profile["login"]
     now = time.time()

@@ -8,12 +8,13 @@ Design contract (privacy-first):
 - Upstream failures are mapped to actionable codes so the UI can tell the
   user to check the key, retry, or switch provider.
 """
-import time
 from typing import Any, Optional
 
 import httpx
 from fastapi import APIRouter, Header, HTTPException, Request
 from pydantic import BaseModel, Field
+
+from app.services.rate_limit import RateLimiter, enforce
 
 router = APIRouter(prefix="/api/chat", tags=["chat"])
 
@@ -49,9 +50,9 @@ MAX_TOKENS_CAP = 1024
 UPSTREAM_TIMEOUT_S = 45.0
 
 # Light per-IP throttle: 30 completions/minute (abuse guard, in-memory).
-_RATE: dict[str, list[float]] = {}
 RATE_LIMIT = 30
 RATE_WINDOW_S = 60.0
+_LIMITER = RateLimiter(RATE_LIMIT, RATE_WINDOW_S, "chat")
 
 
 class ChatMessage(BaseModel):
@@ -69,18 +70,6 @@ class CompleteRequest(BaseModel):
 
 def _client() -> httpx.AsyncClient:
     return httpx.AsyncClient(timeout=UPSTREAM_TIMEOUT_S)
-
-
-def _throttled(ip: str) -> bool:
-    now = time.monotonic()
-    hits = _RATE.get(ip, [])
-    hits = [t for t in hits if now - t < RATE_WINDOW_S]
-    if len(hits) >= RATE_LIMIT:
-        _RATE[ip] = hits
-        return True
-    hits.append(now)
-    _RATE[ip] = hits
-    return False
 
 
 def _provider_or_400(provider: str) -> dict[str, Any]:
@@ -213,13 +202,7 @@ async def complete(req: CompleteRequest, request: Request,
     key = (x_llm_key or "").strip()
     if not key or len(key) > 500:
         raise HTTPException(401, "MISSING_KEY — add your own free API key in the coach settings (keys stay in your browser only).")
-    ip = ""
-    try:
-        ip = (request.client.host if request.client else "") or ""
-    except Exception:
-        ip = ""
-    if ip and _throttled(ip):
-        raise HTTPException(429, "SLOW_DOWN — too many coach requests. Wait a minute and retry.")
+    enforce(_LIMITER, request, "SLOW_DOWN — too many coach requests. Wait a minute and retry.")
     model = _resolve_model(cfg, req.model)
     if provider == "gemini":
         out = await _complete_gemini(key=key, model=model, system=req.system, messages=req.messages, max_tokens=req.max_tokens)

@@ -9,7 +9,7 @@ export function PlatformIntro() {
         className="pointer-events-none absolute -top-24 -left-24 w-64 h-64 rounded-full"
         style={{ background: 'radial-gradient(closest-side, rgba(16,185,129,0.10), transparent)' }}
       />
-      <p className="relative font-mono text-[11px] tracking-wider text-diff-emerald">OPEN-SOURCE A2Z ENGINE</p>
+      <p className="relative font-mono text-[11px] tracking-wider text-diff-emerald">SOURCE-AVAILABLE A2Z ENGINE</p>
       <h1 className="relative mt-1 text-[16px] font-bold tracking-tight text-slate-100">
         DiffPush: A2Z DSA Algorithmic Roadmap
       </h1>
@@ -19,7 +19,7 @@ export function PlatformIntro() {
         your GitHub portfolio.
       </p>
       <div className="relative mt-2.5 flex gap-1.5 flex-wrap">
-        {['A2Z Curriculum Complete', '100% Open Source (MIT)', 'Client-Side WASM'].map((label) => (
+        {['A2Z Curriculum Complete', 'Source-Available', 'Client-Side WASM'].map((label) => (
           <span key={label} className="px-2 py-0.5 rounded-md font-mono text-[10px] text-slate-400 bg-raised hairline">
             {label}
           </span>

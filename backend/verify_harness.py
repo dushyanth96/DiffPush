@@ -84,12 +84,49 @@ assert [x['passed'] for x in run_harness(good, prob['testCases'])['results']] ==
 bad = 'class Solution:\n    def largestElement(self, arr, n):\n        return 0'
 assert [x['passed'] for x in run_harness(bad, prob['testCases'])['results']] == [False, False, False]
 ms = json.loads((P / '07.Stack_and_Queues' / '1.Learning' / '07.Implement_min_stack.json').read_text())
-ms_code = ms['starterCode']['python']  # starter ships a complete implementation
-r = run_harness('class MinStack:\n' + '\n'.join(ms_code.split('\n')[1:]), ms['testCases'])
+ms_code = '''class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.mins = []
+
+    def push(self, val):
+        self.stack.append(val)
+        self.mins.append(val if not self.mins else min(val, self.mins[-1]))
+
+    def pop(self):
+        if self.stack:
+            self.stack.pop()
+            self.mins.pop()
+
+    def top(self):
+        return self.stack[-1] if self.stack else -1
+
+    def get_min(self):
+        return self.mins[-1] if self.mins else -1
+'''
+r = run_harness(ms_code, ms['testCases'])
 assert [x['passed'] for x in r['results']] == [True, True, True], r
+print('ops-replay: min-stack camelCase dispatch (getMin -> get_min) passes')
 kl = json.loads((P / '09.Heaps' / '3.Hard_Problems' / '03.Kth_largest_element_in_stream.json').read_text())
-r = run_harness(kl['starterCode']['python'], kl['testCases'])
+kl_code = '''import heapq
+
+class KthLargest:
+    def __init__(self, k, nums):
+        self.k = k
+        self.heap = list(nums)
+        heapq.heapify(self.heap)
+        while len(self.heap) > k:
+            heapq.heappop(self.heap)
+
+    def add(self, val):
+        heapq.heappush(self.heap, val)
+        while len(self.heap) > self.k:
+            heapq.heappop(self.heap)
+        return self.heap[0]
+'''
+r = run_harness(kl_code, kl['testCases'])
 assert [x['passed'] for x in r['results']] == [True] * len(kl['testCases']), r
+print('ctor-repeat: kth-largest (initial nums + repeated add) passes')
 print('dynamic: single-call, ops-replay (min-stack), ctor-repeat (kth-largest) all pass')
 
 def _mparams(cls, method):

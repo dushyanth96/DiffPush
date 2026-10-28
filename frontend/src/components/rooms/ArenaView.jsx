@@ -11,7 +11,8 @@ import { useRoomLive } from '../../hooks/useRoomLive.js'
 import { submitSolve, commitExtras } from '../../data/solve.js'
 import { fetchRoomMeta, LOBBY_CODE } from '../../data/rooms.js'
 import { defineObsidian } from '../workspace/Workspace.jsx'
-import { SidebarBannerSlot, DashboardBannerSlot } from '../layout/AmbientAdSlot.jsx'
+import { DashboardBannerSlot } from '../layout/AmbientAdSlot.jsx'
+import { useNarrow } from '../../hooks/useNarrow.js'
 import { VictoryModal } from '../modals/VictoryModal.jsx'
 import { RoomChat } from './RoomChat.jsx'
 
@@ -22,7 +23,7 @@ const DIFF_DOT = { Easy: 'bg-diff-emerald', Medium: 'bg-diff-amber', Hard: 'bg-d
 export function ArenaView({ code, tracker, github, onBack }) {
   if (!github?.connected) {
     return (
-      <div className="pt-16 min-h-screen">
+      <div className="min-h-screen">
         <div className="border-b border-border bg-canvas px-4 py-2.5 flex items-center gap-3">
           <button onClick={onBack} className="flex items-center gap-1 text-[13px] text-slate-400 hover:text-slate-100">
             <ArrowLeft size={15} /> Back to Hub
@@ -78,6 +79,7 @@ function ArenaInner({ code, tracker, github, onBack }) {
     try { return localStorage.getItem('builtdiff:remote-note-hidden') === '1' } catch { return false }
   })
   const { run: codeRun } = useRunner()
+  const narrow = useNarrow()
 
   useEffect(() => {
     if (code === LOBBY_CODE) return
@@ -220,7 +222,7 @@ function ArenaInner({ code, tracker, github, onBack }) {
 
   if (missing) {
     return (
-      <div className="pt-16 min-h-screen">
+      <div className="min-h-screen">
         <div className="max-w-[520px] mx-auto px-4 py-10">
           <div className="card p-8 text-center">
             <p className="text-[15px] font-semibold text-slate-200">Room not found</p>
@@ -233,7 +235,7 @@ function ArenaInner({ code, tracker, github, onBack }) {
 
   if (!room) {
     return (
-      <div className="pt-16 min-h-screen">
+      <div className="min-h-screen">
         <div className="max-w-[520px] mx-auto px-4 py-10">
           <div className="card p-10 text-center font-mono text-[13px] text-slate-500">Resolving room…</div>
         </div>
@@ -242,32 +244,32 @@ function ArenaInner({ code, tracker, github, onBack }) {
   }
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="min-h-screen lg:h-screen flex flex-col pb-16 lg:pb-0">
       {/* top leaderboard strip — sits between browser chrome and nav controls
           (no navbar renders on arena routes, so no pt-16 offset here) */}
-      <div className="shrink-0 border-b border-border px-4 py-1 flex justify-center overflow-hidden">
+        <div data-ad className="shrink-0 border-b border-border px-2 sm:px-4 py-1 flex justify-center overflow-hidden">
         <DashboardBannerSlot />
       </div>
-      <div className="shrink-0 border-b border-border bg-canvas px-4 py-2.5 flex items-center gap-3 flex-wrap">
+      <div className="shrink-0 border-b border-border bg-canvas px-3 sm:px-4 py-2.5 flex items-center gap-2 sm:gap-3 flex-wrap">
         <button onClick={onBack} className="flex items-center gap-1 text-[13px] text-slate-400 hover:text-slate-100">
           <ArrowLeft size={15} /> Hub
         </button>
-        <span className="flex items-center gap-1.5 text-[13px] font-semibold text-slate-100">
-          <Users size={14} className="text-diff-emerald" /> {room.name}
+        <span className="flex items-center gap-1.5 text-[13px] font-semibold text-slate-100 min-w-0">
+          <Users size={14} className="text-diff-emerald shrink-0" /> <span className="truncate">{room.name}</span>
         </span>
         <span className="font-mono text-[11px] text-slate-500">{roster.length} inside</span>
         <div className="ml-auto flex items-center gap-2">
           <button onClick={run} disabled={running || !problem} className="btn-emerald flex items-center gap-1.5 px-3.5 h-8 rounded-md text-[13px] font-semibold disabled:opacity-60">
-            <Play size={14} /> {running ? 'Running…' : 'Run (Ctrl+Enter)'}
+            <Play size={14} /> {running ? 'Running…' : <><span className="hidden sm:inline">Run (Ctrl+Enter)</span><span className="sm:hidden">Run</span></>}
           </button>
         </div>
       </div>
 
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[30%_44%_26%] overflow-y-auto lg:overflow-hidden">
+      <div className="flex-1 flex flex-col lg:min-h-0 lg:grid lg:grid-cols-[30%_44%_26%] lg:overflow-hidden">
         {/* LEFT: all problems first, question after click */}
         <section className="border-b lg:border-b-0 lg:border-r border-border flex flex-col min-h-0 lg:overflow-hidden">
           {showList ? (
-            <div className="flex-1 min-h-0 p-2 lg:flex-[65] lg:min-h-0 lg:overflow-y-auto">
+              <div className="flex-1 min-h-0 p-2 lg:min-h-0 lg:overflow-y-auto">
               <p className="px-2 pt-1 font-mono text-[10px] text-slate-500">
                 {roomProblems.length} problems{room.code !== LOBBY_CODE && room.topics?.length ? ' · room scope' : ''}
               </p>
@@ -298,7 +300,7 @@ function ArenaInner({ code, tracker, github, onBack }) {
               </div>
             </div>
           ) : (
-            <div className="flex-1 min-h-0 flex flex-col lg:flex-[65]">
+            <div className="flex-1 min-h-0 flex flex-col">
               <div className="shrink-0 px-3 pt-2">
                 <button
                   onClick={() => setShowList(true)}
@@ -321,7 +323,7 @@ function ArenaInner({ code, tracker, github, onBack }) {
                   </button>
                 ))}
               </div>
-              <div className="flex-1 lg:overflow-y-auto px-4 py-3 bg-surface lg:bg-transparent border-t border-border min-h-0">
+              <div className="flex-1 max-h-[46vh] overflow-y-auto lg:max-h-none lg:overflow-y-auto px-4 py-3 bg-surface lg:bg-transparent border-t border-border min-h-0">
             {!problem ? (
               <p className="font-mono text-[12px] text-slate-600">Loading problem…</p>
             ) : specTab === 'mission' ? (
@@ -364,16 +366,10 @@ function ArenaInner({ code, tracker, github, onBack }) {
               </div>
             </div>
           )}
-          {/* sponsor under the question column — hybrid rotation like the dashboard, only once a question is open */}
-          {!showList && (
-            <div className="flex-none border-t border-border p-2 lg:flex-[35] lg:min-h-0 lg:overflow-hidden">
-              <SidebarBannerSlot />
-            </div>
-          )}
         </section>
 
         {/* CENTER: IDE */}
-        <section className="border-b lg:border-b-0 lg:border-r border-border flex flex-col min-h-[560px] lg:min-h-0 lg:overflow-hidden">
+        <section className="border-b lg:border-b-0 lg:border-r border-border flex flex-col min-h-0 lg:overflow-hidden">
           <div className="shrink-0 flex items-center gap-2 px-3 h-10 border-b border-border">
             <span className="font-mono text-[12px] text-slate-200 bg-raised hairline rounded px-2 py-0.5">{langById(langId).file ?? 'solution.py'}</span>
             <select
@@ -404,7 +400,7 @@ function ArenaInner({ code, tracker, github, onBack }) {
           )}
           {problem ? (
           <>
-          <div className="flex-1 min-h-[280px] lg:min-h-0">
+          <div className="h-[52vh] min-h-[280px] lg:h-auto lg:flex-1 lg:min-h-0">
             <Editor
               height="100%"
               language={langById(langId).mode ?? 'python'}
@@ -412,10 +408,10 @@ function ArenaInner({ code, tracker, github, onBack }) {
               onChange={(v) => setCodeText(v ?? '')}
               beforeMount={defineObsidian}
               theme="obsidian"
-              options={{ fontSize: 13, fontFamily: 'JetBrains Mono, monospace', minimap: { enabled: false }, padding: { top: 12 }, scrollBeyondLastLine: false, automaticLayout: true }}
+              options={{ fontSize: 13, fontFamily: 'JetBrains Mono, monospace', minimap: { enabled: false }, padding: { top: 12 }, scrollBeyondLastLine: false, automaticLayout: true, wordWrap: narrow ? 'on' : 'off' }}
             />
           </div>
-          <div className="shrink-0 border-t border-border max-h-[38%] flex flex-col min-h-0">
+          <div className="shrink-0 border-t border-border max-h-[36vh] lg:max-h-[38%] flex flex-col min-h-0">
             <div className="flex items-center gap-2 px-3 h-9 shrink-0">
               <span className="text-[12px] font-semibold text-slate-300" title={langId === 'python' || langId === 'javascript' ? 'Runs on your machine — no network.' : 'Runs on a shared remote compiler — needs internet.'}>
                 {ENGINES[langId]?.label ?? 'Output'}
@@ -469,7 +465,7 @@ function ArenaInner({ code, tracker, github, onBack }) {
         </section>
 
         {/* RIGHT: side discussion */}
-        <section className="flex flex-col min-h-[420px] lg:min-h-0 lg:overflow-hidden">
+        <section className="flex flex-col h-[60vh] min-h-[360px] lg:h-auto lg:min-h-0 lg:overflow-hidden">
           <div className="shrink-0 px-3 h-10 border-b border-border flex items-center gap-2">
             <span className="font-mono text-[11px] text-slate-500">LIVE · {roster.length} inside</span>
           </div>
@@ -477,6 +473,16 @@ function ArenaInner({ code, tracker, github, onBack }) {
             <RoomChat messages={messages} typingNames={typingNames} onSend={(t) => send(t)} onTyping={markTyping} />
           </div>
         </section>
+      </div>
+
+      {/* mobile action bar — Run stays reachable after scrolling past the header */}
+      <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 border-t border-border bg-canvas/95 backdrop-blur px-3 py-2 flex items-center gap-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
+        <button onClick={run} disabled={running || !problem} className="btn-emerald flex-1 h-10 rounded-md text-[13px] font-semibold flex items-center justify-center gap-1.5 disabled:opacity-60">
+          <Play size={14} /> {running ? 'Running…' : 'Run'}
+        </button>
+        <button onClick={() => setShowList((v) => !v)} className="btn-ghost h-10 px-3 rounded-md text-[13px] font-medium text-slate-200 flex items-center gap-1.5">
+          <ListOrdered size={14} className="text-diff-emerald" /> {showList ? 'Question' : 'All problems'}
+        </button>
       </div>
 
       {victoryOpen && (

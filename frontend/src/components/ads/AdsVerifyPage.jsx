@@ -1,6 +1,7 @@
 import React from 'react'
 import { AadsUnit } from '../layout/AmbientAdSlot.jsx'
 import { AADS_SQUARE_ID, AADS_RAIL_ID, AADS_INFEED_ID } from '../../data/ads.js'
+import { useNoIndex } from '../../hooks/useNoIndex.js'
 
 // Public ad-verification page for networks (AADS bot checks only the exact
 // URL registered per unit — crawlers can't log in, so dashboard/IDE slots
@@ -8,6 +9,7 @@ import { AADS_SQUARE_ID, AADS_RAIL_ID, AADS_INFEED_ID } from '../../data/ads.js'
 // zero auth, zero waterfall delay, zero rotation: deterministic on first
 // paint. One URL covers all units.
 export function AdsVerifyPage() {
+  useNoIndex()
   return (
     <div className="min-h-screen bg-canvas text-slate-200">
       <div className="max-w-[960px] mx-auto px-4 py-8">

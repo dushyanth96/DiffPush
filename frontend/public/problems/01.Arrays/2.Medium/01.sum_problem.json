@@ -4,8 +4,8 @@
   "topic": "01.Arrays",
   "difficulty": "Medium",
   "canonical": {
-    "title": "sum problem",
-    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=2Sum",
+    "title": "Two Sum",
+    "leetcodeSearch": "https://leetcode.com/problemset/all/?search=two+sum",
     "sourceFilePath": "01.Arrays/2.Medium/01.2_sum_problem.cpp"
   },
   "narrative": {

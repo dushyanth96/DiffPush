@@ -16,7 +16,10 @@ import { REPO_URL } from '../../data/repo.js'
 import { navigate } from '../../data/route.js'
 import { submitSolve, commitExtras } from '../../data/solve.js'
 import { fetchPushedSolution } from '../../hooks/useGitHub.js'
-import { SidebarBannerSlot, VerticalAdSlot } from '../layout/AmbientAdSlot.jsx'
+import { DashboardBannerSlot, VerticalAdSlot } from '../layout/AmbientAdSlot.jsx'
+import { useNarrow } from '../../hooks/useNarrow.js'
+import { useSeo, SITE_URL } from '../../hooks/useSeo.js'
+import { track } from '../../lib/analytics.js'
 import { VictoryModal, LanguageRequestModal, nextUnsolvedInTopic } from '../modals/VictoryModal.jsx'
 const DIFF_STYLE = {
   Baseline: 'text-diff-emerald border-diff-emerald/30 bg-diff-emerald/10',
@@ -29,7 +32,7 @@ export function defineObsidian(monaco) {
     base: 'vs-dark',
     inherit: true,
     rules: [
-      { token: 'comment', foreground: '5B6577' },
+      { token: 'comment', foreground: '7D8B9F' },
       { token: 'keyword', foreground: '8B7CF6' },
       { token: 'string', foreground: '34D399' },
       { token: 'number', foreground: 'FBBF24' },
@@ -40,7 +43,7 @@ export function defineObsidian(monaco) {
       'editor.background': '#07090E',
       'editor.foreground': '#E6EAF2',
       'editor.lineHighlightBackground': '#0D111A',
-      'editorLineNumber.foreground': '#3B4557',
+      'editorLineNumber.foreground': '#7D8B9F',
       'editorLineNumber.activeForeground': '#8B94A7',
       'editorCursor.foreground': '#10B981',
       'editor.selectionBackground': '#1E3A32',
@@ -93,10 +96,21 @@ export function Workspace({ slug, tracker, github, onBack }) {
   const [coachSaved, setCoachSaved] = useState(false)
   const [pushedLoaded, setPushedLoaded] = useState(false)
   const pushedTried = useRef(new Set())
+  const openedSlugRef = useRef(null)
 
   const editorRef = useRef(null)
   const chatScrollRef = useRef(null)
+  const narrow = useNarrow()
   const { run: codeRun } = useRunner()
+
+  useSeo({
+    title: meta ? `${meta.canonicalTitle} — DiffPush` : 'Problem workspace — DiffPush',
+    description: meta
+      ? `Solve ${meta.canonicalTitle} (${meta.topicName}) with real test cases in the browser. Target: ${meta.optimalTime ?? 'optimal'} time, ${meta.optimalSpace ?? 'optimal'} space. Auto-commit accepted code to GitHub.`
+      : 'Solve A2Z DSA problems with local test cases and GitHub auto-commit.',
+    canonical: `${SITE_URL}/p/${slug}/`,
+    robots: 'noindex, follow',
+  })
 
   // load manifest entry + full problem JSON (code follows via the language effect)
   useEffect(() => {
@@ -107,6 +121,10 @@ export function Workspace({ slug, tracker, github, onBack }) {
         const m = getProblemMeta(slug)
         if (!m) { setLoadError(`Unknown problem: ${slug}`); return }
         setMeta(m)
+        if (openedSlugRef.current !== slug) {
+          openedSlugRef.current = slug
+          track('problem_open', { slug })
+        }
         return fetch(m.filePath)
           .then((r) => { if (!r.ok) throw new Error(`fetch ${r.status}`); return r.json() })
           .then(async (full) => {
@@ -173,6 +191,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
     setRunning(false)
     setRunResult(payload)
     setActiveCase(0)
+    track('run_tests', { status: payload.status ?? 'error' })
     if (payload.status === 'passed') {
       const totalMs = payload.results.reduce((s, r) => s + (r.runtimeMs ?? 0), 0)
       // Recognition must never depend on the GitHub/commit round-trip — a
@@ -310,7 +329,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
 
   if (loadError) {
     return (
-      <div className="pt-16 max-w-2xl mx-auto px-4 py-10">
+      <div className="max-w-2xl mx-auto px-4 py-10">
         <div className="card p-8 text-center text-[13px] text-slate-500">
           {loadError} <button onClick={onBack} className="text-diff-emerald ml-2">← Hub</button>
         </div>
@@ -319,7 +338,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
   }
   if (!problem || !meta) {
     return (
-      <div className="pt-16 max-w-2xl mx-auto px-4 py-10">
+      <div className="max-w-2xl mx-auto px-4 py-10">
         <div className="card p-10 text-center font-mono text-[13px] text-slate-500">Loading problem…</div>
       </div>
     )
@@ -328,13 +347,17 @@ export function Workspace({ slug, tracker, github, onBack }) {
   const active = runResult?.results?.[activeCase]
 
   return (
-    <div className="pt-16 h-screen flex flex-col">
+    <div className="min-h-screen lg:h-screen flex flex-col pb-16 lg:pb-0">
+      {/* top leaderboard strip — same placement/settings as the arena top */}
+        <div data-ad className="shrink-0 border-b border-border px-2 sm:px-4 py-1 flex justify-center overflow-hidden">
+        <DashboardBannerSlot />
+      </div>
       {/* top workspace header */}
-      <div className="shrink-0 border-b border-border bg-canvas px-4 py-2.5 flex items-center gap-3 flex-wrap">
+      <div className="shrink-0 border-b border-border bg-canvas px-3 sm:px-4 py-2.5 flex items-center gap-3 flex-wrap">
         <button onClick={onBack} className="flex items-center gap-1 text-[13px] text-slate-400 hover:text-slate-100">
           <ArrowLeft size={15} /> Hub
         </button>
-        <span className="text-[13px] text-slate-500 truncate">
+        <span className="hidden sm:inline text-[13px] text-slate-500 truncate">
           <span className="text-slate-600">A2Z Sheet</span> <span className="text-slate-700">/</span> {meta.topicName}{' '}
           <span className="text-slate-700">/</span>{' '}
           <span className="text-slate-200 font-medium">{meta.canonicalTitle}</span>
@@ -353,10 +376,10 @@ export function Workspace({ slug, tracker, github, onBack }) {
             href={REPO_URL}
             target="_blank"
             rel="noreferrer"
-            title="Open-source repo"
+            title="Source repo"
             className="hidden md:flex items-center gap-1 text-[12px] font-mono text-slate-500 hover:text-diff-amber transition-colors"
           >
-            Open-source repo <span className="text-slate-600">↗</span>
+            Source repo <span className="text-slate-600">↗</span>
           </a>
           <button
             onClick={() => tracker.toggleStar(slug)}
@@ -374,48 +397,17 @@ export function Workspace({ slug, tracker, github, onBack }) {
           >
             {solved ? <Check size={14} strokeWidth={3} /> : <Circle size={13} />} {solved ? 'Solved' : 'Mark Solved'}
           </button>
-          <div className="relative hidden sm:block">
-            <button onClick={() => setLangMenu((v) => !v)} className="bg-surface hairline rounded-md h-8 px-2.5 text-[12px] text-slate-300 flex items-center gap-1.5">
-              {langPick.label} {langPick.status === 'live' && <span className="font-mono text-[10px] text-slate-600">{langPick.tag}</span>} <span className="text-slate-600">▾</span>
-            </button>
-            {langMenu && (
-              <div className="absolute right-0 top-9 w-60 card !bg-popover p-1.5 z-50">
-                <p className="px-2 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-600">Runners</p>
-                <div className="max-h-[260px] overflow-y-auto">
-                  {LANGUAGES.map((l) => {
-                    const live = l.status === 'live'
-                    return (
-                      <button
-                        key={l.id}
-                        onClick={() => { if (live) switchLanguage(l); else { setLangMenu(false); setLangModal(true) } }}
-                        className={`w-full text-left px-2 py-1.5 rounded flex items-center gap-2 text-[12px] ${live ? 'text-slate-100 hover:bg-raised' : 'text-slate-500 hover:bg-raised'}`}
-                      >
-                        {live && langPick.id === l.id
-                          ? <Check size={13} className="text-diff-emerald shrink-0" strokeWidth={3} />
-                          : <Circle size={11} className="text-slate-700 shrink-0" />}
-                        <span className="truncate">{l.label}</span>
-                        <span className="ml-auto font-mono text-[10px] text-slate-600 shrink-0">{live ? l.tag : 'soon'}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-                <div className="border-t border-border mt-1 pt-1">
-                  <button onClick={() => { setLangMenu(false); setLangModal(true) }} className="w-full text-left px-2 py-1.5 text-[12px] text-diff-emerald hover:bg-raised rounded">+ Request a Language…</button>
-                </div>
-              </div>
-            )}
-          </div>
           <button onClick={run} disabled={running} className="btn-emerald flex items-center gap-1.5 px-3.5 h-8 rounded-md text-[13px] font-semibold disabled:opacity-60">
-            <Play size={14} /> {running ? 'Running…' : 'Run Solution (Ctrl+Enter)'}
+            <Play size={14} /> {running ? 'Running…' : <><span className="hidden md:inline">Run Solution (Ctrl+Enter)</span><span className="md:hidden">Run</span></>}
           </button>
         </div>
       </div>
 
-      {/* 3-pane grid — coach column collapses to a slim rail when closed */}
-      <div className={`flex-1 min-h-0 grid grid-cols-1 ${mentorOpen ? 'lg:grid-cols-[30%_45%_25%]' : 'lg:grid-cols-[30%_56%_14%]'} overflow-y-auto lg:overflow-hidden`}>
-        {/* LEFT: spec (70%) + sponsor (30%) */}
+      {/* 3-pane grid — stacked on mobile, coach column collapses to a slim rail when closed */}
+      <main className={`flex-1 flex flex-col lg:min-h-0 lg:grid ${mentorOpen ? 'lg:grid-cols-[30%_45%_25%]' : 'lg:grid-cols-[30%_56%_14%]'} lg:overflow-hidden`}>
+        {/* LEFT: spec */}
         <section className="border-b lg:border-b-0 lg:border-r border-border flex flex-col min-h-0 lg:overflow-hidden">
-          <div className="flex flex-col min-h-0 lg:flex-[65] lg:min-h-0 lg:overflow-hidden">
+          <div className="flex flex-col min-h-0 flex-1 lg:min-h-0 lg:overflow-hidden">
             <div className="shrink-0 flex gap-1 px-3 pt-2">
               {[
                 ['mission', 'Mission Narrative', BookOpen],
@@ -430,7 +422,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
                 </button>
               ))}
             </div>
-            <div className="flex-1 min-h-0 lg:overflow-y-auto px-4 py-3 bg-surface lg:bg-transparent border-t border-border">
+            <div className="flex-1 min-h-0 max-h-[46vh] overflow-y-auto lg:max-h-none lg:overflow-y-auto px-4 py-3 bg-surface lg:bg-transparent border-t border-border">
             {specTab === 'mission' ? (
               <>
                 <h1 className="text-[16px] font-bold text-slate-100 leading-snug">{problem.narrative?.title}</h1>
@@ -468,28 +460,54 @@ export function Workspace({ slug, tracker, github, onBack }) {
             </div>
             </div>
           </div>
-          {/* sponsor takes the remaining 30% of the question column —
-              same square banner as the dashboard sidebar, in-house heavy:
-              AADS only, never Mondiad */}
-          <div className="flex min-h-0 border-t border-border p-2 lg:flex-[35] lg:min-h-0">
-            <div className="w-full h-full min-h-0 overflow-y-auto">
-              <SidebarBannerSlot mondiad={false} networkMs={30000} houseMs={90000} />
-            </div>
-          </div>
         </section>
 
         {/* CENTER: editor + runner */}
-        <section className="border-b lg:border-b-0 lg:border-r border-border flex flex-col min-h-[560px] lg:min-h-0 lg:overflow-hidden">
+        <section className="border-b lg:border-b-0 lg:border-r border-border flex flex-col min-h-0 lg:overflow-hidden">
           <div className="shrink-0 flex items-center gap-2 px-3 h-10 border-b border-border">
             <span className="font-mono text-[12px] text-slate-200 bg-raised hairline rounded px-2 py-1">{langPick.file ?? 'solution.py'}</span>
             <button onClick={() => setCode(starterFor(problem, langPick.id))} className="flex items-center gap-1 text-[12px] text-slate-500 hover:text-slate-200" title="Reset to starter">
               <RotateCcw size={13} /> Reset
             </button>
-            <select value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} className="ml-auto bg-surface hairline rounded h-7 px-1.5 font-mono text-[11px] text-slate-400">
+            <div className="relative ml-auto">
+              <button onClick={() => setLangMenu((v) => !v)} className="bg-surface hairline rounded h-7 px-2 text-[12px] text-slate-300 flex items-center gap-1.5" aria-expanded={langMenu}>
+                <span className="sr-only">Runner language: </span>
+                <span className="max-w-[92px] truncate">{langPick.label}</span>
+                {langPick.status === 'live' && <span className="hidden sm:inline font-mono text-[10px] text-slate-600">{langPick.tag}</span>}
+                <span className="text-slate-600">▾</span>
+              </button>
+              {langMenu && (
+                <div className="absolute right-0 top-9 w-60 max-w-[85vw] card !bg-popover p-1.5 z-50">
+                  <p className="px-2 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-600">Runners</p>
+                  <div className="max-h-[260px] overflow-y-auto">
+                    {LANGUAGES.map((l) => {
+                      const live = l.status === 'live'
+                      return (
+                        <button
+                          key={l.id}
+                          onClick={() => { if (live) switchLanguage(l); else { setLangMenu(false); setLangModal(true) } }}
+                          className={`w-full text-left px-2 py-1.5 rounded flex items-center gap-2 text-[12px] ${live ? 'text-slate-100 hover:bg-raised' : 'text-slate-500 hover:bg-raised'}`}
+                        >
+                          {live && langPick.id === l.id
+                            ? <Check size={13} className="text-diff-emerald shrink-0" strokeWidth={3} />
+                            : <Circle size={11} className="text-slate-700 shrink-0" />}
+                          <span className="truncate">{l.label}</span>
+                          <span className="ml-auto font-mono text-[10px] text-slate-600 shrink-0">{live ? l.tag : 'soon'}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                  <div className="border-t border-border mt-1 pt-1">
+                    <button onClick={() => { setLangMenu(false); setLangModal(true) }} className="w-full text-left px-2 py-1.5 text-[12px] text-diff-emerald hover:bg-raised rounded">+ Request a Language…</button>
+                  </div>
+                </div>
+              )}
+            </div>
+            <select value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} aria-label="Editor font size" className="bg-surface hairline rounded h-7 px-1.5 font-mono text-[11px] text-slate-400">
               {[12, 13, 14, 16].map((s) => <option key={s} value={s}>{s}px</option>)}
             </select>
           </div>
-          <div className="flex-1 min-h-[320px] lg:min-h-0">
+          <div className="h-[52vh] min-h-[300px] lg:h-auto lg:flex-1 lg:min-h-0">
             <Editor
               height="100%"
               language={langPick.mode ?? 'python'}
@@ -497,12 +515,12 @@ export function Workspace({ slug, tracker, github, onBack }) {
               onChange={(v) => setCode(v ?? '')}
               beforeMount={defineObsidian}
               theme="obsidian"
-              options={{ fontSize, fontFamily: 'JetBrains Mono, monospace', minimap: { enabled: false }, padding: { top: 12 }, scrollBeyondLastLine: false, automaticLayout: true }}
+              options={{ fontSize, fontFamily: 'JetBrains Mono, monospace', minimap: { enabled: false }, padding: { top: 12 }, scrollBeyondLastLine: false, automaticLayout: true, wordWrap: narrow ? 'on' : 'off' }}
               onMount={(ed) => { editorRef.current = ed }}
             />
           </div>
           {/* execution drawer */}
-          <div className="shrink-0 border-t border-border max-h-[42%] flex flex-col min-h-0">
+          <div className="shrink-0 border-t border-border max-h-[38vh] lg:max-h-[42%] flex flex-col min-h-0">
             <div className="flex items-center gap-2 px-3 h-9 shrink-0">
               <Cpu size={13} className="text-slate-500" />
               <span className="text-[12px] font-semibold text-slate-300" title={langPick.id === 'python' || langPick.id === 'javascript' ? 'Runs on your machine — no network, no queue.' : 'Runs on a shared remote compiler — needs internet, takes a few seconds.'}>
@@ -558,7 +576,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
 
         {/* RIGHT: mentor — collapsed to a slim rail: horizontal opener + vertical banner ad */}
         {!mentorOpen ? (
-          <section className="border-t lg:border-t-0 lg:border-l border-border min-h-0 flex flex-col">
+          <section id="coach-panel" className="border-t lg:border-t-0 lg:border-l border-border min-h-0 flex flex-col">
             <div className="shrink-0 p-2">
               <button
                 onClick={() => setMentorOpen(true)}
@@ -575,13 +593,13 @@ export function Workspace({ slug, tracker, github, onBack }) {
             <p className="shrink-0 px-3 pt-1 pb-2 text-[11px] leading-snug text-slate-500 text-center">
               Stuck? <span className="text-slate-200 font-medium">Open AI Coach</span> for hints, Big-O checks &amp; debug traces.
             </p>
-            {/* rail freed up by the collapsed coach → in-house banner (normal IDE: AADS only, never Mondiad) */}
-            <div className="hidden lg:flex flex-1 min-h-0 px-2 pb-2">
-              <VerticalAdSlot mondiad={false} networkMs={30000} houseMs={90000} />
+            {/* rail freed up by the collapsed coach → hybrid ad: house first, Mondiad 60s, AADS fallback */}
+            <div data-ad className="hidden lg:flex flex-1 min-h-0 px-2 pb-2">
+              <VerticalAdSlot />
             </div>
           </section>
         ) : (
-        <section className="relative border-t lg:border-t-0 lg:border-l border-border flex flex-col min-h-[420px] lg:min-h-0 lg:overflow-hidden">
+        <section id="coach-panel" className="relative border-t lg:border-t-0 lg:border-l border-border flex flex-col h-[72vh] min-h-[360px] lg:h-auto lg:min-h-0 lg:overflow-hidden">
           <div className="shrink-0 flex items-center gap-2 px-3 h-10 border-b border-border">
             <MessageSquareText size={13} className="text-diff-emerald" />
             <span className="text-[12px] font-semibold text-slate-200">Diff Mentor // AI Copilot</span>
@@ -742,6 +760,24 @@ export function Workspace({ slug, tracker, github, onBack }) {
           </div>
         </section>
         )}
+      </main>
+
+      {/* mobile action bar — Run stays reachable after scrolling past the header */}
+      <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 border-t border-border bg-canvas/95 backdrop-blur px-3 py-2 flex items-center gap-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
+        <button onClick={run} disabled={running} className="btn-emerald flex-1 h-10 rounded-md text-[13px] font-semibold flex items-center justify-center gap-1.5 disabled:opacity-60">
+          <Play size={14} /> {running ? 'Running…' : 'Run'}
+        </button>
+        <button
+          onClick={() => {
+            const next = !mentorOpen
+            setMentorOpen(next)
+            if (next) setTimeout(() => document.getElementById('coach-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60)
+          }}
+          className="btn-ghost h-10 px-3 rounded-md text-[13px] font-medium text-slate-200 flex items-center gap-1.5"
+          aria-expanded={mentorOpen}
+        >
+          <MessageSquareText size={14} className="text-diff-emerald" /> {mentorOpen ? 'Hide Coach' : 'AI Coach'}
+        </button>
       </div>
       {victoryOpen && (
         <VictoryModal

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build && node ../scripts/prerender-problems.js",
     "preview": "vite preview",
+    "seo:indexnow": "node ../scripts/indexnow.js",
     "build:manifest": "node ../scripts/generate-manifest.js && node ../scripts/copy-problems.js"
   },
   "dependencies": {

@@ -3,16 +3,27 @@ import { Github, Cpu, GitCommitHorizontal, Repeat, ArrowRight, Coffee, Star } fr
 import { Logo } from '../layout/Logo.jsx'
 import { SUPPORT_LINKS } from '../../data/support.js'
 import { REPO_URL } from '../../data/repo.js'
+import { track } from '../../lib/analytics.js'
 
 const CTA_LABEL = 'Connect with GitHub'
+const X_URL = 'https://x.com/dushyanth168'
 
 export function LandingPage({ onConnect, onGuest }) {
+  const connect = (cta) => {
+    track('cta_click', { cta })
+    onConnect()
+  }
+  const guest = () => {
+    track('cta_click', { cta: 'hero_guest' })
+    onGuest()
+  }
+
   return (
     <div className="min-h-screen bg-canvas text-slate-200 flex flex-col">
       <header className="h-16 px-4 sm:px-5 flex items-center gap-2 border-b border-border max-w-[1100px] w-full mx-auto">
         <Logo />
-        <span className="pill px-1.5 py-px text-[10px] font-mono text-slate-500">v1.0</span>
-        <button onClick={onConnect} className="btn-emerald ml-auto px-4 h-8 rounded-md text-[13px] font-semibold">
+        <span className="pill px-1.5 py-px text-[10px] font-mono text-slate-400">v1.0</span>
+        <button onClick={() => connect('header_github')} className="btn-emerald ml-auto px-4 h-8 rounded-md text-[13px] font-semibold">
           {CTA_LABEL}
         </button>
       </header>
@@ -27,8 +38,8 @@ export function LandingPage({ onConnect, onGuest }) {
             className="inline-flex items-center gap-1.5 px-3 h-7 rounded-full bg-surface hairline font-mono text-[11px] text-slate-300 hover:text-slate-100 hover:border-diff-amber/40 transition-colors"
           >
             <Star size={11} className="text-diff-amber" fill="currentColor" />
-            <span>Open-Source A2Z DSA Tracker &amp; IDE</span>
-            <span className="text-slate-500">— Star on GitHub ↗</span>
+            <span>A2Z DSA Tracker &amp; IDE</span>
+            <span className="text-slate-400">— Star on GitHub ↗</span>
           </a>
           <p className="eyebrow mt-4">369 problems · 16 topics · zero setup</p>
           <h1 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight text-slate-100 leading-[1.1]">
@@ -37,16 +48,19 @@ export function LandingPage({ onConnect, onGuest }) {
           <p className="mt-4 text-[15px] leading-relaxed text-slate-400 max-w-[600px] mx-auto">
             369 interview problems that run in your browser. Pass one, and the solution lands on your GitHub by itself.
           </p>
-          <div className="mt-7">
-            <button onClick={onConnect} className="btn-emerald inline-flex items-center gap-2.5 px-7 h-12 rounded-lg text-[15px] font-semibold">
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-2.5">
+            <button onClick={() => connect('hero_github')} className="btn-emerald inline-flex items-center gap-2.5 px-7 h-12 rounded-lg text-[15px] font-semibold">
               <Github size={19} /> {CTA_LABEL}
             </button>
-            <p className="mt-3">
-              <button onClick={onGuest} className="font-mono text-[12px] text-slate-500 hover:text-slate-400 transition-colors">
-                or explore the offline demo →
-              </button>
-            </p>
+            <button onClick={guest} className="btn-ghost inline-flex items-center gap-2.5 px-6 h-12 rounded-lg text-[14px] font-medium text-slate-200">
+              Try the demo <span className="font-mono text-[10px] text-slate-400">NO LOGIN</span>
+            </button>
           </div>
+          <p className="mt-4 text-[12px] text-slate-500">
+            <a href="/a2z-dsa-sheet/" className="text-diff-emerald hover:underline">Browse the full A2Z DSA sheet</a>
+            <span className="mx-2 text-slate-700">·</span>
+            <a href="/leetcode-alternative/" className="text-diff-emerald hover:underline">DiffPush vs LeetCode</a>
+          </p>
         </section>
 
         {/* product proof: real mini-UI, not a mockup */}
@@ -56,10 +70,10 @@ export function LandingPage({ onConnect, onGuest }) {
               <span className="w-2.5 h-2.5 rounded-full bg-[#1A2333]" />
               <span className="w-2.5 h-2.5 rounded-full bg-[#1A2333]" />
               <span className="w-2.5 h-2.5 rounded-full bg-diff-emerald/70" />
-              <span className="ml-2 font-mono text-[11px] text-slate-500">solution.py — two-sum</span>
+              <span className="ml-2 font-mono text-[11px] text-slate-400">solution.py — two-sum</span>
             </div>
             <pre className="p-4 font-mono text-[12px] leading-[1.7] text-slate-300 overflow-x-auto" aria-label="Example solve session">
-              <span className="text-slate-600">▶ run — 3 cases, in your browser</span>{'\n'}
+              <span className="text-slate-400">▶ run — 3 cases, in your browser</span>{'\n'}
               <span className="text-diff-emerald">✓ case 1 · 0.31ms{'\n'}✓ case 2 · 0.28ms{'\n'}✓ case 3 · 0.35ms</span>{'\n'}
               <span className="text-slate-200">→ committed <span className="text-diff-emerald">#a1b2c3d</span> to you/diffpush-solutions</span>
             </pre>
@@ -75,7 +89,7 @@ export function LandingPage({ onConnect, onGuest }) {
                 />
               ))}
             </div>
-            <p className="mt-2 font-mono text-[10px] text-slate-500">illustration — your grid fills as you solve</p>
+            <p className="mt-2 font-mono text-[10px] text-slate-400">illustration — your grid fills as you solve</p>
           </div>
         </section>
 
@@ -103,7 +117,7 @@ export function LandingPage({ onConnect, onGuest }) {
             <h2 className="mt-3 text-[15px] font-bold tracking-tight text-slate-100">Zero Server Latency</h2>
             <p className="mt-1.5 text-[13px] leading-relaxed text-slate-400">Your code compiles and runs in your browser — nothing leaves your machine until the commit.</p>
             <pre className="mt-auto pt-4 font-mono text-[12px] leading-relaxed text-slate-300 overflow-x-auto">
-              <span className="text-slate-600">▶ run solution.py</span>{'\n'}<span className="text-diff-emerald">3/3 passed · 0.4ms · local</span>
+              <span className="text-slate-400">▶ run solution.py</span>{'\n'}<span className="text-diff-emerald">3/3 passed · 0.4ms · local</span>
             </pre>
           </div>
           <div className="card p-5">
@@ -124,10 +138,30 @@ export function LandingPage({ onConnect, onGuest }) {
           </div>
         </section>
 
+        {/* FAQ: visible answers double as the homepage FAQPage schema */}
+        <section className="pb-14">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-100">Questions, answered</h2>
+          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
+            {[
+              ['Is DiffPush free?', 'Yes. DiffPush is free for students and non-commercial study. Guest mode works without an account, and ads can be blocked without losing features.'],
+              ['Is it affiliated with LeetCode?', 'No. DiffPush is an independent A2Z DSA sheet tracker. Problem titles reference canonical interview problems, but explanations, tests, and execution are DiffPush’s own.'],
+              ['Where does my code run?', 'Python 3.11 runs in your browser through Pyodide/WebAssembly and JavaScript runs in a local Web Worker. Java 17 and C++20 use a shared remote compiler.'],
+              ['Does it push to GitHub?', 'Optionally. Connect GitHub once and each accepted solution can commit to your own diffpush-solutions repository with the problem, language, and Big-O in the commit.'],
+              ['How many problems are included?', '369 problems across 16 topics: arrays, binary search, strings, linked lists, recursion, bit manipulation, stacks and queues, sliding window, heaps, greedy, trees, BSTs, graphs, DP, tries, and advanced strings.'],
+              ['How does spaced repetition work?', 'Solved problems enter a Leitner queue. Correct reviews move a problem to longer intervals; misses bring it back sooner so weak patterns resurface before interview day.'],
+            ].map(([q, a]) => (
+              <div key={q}>
+                <h3 className="text-[14px] font-semibold text-slate-100">{q}</h3>
+                <p className="mt-1 text-[13px] leading-relaxed text-slate-400">{a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* closing band */}
         <section className="card p-8 sm:p-10 text-center mb-14">
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-100">Your GitHub is your resume. Start filling it.</h2>
-          <button onClick={onConnect} className="btn-emerald mt-5 inline-flex items-center gap-2 px-6 h-11 rounded-lg text-[14px] font-semibold">
+          <button onClick={() => connect('closing_github')} className="btn-emerald mt-5 inline-flex items-center gap-2 px-6 h-11 rounded-lg text-[14px] font-semibold">
             {CTA_LABEL} <ArrowRight size={16} />
           </button>
         </section>
@@ -145,7 +179,7 @@ export function LandingPage({ onConnect, onGuest }) {
               title="For India — pay via UPI"
               className="btn-ghost flex items-center gap-2 px-4 h-10 rounded-md text-[13px] font-medium text-slate-200"
             >
-              <Coffee size={15} className="text-orange-400" /> Chai <span className="font-mono text-[10px] text-slate-500">UPI</span>
+              <Coffee size={15} className="text-orange-400" /> Chai <span className="font-mono text-[10px] text-slate-400">UPI</span>
             </a>
           </div>
         </section>
@@ -153,11 +187,14 @@ export function LandingPage({ onConnect, onGuest }) {
 
       <footer className="border-t border-border">
         <div className="max-w-[1100px] mx-auto px-4 py-5 flex flex-col sm:flex-row items-center gap-3">
-          <p className="text-[12px] text-slate-500">Built for engineers. Open source sync engine.</p>
-          <nav className="sm:ml-auto flex items-center gap-4 text-[12px] text-slate-500">
-            <a href="#twitter" title="Twitter (link TBD)" className="hover:text-slate-300 transition-colors">Twitter</a>
-            <a href="#github" title="GitHub repo (link TBD)" className="hover:text-slate-300 transition-colors">GitHub Repo</a>
-            <a href="#privacy" title="Privacy (link TBD)" className="hover:text-slate-300 transition-colors">Privacy</a>
+          <p className="text-[12px] text-slate-400">Built for engineers. Source-available, free for students.</p>
+          <nav className="sm:ml-auto flex flex-wrap items-center gap-4 text-[12px] text-slate-400">
+            <a href="/a2z-dsa-sheet/" className="hover:text-slate-300 transition-colors">A2Z sheet</a>
+            <a href="/leetcode-alternative/" className="hover:text-slate-300 transition-colors">vs LeetCode</a>
+            <a href="/about/" className="hover:text-slate-300 transition-colors">About</a>
+            <a href={X_URL} target="_blank" rel="noreferrer" className="hover:text-slate-300 transition-colors">X / Twitter</a>
+            <a href={REPO_URL} target="_blank" rel="noreferrer" className="hover:text-slate-300 transition-colors">GitHub Repo</a>
+            <a href="/privacy/" className="hover:text-slate-300 transition-colors">Privacy</a>
           </nav>
         </div>
       </footer>

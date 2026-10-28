@@ -1,0 +1,72 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "DiffPush",
+    "identifier": "diffpush.pages.dev",
+    "documentationUrl": "https://diffpush.pages.dev/about/",
+    "logoUrl": "https://diffpush.pages.dev/logo.png"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:diffpush.pages.dev:catalog:a2z-datasets",
+      "displayName": "DiffPush A2Z datasets",
+      "type": "application/ai-catalog+json",
+      "url": "https://diffpush.pages.dev/ai/datasets-catalog.json",
+      "description": "Nested catalog for the DiffPush A2Z curriculum JSON and product FAQ JSON, including representative queries for retrieval.",
+      "tags": [
+        "catalog",
+        "dataset",
+        "dsa",
+        "a2z",
+        "interview-prep"
+      ],
+      "capabilities": [
+        "curriculum search",
+        "FAQ lookup",
+        "complexity lookup",
+        "problem list retrieval"
+      ],
+      "representativeQueries": [
+        "what problems are in the A2Z DSA sheet",
+        "build me a DSA study plan for arrays and graphs",
+        "find a DSA problem with its optimal time complexity",
+        "is DiffPush free and does it need an account"
+      ],
+      "version": "1.0.0",
+      "updatedAt": "2026-10-27T18:19:46.797Z",
+      "publisher": {
+        "identifier": "diffpush.pages.dev",
+        "displayName": "DiffPush"
+      }
+    },
+    {
+      "identifier": "urn:air:diffpush.pages.dev:skill:a2z-dsa-coach",
+      "displayName": "DiffPush A2Z DSA Coach",
+      "type": "text/markdown; profile=\"urn:air:agent-skills\"",
+      "url": "https://diffpush.pages.dev/ai/diffpush-skill.md",
+      "description": "Agent skill for building A2Z study plans and citing canonical DiffPush problem pages.",
+      "tags": [
+        "agent-skill",
+        "dsa",
+        "study-plan",
+        "interview-prep"
+      ],
+      "capabilities": [
+        "study plan generation",
+        "problem sequencing",
+        "citation guidance"
+      ],
+      "representativeQueries": [
+        "help me plan A2Z DSA practice",
+        "recommend the next DSA problems to solve",
+        "track DSA progress and commit solutions to GitHub"
+      ],
+      "version": "1.0.0",
+      "updatedAt": "2026-10-27T18:19:46.797Z",
+      "publisher": {
+        "identifier": "diffpush.pages.dev",
+        "displayName": "DiffPush"
+      }
+    }
+  ]
+}

@@ -1,40 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID, AD_FILL_TIMEOUT_MS, HYBRID_NETWORK_MS, HYBRID_HOUSE_MS, AADS_SQUARE_ID, AADS_INFEED_ID, AADS_RAIL_ID, AADS_DELAY_MS, isAdTest, rescanMondiadSlots } from '../../data/ads.js'
-import { MONDIAD_TAG_URL, AADS_TAG_URL, HOUSE_PROMO, loadAdTag } from '../../data/ads.js'
+import { useEffect, useRef, useState } from 'react'
+import {
+  MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID,
+  AD_FILL_TIMEOUT_MS, HYBRID_NETWORK_MS, HYBRID_HOUSE_MS,
+  AADS_SQUARE_ID, AADS_INFEED_ID, AADS_RAIL_ID,
+  isAdTest, isPresentMode, rescanMondiadSlots, rescanMondiadForPhase, HOUSE_PROMO,
+} from '../../data/ads.js'
 import { loadDeals, pickDeal } from '../../data/deals.js'
-
-// Three-stage ad adapter shared by every slot:
-//   mondiad (live tag) → aads (house tag) → static house promo.
-// Each stage gets one shot with a hard timeout; any failure collapses to the
-// next stage. The frame box is always reserved (contain:layout) so a network
-// failure never causes layout shift.
-
-function useAdStage() {
-  const [stage, setStage] = useState('house')
-  useEffect(() => {
-    let cancelled = false
-    ;(async () => {
-      if (MONDIAD_TAG_URL) {
-        // Mondiad renders into #mondiad-slot when its tag loads.
-        const el = document.getElementById('mondiad-slot')
-        if (el && (await loadAdTag({ url: MONDIAD_TAG_URL, slotEl: el, renderedSelector: '[data-mondiad-rendered]' }))) {
-          if (!cancelled) setStage('mondiad')
-          return
-        }
-      }
-      if (AADS_TAG_URL) {
-        const el = document.getElementById('aads-slot')
-        if (el && (await loadAdTag({ url: AADS_TAG_URL, slotEl: el, renderedSelector: '[data-aads-rendered]' }))) {
-          if (!cancelled) setStage('aads')
-          return
-        }
-      }
-      if (!cancelled) setStage('house')
-    })()
-    return () => { cancelled = true }
-  }, [])
-  return stage
-}
 
 // Live deal for fallback slots: resolves once from the cached sheet feed.
 // Safe inside the crash-safe frames — the tag never touches our promo nodes,
@@ -119,53 +90,10 @@ function HousePromo({ className = '', vertical = false, category = '' }) {
   )
 }
 
-// Zero-CLS sponsor slot: the outer frame always reserves exact space
-// (300x250 desktop, 320x50 mobile) with contain:layout — live or fallback.
-// pass fitHeight to let the frame take a 70/30 parent split instead.
-export function AmbientAdSlot({ fitHeight = false }) {
-  const frameRef = useRef(null)
-  const stage = useAdStage()
-
-  return (
-    <div className={`card p-3 ${fitHeight ? 'h-full min-h-0 flex flex-col' : ''}`}>
-      <p className={`eyebrow ${fitHeight ? 'mb-1.5 shrink-0' : 'mb-2'}`}>PARTNER PICKS</p>
-      <div
-        ref={frameRef}
-        className={`mx-auto overflow-hidden rounded-md bg-raised hairline w-full ${fitHeight
-          ? 'flex-1 min-h-[60px] max-h-[250px] sm:max-w-[300px]'
-          : 'h-[50px] max-w-[320px] sm:h-[250px] sm:max-w-[300px]'}`}
-        style={{ contain: 'layout' }}
-        aria-label="Partner picks"
-      >
-        {stage === 'mondiad' && <div id="mondiad-slot" className="w-full h-full" />}
-        {stage === 'aads' && <div id="aads-slot" className="w-full h-full" />}
-        {stage === 'house' && (
-          <>
-            <HousePromo className="hidden sm:flex flex-col justify-between p-3 h-full" />
-            <HousePromo className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
-          </>
-        )}
-      </div>
-    </div>
-  )
-}
-
-// Queues a Mondiad tag rescan now that this slot's div is in the DOM.
-// Every data-mndbanid slot calls this on mount (the rescan itself fires
-// at most once per page load — see rescanMondiadSlots).
-function useMondiadRescan() {
-  useEffect(() => {
-    if (isAdTest()) return undefined // ad-test mode: AADS only, zero Mondiad traffic
-    const t = setTimeout(rescanMondiadSlots, 0)
-    return () => clearTimeout(t)
-  }, [])
-}
-
 // AADS fixed-size units (embeds verified as provided). Static iframe HTML
 // only — no document.write, no DOM mutation — so mounting/unmounting is
 // always reconciliation-safe (only OUR OWN div is ever removed, and
-// banner.js never touches it). Served as the middle waterfall stage:
-// Mondiad → AADS → house.
+// banner.js never touches it). Mounted only after Mondiad misses its window.
 // `size` is the AADS size token AND the rendered pixel size ('300x250' or
 // '160x600'). `capHeight` keeps the tall rail unit from blowing out shorter
 // frames — excess clips gracefully at the bottom instead.
@@ -184,49 +112,41 @@ export function AadsUnit({ unitId = AADS_SQUARE_ID, size = '300x250', capHeight 
   )
 }
 
-// Hybrid slot engine: waterfall Mondiad → AADS → in-house, rotating on the
-// network/house cadence (defaults HYBRID_NETWORK_MS / HYBRID_HOUSE_MS).
+// Hybrid slot engine. The house promo is the default paint; Mondiad is given
+// the entire network window to render. The AADS iframe is mounted at the
+// network→house boundary, and only when Mondiad never rendered, so AADS is
+// never requested speculatively. A late Mondiad fill never reclaims a slot
+// that has already fallen through to AADS.
+//
 // Options:
-//   network={false} → in-house only, no paid requests at all (normal IDE).
-//   mondiad={false} → AADS-only network stages, never Mondiad (normal IDE
-//     hybrid: mostly in-house with occasional AADS; pair with a short
-//     networkMs / long houseMs for house-heavy rotation).
-// Returns refs + visibility flags; components only ever toggle classNames or
+//   network={false} → in-house only, no paid requests at all.
+//   mondiad={false} → AADS owns each network window (no Mondiad, no wait).
+// Returns refs + visibility flags. Components only toggle classNames or
 // mount/unmount OUR OWN AADS div — the Mondiad div mounts once and is never
 // reconciled, so the tag tearing it down can't break React.
-function useHybridSlot({ network = true, mondiad = true, networkMs = HYBRID_NETWORK_MS, houseMs = HYBRID_HOUSE_MS } = {}) {
+function useHybridSlot({ network = true, mondiad = true, networkMs = HYBRID_NETWORK_MS, houseMs = HYBRID_HOUSE_MS, mondiadId = '' } = {}) {
   const frameRef = useRef(null)
+  const slotRef = useRef(null)
+  const present = isPresentMode()
+  const testMode = !present && isAdTest()
+  const enabled = network && !present
+  const phase = useHybridPhase(enabled, networkMs, houseMs)
+
+  // 'house' until Mondiad proves it filled; 'aads' only after the deadline.
+  const [source, setSource] = useState(testMode ? 'aads' : 'house')
   const [mondiadFilled, setMondiadFilled] = useState(false)
+  const [aadsMounted, setAadsMounted] = useState(testMode)
   const [aadsLoaded, setAadsLoaded] = useState(false)
-  // ?adtest=1 skips straight to AADS (deterministic verification, no timers).
-  const [source, setSource] = useState(() => (isAdTest() ? 'aads' : 'mondiad')) // 'mondiad' | 'aads'
-  const testMode = isAdTest()
-  const phase = useHybridPhase(network, networkMs, houseMs)
   const mondiadRef = useRef(false)
-  useEffect(() => { mondiadRef.current = mondiadFilled })
+  const firstPhase = useRef(true)
 
-  useMondiadRescan()
-  // Fresh paid impression at the start of every network phase (Mondiad only;
-  // skipped in ad-test mode where AADS mounts immediately and deterministically).
+  // Mondiad fill poll (zero timers/requests when Mondiad is disabled):
+  // slot-div content, demo placeholders, or tag-swapped foreign nodes. Own
+  // nodes are marked (data-mndbanid / data-house / data-aads); the AADS
+  // iframe is excluded here (it has its own check). Fast cadence first, then
+  // 2s maintenance that corrects both ways.
   useEffect(() => {
-    if (testMode) return undefined
-    if (network && mondiad && phase === 'network') rescanMondiadSlots({ force: true })
-  }, [network, mondiad, phase, testMode])
-  // New network phase → back to first priority (Mondiad, AADS directly when
-  // Mondiad is disabled for this placement, or in ad-test mode).
-  useEffect(() => {
-    if (phase === 'network') { setSource(testMode ? 'aads' : (mondiad ? 'mondiad' : 'aads')); setAadsLoaded(false) }
-  }, [phase, mondiad, testMode])
-
-  // Mondiad fill poll (skipped entirely when Mondiad is disabled for this
-  // placement — zero requests, zero timers): slot-div content, demo
-  // placeholders, or tag-swapped foreign nodes. Own nodes are marked
-  // (data-mndbanid / data-house / data-aads); the AADS iframe is excluded
-  // here (it has its own check). Fast cadence first, then 2s maintenance
-  // that corrects both ways, so a slow-network fill always wins eventually
-  // and teardowns fall back.
-  useEffect(() => {
-    if (!network || !mondiad || testMode) return undefined
+    if (!enabled || !mondiad || testMode) return undefined
     let cancelled = false
     const checkMondiad = () => {
       try {
@@ -236,55 +156,103 @@ function useHybridSlot({ network = true, mondiad = true, networkMs = HYBRID_NETW
         const slot = f.querySelector('div[data-mndbanid]')
         if (slot && (slot.childElementCount > 0 || slot.innerHTML.trim())) return true
         for (const child of f.children) {
-          if (!child.hasAttribute('data-mndbanid') && !child.hasAttribute('data-house') && !child.hasAttribute('data-aads')) return true
+          if (child.hasAttribute('data-mndbanid') || child.hasAttribute('data-house') || child.hasAttribute('data-aads')) continue
+          // banner.js strips data-mndbanid from its own (unfilled) div; an
+          // empty unmarked div is NOT a creative. Only count foreign nodes
+          // that actually carry content.
+          if (child.childElementCount > 0 || child.textContent.trim()) return true
         }
         return false
       } catch { return false }
     }
-    const tick = () => { if (!cancelled) setMondiadFilled(checkMondiad()) }
+    const tick = () => {
+      if (cancelled) return
+      const filled = checkMondiad()
+      mondiadRef.current = filled
+      setMondiadFilled(filled)
+    }
     tick()
     let poll = setInterval(tick, 500)
-    const giveUp = setTimeout(() => {
+    const slowDown = setTimeout(() => {
       if (cancelled) return
       clearInterval(poll)
       poll = setInterval(tick, 2000)
     }, AD_FILL_TIMEOUT_MS)
-    return () => { cancelled = true; clearInterval(poll); clearTimeout(giveUp) }
-  }, [network, frameRef])
+    return () => { cancelled = true; clearInterval(poll); clearTimeout(slowDown) }
+  }, [enabled, mondiad, testMode])
 
-  // Waterfall: Mondiad gets AADS_DELAY_MS alone per network phase, then AADS
-  // mounts if the slot div is still empty (skipped when Mondiad disabled —
-  // AADS mounts immediately at phase start instead).
+  // banner.js either strips data-mndbanid or removes the node outright when
+  // it cannot fill. Re-attach + re-tag OUR node at the start of every network
+  // window so the next rescan can target it again. React never unmounts this
+  // node, so imperative re-insertion is safe (and prevents a detached node
+  // from blocking future Mondiad impressions).
+  const restoreMondiadSlot = () => {
+    try {
+      const el = slotRef.current
+      const frame = frameRef.current
+      if (!el || !frame) return
+      if (!el.isConnected) frame.prepend(el)
+      if (mondiadId && el.getAttribute('data-mndbanid') !== mondiadId) el.setAttribute('data-mndbanid', mondiadId)
+    } catch {}
+  }
+
+  // Rotation boundary. Entering a network window resets to the house default
+  // and asks Mondiad for a fresh creative. Leaving it is the 60s deadline:
+  // if Mondiad never rendered, the AADS iframe mounts now (first request);
+  // otherwise the house promo simply takes its turn.
   useEffect(() => {
-    if (!network || !mondiad || testMode || phase !== 'network' || source !== 'mondiad') return undefined
-    const t = setTimeout(() => { if (!mondiadRef.current) setSource('aads') }, AADS_DELAY_MS)
-    return () => clearTimeout(t)
-  }, [network, mondiad, testMode, phase, source])
-  // Mondiad priority: a late fill reclaims the slot even mid-AADS.
-  useEffect(() => { if (mondiad && !testMode && mondiadFilled) setSource('mondiad') }, [mondiad, testMode, mondiadFilled])
-  // AADS serving: iframe onLoad, or assume-served after 8s (bounded exposure —
-  // the rotation rescues the slot, and AADS backfills near-100% anyway).
+    if (!enabled) return
+    if (phase === 'network') {
+      setSource(testMode ? 'aads' : (mondiad ? 'house' : 'aads'))
+      mondiadRef.current = false
+      setMondiadFilled(false)
+      setAadsMounted(testMode || !mondiad)
+      setAadsLoaded(false)
+      if (!testMode && mondiad) {
+        restoreMondiadSlot()
+        if (firstPhase.current) {
+          firstPhase.current = false
+          rescanMondiadSlots()
+        } else {
+          rescanMondiadForPhase()
+        }
+      }
+    } else if (mondiad && !mondiadRef.current) {
+      setSource('aads')
+      setAadsMounted(true)
+      setAadsLoaded(false)
+    } else {
+      setSource('house')
+      setAadsMounted(false)
+    }
+  }, [phase, enabled, mondiad, testMode])
+
+  // Mondiad priority inside its own window only. Once the slot has fallen
+  // through to AADS a later fill is ignored (deterministic waterfall).
   useEffect(() => {
-    if (!network || phase !== 'network' || source !== 'aads') return undefined
+    if (!mondiad || testMode || phase !== 'network' || !mondiadFilled) return
+    setSource('mondiad')
+  }, [mondiad, testMode, phase, mondiadFilled])
+
+  // AADS serving: iframe onLoad, or assume-served after 8s (bounded exposure).
+  useEffect(() => {
+    if (!aadsMounted || aadsLoaded) return undefined
     const t = setTimeout(() => setAadsLoaded(true), 8000)
     return () => clearTimeout(t)
-  }, [network, phase, source])
+  }, [aadsMounted, aadsLoaded])
 
-  const inNetwork = network && phase === 'network'
-  const showMondiad = mondiad && inNetwork && source === 'mondiad' && mondiadFilled
-  const aadsMounted = inNetwork && source === 'aads'
-  const showAads = aadsMounted && aadsLoaded
+  const showMondiad = mondiad && !testMode && phase === 'network' && source === 'mondiad' && mondiadFilled
+  const showAads = aadsMounted && aadsLoaded && !showMondiad
   return {
-    frameRef, showMondiad, showAads, aadsMounted,
+    frameRef, slotRef, showMondiad, showAads, aadsMounted, showHouse: !showMondiad && !showAads,
     markAadsLoaded: () => setAadsLoaded(true),
   }
 }
 
-// Hybrid rotation: paid network ads own the slot for HYBRID_NETWORK_MS,
-// then the in-house promo takes over for HYBRID_HOUSE_MS, then a fresh
-// network impression is requested and the cycle repeats. Returns the
-// current phase ('network' | 'house'); disabled slots sit on 'house'.
-// Phase flips only toggle classNames — reconciliation-safe by construction.
+// Hybrid rotation: network ads own the slot for HYBRID_NETWORK_MS, then the
+// in-house promo takes over for HYBRID_HOUSE_MS, then the cycle repeats.
+// Returns the current phase ('network' | 'house'); disabled slots sit on
+// 'house'. Phase flips only toggle classNames — reconciliation-safe.
 function useHybridPhase(enabled, networkMs = HYBRID_NETWORK_MS, houseMs = HYBRID_HOUSE_MS) {
   const [phase, setPhase] = useState('network')
   useEffect(() => {
@@ -313,22 +281,19 @@ function useHybridPhase(enabled, networkMs = HYBRID_NETWORK_MS, houseMs = HYBRID
 // Mondiad AI-chat banner slot: head-loaded banner.js fills div[data-mndbanid].
 // Crash-safe by construction: after initial mount React only toggles
 // classNames inside the frame — it never inserts/removes nodes there, so the
-// tag tearing down the slot node can't break reconciliation (that used to
-// throw removeChild NotFoundError and blank the page). The wrapper reserves
-// min-height so neither outcome shifts layout.
-// Pass network={false} for in-house-only placement (normal IDE).
+// tag tearing down the slot node can't break reconciliation.
 export function VerticalAdSlot({ network = true, mondiad = true, networkMs, houseMs } = {}) {
-  const { frameRef, showMondiad, showAads, aadsMounted, markAadsLoaded } = useHybridSlot({ network, mondiad, networkMs, houseMs })
+  const { frameRef, slotRef, showMondiad, showAads, aadsMounted, showHouse, markAadsLoaded } = useHybridSlot({ network, mondiad, networkMs, houseMs, mondiadId: MONDIAD_VERTICAL_BANNER_ID })
 
   return (
-    <div className="card p-2 w-full h-full min-h-0 flex flex-col" style={{ contain: 'layout' }} aria-label="Partner picks">
+    <div data-ad className="card p-2 w-full h-full min-h-0 flex flex-col" style={{ contain: 'layout' }} aria-label="Partner picks">
       <p className="eyebrow text-center mb-1.5 shrink-0">PARTNER PICKS</p>
       <div ref={frameRef} className="flex-1 min-h-[140px] rounded-md bg-raised hairline overflow-hidden flex flex-col items-center justify-between gap-3 py-4">
-        <div data-mndbanid={MONDIAD_VERTICAL_BANNER_ID} className={`w-full h-full min-h-[120px]${showMondiad ? '' : ' hidden'}`} />
+        <div ref={slotRef} data-mndbanid={MONDIAD_VERTICAL_BANNER_ID} className={`w-full h-full min-h-[120px]${showMondiad ? '' : ' hidden'}`} />
         {aadsMounted ? (
           <AadsUnit unitId={AADS_RAIL_ID} size="160x600" capHeight onLoad={markAadsLoaded} hidden={!showAads} />
         ) : null}
-        <div data-house="1" className={showMondiad || showAads ? 'hidden' : 'contents'}>
+        <div data-house="1" className={showHouse ? 'contents' : 'hidden'}>
           <HousePromo vertical category="productivity" />
         </div>
       </div>
@@ -344,20 +309,21 @@ export function VerticalAdSlot({ network = true, mondiad = true, networkMs, hous
 // and is never reconciled; the fallback promo is always mounted and only
 // toggled via className. Fixed frame, zero layout shift.
 export function DashboardBannerSlot({ network = true, mondiad = true, networkMs, houseMs } = {}) {
-  const { frameRef, showMondiad, showAads, aadsMounted, markAadsLoaded } = useHybridSlot({ network, mondiad, networkMs, houseMs })
+  const { frameRef, slotRef, showMondiad, showAads, aadsMounted, showHouse, markAadsLoaded } = useHybridSlot({ network, mondiad, networkMs, houseMs, mondiadId: MONDIAD_DASHBOARD_BANNER_ID })
 
   return (
     <div
       ref={frameRef}
+      data-ad
       className="mx-auto overflow-hidden rounded-md bg-surface hairline h-[50px] w-full max-w-[320px] sm:h-[90px] sm:max-w-[728px] my-1"
       style={{ contain: 'layout' }}
       aria-label="Partner picks"
     >
-      <div data-mndbanid={MONDIAD_DASHBOARD_BANNER_ID} className={`w-full h-full flex items-center justify-center${showMondiad ? '' : ' hidden'}`} />
+      <div ref={slotRef} data-mndbanid={MONDIAD_DASHBOARD_BANNER_ID} className={`w-full h-full flex items-center justify-center${showMondiad ? '' : ' hidden'}`} />
       {aadsMounted ? (
         <AadsUnit unitId={AADS_INFEED_ID} size="728x90" onLoad={markAadsLoaded} hidden={!showAads} className="w-full h-full flex items-center justify-center" />
       ) : null}
-      <div data-house="1" className={showMondiad || showAads ? 'hidden' : 'contents'}>
+      <div data-house="1" className={showHouse ? 'contents' : 'hidden'}>
         <HousePromo category="productivity" className="hidden sm:flex items-center justify-center gap-3 h-full px-4" />
         <HousePromo category="productivity" className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
       </div>
@@ -369,12 +335,12 @@ export function DashboardBannerSlot({ network = true, mondiad = true, networkMs,
 // Serves MONDIAD_SIDEBAR_BANNER_ID: head-loaded banner.js fills
 // div[data-mndbanid]. Same frame as AmbientAdSlot (300x250 desktop,
 // 320x50 mobile, contain:layout). Hybrid rotation by default; pass
-// network={false} for in-house-only placement (normal IDE, arena rail).
+// network={false} for in-house-only placement.
 export function SidebarBannerSlot({ network = true, mondiad = true, networkMs, houseMs } = {}) {
-  const { frameRef, showMondiad, showAads, aadsMounted, markAadsLoaded } = useHybridSlot({ network, mondiad, networkMs, houseMs })
+  const { frameRef, slotRef, showMondiad, showAads, aadsMounted, showHouse, markAadsLoaded } = useHybridSlot({ network, mondiad, networkMs, houseMs, mondiadId: MONDIAD_SIDEBAR_BANNER_ID })
 
   return (
-    <div className="card p-3">
+    <div data-ad className="card p-3">
       <p className="eyebrow mb-2">PARTNER PICKS</p>
       <div
         ref={frameRef}
@@ -382,37 +348,15 @@ export function SidebarBannerSlot({ network = true, mondiad = true, networkMs, h
         style={{ contain: 'layout' }}
         aria-label="Partner picks"
       >
-        <div data-mndbanid={MONDIAD_SIDEBAR_BANNER_ID} className={`w-full h-full${showMondiad ? '' : ' hidden'}`} />
+        <div ref={slotRef} data-mndbanid={MONDIAD_SIDEBAR_BANNER_ID} className={`w-full h-full${showMondiad ? '' : ' hidden'}`} />
         {aadsMounted ? (
           <AadsUnit unitId={AADS_SQUARE_ID} onLoad={markAadsLoaded} hidden={!showAads} className="w-full h-full flex items-center justify-center" />
         ) : null}
-        <div data-house="1" className={showMondiad || showAads ? 'hidden' : 'contents'}>
+        <div data-house="1" className={showHouse ? 'contents' : 'hidden'}>
           <HousePromo category="desk" className="hidden sm:flex flex-col items-center justify-center text-center gap-1.5 p-3 h-full" />
           <HousePromo category="desk" className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
         </div>
       </div>
-    </div>
-  )
-}
-
-// Slim leaderboard variant for in-feed placement (728x90 desktop, 320x50 mobile).
-// Same zero-CLS contract (contain:layout, fixed frame) and same 3-stage fallback.
-export function SlimAdSlot() {
-  const stage = useAdStage()
-  return (
-    <div
-      className="mx-auto overflow-hidden rounded-md bg-surface hairline h-[50px] w-full max-w-[320px] sm:h-[90px] sm:max-w-[728px] my-1"
-      style={{ contain: 'layout' }}
-      aria-label="Partner picks"
-    >
-      {stage === 'mondiad' && <div id="mondiad-slot" className="w-full h-full" />}
-      {stage === 'aads' && <div id="aads-slot" className="w-full h-full" />}
-      {stage === 'house' && (
-        <>
-          <HousePromo className="hidden sm:flex items-center justify-center gap-3 h-full px-4" />
-          <HousePromo className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
-        </>
-      )}
     </div>
   )
 }

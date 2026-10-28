@@ -1,10 +1,14 @@
-// Ad network adapter — Mondiad primary, aads fallback, house promo last resort.
-// All three stages share the same zero-CLS frame contract (contain:layout,
-// fixed dimensions) so a network failure never shifts layout.
+// Ad rotation — house default, Mondiad first refusal, AADS only as fallback.
+// All stages share the same zero-CLS frame contract (contain:layout, fixed
+// dimensions) so a network failure never shifts layout.
 //
-// Stage 1: Mondiad live tag (set MONDIAD_TAG_URL once the account approves).
-// Stage 2: aads house tag (set AADS_TAG_URL; same script-tag pattern).
-// Stage 3: static house promo (always works, zero network).
+// Timeline per slot (defaults: 60s network / 60s house):
+//   0–60s   house promo is visible immediately; Mondiad fills in place when
+//           it renders (house hides). No AADS request yet.
+//   60s     boundary: Mondiad creative shown → plain house window.
+//           Mondiad never rendered → AADS iframe is mounted NOW (first
+//           request) and owns the following 60s window.
+//   120s    new network window: AADS unmounts, house returns, fresh scan.
 //
 // Guardrails: no popunders, no autoplay, sponsored links rel="sponsored
 // noreferrer", and every slot reserves its exact box before any network call.
@@ -22,14 +26,18 @@ export const MONDIAD_DASHBOARD_BANNER_ID = '6d706f7b-8c76-402a-8784-1042f90102d4
 export const MONDIAD_SIDEBAR_BANNER_ID = 'bb4e890f-5d15-408f-aea7-353fa89ee5b8'
 
 // AADS fixed-size units, one per placement (embeds verified as provided).
-// Served as the middle waterfall stage: Mondiad → AADS → house.
-// NOTE: in-feed intentionally serves the 300x250 square unit per the
-// current AADS setup (see clipping warning in AadsUnit usage).
+// AADS is requested ONLY when Mondiad fails to serve inside its network
+// window — never speculatively, never in parallel.
+// NOTE: in-feed intentionally serves the 728x90 leaderboard unit.
 export const AADS_SQUARE_ID = '2457407' // sidebar / IDE / arena square (300x250)
 export const AADS_INFEED_ID = '2457409' // dashboard leaderboard (728x90)
 export const AADS_RAIL_ID = '2457410' // coach rail (160x600)
-// How long Mondiad gets the slot alone per network phase before AADS mounts.
-export const AADS_DELAY_MS = 4000
+
+// Mondiad owns the slot for the whole network window; if it has not rendered
+// by the deadline, the AADS iframe is mounted (first request) for the
+// following house window. House promo is visible the entire time Mondiad is
+// still pending, so a slot never sits blank.
+export const MONDIAD_WAIT_MS = 60000
 
 // How long to wait for a network creative before falling back, per attempt.
 export const AD_FILL_TIMEOUT_MS = 3000
@@ -40,12 +48,19 @@ export function isAdTest() {
   try { return new URLSearchParams(window.location.search).get('adtest') === '1' } catch { return false }
 }
 
+// Presentation mode for demos, screenshots, and reviewer walkthroughs:
+// ?present=1 hides every ad slot via CSS without unmounting the waterfall,
+// so nothing changes for normal visitors.
+export function isPresentMode() {
+  try { return new URLSearchParams(window.location.search).has('present') } catch { return false }
+}
+
 // Hybrid rotation cadence: paid network ads show for NETWORK_MS, then the
 // in-house (EarnKaro/static) promo takes over for HOUSE_MS, then a fresh
 // network impression is requested. 60s/60s balances impression volume
 // against viewability and network refresh policies (most tags want >=30s
 // between refreshes; higher frequency risks fill penalties).
-export const HYBRID_NETWORK_MS = 60000
+export const HYBRID_NETWORK_MS = MONDIAD_WAIT_MS
 export const HYBRID_HOUSE_MS = 60000
 
 // Re-triggers the head-loaded Mondiad tag so it picks up slot divs that
@@ -88,6 +103,17 @@ export function rescanMondiadSlots({ force = false } = {}) {
       } catch {}
     }, 4500)
   } catch {}
+}
+
+// One rescan per rotation boundary even when several slots flip together
+// (dashboard in-feed + sidebar, editor strip + rail). Slots that mount late
+// still get the non-forced initial scan with its trailing sweep.
+let lastPhaseRescan = 0
+export function rescanMondiadForPhase() {
+  const now = Date.now()
+  if (now - lastPhaseRescan < 2000) return
+  lastPhaseRescan = now
+  rescanMondiadSlots({ force: true })
 }
 
 export const HOUSE_PROMO = {

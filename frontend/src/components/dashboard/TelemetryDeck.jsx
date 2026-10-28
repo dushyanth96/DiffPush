@@ -126,7 +126,7 @@ export function SafetyCard({ tracker }) {
           Auto-save on <span className="font-mono text-slate-500">— every keystroke kept</span>
         </p>
         <p className="text-[12px] text-slate-500 mt-0.5">
-          Works offline · Syncs across devices via GitHub
+          Saved on this device · code syncs via GitHub
         </p>
       </div>
       <button

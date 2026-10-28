@@ -27,8 +27,23 @@ export const draftKeyFor = (slug, langId) => (langId === 'python' ? slug : `${sl
 const safeId = (k, i) => (/^[A-Za-z_$][\w$]*$/.test(k) ? k : `arg${i}`)
 const OPS = new Set(['operations', 'ops'])
 
-// JS has no curated starters: derive a working stub from the first test's keys.
+// JS has no curated starters: derive a working stub from the test shapes.
 // The JS harness binds by name, so any method name works.
+function opNamesFor(problem) {
+  const seen = []
+  for (const t of problem?.testCases ?? []) {
+    const input = t?.input
+    if (!input || typeof input !== 'object') continue
+    const k = Object.keys(input).find((key) => OPS.has(key.toLowerCase()))
+    if (!k || !Array.isArray(input[k])) continue
+    for (const op of input[k]) {
+      const name = Array.isArray(op) ? op[0] : null
+      if (typeof name === 'string' && /^[A-Za-z_$][\w$]*$/.test(name) && !seen.includes(name)) seen.push(name)
+    }
+  }
+  return seen
+}
+
 export function jsStub(problem) {
   const first = (problem?.testCases ?? []).find((t) => t.input && typeof t.input === 'object')?.input ?? {}
   const keys = Object.keys(first)
@@ -36,11 +51,16 @@ export function jsStub(problem) {
   const params = keys.filter((k) => k !== opsKey).map((k, i) => safeId(k, i))
   const sig = params.join(', ')
   if (opsKey) {
+    const ops = opNamesFor(problem)
+    const body = ops.length
+      ? ops.flatMap((name) => [`    ${name}(...args) {`, '        // TODO', '    }', ''])
+      : ['    // Add one method per operation name.',]
     return [
       'class Solution {',
-      '    // Design problem: add one method per operation name,',
-      '    // e.g. push(x) { ... }, pop() { ... }',
-      `    // constructor args (if any): ${sig || 'none'}`,
+      '    // Design problem: implement each operation, then run the cases.',
+      `    // Constructor args (if any): ${sig || 'none'}`,
+      '',
+      ...body,
       '}',
       '',
     ].join('\n')

@@ -1,0 +1,61 @@
+# DiffPush robots.txt
+# Search + AI assistants are welcome. Private SPA routes send X-Robots-Tag:
+# noindex from _headers so search engines can still fetch them (ads/verification
+# crawlers are not blocked by a robots Disallow).
+# LLM guidance: https://diffpush.pages.dev/llms.txt
+
+User-agent: *
+Allow: /
+Disallow: /auth/
+Disallow: /api/
+
+# OpenAI / ChatGPT search and browsing
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# Google Gemini / AI Overviews
+User-agent: Google-Extended
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Microsoft Copilot / Bing
+User-agent: Bingbot
+Allow: /
+
+User-agent: BingPreview
+Allow: /
+
+# Apple Intelligence / Siri
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Common Crawl and other research crawlers
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://diffpush.pages.dev/sitemap.xml

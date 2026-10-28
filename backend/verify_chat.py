@@ -23,7 +23,7 @@ def mock_client(handler):
 def ok_openai(request):
     body = json.loads(request.content.decode())
     assert request.headers["Authorization"] == f"Bearer {FAKE_KEY}"
-    assert body["model"] == "llama-3.1-8b-instant"
+    assert body["model"] == chat_mod.PROVIDERS["groq"]["default"]
     assert body["messages"][0]["role"] == "system"
     return httpx.Response(200, json={
         "choices": [{"message": {"role": "assistant", "content": "  Try two pointers.  "}}],
@@ -111,8 +111,8 @@ def test_retired_model_falls_back_to_default():
         seen.clear()
         r = post("groq", model="gpt-99")
         assert r.status_code == 200, r.text
-        assert r.json()["model"] == "llama-3.1-8b-instant", r.text
-        assert seen["model"] == "llama-3.1-8b-instant", seen
+        assert r.json()["model"] == chat_mod.PROVIDERS["groq"]["default"], r.text
+        assert seen["model"] == chat_mod.PROVIDERS["groq"]["default"], seen
     # malformed openrouter ids still 400
     with patch.object(chat_mod, "_client", mock_client(ok_openai)):
         r = post("openrouter", model="!!!")
@@ -157,14 +157,14 @@ def test_validation_caps():
 
 
 def test_throttle():
-    chat_mod._RATE.clear()
+    chat_mod._LIMITER.reset()
     with patch.object(chat_mod, "_client", mock_client(ok_openai)):
         codes = [post("groq").status_code for _ in range(32)]
     assert codes[-1] == 429 and "SLOW_DOWN" in client.post(
         "/api/chat/complete",
         json={"messages": [{"role": "user", "content": "hi"}]},
         headers={"X-LLM-Provider": "groq", "X-LLM-Key": FAKE_KEY}).text
-    chat_mod._RATE.clear()
+    chat_mod._LIMITER.reset()
     print("throttle OK")
 
 

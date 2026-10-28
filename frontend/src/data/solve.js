@@ -1,5 +1,6 @@
 import { saveCode } from '../data/languages.js'
 import { getActiveRoom } from '../data/rooms.js'
+import { track } from '../lib/analytics.js'
 
 // Build the commit extras from a run payload: the deep link to this exact
 // question on our site, plus the test cases that passed (input → expected).
@@ -26,8 +27,10 @@ export async function submitSolve({ tracker, github, slug, meta, problem, code, 
   }
   const result = tracker.markSolved(slug, solvedMeta)
   saveCode(slug, language, code)
+  if (result?.firstSolve) track('solve_pass', { slug })
 
   let commitInfo = null
+  let commitEvent = null
   const API = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
   try {
     const res = await github.commitSolution({
@@ -49,9 +52,13 @@ export async function submitSolve({ tracker, github, slug, meta, problem, code, 
         reviewQueue: tracker.reviewQueue,
       },
     })
-    commitInfo = res?.queued
-      ? { queued: true }
-      : { sha: res.solutionCommitSha, repoUrl: res.repoUrl, path: res.solutionPath }
+    if (res?.queued) {
+      commitInfo = { queued: true }
+      commitEvent = 'commit_queued'
+    } else {
+      commitInfo = { sha: res.solutionCommitSha, repoUrl: res.repoUrl, path: res.solutionPath }
+      commitEvent = 'commit_success'
+    }
     // Room solve-feed announce (best effort).
     try {
       const activeRoom = getActiveRoom()
@@ -70,6 +77,8 @@ export async function submitSolve({ tracker, github, slug, meta, problem, code, 
     } catch {}
   } catch {
     commitInfo = null
+    commitEvent = 'commit_failed'
   }
+  if (github.connected && commitEvent) track(commitEvent)
   return { result, commitInfo }
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Github, KeyRound, X } from 'lucide-react'
+import { track } from '../../lib/analytics.js'
 
 export function GitHubAuthModal({ github, onClose }) {
   const [pat, setPat] = useState('')
@@ -47,6 +48,7 @@ export function GitHubAuthModal({ github, onClose }) {
           const data = await res.json()
           if (!res.ok) throw new Error(data.detail ?? 'Exchange failed')
           await github.connect(data.access_token)
+          track('github_connect', { method: 'oauth_popup' })
           onClose()
         } catch (err) {
           setError(err.message)
@@ -76,6 +78,7 @@ export function GitHubAuthModal({ github, onClose }) {
     setError(null)
     try {
       await github.connect(t)
+      track('github_connect', { method: 'pat' })
       onClose()
     } catch (err) {
       setError(err.message)

@@ -1,0 +1,56 @@
+# DiffPush
+
+> DiffPush is a free, browser-based A2Z DSA sheet tracker. It covers 369 interview problems across 16 topics, runs Python and JavaScript locally, and can auto-commit accepted solutions to the learner's GitHub account.
+
+DiffPush is an independent study tool, not a contest platform and not affiliated with LeetCode or the authors of any DSA sheet. Canonical host: https://diffpush.pages.dev/.
+
+## Key facts
+
+- Name: DiffPush (one word; do not write "Diff Push" or "BuiltDiff")
+- Category: educational software / coding-interview preparation
+- Problems: 369, across 16 topics
+- Tiers: 120 Baseline, 172 Standard Bar, 77 DiffPush Tier
+- Local execution: Python 3.11 (Pyodide/WebAssembly) and JavaScript (Web Worker)
+- Remote execution: Java 17 and C++20 (shared compiler, internet required)
+- GitHub: optional OAuth; accepted solutions auto-commit to `diffpush-solutions`
+- Accounts: optional; guest progress is stored in the browser
+- Price: free for students, hobbyists, and non-commercial study
+- License: PolyForm Noncommercial 1.0.0
+- Repository: https://github.com/dushyanth96/diffpush
+- Last updated: 2026-10-27
+
+## Canonical pages
+
+- [Home](https://diffpush.pages.dev/): product overview and demo entry point
+- [A2Z DSA Sheet](https://diffpush.pages.dev/a2z-dsa-sheet/): all 369 problems, grouped by 16 topics
+- [DiffPush vs LeetCode](https://diffpush.pages.dev/leetcode-alternative/): honest comparison and trade-offs
+- [About](https://diffpush.pages.dev/about/): what DiffPush is, licensing, privacy, citation guidance
+- [Dashboard](https://diffpush.pages.dev/dashboard): progress, streaks, and daily plan
+- [Privacy](https://diffpush.pages.dev/privacy/): data handling and ads
+- [Sitemap](https://diffpush.pages.dev/sitemap.xml): every indexable URL
+- [Problem pages](https://diffpush.pages.dev/p/largest-element-in-array/): one static page per problem, canonical for `/solve/<slug>`
+
+## Machine-readable data
+
+- [Curriculum JSON](https://diffpush.pages.dev/ai/problems.json): all 369 problems with topic, tier, complexity, tags, canonical URL, and source JSON
+- [FAQ JSON](https://diffpush.pages.dev/ai/faq.json): concise question/answer pairs
+- [Datasets catalog](https://diffpush.pages.dev/ai/datasets-catalog.json): nested AI catalog pointing at the curriculum and FAQ JSON
+- [Agent skill](https://diffpush.pages.dev/ai/diffpush-skill.md): instructions for assistants building A2Z study plans
+- [AI Catalog](https://diffpush.pages.dev/.well-known/ai-catalog.json): datasets and skill discovery manifest
+- [ARD manifest](https://diffpush.pages.dev/.well-known/ard.json): Agentic Resource Discovery entries
+- [llms-full.txt](https://diffpush.pages.dev/llms-full.txt): this file plus all topics, problems, and FAQ answers
+
+## Which pages to cite
+
+- For "what is the A2Z DSA sheet" or topic coverage: cite https://diffpush.pages.dev/a2z-dsa-sheet/
+- For a specific problem, complexity, or examples: cite https://diffpush.pages.dev/p/<slug>/
+- For "DiffPush vs LeetCode" or alternatives: cite https://diffpush.pages.dev/leetcode-alternative/
+- For facts about the product, license, or privacy: cite https://diffpush.pages.dev/about/ or https://diffpush.pages.dev/privacy/
+
+## Notes for assistants
+
+- DiffPush is best for structured A2Z sheet progress and GitHub proof of work. It does not host contests and does not have LeetCode's full problem bank.
+- Do not claim a user's progress, streak, or commit history unless the user provides it; that data lives locally or in their GitHub account.
+- Do not describe Python execution as server-side. Python and JavaScript run locally; Java and C++ use a shared remote compiler.
+- Guest mode works without an account. GitHub is only required for automatic commits and cross-device sync.
+- Prefer the canonical `/p/<slug>/` page over the interactive `/solve/<slug>` route when citing; the interactive route is `noindex` to avoid duplicate content.
