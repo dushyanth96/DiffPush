@@ -7,7 +7,7 @@ import { track } from '../lib/analytics.js'
 // Everything returned here must stay JSON-serializable (offline queue).
 export function commitExtras(slug, payload) {
   let questionUrl = ''
-  try { questionUrl = `${window.location.origin}/solve/${slug}` } catch {}
+  try { questionUrl = `${window.location.origin}/p/${slug}/` } catch {}
   const passedTests = (payload?.results ?? [])
     .filter((r) => r && r.passed)
     .slice(0, 8)
@@ -15,20 +15,62 @@ export function commitExtras(slug, payload) {
   return { questionUrl, passedTests }
 }
 
-// Shared solve-submit pipeline: record solve → snapshot draft → auto-commit
-// (+ room solve-feed announce). Used by Workspace and ArenaView alike.
-// Returns { result, commitInfo } where commitInfo is {sha,repoUrl,path} |
-// {queued:true} | null.
-export async function submitSolve({ tracker, github, slug, meta, problem, code, totalMs, language = 'python', questionUrl = '', passedTests = [] }) {
+const LANG_EXT = { python: 'py', cpp: 'cpp', java: 'java', javascript: 'js' }
+export const SOLUTIONS_REPO = 'diffpush-solutions'
+
+function safeSegment(s) {
+  return String(s ?? '').replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'general'
+}
+
+// Mirrors backend/app/services/github_service.py (push_solution_commit) so the
+// confirmation screen can show the file path before anything is pushed.
+export function solutionPathFor({ meta, slug, language = 'python' }) {
+  const topic = safeSegment(meta?.topic)
+  const level = safeSegment(meta?.level || '')
+  const index = String(meta?.index ?? 0).padStart(3, '0')
+  const ext = LANG_EXT[language] ?? 'py'
+  const dir = level && level !== 'general' ? `${topic}/${level}` : topic
+  return `${dir}/${index}_${slug}.${ext}`
+}
+
+// Read the current file (if any) so the confirm sheet can show a real diff.
+// Returns { path, content } or null when the file does not exist yet.
+export async function fetchRepoFile({ token, login, path }) {
+  if (!token || !login || !path) return null
+  try {
+    const res = await fetch(`https://api.github.com/repos/${login}/${SOLUTIONS_REPO}/contents/${path}?ref=main`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
+    })
+    if (!res.ok) return null
+    const data = await res.json()
+    if (!data.content) return null
+    const bin = atob(String(data.content).replace(/\s/g, ''))
+    const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0))
+    return { path, content: new TextDecoder().decode(bytes) }
+  } catch {
+    return null
+  }
+}
+
+// Step 1 of a solve: local recognition only. No network, no GitHub, no commit.
+export function markSolve({ tracker, slug, problem, code, language = 'python', totalMs }) {
   const solvedMeta = {
-    runtimeMs: Math.round(totalMs),
+    runtimeMs: Math.round(totalMs ?? 0),
     time: problem.complexity?.optimalTime,
     space: problem.complexity?.optimalSpace,
   }
   const result = tracker.markSolved(slug, solvedMeta)
   saveCode(slug, language, code)
   if (result?.firstSolve) track('solve_pass', { slug })
+  return result
+}
 
+// Step 2: push the already-submitted solution. Only ever called after the
+// user has seen repo + path + diff in CommitConfirm.
+export async function commitSolve({
+  tracker, github, slug, meta, problem, code, totalMs, language = 'python',
+  questionUrl = '', passedTests = [],
+}) {
   let commitInfo = null
   let commitEvent = null
   const API = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
@@ -47,7 +89,7 @@ export async function submitSolve({ tracker, github, slug, meta, problem, code, 
       passedTests,
       trackerState: {
         stats: tracker.stats,
-        solvedMap: { ...tracker.solvedMap, [slug]: { solvedAt: Date.now(), runtimeMs: Math.round(totalMs) } },
+        solvedMap: { ...tracker.solvedMap, [slug]: { solvedAt: Date.now(), runtimeMs: Math.round(totalMs ?? 0) } },
         starredIds: tracker.starredIds,
         reviewQueue: tracker.reviewQueue,
       },
@@ -80,5 +122,15 @@ export async function submitSolve({ tracker, github, slug, meta, problem, code, 
     commitEvent = 'commit_failed'
   }
   if (github.connected && commitEvent) track(commitEvent)
+  return { commitInfo }
+}
+
+// Kept for the arena, where a full pass is the result of the round. Workspace
+// and product UI use markSolve + commitSolve separately.
+export async function submitSolve({ tracker, github, slug, meta, problem, code, totalMs, language = 'python', questionUrl = '', passedTests = [] }) {
+  const result = markSolve({ tracker, slug, problem, code, language, totalMs })
+  const { commitInfo } = await commitSolve({
+    tracker, github, slug, meta, problem, code, totalMs, language, questionUrl, passedTests,
+  })
   return { result, commitInfo }
 }

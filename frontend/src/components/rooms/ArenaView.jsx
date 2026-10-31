@@ -8,7 +8,7 @@ import { getProblemMeta, getByTopic, loadManifest } from '../../data/curriculum.
 import { LANGUAGES, langById, loadCode, saveCode, starterFor } from '../../data/languages.js'
 import { useRunner, ENGINES } from '../../hooks/useRunner.js'
 import { useRoomLive } from '../../hooks/useRoomLive.js'
-import { submitSolve, commitExtras } from '../../data/solve.js'
+import { markSolve } from '../../data/solve.js'
 import { fetchRoomMeta, LOBBY_CODE } from '../../data/rooms.js'
 import { defineObsidian } from '../workspace/Workspace.jsx'
 import { DashboardBannerSlot } from '../layout/AmbientAdSlot.jsx'
@@ -163,19 +163,16 @@ function ArenaInner({ code, tracker, github, onBack }) {
     setActiveCase(0)
     if (payload.status === 'passed') {
       const totalMs = payload.results.reduce((s, r) => s + (r.runtimeMs ?? 0), 0)
-      // Recognition must not depend on the commit round-trip (see Workspace.run).
+      // Arena recognition is local only. GitHub commits always require the
+      // workspace's review sheet, never an automatic push from a timed round.
       let result = null
-      let ci = null
       try {
-        ({ result, commitInfo: ci } = await submitSolve({
-          tracker, github, slug: selId, meta, problem, code: codeText, totalMs, language: langId,
-          ...commitExtras(selId, payload),
-        }))
-      } catch { /* offline / commit failed — still celebrate the pass */ }
+        result = markSolve({ tracker, slug: selId, problem, code: codeText, language: langId, totalMs })
+      } catch { /* still celebrate the pass */ }
       setVictoryMs(totalMs)
       setVictoryXp(result ?? { breakdown: { gained: 0, base: 0, streakBonus: 0, comboBonus: 0 }, tierUp: null, newAchievements: [] })
       setVictoryTier(tracker.getTier(tracker.stats.diffScore + (result?.breakdown?.gained ?? 0)))
-      setCommitInfo(ci)
+      setCommitInfo(null)
       setVictoryOpen(true)
     }
   }

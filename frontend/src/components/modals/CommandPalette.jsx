@@ -39,7 +39,7 @@ export function CommandPalette({ tracker, github, onClose }) {
 
   const actions = [
     { id: '__review', label: 'Start Recall Sprint', hint: 'review queue', icon: RotateCcw, run: () => navigate('/review') },
-    { id: '__goal', label: 'Change training goal', hint: 'placements faang core target', icon: Target, run: () => { tracker.setGoal(null) } },
+    { id: '__goal', label: 'Change training goal', hint: 'placements faang core target', icon: Target, run: () => { tracker.promptGoal ? tracker.promptGoal() : tracker.setGoal(null) } },
     { id: '__room', label: 'Open Study Room', hint: 'friends peers leaderboard', icon: Users, run: () => navigate('/room') },
     ...(github?.profile?.login
       ? [{ id: '__cert', label: 'My certificate', hint: 'resume share proof', icon: BadgeCheck, run: () => navigate(`/u/${github.profile.login}`) }]

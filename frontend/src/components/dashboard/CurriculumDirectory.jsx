@@ -1,5 +1,5 @@
-import React, { useMemo, useState, Fragment } from 'react'
-import { Check, ChevronDown, ChevronRight, Star, Circle } from 'lucide-react'
+import React, { useMemo, useState, useEffect, Fragment } from 'react'
+import { Check, ChevronDown, ChevronRight, Star, Circle, Search, X } from 'lucide-react'
 import { getTopics, getByTopic, getProblemMeta } from '../../data/curriculum.js'
 import { FIRST_BLOOD_PATHS, GOALS } from '../../hooks/useTracker.js'
 import { DashboardBannerSlot } from '../layout/AmbientAdSlot.jsx'
@@ -13,14 +13,26 @@ const DIFF_STYLE = {
 const DIFF_SHORT = { Easy: 'Easy', Medium: 'Medium', Hard: 'Hard' }
 
 const TABS = ['All 16 Topics', 'In Progress', 'Needs Recall', 'Starred']
+const DIFFS = ['Easy', 'Medium', 'Hard']
+
+// Shared predicate so the dashboard and the static sheet filter the same way:
+// title, slug, and tags, narrowed by difficulty.
+function matchesFilter(p, q, diff) {
+  if (diff && p.difficultyRaw !== diff) return false
+  if (!q) return true
+  const hay = `${p.canonicalTitle ?? ''} ${p.title ?? ''} ${p.id ?? ''} ${(p.tags ?? []).join(' ')}`.toLowerCase()
+  return hay.includes(q)
+}
 
 function FirstBloodCard({ tracker }) {
   const path = FIRST_BLOOD_PATHS[tracker.goal] ?? FIRST_BLOOD_PATHS.placements
-  const goalName = GOALS[tracker.goal]?.name ?? GOALS.placements.name
+  const goalName = GOALS[tracker.goal]?.name
   const next = path.find((id) => !tracker.isSolved(id))
   return (
     <div className="card p-5 mb-3 border-diff-emerald/40" style={{ boxShadow: 'inset 0 1px 0 rgba(16,185,129,0.25)' }}>
-      <p className="eyebrow" style={{ color: '#10B981' }}>Start here · {goalName} path</p>
+      <p className="eyebrow" style={{ color: '#10B981' }}>
+        Start here · {goalName ? `${goalName} path` : 'default starter path'}
+      </p>
       <p className="mt-1.5 text-[15px] font-bold tracking-tight text-slate-100">First Blood Path</p>
       <p className="mt-0.5 text-[13px] text-slate-400">Five hand-picked Easies. Finish them and your GitHub is already talking.</p>
       <ol className="mt-3 space-y-1.5">
@@ -95,14 +107,25 @@ export function ProblemRow({ p, tracker }) {
   )
 }
 
-function TopicAccordion({ topic, tracker }) {
+function TopicAccordion({ topic, tracker, filter }) {
   const [open, setOpen] = useState(false)
   const [openLevel, setOpenLevel] = useState(null) // one expanded level at a time
   const [showAll, setShowAll] = useState(false)
-  const problems = useMemo(() => getByTopic(topic.id), [topic.id])
-  const solved = problems.filter((p) => tracker.isSolved(p.id)).length
-  const pct = problems.length ? Math.round((solved / problems.length) * 100) : 0
-  const mastered = problems.length > 0 && solved === problems.length
+  const allProblems = useMemo(() => getByTopic(topic.id), [topic.id])
+  const active = Boolean(filter?.q || filter?.diff)
+  const problems = useMemo(
+    () => (active ? allProblems.filter((p) => matchesFilter(p, filter.q, filter.diff)) : allProblems),
+    [active, allProblems, filter?.q, filter?.diff],
+  )
+  const solved = allProblems.filter((p) => tracker.isSolved(p.id)).length
+  const pct = allProblems.length ? Math.round((solved / allProblems.length) * 100) : 0
+  const mastered = allProblems.length > 0 && solved === allProblems.length
+
+  // A search or difficulty filter should reveal its matches, not hide them
+  // behind two clicks. Collapse back to the normal accordion when cleared.
+  useEffect(() => {
+    if (active) setOpen(true)
+  }, [active])
 
   // Group rows by curriculum level folder (Learn → Drill → Hard path).
   const levels = useMemo(() => {
@@ -116,7 +139,7 @@ function TopicAccordion({ topic, tracker }) {
   }, [problems])
 
   const diffCount = (raw) => {
-    const inDiff = problems.filter((p) => p.difficultyRaw === raw)
+    const inDiff = allProblems.filter((p) => p.difficultyRaw === raw)
     return [inDiff.filter((p) => tracker.isSolved(p.id)).length, inDiff.length]
   }
   const [eS, eT] = diffCount('Easy')
@@ -136,7 +159,7 @@ function TopicAccordion({ topic, tracker }) {
             MASTERED
           </span>
         )}
-        <span className="pill ml-auto shrink-0 px-2 py-px font-mono text-[11px] text-slate-400 relative">{solved}/{problems.length} Solved</span>
+        <span className="pill ml-auto shrink-0 px-2 py-px font-mono text-[11px] text-slate-400 relative">{solved}/{allProblems.length} Solved</span>
         <span className="hidden sm:block w-20 h-1.5 rounded-full bg-[#1A2333] overflow-hidden shrink-0 relative">
           <span className="block h-full bg-diff-emerald rounded-full" style={{ width: `${pct}%` }} />
         </span>
@@ -145,8 +168,14 @@ function TopicAccordion({ topic, tracker }) {
         <div className="px-2 pb-2 border-t border-border pt-1">
           <p className="px-3 pt-2 font-mono text-[10px] text-slate-500">
             Easy: {eS}/{eT} <span className="text-slate-700">|</span> Medium: {mS}/{mT} <span className="text-slate-700">|</span> Hard: {hS}/{hT}
+            {active && <span className="text-diff-emerald"> · {problems.length} matching</span>}
           </p>
-          {levels.map((lv, li) => {
+          {active ? (
+            <div className="py-1">
+              {problems.map((p) => <ProblemRow key={p.id} p={p} tracker={tracker} />)}
+            </div>
+          ) : (
+          levels.map((lv, li) => {
             const lvSolved = lv.items.filter((p) => tracker.isSolved(p.id)).length
             const expanded = openLevel === lv.name
             const visible = expanded ? (showAll ? lv.items : lv.items.slice(0, 5)) : []
@@ -181,7 +210,8 @@ function TopicAccordion({ topic, tracker }) {
                 )}
               </div>
             )
-          })}
+          })
+          )}
         </div>
       )}
     </div>
@@ -190,7 +220,11 @@ function TopicAccordion({ topic, tracker }) {
 
 export function CurriculumDirectory({ tracker }) {
   const [tab, setTab] = useState(TABS[0])
+  const [q, setQ] = useState('')
+  const [diff, setDiff] = useState(null)
   const topics = useMemo(() => getTopics(), [])
+  const query = q.trim().toLowerCase()
+  const filtering = query.length > 0 || Boolean(diff)
 
   const visibleTopics = useMemo(() => {
     if (tab === 'Starred') {
@@ -211,11 +245,58 @@ export function CurriculumDirectory({ tracker }) {
     return topics
   }, [tab, topics, tracker.starredIds, tracker.reviewQueue, tracker.solvedMap])
 
+  // Search and difficulty narrow whatever tab is active — the same predicate
+  // the static /a2z-dsa-sheet/ page uses, so both views agree.
+  const shownTopics = useMemo(
+    () => (filtering ? visibleTopics.filter((t) => getByTopic(t.id).some((p) => matchesFilter(p, query, diff))) : visibleTopics),
+    [filtering, visibleTopics, query, diff],
+  )
+
+  const clearFilters = () => { setQ(''); setDiff(null) }
+
   return (
     <div>
       {tracker.getCompletionStats().totalSolved === 0 && (
         <FirstBloodCard tracker={tracker} />
       )}
+      <div className="card p-2 mb-2.5">
+        <div className="flex items-center gap-2">
+          <span className="pl-1 text-slate-500 shrink-0"><Search size={14} /></span>
+          <input
+            type="search"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Escape') setQ('') }}
+            placeholder="Search 369 problems by title, tag, or id…"
+            aria-label="Search problems"
+            className="flex-1 min-w-0 h-8 bg-transparent text-[13px] text-slate-200 placeholder:text-slate-600 outline-none"
+          />
+          {(q || diff) && (
+            <button onClick={clearFilters} className="shrink-0 flex items-center gap-1 px-2 h-7 rounded-md text-[11px] text-slate-400 hover:text-slate-200 hover:bg-raised transition-colors">
+              <X size={12} /> Clear
+            </button>
+          )}
+        </div>
+        <div className="flex items-center gap-1.5 mt-1.5 pl-1 flex-wrap">
+          {DIFFS.map((d) => (
+            <button
+              key={d}
+              onClick={() => setDiff((cur) => (cur === d ? null : d))}
+              aria-pressed={diff === d}
+              className={`px-2 h-6 rounded-full font-mono text-[10.5px] border transition-colors ${
+                diff === d ? DIFF_STYLE[d] : 'text-slate-500 border-border hover:text-slate-300'
+              }`}
+            >
+              {d}
+            </button>
+          ))}
+          {filtering && (
+            <span className="ml-auto font-mono text-[10.5px] text-slate-500">
+              {shownTopics.reduce((s, t) => s + getByTopic(t.id).filter((p) => matchesFilter(p, query, diff)).length, 0)} matching
+            </span>
+          )}
+        </div>
+      </div>
       <div className="flex items-center gap-1.5 mb-3 overflow-x-auto">
         {TABS.map((t) => (
           <button
@@ -231,15 +312,22 @@ export function CurriculumDirectory({ tracker }) {
       </div>
       <div className="space-y-2.5">
         <PrepWorkCard />
-        {visibleTopics.map((t, i) => (
+        {shownTopics.map((t, i) => (
           <Fragment key={t.id}>
-            <TopicAccordion topic={t} tracker={tracker} />
+            <TopicAccordion topic={t} tracker={tracker} filter={{ q: query, diff }} />
             {/* In-feed banners below the 3rd and 13th topics. */}
             {(i === 2 || i === 12) && <DashboardBannerSlot />}
           </Fragment>
         ))}
-        {visibleTopics.length === 0 && (
-          <div className="card p-8 text-center text-[13px] text-slate-500">Nothing here yet — solve or star problems to fill this view.</div>
+        {shownTopics.length === 0 && (
+          <div className="card p-8 text-center text-[13px] text-slate-500">
+            {filtering ? (
+              <>
+                No problems match this filter.
+                <button onClick={clearFilters} className="ml-1.5 text-diff-emerald hover:underline">Clear filters</button>
+              </>
+            ) : 'Nothing here yet — solve or star problems to fill this view.'}
+          </div>
         )}
       </div>
     </div>

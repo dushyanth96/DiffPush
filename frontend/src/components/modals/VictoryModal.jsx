@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Check, Share2, ArrowRight, Code2, ChevronUp, Trophy, Medal, Search, Star } from 'lucide-react'
+import { Check, Share2, ArrowRight, Code2, ChevronUp, Trophy, Medal, Search, Star, GitCommitHorizontal } from 'lucide-react'
 import { getByTopic } from '../../data/curriculum.js'
 import { REPO_URL } from '../../data/repo.js'
 
@@ -153,7 +153,7 @@ export function LanguageRequestModal({ onClose }) {
   )
 }
 
-export function VictoryModal({ meta, totalMs, totalCases, commitInfo, github, xp, tier, onClose, onNext }) {
+export function VictoryModal({ meta, totalMs, totalCases, commitInfo, github, xp, tier, onClose, onNext, onCommit }) {
   const [showDiff, setShowDiff] = useState(false)
   const [copied, setCopied] = useState(false)
   const avg = totalMs != null ? Math.round((totalMs / Math.max(1, 3)) * 100) / 100 : null
@@ -178,7 +178,8 @@ export function VictoryModal({ meta, totalMs, totalCases, commitInfo, github, xp
 
   const share = async () => {
     const commitUrl = commitInfo?.sha ? `${commitInfo.repoUrl}/commit/${commitInfo.sha}` : null
-    const text = `Solved "${meta.canonicalTitle}" on BuiltDiff — ${meta.optimalTime} · ${meta.optimalSpace} · +${gained} DIFF${commitUrl ? ` — ${commitUrl}` : ''}`
+    const problemUrl = meta?.id ? `${window.location.origin}/p/${meta.id}/` : ''
+    const text = `Solved "${meta.canonicalTitle}" on DiffPush — ${meta.optimalTime} · ${meta.optimalSpace} · +${gained} DIFF${problemUrl ? `\n${problemUrl}` : ''}${commitUrl ? `\n${commitUrl}` : ''}`
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
@@ -194,9 +195,9 @@ export function VictoryModal({ meta, totalMs, totalCases, commitInfo, github, xp
             <Check size={18} strokeWidth={3} />
           </span>
           <div>
-            <p className="font-mono text-[13px] font-bold text-diff-emerald tracking-wide">CODE EXECUTED SUCCESSFULLY</p>
+            <p className="font-mono text-[13px] font-bold text-diff-emerald tracking-wide">SUBMITTED — ALL CASES GREEN</p>
             <p className="text-[13px] text-slate-300">{meta.canonicalTitle} — all {totalCases ?? 3} cases green</p>
-            <p className="text-[12px] text-slate-500 mt-0.5">Move to the next question when you're ready.</p>
+            <p className="text-[12px] text-slate-500 mt-0.5">Saved locally. GitHub is a separate, reviewed step.</p>
           </div>
           {commitInfo?.sha && <span className="ml-auto font-mono text-[11px] text-slate-500">#{commitInfo.sha.slice(0, 7)}</span>}
         </div>
@@ -262,7 +263,9 @@ export function VictoryModal({ meta, totalMs, totalCases, commitInfo, github, xp
             ? <>Committed to <span className="font-mono text-slate-200">@{github?.profile?.login}/diffpush-solutions</span> — green square awarded.</>
             : commitInfo?.queued
               ? 'Offline — commit queued, pushes on reconnect.'
-              : 'Connect GitHub to farm this solve as a contribution.'}
+              : github?.connected
+                ? <>Not pushed yet. <span className="text-slate-300">Review the repo, file path, and diff</span> before committing.</>
+                : 'Connect GitHub to farm this solve as a contribution — it stays local until you confirm.'}
         </p>
         {bd?.freezeUsed && (
           <p className="mt-1.5 flex items-center gap-1.5 text-[12px] text-sky-300">
@@ -274,18 +277,23 @@ export function VictoryModal({ meta, totalMs, totalCases, commitInfo, github, xp
           <p className="mt-2 font-mono text-[11px] text-slate-500 break-all">→ {commitInfo.path}</p>
         )}
 
-        <div className="flex gap-2 mt-4">
+        <div className="flex flex-wrap gap-2 mt-4">
+          {!commitInfo && onCommit && (
+            <button onClick={onCommit} className="btn-emerald flex items-center gap-1.5 px-3.5 h-9 rounded-md text-[13px] font-semibold">
+              <GitCommitHorizontal size={14} /> Commit to GitHub…
+            </button>
+          )}
           <button onClick={() => setShowDiff((s) => !s)} className="btn-ghost flex items-center gap-1.5 px-3 h-9 rounded-md text-[13px] text-slate-300">
-            <Code2 size={14} /> Review Code Diff
+            <Code2 size={14} /> {showDiff ? 'Hide Path' : 'File Path'}
           </button>
           <button onClick={share} className="btn-ghost flex items-center gap-1.5 px-3 h-9 rounded-md text-[13px] text-slate-300">
-            {copied ? <Check size={14} className="text-diff-emerald" /> : <Share2 size={14} />} {copied ? 'Copied' : 'Share Solution'}
+            {copied ? <Check size={14} className="text-diff-emerald" /> : <Share2 size={14} />} {copied ? 'Copied' : 'Share Problem'}
           </button>
-          <button onClick={onNext} className="btn-emerald ml-auto flex items-center gap-1.5 px-4 h-9 rounded-md text-[13px] font-semibold">
+          <button onClick={onNext} className="btn-ghost sm:ml-auto flex items-center gap-1.5 px-4 h-9 rounded-md text-[13px] font-medium text-slate-200">
             Next Question <ArrowRight size={14} /> <kbd className="font-mono text-[10px] opacity-70">Ctrl+↵</kbd>
           </button>
         </div>
-        <p className="mt-2 text-center font-mono text-[10px] text-slate-500">Copy icon — Share copies a result snippet, it does not publish your code.</p>
+        <p className="mt-2 text-center font-mono text-[10px] text-slate-500">Share copies a result snippet with the public problem link — it does not publish your code.</p>
       </div>
     </div>
   )

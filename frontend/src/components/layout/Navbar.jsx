@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Search, Flame, Github, RefreshCw, LogOut, ExternalLink, Zap, Users, Star } from 'lucide-react'
 import { Logo } from './Logo.jsx'
+import { HelpMenu } from './HelpMenu.jsx'
 import { REPO_URL } from '../../data/repo.js'
 import { navigate } from '../../data/route.js'
 
@@ -47,10 +48,10 @@ export function Navbar({ tracker, github, onPalette, onConnect }) {
         </button>
 
         <div className="flex items-center gap-2 ml-auto shrink-0">
-          <span className="pill hidden sm:flex items-center px-2.5 h-7 text-[12px] bg-surface border-white/10">
+          <span className="pill hidden sm:flex items-center px-2.5 h-7 text-[12px] bg-surface border-white/10" title="DIFF = 300 base per solve + streak bonus (10/day, cap 100) + combo bonus (solve again within 60 min, up to 1.5×). Recall reviews add 250 or 500.">
             <span className="font-mono font-medium text-emerald-500 tnum">{stats.diffScore.toLocaleString()} DIFF</span>
           </span>
-          <span className="pill hidden sm:flex items-center gap-1 px-2.5 h-7 text-[12px] font-medium text-slate-300 bg-surface border-white/10">
+          <span className="pill hidden sm:flex items-center gap-1 px-2.5 h-7 text-[12px] font-medium text-slate-300 bg-surface border-white/10" title="One solve per calendar day keeps the streak. A freeze (banked every 7 days, max 3) covers one missed day.">
             <Flame size={13} className="text-diff-amber" />
             <span className="font-mono tnum">{stats.currentStreak} Day{stats.currentStreak === 1 ? '' : 's'}</span>
           </span>
@@ -83,6 +84,7 @@ export function Navbar({ tracker, github, onPalette, onConnect }) {
           >
             <Users size={15} />
           </a>
+          <HelpMenu />
 
           {github.connected ? (
             <div className="relative" ref={profileRef}>

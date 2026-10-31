@@ -1,61 +1,96 @@
 import React from 'react'
-import { Github, Cpu, GitCommitHorizontal, Repeat, ArrowRight, Coffee, Star } from 'lucide-react'
+import { Github, Cpu, GitCommitHorizontal, Repeat, ArrowRight, Coffee, Star, Play } from 'lucide-react'
 import { Logo } from '../layout/Logo.jsx'
 import { SUPPORT_LINKS } from '../../data/support.js'
 import { REPO_URL } from '../../data/repo.js'
+import { readLocalSolvedCount, readLocalTracker, resumeTarget } from '../../data/resume.js'
+import { getProblemMeta } from '../../data/curriculum.js'
 import { track } from '../../lib/analytics.js'
 
-const CTA_LABEL = 'Connect with GitHub'
 const X_URL = 'https://x.com/dushyanth168'
 
-export function LandingPage({ onConnect, onGuest }) {
+export function LandingPage({ onConnect, onStart }) {
   const connect = (cta) => {
     track('cta_click', { cta })
     onConnect()
   }
-  const guest = () => {
-    track('cta_click', { cta: 'hero_guest' })
-    onGuest()
+  const start = (source) => {
+    track('start_solving', { source })
+    onStart()
   }
+
+  // Returning device: show the resume card before asking anyone to sign in.
+  const solvedCount = readLocalSolvedCount()
+  const localState = readLocalTracker()
+  const resumeSlug = solvedCount > 0
+    ? resumeTarget({ goal: localState?.goal ?? null, isSolved: (id) => Boolean(localState?.solvedMap?.[id]) })
+    : null
+  const resumeTitle = (() => {
+    if (!resumeSlug) return null
+    try { return getProblemMeta(resumeSlug)?.canonicalTitle ?? resumeSlug } catch { return resumeSlug }
+  })()
 
   return (
     <div className="min-h-screen bg-canvas text-slate-200 flex flex-col">
       <header className="h-16 px-4 sm:px-5 flex items-center gap-2 border-b border-border max-w-[1100px] w-full mx-auto">
         <Logo />
         <span className="pill px-1.5 py-px text-[10px] font-mono text-slate-400">v1.0</span>
-        <button onClick={() => connect('header_github')} className="btn-emerald ml-auto px-4 h-8 rounded-md text-[13px] font-semibold">
-          {CTA_LABEL}
+        <button onClick={() => start('header')} className="btn-emerald ml-auto px-4 h-8 rounded-md text-[13px] font-semibold">
+          Start solving
         </button>
       </header>
 
       <main className="flex-1 w-full max-w-[1100px] mx-auto px-4">
-        {/* hero: manifesto + proof visual */}
+        {/* hero: one action, one promise */}
         <section className="text-center pt-16 pb-12">
-          <a
-            href={REPO_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 h-7 rounded-full bg-surface hairline font-mono text-[11px] text-slate-300 hover:text-slate-100 hover:border-diff-amber/40 transition-colors"
-          >
-            <Star size={11} className="text-diff-amber" fill="currentColor" />
-            <span>A2Z DSA Tracker &amp; IDE</span>
-            <span className="text-slate-400">— Star on GitHub ↗</span>
-          </a>
+          {solvedCount > 0 && resumeTitle ? (
+            <div className="card mx-auto mb-6 max-w-[560px] p-4 flex items-center gap-3 text-left border-diff-emerald/40">
+              <span className="w-9 h-9 rounded-md bg-diff-emerald/10 hairline flex items-center justify-center shrink-0">
+                <Play size={15} className="text-diff-emerald" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-[13px] font-semibold text-slate-100">
+                  Welcome back — {solvedCount} problem{solvedCount === 1 ? '' : 's'} solved on this device
+                </p>
+                <p className="text-[12px] text-slate-500 truncate">Next up: {resumeTitle}</p>
+              </div>
+              <button onClick={() => start('resume_card')} className="btn-emerald ml-auto shrink-0 px-3.5 h-8 rounded-md text-[12px] font-semibold">
+                Continue
+              </button>
+            </div>
+          ) : (
+            <a
+              href={REPO_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 h-7 rounded-full bg-surface hairline font-mono text-[11px] text-slate-300 hover:text-slate-100 hover:border-diff-amber/40 transition-colors"
+            >
+              <Star size={11} className="text-diff-amber" fill="currentColor" />
+              <span>A2Z DSA Tracker &amp; IDE</span>
+              <span className="text-slate-400">— Star on GitHub ↗</span>
+            </a>
+          )}
           <p className="eyebrow mt-4">369 problems · 16 topics · zero setup</p>
           <h1 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight text-slate-100 leading-[1.1]">
             Master the A2Z DSA Sheet.<br />Diff your code, Push to GitHub.
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-slate-400 max-w-[600px] mx-auto">
-            369 interview problems that run in your browser. Pass one, and the solution lands on your GitHub by itself.
+            Solve 369 interview problems with real tests in your browser. Mark one solved, and the proof can land on your GitHub.
           </p>
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-2.5">
-            <button onClick={() => connect('hero_github')} className="btn-emerald inline-flex items-center gap-2.5 px-7 h-12 rounded-lg text-[15px] font-semibold">
-              <Github size={19} /> {CTA_LABEL}
+          <div className="mt-7 flex flex-col items-center gap-3">
+            <button onClick={() => start('hero')} className="btn-emerald inline-flex items-center gap-2.5 px-8 h-12 rounded-lg text-[15px] font-semibold">
+              <Play size={18} /> Start solving — no account
             </button>
-            <button onClick={guest} className="btn-ghost inline-flex items-center gap-2.5 px-6 h-12 rounded-lg text-[14px] font-medium text-slate-200">
-              Try the demo <span className="font-mono text-[10px] text-slate-400">NO LOGIN</span>
+            <button
+              onClick={() => connect('hero_github')}
+              className="inline-flex items-center gap-1.5 text-[12px] text-slate-400 hover:text-slate-200 transition-colors"
+            >
+              <Github size={13} /> or connect GitHub to commit solutions
             </button>
           </div>
+          <p className="mt-4 text-[12px] text-slate-500 max-w-[520px] mx-auto">
+            Guest progress is saved in this browser only. Clearing site data erases it — back it up from the dashboard anytime.
+          </p>
           <p className="mt-4 text-[12px] text-slate-500">
             <a href="/a2z-dsa-sheet/" className="text-diff-emerald hover:underline">Browse the full A2Z DSA sheet</a>
             <span className="mx-2 text-slate-700">·</span>
@@ -75,7 +110,7 @@ export function LandingPage({ onConnect, onGuest }) {
             <pre className="p-4 font-mono text-[12px] leading-[1.7] text-slate-300 overflow-x-auto" aria-label="Example solve session">
               <span className="text-slate-400">▶ run — 3 cases, in your browser</span>{'\n'}
               <span className="text-diff-emerald">✓ case 1 · 0.31ms{'\n'}✓ case 2 · 0.28ms{'\n'}✓ case 3 · 0.35ms</span>{'\n'}
-              <span className="text-slate-200">→ committed <span className="text-diff-emerald">#a1b2c3d</span> to you/diffpush-solutions</span>
+              <span className="text-slate-200">→ commit preview: you/diffpush-solutions/arrays/001_two-sum.py</span>
             </pre>
           </div>
           <div className="card p-5 flex flex-col justify-center">
@@ -97,7 +132,7 @@ export function LandingPage({ onConnect, onGuest }) {
         <section className="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-14">
           {[
             ['01', 'Solve in-browser', 'Pick a problem. Code against real test cases executed by WebAssembly — no setup, no server queue.'],
-            ['02', 'Auto-commit on green', 'All cases pass and your solution pushes to your repo with its Big-O stamped in the message.'],
+            ['02', 'Submit when green', 'All cases pass, then one click marks it solved. Your GitHub commit is previewed — repo, file, diff — before anything is pushed.'],
             ['03', 'Recall on schedule', 'Leitner boxes resurface each pattern at 1/3/7/14/30 days so it survives until interview day.'],
           ].map(([n, title, body]) => (
             <div key={n}>
@@ -161,9 +196,14 @@ export function LandingPage({ onConnect, onGuest }) {
         {/* closing band */}
         <section className="card p-8 sm:p-10 text-center mb-14">
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-100">Your GitHub is your resume. Start filling it.</h2>
-          <button onClick={() => connect('closing_github')} className="btn-emerald mt-5 inline-flex items-center gap-2 px-6 h-11 rounded-lg text-[14px] font-semibold">
-            {CTA_LABEL} <ArrowRight size={16} />
-          </button>
+          <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button onClick={() => start('closing')} className="btn-emerald inline-flex items-center gap-2 px-6 h-11 rounded-lg text-[14px] font-semibold">
+              Start solving <ArrowRight size={16} />
+            </button>
+            <button onClick={() => connect('closing_github')} className="inline-flex items-center gap-1.5 text-[12px] text-slate-400 hover:text-slate-200 transition-colors">
+              <Github size={13} /> Connect GitHub instead
+            </button>
+          </div>
         </section>
         {/* support strip */}
         <section className="card p-6 sm:p-8 mb-14 flex flex-col sm:flex-row items-center gap-4">
@@ -192,6 +232,7 @@ export function LandingPage({ onConnect, onGuest }) {
             <a href="/a2z-dsa-sheet/" className="hover:text-slate-300 transition-colors">A2Z sheet</a>
             <a href="/leetcode-alternative/" className="hover:text-slate-300 transition-colors">vs LeetCode</a>
             <a href="/about/" className="hover:text-slate-300 transition-colors">About</a>
+            <a href="/faq/" className="hover:text-slate-300 transition-colors">Student FAQ</a>
             <a href={X_URL} target="_blank" rel="noreferrer" className="hover:text-slate-300 transition-colors">X / Twitter</a>
             <a href={REPO_URL} target="_blank" rel="noreferrer" className="hover:text-slate-300 transition-colors">GitHub Repo</a>
             <a href="/privacy/" className="hover:text-slate-300 transition-colors">Privacy</a>

@@ -1,7 +1,10 @@
 import React from 'react'
 
-import { Download, Repeat, Check } from 'lucide-react'
+import { Repeat, Check, HardDriveDownload } from 'lucide-react'
 import { navigate } from '../../data/route.js'
+import { InfoTip } from '../layout/InfoTip.jsx'
+import { BOX_INTERVALS } from '../../hooks/useTracker.js'
+import { BackupModal } from '../modals/BackupModal.jsx'
 function Ring({ pct }) {  const r = 26
   const c = 2 * Math.PI * r
   return (
@@ -100,9 +103,13 @@ export function RecallCard({ tracker }) {
   return (
     <div className="card p-4 flex flex-col justify-between">
       <div>
-        <p className="text-[11px] font-semibold text-slate-400">Spaced Repetition</p>
-        <p className="mt-1.5 text-[16px] font-semibold text-slate-100 tnum">
+        <p className="text-[11px] font-semibold text-slate-400 flex items-center gap-1">Spaced Repetition</p>
+        <p className="mt-1.5 flex items-center gap-1.5 text-[16px] font-semibold text-slate-100 tnum">
           {due} <span className="font-normal text-slate-400">Due for Recall</span>
+          <InfoTip label="recall intervals">
+            Solved problems enter a Leitner queue. Boxes resurface after {BOX_INTERVALS[1]}/{BOX_INTERVALS[2]}/{BOX_INTERVALS[3]}/{BOX_INTERVALS[4]}/{BOX_INTERVALS[5]} days.
+            Rating 1 resets to Box 1 (+0 DIFF), 2 advances one box (+250), 3 jumps two (+500). “Due” means the next review date has passed.
+          </InfoTip>
         </p>
         <p className="text-[12px] text-slate-500">Reviews auto-scheduled at 1/3/7/14/30 days</p>
       </div>
@@ -117,24 +124,27 @@ export function RecallCard({ tracker }) {
 }
 
 export function SafetyCard({ tracker }) {
+  const [backupOpen, setBackupOpen] = React.useState(false)
+  const solved = tracker.getCompletionStats().totalSolved
   return (
     <div className="card p-4 flex flex-col justify-between">
       <div>
         <p className="text-[11px] font-semibold text-slate-400">Progress Safety</p>
         <p className="mt-1.5 flex items-center gap-1.5 text-[13px] text-slate-300">
           <span className="w-1.5 h-1.5 rounded-full bg-diff-emerald inline-block" />
-          Auto-save on <span className="font-mono text-slate-500">— every keystroke kept</span>
+          Saved on this device only
         </p>
         <p className="text-[12px] text-slate-500 mt-0.5">
-          Saved on this device · code syncs via GitHub
+          Clearing site data erases {solved} solved problem{solved === 1 ? '' : 's'} and the recall queue. Export a backup first.
         </p>
       </div>
       <button
-        onClick={tracker.exportBackup}
+        onClick={() => setBackupOpen(true)}
         className="btn-ghost mt-3 flex items-center justify-center gap-1.5 h-8 rounded-md text-[13px] font-medium text-slate-200"
       >
-        <Download size={14} /> Backup (.json)
+        <HardDriveDownload size={14} /> Backup &amp; restore
       </button>
+      {backupOpen && <BackupModal tracker={tracker} onClose={() => setBackupOpen(false)} />}
     </div>
   )
 }

@@ -3,7 +3,7 @@ import Editor from '@monaco-editor/react'
 import {
   ArrowLeft, Play, RotateCcw, Check, Circle, Star, Send,
   Cpu, MessageSquareText, BookOpen, FileText, ChevronRight, KeyRound, X,
-  RefreshCw, ArrowLeftRight, Eye, EyeOff, ExternalLink,
+  RefreshCw, ArrowLeftRight, Eye, EyeOff, ExternalLink, GitCommitHorizontal, Share2,
 } from 'lucide-react'
 import { getProblemMeta, loadManifest } from '../../data/curriculum.js'
 import { LANGUAGES, loadCode, saveCode, starterFor } from '../../data/languages.js'
@@ -14,13 +14,14 @@ import {
 } from '../../data/chat.js'
 import { REPO_URL } from '../../data/repo.js'
 import { navigate } from '../../data/route.js'
-import { submitSolve, commitExtras } from '../../data/solve.js'
+import { commitExtras, markSolve, commitSolve, solutionPathFor, fetchRepoFile } from '../../data/solve.js'
 import { fetchPushedSolution } from '../../hooks/useGitHub.js'
 import { DashboardBannerSlot, VerticalAdSlot } from '../layout/AmbientAdSlot.jsx'
 import { useNarrow } from '../../hooks/useNarrow.js'
 import { useSeo, SITE_URL } from '../../hooks/useSeo.js'
 import { track } from '../../lib/analytics.js'
 import { VictoryModal, LanguageRequestModal, nextUnsolvedInTopic } from '../modals/VictoryModal.jsx'
+import { CommitConfirm } from '../modals/CommitConfirm.jsx'
 const DIFF_STYLE = {
   Baseline: 'text-diff-emerald border-diff-emerald/30 bg-diff-emerald/10',
   'Standard Bar': 'text-diff-amber border-diff-amber/30 bg-diff-amber/10',
@@ -74,6 +75,13 @@ export function Workspace({ slug, tracker, github, onBack }) {
   const [activeCase, setActiveCase] = useState(0)
   const [specTab, setSpecTab] = useState('mission')
   const [commitInfo, setCommitInfo] = useState(null) // {sha, repoUrl, path} | {queued:true}
+  const [commitOpen, setCommitOpen] = useState(false)
+  const [commitPath, setCommitPath] = useState('')
+  const [commitExisting, setCommitExisting] = useState(null)
+  const [commitLoading, setCommitLoading] = useState(false)
+  const [commitBusy, setCommitBusy] = useState(false)
+  const [commitError, setCommitError] = useState(null)
+  const [shared, setShared] = useState(false)
   const [victoryOpen, setVictoryOpen] = useState(false)
   const [victoryMs, setVictoryMs] = useState(null)
   const [victoryXp, setVictoryXp] = useState(null)
@@ -82,6 +90,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
   const [langModal, setLangModal] = useState(false)
   const [langPick, setLangPick] = useState(LANGUAGES[0])
   const [mentorOpen, setMentorOpen] = useState(false)
+  const [hintStep, setHintStep] = useState(0)
   const [mentor, setMentor] = useState([
     { role: 'mentor', text: 'Online. I know this problem\'s optimal shape — ask for a hint, a Big-O check, or a debug trace.' },
   ])
@@ -121,6 +130,8 @@ export function Workspace({ slug, tracker, github, onBack }) {
         const m = getProblemMeta(slug)
         if (!m) { setLoadError(`Unknown problem: ${slug}`); return }
         setMeta(m)
+        // Each problem starts its hint ladder at rung one.
+        setHintStep(0)
         if (openedSlugRef.current !== slug) {
           openedSlugRef.current = slug
           track('problem_open', { slug })
@@ -192,24 +203,63 @@ export function Workspace({ slug, tracker, github, onBack }) {
     setRunResult(payload)
     setActiveCase(0)
     track('run_tests', { status: payload.status ?? 'error' })
-    if (payload.status === 'passed') {
-      const totalMs = payload.results.reduce((s, r) => s + (r.runtimeMs ?? 0), 0)
-      // Recognition must never depend on the GitHub/commit round-trip — a
-      // network blip should not swallow the success popup.
-      let result = null
-      let ci = null
-      try {
-        ({ result, commitInfo: ci } = await submitSolve({
-          tracker, github, slug, meta, problem, code, totalMs, language: langPick.id,
-          ...commitExtras(slug, payload),
-        }))
-      } catch { /* offline / commit failed — still celebrate the pass */ }
-      setVictoryMs(totalMs)
-      setVictoryXp(result ?? { breakdown: { gained: 0, base: 0, streakBonus: 0, comboBonus: 0 }, tierUp: null, newAchievements: [] })
-      setVictoryTier(tracker.getTier(tracker.stats.diffScore + (result?.breakdown?.gained ?? 0)))
-      setCommitInfo(ci)
-      setVictoryOpen(true)
+    // Run is tests-only. Nothing is marked solved and nothing is pushed.
+  }
+
+  // Explicit submit: the user decides a green run counts. Local only.
+  const submit = () => {
+    if (!problem || !meta || !runResult || runResult.status !== 'passed' || solved) return
+    const totalMs = runResult.results.reduce((s, r) => s + (r.runtimeMs ?? 0), 0)
+    let result = null
+    try {
+      result = markSolve({ tracker, slug, problem, code, language: langPick.id, totalMs })
+    } catch { /* local storage unavailable — still celebrate */ }
+    setVictoryMs(totalMs)
+    setVictoryXp(result ?? { breakdown: { gained: 0, base: 0, streakBonus: 0, comboBonus: 0 }, tierUp: null, newAchievements: [] })
+    setVictoryTier(tracker.getTier(tracker.stats.diffScore + (result?.breakdown?.gained ?? 0)))
+    setVictoryOpen(true)
+    track('submit_solve', { slug })
+  }
+
+  // GitHub is a separate, reviewed action. We fetch the existing file first so
+  // the confirm sheet can show a real diff before anything is written.
+  const openCommit = async () => {
+    if (!problem || !meta) return
+    const path = solutionPathFor({ meta, slug, language: langPick.id })
+    setCommitPath(path)
+    setCommitError(null)
+    setCommitExisting(null)
+    setCommitOpen(true)
+    track('commit_preview_open')
+    if (github.connected && github.profile?.login) {
+      setCommitLoading(true)
+      const file = await fetchRepoFile({ token: github.token, login: github.profile.login, path })
+      setCommitExisting(file)
+      setCommitLoading(false)
     }
+  }
+
+  const confirmCommit = async () => {
+    if (!github.connected) {
+      setCommitOpen(false)
+      window.dispatchEvent(new CustomEvent('builtdiff:connect'))
+      return
+    }
+    if (!problem || !meta) return
+    setCommitBusy(true)
+    setCommitError(null)
+    const totalMs = (runResult?.results ?? []).reduce((s, r) => s + (r.runtimeMs ?? 0), 0)
+    const { commitInfo: ci } = await commitSolve({
+      tracker, github, slug, meta, problem, code, totalMs, language: langPick.id,
+      ...commitExtras(slug, runResult),
+    })
+    setCommitBusy(false)
+    if (!ci) {
+      setCommitError('GitHub push failed. Your solve is saved on this device — retry, or use Sync Now from your profile menu.')
+      return
+    }
+    setCommitInfo(ci)
+    setCommitOpen(false)
   }
 
   // Ctrl+Enter runs (unless victory modal owns the keystroke)
@@ -236,6 +286,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
   )
   const totalCount = runResult?.results?.length ?? problem?.testCases?.length ?? 0
   const solved = tracker.isSolved(slug)
+  const passedAll = runResult?.status === 'passed' && (runResult?.results?.length ?? 0) > 0
   const mentorCtx = useMemo(() => ({
     intentTags: problem?.aiContext?.intentTags ?? meta?.tags ?? [],
     hints: problem?.aiContext?.hintLevels ?? [],
@@ -244,6 +295,17 @@ export function Workspace({ slug, tracker, github, onBack }) {
   }), [problem, meta])
 
   const askMentor = (kind) => {
+    // Hints unlock one level at a time. Revealing the whole ladder at once
+    // throws away the problem; the next rung only appears when asked for.
+    if (kind === 'hint') {
+      const hints = (mentorCtx.hints ?? []).filter(Boolean)
+      if (hints.length) {
+        const step = Math.min(hintStep, hints.length - 1)
+        setMentor((m) => [...m, { role: 'user', text: `Hint ${step + 1} of ${hints.length}` }, { role: 'mentor', text: hints[step], hint: { step, total: hints.length } }])
+        setHintStep((s) => Math.min(s + 1, hints.length))
+        return
+      }
+    }
     const map = { hint: 'Intuition Hint', bigo: 'Big-O Check', debug: 'Debug Trace' }
     const reply = MENTOR_REPLIES[kind === 'bigo' ? 'bigo' : kind === 'debug' ? 'debug' : 'hint'](mentorCtx)
     setMentor((m) => [...m, { role: 'user', text: map[kind] ?? kind }, { role: 'mentor', text: reply }])
@@ -327,6 +389,16 @@ export function Workspace({ slug, tracker, github, onBack }) {
     else onBack()
   }
 
+  // Share the static problem page (/p/<slug>/), which carries its own title,
+  // description, and social image. /solve/ deliberately stays private.
+  const shareProblem = async () => {
+    try {
+      await navigator.clipboard.writeText(`${SITE_URL}/p/${slug}/`)
+      setShared(true)
+      setTimeout(() => setShared(false), 1800)
+    } catch {}
+  }
+
   if (loadError) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-10">
@@ -382,6 +454,14 @@ export function Workspace({ slug, tracker, github, onBack }) {
             Source repo <span className="text-slate-600">↗</span>
           </a>
           <button
+            onClick={shareProblem}
+            className="hidden md:flex items-center gap-1.5 px-2.5 h-8 rounded-md text-[12px] font-medium hairline bg-surface text-slate-400 hover:text-slate-200"
+            title="Copy the public problem link (with its own preview card)"
+          >
+            {shared ? <Check size={13} className="text-diff-emerald" /> : <Share2 size={13} />}
+            <span>{shared ? 'Link copied' : 'Share'}</span>
+          </button>
+          <button
             onClick={() => tracker.toggleStar(slug)}
             className="hidden sm:flex items-center gap-1.5 px-2.5 h-8 rounded-md text-[12px] font-medium hairline bg-surface text-slate-400 hover:text-slate-200"
             title={tracker.starredIds.includes(slug) ? 'Starred — click to unstar' : 'Star for recall deck'}
@@ -390,15 +470,41 @@ export function Workspace({ slug, tracker, github, onBack }) {
             <span className="hidden md:inline">{tracker.starredIds.includes(slug) ? 'Starred' : 'Star'}</span>
           </button>
           <button
-            onClick={() => (solved ? tracker.unmarkSolved(slug) : tracker.markSolved(slug, { manual: true }))}
-            className={`flex items-center gap-1.5 px-2.5 h-8 rounded-md text-[12px] font-medium hairline transition-colors ${solved ? 'bg-diff-emerald/15 text-diff-emerald border-diff-emerald/30 hover:bg-diff-emerald/25' : 'bg-surface text-slate-400 hover:text-slate-200'}`}
-            title={solved ? 'Marked solved — click to revert to unsolved' : 'Mark solved'}
-            aria-pressed={solved}
+            onClick={() => (solved ? tracker.unmarkSolved(slug) : null)}
+            disabled={!solved}
+            className={`flex items-center gap-1.5 px-2.5 h-8 rounded-md text-[12px] font-medium hairline transition-colors ${solved ? 'bg-diff-emerald/15 text-diff-emerald border-diff-emerald/30 hover:bg-diff-emerald/25' : 'bg-surface text-slate-500 cursor-default'}`}
+            title={solved ? 'Solved — click to unmark (removes it from recall)' : 'Run the tests, then submit to mark this solved'}
           >
-            {solved ? <Check size={14} strokeWidth={3} /> : <Circle size={13} />} {solved ? 'Solved' : 'Mark Solved'}
+            {solved ? <Check size={14} strokeWidth={3} /> : <Circle size={13} />} {solved ? 'Solved' : 'Unsolved'}
           </button>
-          <button onClick={run} disabled={running} className="btn-emerald flex items-center gap-1.5 px-3.5 h-8 rounded-md text-[13px] font-semibold disabled:opacity-60">
-            <Play size={14} /> {running ? 'Running…' : <><span className="hidden md:inline">Run Solution (Ctrl+Enter)</span><span className="md:hidden">Run</span></>}
+          {solved && (
+            commitInfo?.sha ? (
+              <a
+                href={`${commitInfo.repoUrl}/commit/${commitInfo.sha}`}
+                target="_blank"
+                rel="noreferrer"
+                className="hidden sm:flex items-center gap-1.5 px-2.5 h-8 rounded-md text-[12px] font-medium bg-diff-emerald/10 text-diff-emerald border border-diff-emerald/30 hover:bg-diff-emerald/20"
+                title={`Committed as ${commitInfo.sha.slice(0, 7)}`}
+              >
+                <GitCommitHorizontal size={13} /> Committed #{commitInfo.sha.slice(0, 7)}
+              </a>
+            ) : (
+              <button
+                onClick={openCommit}
+                className="hidden sm:flex items-center gap-1.5 px-2.5 h-8 rounded-md text-[12px] font-medium bg-diff-emerald/10 text-diff-emerald border border-diff-emerald/30 hover:bg-diff-emerald/20"
+                title="Preview the repo, file path, and diff before committing"
+              >
+                <GitCommitHorizontal size={13} /> Commit to GitHub
+              </button>
+            )
+          )}
+          {!solved && passedAll && (
+            <button onClick={submit} className="btn-emerald flex items-center gap-1.5 px-3.5 h-8 rounded-md text-[13px] font-semibold">
+              <Check size={14} strokeWidth={3} /> <span className="hidden sm:inline">Submit / Mark solved</span><span className="sm:hidden">Submit</span>
+            </button>
+          )}
+          <button onClick={run} disabled={running} className={`${passedAll && !solved ? 'btn-ghost text-slate-200' : 'btn-emerald'} flex items-center gap-1.5 px-3.5 h-8 rounded-md text-[13px] font-semibold disabled:opacity-60`}>
+            <Play size={14} /> {running ? 'Running…' : <><span className="hidden md:inline">{passedAll ? 'Re-run tests' : 'Run tests (Ctrl+Enter)'}</span><span className="md:hidden">Run</span></>}
           </button>
         </div>
       </div>
@@ -565,6 +671,16 @@ export function Workspace({ slug, tracker, github, onBack }) {
                         {active.stdout && <pre className="whitespace-pre-wrap text-slate-500 bg-raised hairline rounded p-2">{active.stdout}</pre>}
                       </div>
                     )}
+                    {passedAll && !solved && (
+                      <div className="mt-2.5 card p-2.5 flex flex-col sm:flex-row sm:items-center gap-2 border-diff-emerald/40">
+                        <p className="text-[12px] text-slate-300 flex-1">
+                          All {totalCount} cases pass. Submit to mark this solved — GitHub stays a separate, confirmed step.
+                        </p>
+                        <button onClick={submit} className="btn-emerald shrink-0 px-3.5 h-8 rounded-md text-[13px] font-semibold inline-flex items-center justify-center gap-1.5">
+                          <Check size={13} strokeWidth={3} /> Submit / Mark solved
+                        </button>
+                      </div>
+                    )}
                   </>
                 )}
               </div>
@@ -712,7 +828,9 @@ export function Workspace({ slug, tracker, github, onBack }) {
           )}
           <div className="shrink-0 flex gap-1.5 px-3 py-2 border-b border-border overflow-x-auto">
             {[
-              ['hint', 'Intuition Hint'],
+              ['hint', (mentorCtx.hints ?? []).length
+                ? `Hint ${Math.min(hintStep + 1, mentorCtx.hints.length)}/${mentorCtx.hints.length}`
+                : 'Intuition Hint'],
               ['bigo', 'Big-O Check'],
               ['debug', 'Debug Trace'],
             ].map(([kind, label]) => (
@@ -724,6 +842,19 @@ export function Workspace({ slug, tracker, github, onBack }) {
               <div key={i} className={`rounded-md p-2.5 text-[12px] leading-relaxed whitespace-pre-wrap ${m.pending ? 'opacity-70 ' : ''}${m.role === 'mentor' ? 'bg-surface hairline text-slate-300' : 'bg-raised text-slate-400 ml-6'}`}>
                 {m.role === 'mentor' && <p className="font-mono text-[10px] text-diff-emerald mb-1">MENTOR</p>}
                 {m.text}
+                {m.hint && i === mentor.length - 1 && (
+                  m.hint.step + 1 < m.hint.total ? (
+                    <span className="mt-2 flex gap-1.5 flex-wrap">
+                      <button onClick={() => askMentor('hint')} className="btn-ghost flex items-center gap-1 px-2.5 h-7 rounded-md text-[12px] text-slate-200">
+                        <ChevronRight size={12} /> Next hint ({m.hint.step + 2}/{m.hint.total})
+                      </button>
+                    </span>
+                  ) : (
+                    <p className="mt-2 font-mono text-[10px] text-slate-500">
+                      Last hint. Try a Big-O check or a debug trace next — the code has to come from you.
+                    </p>
+                  )
+                )}
                 {m.error && (
                   <span className="mt-2 flex gap-1.5 flex-wrap">
                     {(m.error.action === 'switch_provider') && (
@@ -764,21 +895,47 @@ export function Workspace({ slug, tracker, github, onBack }) {
 
       {/* mobile action bar — Run stays reachable after scrolling past the header */}
       <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 border-t border-border bg-canvas/95 backdrop-blur px-3 py-2 flex items-center gap-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
-        <button onClick={run} disabled={running} className="btn-emerald flex-1 h-10 rounded-md text-[13px] font-semibold flex items-center justify-center gap-1.5 disabled:opacity-60">
-          <Play size={14} /> {running ? 'Running…' : 'Run'}
+        <button onClick={run} disabled={running} className={`${passedAll && !solved ? 'btn-ghost text-slate-200' : 'btn-emerald'} flex-1 min-w-0 h-10 rounded-md text-[13px] font-semibold flex items-center justify-center gap-1.5 disabled:opacity-60`}>
+          <Play size={14} /> {running ? 'Running…' : passedAll ? 'Re-run' : 'Run tests'}
         </button>
+        {!solved && passedAll && (
+          <button onClick={submit} className="btn-emerald flex-1 min-w-0 h-10 rounded-md text-[13px] font-semibold flex items-center justify-center gap-1.5">
+            <Check size={14} strokeWidth={3} /> Submit
+          </button>
+        )}
+        {solved && (
+          <button onClick={openCommit} className="btn-emerald flex-1 min-w-0 h-10 rounded-md text-[13px] font-semibold flex items-center justify-center gap-1.5">
+            <GitCommitHorizontal size={14} /> {commitInfo?.sha ? 'Committed' : 'Commit'}
+          </button>
+        )}
         <button
           onClick={() => {
             const next = !mentorOpen
             setMentorOpen(next)
             if (next) setTimeout(() => document.getElementById('coach-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60)
           }}
-          className="btn-ghost h-10 px-3 rounded-md text-[13px] font-medium text-slate-200 flex items-center gap-1.5"
+          className="btn-ghost h-10 px-3 rounded-md text-[13px] font-medium text-slate-200 flex items-center gap-1.5 shrink-0"
           aria-expanded={mentorOpen}
+          aria-label={mentorOpen ? 'Hide AI coach' : 'Open AI coach'}
         >
-          <MessageSquareText size={14} className="text-diff-emerald" /> {mentorOpen ? 'Hide Coach' : 'AI Coach'}
+          <MessageSquareText size={14} className="text-diff-emerald" /> <span className="hidden sm:inline">{mentorOpen ? 'Hide Coach' : 'AI Coach'}</span>
         </button>
       </div>
+      {commitOpen && (
+        <CommitConfirm
+          login={github.profile?.login}
+          path={commitPath}
+          code={code}
+          existing={commitExisting}
+          loading={commitLoading}
+          committing={commitBusy}
+          error={commitError}
+          connected={github.connected}
+          onConfirm={confirmCommit}
+          onCancel={() => { if (!commitBusy) { setCommitOpen(false); track('commit_cancel') } }}
+          onConnect={() => { setCommitOpen(false); window.dispatchEvent(new CustomEvent('builtdiff:connect')) }}
+        />
+      )}
       {victoryOpen && (
         <VictoryModal
           meta={meta}
@@ -790,6 +947,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
           tier={victoryTier}
           onClose={() => setVictoryOpen(false)}
           onNext={goNext}
+          onCommit={() => { setVictoryOpen(false); openCommit() }}
         />
       )}
       {langModal && <LanguageRequestModal onClose={() => setLangModal(false)} />}

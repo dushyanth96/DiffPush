@@ -1,5 +1,7 @@
 import React from 'react'
 import { Github, Snowflake } from 'lucide-react'
+import { InfoTip } from '../layout/InfoTip.jsx'
+import { XP_BASE } from '../../hooks/useTracker.js'
 
 export function IdentityCard({ tracker, github }) {
   const tier = tracker.getTier(tracker.stats.diffScore)
@@ -20,7 +22,12 @@ export function IdentityCard({ tracker, github }) {
         )}
         <div className="min-w-0">
           <p className="font-mono text-[16px] font-bold text-slate-100 leading-tight tnum">
-            {tracker.stats.diffScore.toLocaleString()} <span className="text-[11px] font-medium text-slate-500">DIFF</span>
+            {tracker.stats.diffScore.toLocaleString()}{' '}
+            <span className="text-[11px] font-medium text-slate-500">DIFF</span>
+            <InfoTip label="DIFF points">
+              DIFF is this app's score — not a GitHub metric. {XP_BASE} base per solve, plus a streak bonus (10 per streak day, capped at 100)
+              and a combo bonus for solving again within 60 minutes (up to 1.5×). Recall reviews add +250 or +500.
+            </InfoTip>
           </p>
           {login && <p className="font-mono text-[11px] text-slate-500 truncate">@{login}</p>}
           <span

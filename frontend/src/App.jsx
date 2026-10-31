@@ -7,6 +7,7 @@ import { MasterProgressCard, RecallCard, SafetyCard } from './components/dashboa
 import { SidebarBannerSlot } from './components/layout/AmbientAdSlot.jsx'
 import { ShieldsNotice } from './components/layout/ShieldsNotice.jsx'
 import { CurriculumDirectory } from './components/dashboard/CurriculumDirectory.jsx'
+import { ResumeCard } from './components/dashboard/ResumeCard.jsx'
 import { PlatformIntro } from './components/dashboard/PlatformIntro.jsx'
 import { ViewSwitcher } from './components/dashboard/ViewSwitcher.jsx'
 import { CompanyView } from './components/dashboard/CompanyView.jsx'
@@ -27,6 +28,7 @@ import { RoomPage } from './components/rooms/RoomPage.jsx'
 import { ArenaView } from './components/rooms/ArenaView.jsx'
 import { getDailyChallenge } from './data/daily.js'
 import { parseRoute, navigate, migrateLegacyHash } from './data/route.js'
+import { resumeTarget } from './data/resume.js'
 import { isPresentMode } from './data/ads.js'
 import { WeeklyReport } from './components/modals/WeeklyReport.jsx'
 import { GuestPromptModal } from './components/modals/GuestPromptModal.jsx'
@@ -68,6 +70,14 @@ export default function App() {
     try { localStorage.setItem(GUEST_KEY, '1') } catch {}
     setGuest(true)
     track('guest_start', { source })
+  }
+
+  // "Start solving" skips the empty dashboard entirely: guest session first,
+  // then straight into the next unsolved problem for this device.
+  const startSolving = () => {
+    track('start_solving', { source: guest ? 'returning' : 'landing' })
+    enterGuest('landing_start')
+    navigate(`/solve/${resumeTarget(tracker)}`)
   }
 
   // Successful OAuth clears the guest flag — the token is the identity now.
@@ -205,7 +215,7 @@ export default function App() {
         </p>
       </div>
     ) : (
-      <LandingPage onConnect={() => setAuthOpen(true)} onGuest={() => enterGuest('landing')} />
+      <LandingPage onConnect={() => setAuthOpen(true)} onStart={startSolving} />
     )
   } else if (route.name === 'arena') {
     content = <ArenaView code={route.code} tracker={tracker} github={github} onBack={goHub} />
@@ -244,6 +254,7 @@ export default function App() {
                     <ViewSwitcher active={view} onChange={setView} />
                     {view === 'companies' ? <CompanyView tracker={tracker} /> : (
                       <>
+                        <ResumeCard tracker={tracker} />
                         <DailyChallengeCard tracker={tracker} />
                         <CurriculumDirectory tracker={tracker} />
                       </>
@@ -273,7 +284,9 @@ export default function App() {
       )}
       {paletteOpen && <CommandPalette tracker={tracker} github={github} onClose={() => setPaletteOpen(false)} />}
       {reportOpen && <WeeklyReport tracker={tracker} onClose={() => setReportOpen(false)} />}
-      {chrome === 'hub' && tracker.ready && !tracker.goal && <GoalPicker onPick={(g) => tracker.setGoal(g)} />}
+      {chrome === 'hub' && tracker.ready && !tracker.goal && !tracker.goalPrompted && (
+        <GoalPicker onPick={(g) => tracker.setGoal(g)} onSkip={tracker.dismissGoalPrompt} />
+      )}
       <ShieldsNotice />
     </div>
   )

@@ -17,6 +17,7 @@ export function ReviewView({ tracker, onBack }) {
   const [pos, setPos] = useState(0)
   const [flipped, setFlipped] = useState(false)
   const [practice, setPractice] = useState(false)
+  const [revealedHints, setRevealedHints] = useState(1)
 
   const buildSession = async (ids) => {
     await loadManifest()
@@ -35,6 +36,7 @@ export function ReviewView({ tracker, onBack }) {
     setSession(cards)
     setPos(0)
     setFlipped(false)
+    setRevealedHints(1)
   }
 
   useEffect(() => {
@@ -59,6 +61,7 @@ export function ReviewView({ tracker, onBack }) {
     } else {
       setPos((p) => p + 1)
       setFlipped(false)
+      setRevealedHints(1)
     }
   }
 
@@ -145,12 +148,22 @@ export function ReviewView({ tracker, onBack }) {
             <div className="mt-4 border-t border-border pt-4">
               <p className="text-[11px] font-semibold text-slate-400">Intuition Breakdown</p>
               <ul className="mt-2 space-y-1.5">
-                {intuition.map((h, i) => (
+                {intuition.slice(0, revealedHints).map((h, i) => (
                   <li key={i} className="flex gap-2 text-[13px] text-slate-300 leading-relaxed">
                     <span className="font-mono text-diff-emerald shrink-0">{i + 1}.</span> {h.replace(/^Level \d+:\s*/, '')}
                   </li>
                 ))}
               </ul>
+              {revealedHints < intuition.length ? (
+                <button
+                  onClick={() => setRevealedHints((n) => Math.min(n + 1, intuition.length))}
+                  className="btn-ghost mt-2.5 h-8 px-3 rounded-md text-[12px] font-medium text-slate-200"
+                >
+                  Next hint ({revealedHints + 1}/{intuition.length})
+                </button>
+              ) : (
+                <p className="mt-2 font-mono text-[10px] text-slate-500">All hints revealed — rate the card honestly.</p>
+              )}
               <p className="mt-4 text-[11px] font-semibold text-slate-400">{snapshot.label}</p>
               <pre className="mt-2 rounded-md bg-[#07090E] hairline p-3 font-mono text-[12px] leading-relaxed text-slate-300 overflow-x-auto">
                 {snapshot.lines.join('\n') || '// no snapshot yet — solve it in the IDE first'}

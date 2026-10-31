@@ -49,7 +49,10 @@ export function DailyChallengeCard({ tracker }) {
         <span className="ml-auto font-mono text-[10px] text-slate-500">{challenge.challengeDate.slice(5)}</span>
       </p>
       <p className="mt-2 text-[14px] font-semibold text-slate-100 leading-snug">{challenge.canonicalTitle}</p>
-      <p className="text-[12px] text-slate-500 mt-0.5">{challenge.challengeDifficulty} · same problem for everyone today</p>
+      <p className="text-[12px] text-slate-500 mt-0.5">
+        {challenge.challengeDifficulty} · same problem for everyone today
+      </p>
+      <p className="text-[11px] text-slate-600 mt-0.5 font-mono">New challenge at 00:00 UTC</p>
       <a
         href={`/solve/${challenge.id}`}
         className={`${done ? 'btn-ghost text-slate-300' : 'btn-emerald'} mt-3 flex items-center justify-center h-9 rounded-md text-[13px] font-semibold`}

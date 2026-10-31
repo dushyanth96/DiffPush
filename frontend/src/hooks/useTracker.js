@@ -15,6 +15,7 @@ const emptyState = () => ({
   dailySquares: {}, // { 'YYYY-MM-DD': solveCount } — pruned to last 14 days
   freezes: 0, // banked streak freezes (earn 1 per 7-day streak, cap 3)
   goal: null, // onboarding goal id: placements | faang | core
+  goalPrompted: false, // true once the picker was answered OR explicitly dismissed
 })
 
 // Elo-style tiers computed from diffScore.
@@ -90,6 +91,7 @@ function load() {
       lastSolveAt: parsed.lastSolveAt ?? null,
       freezes: parsed.freezes ?? 0,
       goal: parsed.goal ?? null,
+      goalPrompted: Boolean(parsed.goalPrompted || parsed.goal),
     }
   } catch {
     return emptyState()
@@ -292,7 +294,17 @@ export function useTracker() {
   }, [update])
 
   const setGoal = useCallback((goalId) => {
-    update((prev) => ({ ...prev, goal: GOALS[goalId] ? goalId : null }))
+    update((prev) => ({ ...prev, goal: GOALS[goalId] ? goalId : null, goalPrompted: true }))
+  }, [update])
+
+  // Explicit "not now" — remembers the dismissal so the picker never nags.
+  const dismissGoalPrompt = useCallback(() => {
+    update((prev) => ({ ...prev, goalPrompted: true }))
+  }, [update])
+
+  // Re-open the picker on demand (command palette → Change training goal).
+  const promptGoal = useCallback(() => {
+    update((prev) => ({ ...prev, goal: null, goalPrompted: false }))
   }, [update])
 
   // Live combo status for the navbar pill.
@@ -310,5 +322,5 @@ export function useTracker() {
     }
   }, [state.lastSolveAt, state.comboCount])
 
-  return { ...state, ready, isSolved, toggleStar, getCompletionStats, exportBackup, importBackup, markSolved, unmarkSolved, addDiff, rateCard, getDueCards, getCombo, getTier, setGoal, update }
+  return { ...state, ready, isSolved, toggleStar, getCompletionStats, exportBackup, importBackup, markSolved, unmarkSolved, addDiff, rateCard, getDueCards, getCombo, getTier, setGoal, dismissGoalPrompt, promptGoal, update }
 }

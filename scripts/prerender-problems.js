@@ -9,6 +9,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { buildCard } = require('./og-images');
 
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'frontend', 'dist');
@@ -21,7 +22,16 @@ const YEAR = new Date().getUTCFullYear();
 const REPO = 'https://github.com/dushyanth96/diffpush';
 const X_URL = 'https://x.com/dushyanth168';
 const EMAIL = 'dushyanthpragada9@gmail.com';
-const OG_IMAGE = `${SITE}/og-image.png`;
+const OG_IMAGE = `${SITE}/og-image.png`
+// Page-level social cards. Generated alongside the problem cards so a shared
+// link never falls back to a generic image.
+const OG_CARDS = {
+  hub: `${SITE}/og/hub.png`,
+  compare: `${SITE}/og/vs-leetcode.png`,
+  about: `${SITE}/og/about.png`,
+  privacy: `${SITE}/og/privacy.png`,
+  faq: `${SITE}/og/faq.png`,
+};
 
 const esc = (s) => String(s ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -73,7 +83,7 @@ const APP = {
   operatingSystem: 'Web',
   browserRequirements: 'Requires JavaScript and WebAssembly',
   url: `${SITE}/`,
-  description: 'Track all 369 A2Z DSA sheet problems, run Python and JavaScript in your browser, and auto-commit accepted solutions to GitHub.',
+  description: 'Track all 369 A2Z DSA sheet problems, run Python and JavaScript in your browser, and commit solutions to your own GitHub repo after a quick review.',
   featureList: [
     '369 curated A2Z DSA problems across 16 topics',
     'Local Python 3.11 (Pyodide/WASM) and JavaScript execution',
@@ -92,7 +102,7 @@ const APP = {
 const HOME_FAQ = [
   {
     q: 'What is DiffPush?',
-    a: 'DiffPush is a free, browser-based tracker for the 369-problem A2Z DSA sheet. It runs Python and JavaScript locally, grades real test cases, and can auto-commit accepted solutions to your GitHub account.',
+    a: 'DiffPush is a free, browser-based tracker for the 369-problem A2Z DSA sheet. It runs Python and JavaScript locally, grades real test cases, and can commit accepted solutions to your own GitHub repo once you have reviewed the diff.',
   },
   {
     q: 'Is DiffPush free?',
@@ -104,7 +114,7 @@ const HOME_FAQ = [
   },
   {
     q: 'How does the automatic GitHub commit work?',
-    a: 'When every test case passes, DiffPush pushes the solution file and updated tracker state to a diffpush-solutions repository on your own GitHub account.',
+    a: 'Passing tests only runs the tests. When you submit and then confirm the commit, DiffPush pushes the solution file and updated tracker state to a diffpush-solutions repository on your own GitHub account.',
   },
   {
     q: 'Does my code run on a server?',
@@ -150,7 +160,7 @@ const faqJsonLd = (items, id) => ({
   })),
 });
 
-function head({ title, description, url, type = 'website', jsonLd, keywords }) {
+function head({ title, description, url, type = 'website', jsonLd, keywords, image = OG_IMAGE, imageAlt }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -166,17 +176,17 @@ ${keywords ? `<meta name="keywords" content="${attr(keywords)}" />` : ''}
 <meta property="og:type" content="${type}" />
 <meta property="og:site_name" content="DiffPush" />
 <meta property="og:url" content="${attr(url)}" />
-<meta property="og:image" content="${OG_IMAGE}" />
+<meta property="og:image" content="${attr(image)}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="DiffPush — 369 A2Z DSA problems that run in your browser and auto-commit to GitHub." />
+<meta property="og:image:alt" content="${attr(imageAlt ?? 'DiffPush - 369 A2Z DSA problems that run in your browser and commit to GitHub after review.')}" />
 <meta property="og:locale" content="en_US" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@dushyanth168" />
 <meta name="twitter:creator" content="@dushyanth168" />
 <meta name="twitter:title" content="${attr(title)}" />
 <meta name="twitter:description" content="${attr(description)}" />
-<meta name="twitter:image" content="${OG_IMAGE}" />
+<meta name="twitter:image" content="${attr(image)}" />
 <link rel="stylesheet" href="/seo.css" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="256x256" href="/logo.png" />
@@ -225,6 +235,7 @@ function header(active) {
 ${link('/a2z-dsa-sheet/', 'A2Z DSA Sheet')}
 ${link('/leetcode-alternative/', 'vs LeetCode')}
 ${link('/about/', 'About')}
+${link('/faq/', 'FAQ')}
 <a href="${REPO}" target="_blank" rel="noopener">GitHub</a>
 <a class="cta" href="/dashboard" data-umami-event="cta_click" data-umami-event-cta="static_header">Open DiffPush</a>
 </nav></div></header>`;
@@ -237,13 +248,14 @@ function footer() {
 <a href="/a2z-dsa-sheet/">A2Z DSA Sheet</a>
 <a href="/leetcode-alternative/">LeetCode alternative</a>
 <a href="/about/">About</a>
+<a href="/faq/">Student FAQ</a>
 <a href="/privacy/">Privacy</a>
 <a href="${REPO}" target="_blank" rel="noopener">GitHub</a>
 </nav></div></footer>`;
 }
 
-function layout({ title, description, url, type, jsonLd, body, active, keywords }) {
-  return `${head({ title, description, url, type, jsonLd, keywords })}
+function layout({ title, description, url, type, jsonLd, body, active, keywords, image, imageAlt }) {
+  return `${head({ title, description, url, type, jsonLd, keywords, image, imageAlt })}
 <body>
 ${header(active)}
 <main><div class="wrap">${body}</div></main>
@@ -257,10 +269,12 @@ ${footer()}
 
 function problemPage(meta, full, position) {
   const title = `${meta.canonicalTitle} — ${meta.topicName} | DiffPush`;
-  const desc = `${meta.canonicalTitle}: ${meta.difficultyRaw ?? meta.difficulty} ${meta.topicName} problem with ${meta.testCaseCounts.total} real test cases. Optimal ${meta.optimalTime} time, ${meta.optimalSpace} space. Practice in your browser with auto-commit to GitHub.`;
+  const desc = `${meta.canonicalTitle}: ${meta.difficultyRaw ?? meta.difficulty} ${meta.topicName} problem with ${meta.testCaseCounts.total} real test cases. Optimal ${meta.optimalTime} time, ${meta.optimalSpace} space. Practice in your browser and commit to GitHub after you review the change.`;
   const url = `${SITE}/p/${meta.id}/`;
   const appUrl = `/solve/${meta.id}`;
   const topicUrl = `/a2z-dsa-sheet/#topic-${slugify(meta.topicName)}`;
+  const ogImage = `${SITE}/og/p/${meta.id}.png`;
+  const hints = (full.aiContext?.hintLevels ?? []).filter(Boolean);
   const pub = (full.testCases ?? []).filter((t) => t.isPublic).slice(0, 3);
   const examples = pub.map((t, i) =>
     `<h3>Example ${i + 1}</h3><pre>Input: ${esc(JSON.stringify(t.input))}\nOutput: ${esc(JSON.stringify(t.expected))}${t.explanation ? `\n${esc(t.explanation)}` : ''}</pre>`).join('\n');
@@ -317,6 +331,7 @@ function problemPage(meta, full, position) {
 <article>
 <p class="eyebrow">${esc(meta.topicName)} · ${esc(meta.levelName)} · A2Z DSA sheet</p>
 <h1>${esc(meta.canonicalTitle)}</h1>
+<p class="lead">${esc(full.narrative?.scenario ?? '')}</p>
 <div class="pills">
 <span class="pill">${esc(meta.difficulty)}</span>
 <span class="pill">${esc(meta.difficultyRaw)}</span>
@@ -324,21 +339,27 @@ function problemPage(meta, full, position) {
 <span class="pill">${esc(meta.optimalSpace)} space</span>
 <span class="pill">${esc(meta.testCaseCounts.total)} test cases</span>
 </div>
-<p class="lead">${esc(full.narrative?.scenario ?? '')}</p>
-<p class="meta">Updated ${BUILD_DAY} · Canonical problem page for <code>/solve/${esc(meta.id)}</code>.</p>
+<div class="cta-row">
+<a class="button primary" href="${appUrl}" data-umami-event="cta_click" data-umami-event-cta="static_problem_hero">Practice this problem →</a>
+<a class="button" href="#statement">Read the statement</a>
+</div>
+<p class="meta">No account needed · runs in your browser · updated ${BUILD_DAY}</p>
 
-<h2>Problem statement</h2>
+<h2 id="statement">Problem statement</h2>
 <h3>${esc(full.narrative?.title ?? '')}</h3>
 <p><strong>Input:</strong> ${esc(full.narrative?.inputFormat ?? '')}</p>
 <p><strong>Output:</strong> ${esc(full.narrative?.outputFormat ?? '')}</p>
 ${constraints ? `<h3>Constraints</h3><ul>${constraints}</ul>` : ''}
 ${examples ? `<h2>Examples</h2>${examples}` : ''}
+${hints.length ? `<h2>Stuck? Take one hint</h2>
+<details><summary>Hint 1 of ${hints.length} — open only if you're blocked</summary><p>${esc(hints[0].replace(/^Level \d+:\s*/, ''))}</p></details>
+<p class="meta">Hints unlock one level at a time inside the workspace — the next hint appears only after you ask for it.</p>` : ''}
 
 <h2>Practice this problem in DiffPush</h2>
 <ol>
 <li>Open the <a href="${appUrl}">interactive workspace</a> — no account needed.</li>
 <li>Write Python or JavaScript and run all ${esc(meta.testCaseCounts.total)} test cases locally in your browser.</li>
-<li>When every case passes, optionally auto-commit the solution and complexity notes to your own GitHub repository.</li>
+<li>When every case passes, submit to mark it solved, then optionally commit the solution and complexity notes to your own GitHub repository after reviewing the diff.</li>
 </ol>
 <div class="cta-row">
 <a class="button primary" href="${appUrl}" data-umami-event="cta_click" data-umami-event-cta="static_problem">Solve ${esc(meta.canonicalTitle)} →</a>
@@ -354,7 +375,7 @@ ${related.map((p) => `<a href="/p/${p.id}/">${esc(p.canonicalTitle)}<br><span cl
 <p><a href="${esc(full.canonical?.leetcodeSearch ?? 'https://leetcode.com/problemset/all/')}" target="_blank" rel="noopener">Search this problem on LeetCode ↗</a></p>
 </article>`;
 
-  return layout({ title, description: desc, url, type: 'article', jsonLd: schema, body, active: 'A2Z DSA Sheet', keywords: `${meta.canonicalTitle}, ${meta.topicName}, A2Z DSA sheet, DSA problem, coding interview` });
+  return layout({ title, description: desc, url, type: 'article', jsonLd: schema, body, active: 'A2Z DSA Sheet', keywords: `${meta.canonicalTitle}, ${meta.topicName}, A2Z DSA sheet, DSA problem, coding interview`, image: ogImage, imageAlt: `${meta.canonicalTitle} — ${meta.difficultyRaw ?? meta.difficulty} ${meta.topicName} problem on DiffPush` });
 }
 
 /* ---------------------------------- hub page ---------------------------------- */
@@ -367,13 +388,38 @@ function hubPage() {
 
   const topicSections = topicOrder.map((topic) => {
     const items = byTopic.get(topic);
-    return `<section class="topic" id="topic-${slugify(topic)}">
-<h2>${esc(topic)} <span class="meta">(${items.length} problems)</span></h2>
+    return `<section class="topic" id="topic-${slugify(topic)}" data-topic="${attr(topic)}">
+<h2>${esc(topic)} <span class="meta">(${items.length} problems · <span data-topic-count>0/${items.length}</span> solved)</span></h2>
 <ul class="problem-list">
-${items.map((p) => `<li><a href="/p/${p.id}/">${esc(p.canonicalTitle)}</a> <span class="meta">· ${esc(p.difficulty)}</span></li>`).join('\n')}
+${items.map((p) => `<li data-id="${attr(p.id)}" data-diff="${attr(p.difficultyRaw ?? p.difficulty)}" data-title="${attr(`${p.canonicalTitle} ${p.title ?? ''} ${(p.tags ?? []).join(' ')}`.toLowerCase())}"><a href="/p/${p.id}/">${esc(p.canonicalTitle)}</a> <span class="meta">· ${esc(p.difficulty)} · ${esc(p.optimalTime)}</span></li>`).join('\n')}
 </ul>
+<p class="meta" data-topic-empty hidden>No problems match this filter.</p>
 </section>`;
   }).join('\n');
+
+  const topicNav = `<nav class="topic-nav" id="topic-nav" aria-label="Jump to topic">
+${topicOrder.map((topic) => `<a href="#topic-${slugify(topic)}" data-topic-link="${attr(topic)}">${esc(topic)} <span class="count" data-topic-count>0/${byTopic.get(topic).length}</span></a>`).join('\n')}
+</nav>`;
+
+  const sheetTools = `<div class="sheet-tools" id="sheet-tools">
+<div class="sheet-toolbar">
+<input id="sheet-q" type="search" class="sheet-search" placeholder="Search ${manifest.length} problems by title, tag, or id…" aria-label="Search problems" autocomplete="off" />
+<a class="button primary" id="sheet-continue" href="/dashboard" data-umami-event="cta_click" data-umami-event-cta="static_hub_continue">Start with problem 1 →</a>
+</div>
+<div class="chips" role="group" aria-label="Filter problems">
+<button type="button" class="chip is-active" data-status="all">All ${manifest.length}</button>
+<button type="button" class="chip" data-status="unsolved">Unsolved</button>
+<button type="button" class="chip" data-status="solved">Solved</button>
+<button type="button" class="chip" data-status="starred">Starred</button>
+<button type="button" class="chip" data-status="due">Recall due</button>
+<span class="chip-sep" aria-hidden="true"></span>
+<button type="button" class="chip" data-diff="Easy">Easy</button>
+<button type="button" class="chip" data-diff="Medium">Medium</button>
+<button type="button" class="chip" data-diff="Hard">Hard</button>
+</div>
+<p class="sheet-progress" id="sheet-progress" data-guest>Progress is saved in this browser only — <a href="/dashboard">open the tracker</a> to back it up.</p>
+<p class="sheet-empty" id="sheet-empty" hidden>No problems match this filter. <button type="button" class="chip" id="sheet-reset">Clear search and filters</button></p>
+</div>`;
 
   const itemList = {
     '@type': 'ItemList',
@@ -414,7 +460,7 @@ ${items.map((p) => `<li><a href="/p/${p.id}/">${esc(p.canonicalTitle)}</a> <span
   const body = `${breadcrumbs(crumbs)}
 <p class="eyebrow">The complete A2Z roadmap</p>
 <h1>A2Z DSA Sheet: 369 problems, tracked end to end</h1>
-<p class="lead">DiffPush is a free A2Z DSA sheet tracker with all 369 problems across 16 topics. Each problem includes a narrative, constraints, public examples, and real test cases; Python and JavaScript run locally in your browser, and accepted solutions can auto-commit to GitHub.</p>
+<p class="lead">DiffPush is a free A2Z DSA sheet tracker with all 369 problems across 16 topics. Each problem includes a narrative, constraints, public examples, and real test cases; Python and JavaScript run locally in your browser, and accepted solutions can be committed to GitHub once you have reviewed the change.</p>
 <div class="grid facts">
 <div class="fact"><strong>369</strong><span>curated problems</span></div>
 <div class="fact"><strong>16</strong><span>topics</span></div>
@@ -441,6 +487,8 @@ ${items.map((p) => `<li><a href="/p/${p.id}/">${esc(p.canonicalTitle)}</a> <span
 <p class="note">Tier distribution: ${tierCounts.Baseline ?? 0} Baseline, ${tierCounts['Standard Bar'] ?? 0} Standard Bar, ${tierCounts['DiffPush Tier'] ?? 0} DiffPush Tier. The sheet covers ${topicOrder.length} topics and ${manifest.length} problems.</p>
 
 <h2>Browse all ${manifest.length} problems by topic</h2>
+${sheetTools}
+${topicNav}
 ${topicSections}
 
 <h2 id="faq">A2Z DSA sheet FAQ</h2>
@@ -448,9 +496,10 @@ ${FAQ_PAGE.map(({ q, a }) => `<details><summary>${esc(q)}</summary><p>${esc(a)}<
 
 <h2>Machine-readable data</h2>
 <p>Assistants and agents can read the full curriculum as JSON at <a href="/ai/problems.json">/ai/problems.json</a>, the FAQ at <a href="/ai/faq.json">/ai/faq.json</a>, the nested <a href="/ai/datasets-catalog.json">datasets catalog</a>, and the agent skill at <a href="/ai/diffpush-skill.md">/ai/diffpush-skill.md</a>. Discovery manifests: <a href="/.well-known/ai-catalog.json">AI Catalog</a> and <a href="/.well-known/ard.json">ARD</a>.</p>
-<p class="meta">Updated ${BUILD_DAY}. Problems link to canonical LeetCode searches where available; DiffPush is independent and not affiliated with LeetCode.</p>`;
+<p class="meta">Updated ${BUILD_DAY}. Problems link to canonical LeetCode searches where available; DiffPush is independent and not affiliated with LeetCode.</p>
+<script defer src="/sheet.js"></script>`;
 
-  return layout({ title, description: desc, url, jsonLd: schema, body, active: 'A2Z DSA Sheet', keywords: 'A2Z DSA sheet, 369 DSA problems, DSA tracker, interview preparation, GitHub commits, DiffPush' });
+  return layout({ title, description: desc, url, jsonLd: schema, body, active: 'A2Z DSA Sheet', keywords: 'A2Z DSA sheet, 369 DSA problems, DSA tracker, interview preparation, GitHub commits, DiffPush', image: OG_CARDS.hub, imageAlt: 'A2Z DSA Sheet: 369 problems across 16 topics, tracked end to end on DiffPush' });
 }
 
 /* ------------------------------ comparison page ------------------------------ */
@@ -489,7 +538,7 @@ function comparePage() {
     ['Structure', 'A2Z sheet order with tiers and topic progress', 'Large catalog; you choose or follow a list'],
     ['Code execution', 'Python and JavaScript locally; Java/C++ remote', 'Server-side judge for many languages'],
     ['Real test cases', 'Yes, public and hidden cases per problem', 'Yes, including hidden judge cases'],
-    ['GitHub proof', 'Optional auto-commit of accepted solutions', 'No automatic commit to your repo'],
+    ['GitHub proof', 'Optional commit, previewed with repo, path, and diff', 'No commit to your repo'],
     ['Account needed', 'No for guest mode; GitHub only for commits', 'Account required to submit'],
     ['Price', 'Free for students and non-commercial study', 'Free tier plus paid premium'],
     ['Contests', 'No', 'Yes, regular contests and rankings'],
@@ -563,7 +612,7 @@ function comparePage() {
 ${COMPARE_FAQ.map(({ q, a }) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n')}
 <p class="meta">Updated ${BUILD_DAY}. LeetCode is a trademark of its owner. DiffPush is independent and not affiliated with LeetCode.</p>`;
 
-  return layout({ title, description: desc, url, jsonLd: schema, body, active: 'vs LeetCode', keywords: 'DiffPush vs LeetCode, LeetCode alternative, A2Z DSA sheet tracker, GitHub commits, local code execution' });
+  return layout({ title, description: desc, url, jsonLd: schema, body, active: 'vs LeetCode', keywords: 'DiffPush vs LeetCode, LeetCode alternative, A2Z DSA sheet tracker, GitHub commits, local code execution', image: OG_CARDS.compare, imageAlt: 'DiffPush vs LeetCode, compared for A2Z DSA sheet practice' });
 }
 
 /* --------------------------------- about page -------------------------------- */
@@ -627,7 +676,7 @@ function aboutPage() {
 <p>Maintainer: Dushyanth Pragada · <a href="mailto:${EMAIL}">${EMAIL}</a> · <a href="${X_URL}" target="_blank" rel="noopener">X / Twitter</a> · <a href="${REPO}" target="_blank" rel="noopener">GitHub</a>.</p>
 <p class="meta">Last updated ${BUILD_DAY}.</p>`;
 
-  return layout({ title, description: desc, url, jsonLd: schema, body, active: 'About', keywords: 'About DiffPush, A2Z DSA tracker, GitHub commits, local execution, DSA study tool' });
+  return layout({ title, description: desc, url, jsonLd: schema, body, active: 'About', keywords: 'About DiffPush, A2Z DSA tracker, GitHub commits, local execution, DSA study tool', image: OG_CARDS.about, imageAlt: 'About DiffPush, an independent A2Z DSA tracker with GitHub proof' });
 }
 
 function privacyPage() {
@@ -684,7 +733,126 @@ function privacyPage() {
 <p>Questions or a data request: reach out on X at <a href="${X_URL}" target="_blank" rel="noopener">@dushyanth168</a> or open an issue on <a href="${REPO}" target="_blank" rel="noopener">GitHub</a>.</p>
 <p class="meta">Last updated ${BUILD_DAY}.</p>`;
 
-  return layout({ title, description: desc, url, jsonLd: schema, body, keywords: 'DiffPush privacy, local storage, GitHub OAuth token, ads, Cloudflare Pages' });
+  return layout({ title, description: desc, url, jsonLd: schema, body, keywords: 'DiffPush privacy, local storage, GitHub OAuth token, ads, Cloudflare Pages', image: OG_CARDS.privacy, imageAlt: 'DiffPush privacy: what is stored in your browser and what is not' });
+}
+
+/* ---------------------------------- FAQ page --------------------------------- */
+
+const STUDENT_FAQ = [
+  {
+    q: 'Where is my progress stored?',
+    a: 'In this browser. Solved problems, DIFF, streaks, recall cards, and the code you are drafting are kept in localStorage and IndexedDB on your device. There is no DiffPush account database, so nothing is uploaded unless you connect GitHub or use the AI coach.',
+  },
+  {
+    q: 'I cleared my browser data or switched laptops. Is my progress gone?',
+    a: 'Yes, if you never backed it up or connected GitHub. Clearing site data deletes local progress, and there is no server copy to restore. Export a .json backup from the dashboard (Progress Safety → Backup & restore) before clearing anything, and restore it on the new device. Connecting GitHub also keeps a copy of your solved state in .builtdiff/tracker.json.',
+  },
+  {
+    q: 'Do I need a GitHub account?',
+    a: 'No. Guest mode is the default: pick a problem and run it. GitHub is optional and is only used to commit solutions and sync tracker state across devices.',
+  },
+  {
+    q: 'What exactly gets committed to my GitHub when I solve something?',
+    a: 'One solution file at a path like arrays/001_two-sum.py, an updated .builtdiff/tracker.json, and a refreshed repo README with your progress. The commit message carries the problem title and your optimal complexity. Nothing else from your machine is uploaded.',
+  },
+  {
+    q: 'Does DiffPush push to GitHub automatically when tests pass?',
+    a: 'No. Passing tests only runs the tests. You press Submit to mark a problem solved locally, and GitHub is a separate Commit action that shows the repository, branch, file path, and a line diff before anything is written.',
+  },
+  {
+    q: 'Can I delete a commit DiffPush made?',
+    a: 'Yes. Commits land in a repository you own, so you can delete the file, revert the commit, or delete the whole diffpush-solutions repository on GitHub. DiffPush never keeps a copy of your code on its servers.',
+  },
+  {
+    q: 'Do I need to pay for an AI key to use the coach?',
+    a: 'It depends. Hints and problem statements work without any key. The conversational coach is bring-your-own-key: add a free Gemini or Groq key in the coach panel. The key stays in this browser and is sent only with that one request; the backend never stores or logs it.',
+  },
+  {
+    q: 'Is DiffPush free? Why are there ads?',
+    a: 'DiffPush is free for students, hobbyists, and non-commercial study. Third-party ad units cover hosting and the remote compiler. Ads can be blocked and every feature still works; if you want to support the project directly there is a link in the footer.',
+  },
+  {
+    q: 'Does it work offline?',
+    a: 'After the app loads, Python runs locally through Pyodide and JavaScript runs in a Web Worker, so those two work offline. Java and C++ use a shared remote compiler, and GitHub commits, rooms, and the AI coach need internet access.',
+  },
+  {
+    q: 'Which languages can I run?',
+    a: 'Python 3.11 and JavaScript run locally in your browser. Java 17 and C++20 run on a shared remote compiler with a rate limit, so they need a connection.',
+  },
+  {
+    q: 'Is my code sent anywhere when I run the tests?',
+    a: 'For Python and JavaScript, no: execution happens in your browser. For Java and C++, the code is sent to the remote compiler to run and is not stored. The AI coach sends only the context you trigger, never your API key to a third party other than the provider you chose.',
+  },
+  {
+    q: 'How do I report a bug or ask a question?',
+    a: 'Open the help menu (the ? icon in the app header) and choose Report a bug — it pre-fills your route, viewport, and user agent, and explicitly excludes code, tokens, and API keys. You can also email the maintainer or open an issue on GitHub.',
+  },
+];
+
+// Reuse safe defaults so the FAQ page never claims something the product does
+// not do (auto-commit, server accounts, stored keys).
+const STUDENT_FAQ_CORE = [...STUDENT_FAQ, ...FAQ_PAGE];
+
+function faqPage() {
+  const url = `${SITE}/faq/`;
+  const title = 'Student FAQ — progress, GitHub commits, AI keys, ads | DiffPush';
+  const desc = 'Straight answers about DiffPush for students: where progress is stored, what happens when you clear your browser, what gets committed to GitHub, whether you need an AI key, and why there are ads.';
+  const crumbs = [{ label: 'Home', url: '/' }, { label: 'Student FAQ' }];
+
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'FAQPage',
+        '@id': `${url}#faq`,
+        url,
+        name: title,
+        description: desc,
+        isPartOf: { '@id': `${SITE}/#website` },
+        inLanguage: 'en',
+        dateModified: BUILD_DAY,
+        mainEntity: STUDENT_FAQ_CORE.map(({ q, a }) => ({
+          '@type': 'Question',
+          name: q,
+          acceptedAnswer: { '@type': 'Answer', text: a },
+        })),
+      },
+      breadcrumbLd(crumbs, url),
+    ],
+  };
+
+  const body = `${breadcrumbs(crumbs)}
+<p class="eyebrow">Student FAQ</p>
+<h1>Questions students actually ask</h1>
+<p class="lead">Short, honest answers about progress, GitHub, keys, and ads. If something here is wrong or missing, the help menu has a one-click bug report.</p>
+
+<div class="cta-row">
+<a class="button primary" href="/dashboard" data-umami-event="cta_click" data-umami-event-cta="faq_start">Open the tracker →</a>
+<a class="button" href="/a2z-dsa-sheet/">Browse the sheet</a>
+</div>
+
+<h2 id="progress">Progress &amp; data</h2>
+${STUDENT_FAQ.slice(0, 2).map(({ q, a }) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n')}
+
+<h2 id="github">GitHub commits</h2>
+${STUDENT_FAQ.slice(2, 6).map(({ q, a }) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n')}
+
+<h2 id="ai">AI coach &amp; keys</h2>
+${STUDENT_FAQ.slice(6, 7).map(({ q, a }) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n')}
+
+<h2 id="cost">Cost, ads &amp; offline</h2>
+${STUDENT_FAQ.slice(7, 10).map(({ q, a }) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n')}
+
+<h2 id="privacy">Privacy &amp; support</h2>
+${STUDENT_FAQ.slice(10).map(({ q, a }) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n')}
+
+<h2 id="more">More questions</h2>
+${FAQ_PAGE.map(({ q, a }) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n')}
+
+<p class="note">Still stuck? Email <a href="mailto:${EMAIL}">${EMAIL}</a>, open an issue on <a href="${REPO}" target="_blank" rel="noopener">GitHub</a>, or read the <a href="/privacy/">privacy page</a> and <a href="/about/">about page</a>.</p>
+<p class="meta">Updated ${BUILD_DAY}.</p>`;
+
+  return layout({ title, description: desc, url, jsonLd: schema, body, active: 'Student FAQ', keywords: 'DiffPush FAQ, DSA tracker progress storage, GitHub commits, bring your own AI key, ads, offline DSA practice', image: OG_CARDS.faq, imageAlt: 'Student FAQ: where progress is stored, GitHub commits, AI keys, ads' });
 }
 
 /* ------------------------------ AI/GEO artifacts ----------------------------- */
@@ -692,7 +860,7 @@ function privacyPage() {
 function llmsTxt() {
   return `# DiffPush
 
-> DiffPush is a free, browser-based A2Z DSA sheet tracker. It covers 369 interview problems across 16 topics, runs Python and JavaScript locally, and can auto-commit accepted solutions to the learner's GitHub account.
+> DiffPush is a free, browser-based A2Z DSA sheet tracker. It covers 369 interview problems across 16 topics, runs Python and JavaScript locally, and can commit accepted solutions to the learner's own GitHub repository after review.
 
 DiffPush is an independent study tool, not a contest platform and not affiliated with LeetCode or the authors of any DSA sheet. Canonical host: ${SITE}/.
 
@@ -704,7 +872,7 @@ DiffPush is an independent study tool, not a contest platform and not affiliated
 - Tiers: ${tierCounts.Baseline ?? 0} Baseline, ${tierCounts['Standard Bar'] ?? 0} Standard Bar, ${tierCounts['DiffPush Tier'] ?? 0} DiffPush Tier
 - Local execution: Python 3.11 (Pyodide/WebAssembly) and JavaScript (Web Worker)
 - Remote execution: Java 17 and C++20 (shared compiler, internet required)
-- GitHub: optional OAuth; accepted solutions auto-commit to \`diffpush-solutions\`
+- GitHub: optional OAuth; after you review the diff, accepted solutions commit to \`diffpush-solutions\`
 - Accounts: optional; guest progress is stored in the browser
 - Price: free for students, hobbyists, and non-commercial study
 - License: PolyForm Noncommercial 1.0.0
@@ -744,7 +912,7 @@ DiffPush is an independent study tool, not a contest platform and not affiliated
 - DiffPush is best for structured A2Z sheet progress and GitHub proof of work. It does not host contests and does not have LeetCode's full problem bank.
 - Do not claim a user's progress, streak, or commit history unless the user provides it; that data lives locally or in their GitHub account.
 - Do not describe Python execution as server-side. Python and JavaScript run locally; Java and C++ use a shared remote compiler.
-- Guest mode works without an account. GitHub is only required for automatic commits and cross-device sync.
+- Guest mode works without an account. GitHub is only required for commits and cross-device sync.
 - Prefer the canonical \`/p/<slug>/\` page over the interactive \`/solve/<slug>\` route when citing; the interactive route is \`noindex\` to avoid duplicate content.
 `;
 }
@@ -827,7 +995,7 @@ description: Build A2Z DSA study plans and recommend practice problems using Dif
 
 # DiffPush A2Z DSA Coach
 
-DiffPush (${SITE}/) is a free, browser-based tracker for the 369-problem A2Z DSA sheet. Python and JavaScript run locally; accepted solutions can auto-commit to the learner's GitHub. It is independent and not affiliated with LeetCode.
+DiffPush (${SITE}/) is a free, browser-based tracker for the 369-problem A2Z DSA sheet. Python and JavaScript run locally; accepted solutions can be committed to the learner's GitHub after review. It is independent and not affiliated with LeetCode.
 
 ## Data to use
 
@@ -843,7 +1011,7 @@ Fetch the curriculum JSON when you need exact titles, topics, tiers, or complexi
 
 1. If the user asks what to study next, filter the curriculum by topic or tier and propose a short ordered set (3-7 problems), explaining the pattern each one teaches.
 2. If the user names a problem, find its canonical page and link to ${SITE}/p/<slug>/ (not /solve/<slug>).
-3. If the user wants a tracker or GitHub proof, explain DiffPush's guest mode and optional GitHub auto-commit.
+3. If the user wants a tracker or GitHub proof, explain DiffPush's guest mode and optional GitHub commits after review.
 4. If the user compares tools, use the honest comparison page: DiffPush is for the A2Z sheet and GitHub proof; LeetCode is for contests and a larger problem bank.
 
 ## Facts and guardrails
@@ -991,6 +1159,7 @@ function main() {
     `${SITE}/leetcode-alternative/`,
     `${SITE}/about/`,
     `${SITE}/privacy/`,
+    `${SITE}/faq/`,
   ];
 
   manifest.forEach((meta, position) => {
@@ -998,6 +1167,14 @@ function main() {
     if (!fs.existsSync(src)) return;
     const full = JSON.parse(fs.readFileSync(src, 'utf8'));
     write(path.join('p', meta.id, 'index.html'), problemPage(meta, full, position));
+    // Per-problem social card (shared links used to show the homepage image).
+    write(path.join('og', 'p', `${meta.id}.png`), buildCard({
+      title: meta.canonicalTitle,
+      topic: meta.topicName,
+      difficulty: meta.difficultyRaw ?? meta.difficulty,
+      time: meta.optimalTime,
+      space: meta.optimalSpace,
+    }));
     const mtime = fs.statSync(src).mtime.toISOString().slice(0, 10);
     urls.push({ url: `${SITE}/p/${meta.id}/`, lastmod: mtime });
     n += 1;
@@ -1007,6 +1184,52 @@ function main() {
   write(path.join('leetcode-alternative', 'index.html'), comparePage());
   write(path.join('about', 'index.html'), aboutPage());
   write(path.join('privacy', 'index.html'), privacyPage());
+  write(path.join('faq', 'index.html'), faqPage());
+
+  // Page-level social cards (problem cards are written in the loop above).
+  const pageCards = [
+    ['hub', {
+      title: 'A2Z DSA Sheet: 369 problems, tracked end to end',
+      eyebrow: 'THE COMPLETE A2Z ROADMAP',
+      chip: '369 PROBLEMS',
+      meta: '16 TOPICS · 3 TIERS · FREE',
+      footer: 'RUNS IN YOUR BROWSER · COMMITS TO GITHUB AFTER REVIEW',
+      difficulty: 'Easy',
+    }],
+    ['vs-leetcode', {
+      title: 'DiffPush vs LeetCode for the A2Z Sheet',
+      eyebrow: 'HONEST COMPARISON',
+      chip: 'VS LEETCODE',
+      meta: 'LOCAL RUNS · GITHUB PROOF · NO ACCOUNT',
+      footer: 'DIFFPUSH.PAGES.DEV/LEETCODE-ALTERNATIVE',
+      difficulty: 'Medium',
+    }],
+    ['about', {
+      title: 'About DiffPush',
+      eyebrow: 'ABOUT',
+      chip: 'INDEPENDENT',
+      meta: 'FREE FOR STUDENTS AND NON-COMMERCIAL STUDY',
+      footer: 'OPEN SOURCE · NOT AFFILIATED WITH LEETCODE',
+      difficulty: 'Easy',
+    }],
+    ['privacy', {
+      title: 'What DiffPush stores, and where',
+      eyebrow: 'PRIVACY',
+      chip: 'LOCAL FIRST',
+      meta: 'NO ACCOUNT DATABASE · NO CODE UPLOADS',
+      footer: 'PROGRESS LIVES IN YOUR BROWSER',
+      difficulty: 'Easy',
+    }],
+    ['faq', {
+      title: 'Questions students actually ask',
+      eyebrow: 'STUDENT FAQ',
+      chip: 'HONEST ANSWERS',
+      meta: 'PROGRESS · COMMITS · AI KEYS · ADS',
+      footer: 'DIFFPUSH.PAGES.DEV/FAQ',
+      difficulty: 'Medium',
+    }],
+  ];
+  for (const [name, card] of pageCards) write(path.join('og', `${name}.png`), buildCard(card));
 
   write('llms.txt', llmsTxt());
   write('llms-full.txt', llmsFullTxt());
@@ -1029,7 +1252,7 @@ ${urls.map((u) => typeof u === 'string'
 `;
   write('sitemap.xml', sm);
 
-  console.log(`SEO/GEO: ${n} problem pages, 4 static pages, sitemap (${urls.length} urls), llms.txt, AI catalog, ARD, datasets.`);
+  console.log(`SEO/GEO: ${n} problem pages, 5 static pages, sitemap (${urls.length} urls), llms.txt, AI catalog, ARD, datasets.`);
 }
 
 main();
