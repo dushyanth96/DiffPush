@@ -68,7 +68,7 @@ const WEBSITE = {
   '@id': `${SITE}/#website`,
   url: `${SITE}/`,
   name: 'DiffPush',
-  description: 'A free, browser-based A2Z DSA sheet tracker with local code execution and automatic GitHub commits.',
+  description: 'A free, browser-based A2Z DSA sheet tracker with local code execution and reviewed GitHub commits.',
   publisher: { '@id': `${SITE}/#organization` },
   inLanguage: 'en',
 };
@@ -87,7 +87,7 @@ const APP = {
   featureList: [
     '369 curated A2Z DSA problems across 16 topics',
     'Local Python 3.11 (Pyodide/WASM) and JavaScript execution',
-    'Automatic GitHub commits for accepted solutions',
+    'GitHub commits you review before they are pushed',
     'Leitner spaced repetition and recall cards',
     'Streaks, daily challenge, and progress dashboard',
   ],
@@ -110,10 +110,10 @@ const HOME_FAQ = [
   },
   {
     q: 'Do I need a GitHub account to use DiffPush?',
-    a: 'No. Guest mode saves progress in your browser. A GitHub account is only needed for automatic solution commits and cross-device sync.',
+    a: 'No. Guest mode saves progress in your browser. A GitHub account is only needed to commit solutions and sync across devices.',
   },
   {
-    q: 'How does the automatic GitHub commit work?',
+    q: 'How does the GitHub commit work?',
     a: 'Passing tests only runs the tests. When you submit and then confirm the commit, DiffPush pushes the solution file and updated tracker state to a diffpush-solutions repository on your own GitHub account.',
   },
   {
@@ -383,7 +383,7 @@ ${related.map((p) => `<a href="/p/${p.id}/">${esc(p.canonicalTitle)}<br><span cl
 function hubPage() {
   const url = `${SITE}/a2z-dsa-sheet/`;
   const title = 'A2Z DSA Sheet: All 369 Problems, 16 Topics | DiffPush';
-  const desc = 'The complete A2Z DSA sheet: 369 interview problems across 16 topics, with local Python and JavaScript execution, real test cases, and automatic GitHub commits. Browse every problem free.';
+  const desc = 'The complete A2Z DSA sheet: 369 interview problems across 16 topics, with local Python and JavaScript execution, real test cases, and reviewed GitHub commits. Browse every problem free.';
   const crumbs = [{ label: 'Home', url: '/' }, { label: 'A2Z DSA Sheet' }];
 
   const topicSections = topicOrder.map((topic) => {

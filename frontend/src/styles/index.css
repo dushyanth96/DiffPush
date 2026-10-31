@@ -76,5 +76,56 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .pill { border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 999px; }
 
+/* Landing hero atmosphere: one emerald light source, one indigo counter-glow,
+   and a dot matrix that fades out before it reads as a texture. Paint-only —
+   gradients instead of blur filters, no canvas, no images, no scroll listeners. */
+.hero-aurora {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.95;
+  animation: hero-drift 22s ease-in-out infinite;
+}
+
+.hero-aurora--emerald {
+  background: radial-gradient(60% 55% at 50% 0%, rgba(16, 185, 129, 0.16), transparent 70%);
+}
+
+.hero-aurora--indigo {
+  background: radial-gradient(45% 45% at 84% 10%, rgba(99, 102, 241, 0.1), transparent 70%);
+  animation-duration: 28s;
+  animation-direction: reverse;
+  animation-delay: -8s;
+}
+
+.hero-dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 75%);
+}
+
+/* Imperceptible frame to frame; noticeable after ten seconds. */
+@keyframes hero-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.92; }
+  50% { transform: translate3d(0, -1.5%, 0) scale(1.03); opacity: 1; }
+}
+
+/* Primary CTA lit by the same source as the backdrop. */
+.btn-emerald-hero {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0 40px rgba(16, 185, 129, 0.18);
+  transition: background 120ms ease, transform 80ms ease, box-shadow 160ms ease;
+}
+.btn-emerald-hero:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0 52px rgba(16, 185, 129, 0.26);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-aurora { animation: none; opacity: 1; transform: none; }
+}
+
 /* Presentation mode (?present=1): hide every ad surface, keep layout intact. */
 [data-present='1'] [data-ad] { display: none !important; }
