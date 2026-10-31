@@ -16,7 +16,6 @@ import { REPO_URL } from '../../data/repo.js'
 import { navigate } from '../../data/route.js'
 import { commitExtras, markSolve, commitSolve, solutionPathFor, fetchRepoFile } from '../../data/solve.js'
 import { fetchPushedSolution } from '../../hooks/useGitHub.js'
-import { DashboardBannerSlot, VerticalAdSlot } from '../layout/AmbientAdSlot.jsx'
 import { useNarrow } from '../../hooks/useNarrow.js'
 import { useSeo, SITE_URL } from '../../hooks/useSeo.js'
 import { track } from '../../lib/analytics.js'
@@ -420,10 +419,6 @@ export function Workspace({ slug, tracker, github, onBack }) {
 
   return (
     <div className="min-h-screen lg:h-screen flex flex-col pb-16 lg:pb-0">
-      {/* top leaderboard strip — same placement/settings as the arena top */}
-        <div data-ad className="shrink-0 border-b border-border px-2 sm:px-4 py-1 flex justify-center overflow-hidden">
-        <DashboardBannerSlot />
-      </div>
       {/* top workspace header */}
       <div className="shrink-0 border-b border-border bg-canvas px-3 sm:px-4 py-2.5 flex items-center gap-3 flex-wrap">
         <button onClick={onBack} className="flex items-center gap-1 text-[13px] text-slate-400 hover:text-slate-100">
@@ -709,10 +704,6 @@ export function Workspace({ slug, tracker, github, onBack }) {
             <p className="shrink-0 px-3 pt-1 pb-2 text-[11px] leading-snug text-slate-500 text-center">
               Stuck? <span className="text-slate-200 font-medium">Open AI Coach</span> for hints, Big-O checks &amp; debug traces.
             </p>
-            {/* rail freed up by the collapsed coach → hybrid ad: house first, Mondiad 60s, AADS fallback */}
-            <div data-ad className="hidden lg:flex flex-1 min-h-0 px-2 pb-2">
-              <VerticalAdSlot />
-            </div>
           </section>
         ) : (
         <section id="coach-panel" className="relative border-t lg:border-t-0 lg:border-l border-border flex flex-col h-[72vh] min-h-[360px] lg:h-auto lg:min-h-0 lg:overflow-hidden">

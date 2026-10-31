@@ -5,6 +5,7 @@ import { useGitHub } from './hooks/useGitHub.js'
 import { Navbar } from './components/layout/Navbar.jsx'
 import { MasterProgressCard, RecallCard, SafetyCard } from './components/dashboard/TelemetryDeck.jsx'
 import { SidebarBannerSlot } from './components/layout/AmbientAdSlot.jsx'
+import { MobileStickyAd } from './components/layout/MobileStickyAd.jsx'
 import { ShieldsNotice } from './components/layout/ShieldsNotice.jsx'
 import { CurriculumDirectory } from './components/dashboard/CurriculumDirectory.jsx'
 import { ResumeCard } from './components/dashboard/ResumeCard.jsx'
@@ -37,8 +38,13 @@ import { PrivacyPage } from './components/marketing/PrivacyPage.jsx'
 import { NotFoundPage } from './components/marketing/NotFoundPage.jsx'
 import { RouteSeo } from './components/layout/RouteSeo.jsx'
 import { track } from './lib/analytics.js'
+import { useMediaMin } from './hooks/useNarrow.js'
 
 const GUEST_KEY = 'builtdiff:guest'
+const STICKY_AD_KEY = 'builtdiff:sticky-ad-dismissed'
+// Ads never share a screen with the editor, the problem statement, auth
+// callbacks, the network verification page, or legal pages.
+const AD_FREE_ROUTES = new Set(['solve', 'arena', 'room', 'rooms', 'review', 'callback', 'ads-verify', 'privacy', 'notfound'])
 
 function usePathRoute() {
   const [route, setRoute] = useState(() => { migrateLegacyHash(); return parseRoute() })
@@ -63,6 +69,10 @@ export default function App() {
   const [view, setView] = useState('curriculum')
   const [guest, setGuest] = useState(() => {
     try { return localStorage.getItem(GUEST_KEY) === '1' } catch { return false }
+  })
+  // Session-scoped dismissal for the single mobile sticky placement.
+  const [stickyAdDismissed, setStickyAdDismissed] = useState(() => {
+    try { return sessionStorage.getItem(STICKY_AD_KEY) === '1' } catch { return false }
   })
 
   const enterGuest = (source = 'landing') => {
@@ -170,6 +180,10 @@ export default function App() {
   //   certificate pages stay outside it — no redirect loops, resume links work).
   const isAuthenticated = github.connected || guest
   const resolving = Boolean(github.token && !github.profile && !github.error) && !guest
+  const presentMode = isPresentMode()
+  const isDesktop = useMediaMin(1024)
+  // One mobile-only slot per page, never on the landing page or editor routes.
+  const showStickyAd = route.name !== 'hub' && !AD_FREE_ROUTES.has(route.name) && !stickyAdDismissed && !presentMode && !isDesktop
 
   // Direct problem links (search results, shared URLs) start a local guest
   // session so the editor opens immediately, then ask once whether to keep
@@ -230,7 +244,10 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-canvas text-slate-200" data-present={isPresentMode() ? '1' : undefined}>
+    <div
+      className={`min-h-screen bg-canvas text-slate-200${showStickyAd ? ' pb-[60px] lg:pb-0' : ''}`}
+      data-present={presentMode ? '1' : undefined}
+    >
       <RouteSeo route={route} />
       {chrome === 'hub' ? (
         <>
@@ -264,7 +281,9 @@ export default function App() {
                   <div className="col-span-1 lg:col-span-4 min-w-0 lg:sticky lg:top-24 flex flex-col gap-4">
                 <IdentityCard tracker={tracker} github={github} />
                 <MasterProgressCard tracker={tracker} />
-                <SidebarBannerSlot />
+                {/* Single desktop ad: right-rail partner card. Unmounted below
+                    lg, where the one mobile sticky placement takes over. */}
+                {isDesktop && !presentMode && <SidebarBannerSlot />}
                 <RecallCard tracker={tracker} />
                 <SafetyCard tracker={tracker} />
                 <SupportCard />
@@ -288,6 +307,14 @@ export default function App() {
         <GoalPicker onPick={(g) => tracker.setGoal(g)} onSkip={tracker.dismissGoalPrompt} />
       )}
       <ShieldsNotice />
+      {showStickyAd && (
+        <MobileStickyAd
+          onDismiss={() => {
+            setStickyAdDismissed(true)
+            try { sessionStorage.setItem(STICKY_AD_KEY, '1') } catch {}
+          }}
+        />
+      )}
     </div>
   )
 }

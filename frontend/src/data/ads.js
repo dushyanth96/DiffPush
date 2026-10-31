@@ -16,10 +16,13 @@
 export const MONDIAD_TAG_URL = ''
 export const AADS_TAG_URL = ''
 
-// Mondiad banner delivery (head-loaded via index.html):
-// banner.js scans for divs carrying a data-mndbanid slot id and fills them.
-// The vertical id serves the AI-chat rail slot; the dashboard id serves the
-// in-feed leaderboard slot between curriculum banners.
+// Mondiad banner delivery: banner.js scans for divs carrying a data-mndbanid
+// slot id and fills them. It is injected on demand by rescanMondiadSlots() —
+// never in index.html — so pages without a slot (editor, mobile, static) do
+// not load the network tag at all.
+// Only the sidebar id is mounted today (desktop right rail). The vertical and
+// dashboard ids are kept for reference/legacy network reporting and are not
+// rendered anywhere: no ad sits in the editor or between curriculum topics.
 export const MONDIAD_BANNER_JS = 'https://ss.mrmnd.com/banner.js'
 export const MONDIAD_VERTICAL_BANNER_ID = '06d8e32a-a0cc-4d2e-a9c5-21b383311e1d'
 export const MONDIAD_DASHBOARD_BANNER_ID = '6d706f7b-8c76-402a-8784-1042f90102d4'
@@ -67,11 +70,10 @@ export const HYBRID_HOUSE_MS = 60000
 // mounted after its initial scan. banner.js scans for div[data-mndbanid]
 // once at load and does not observe later DOM mutations, so React-rendered
 // slots (which mount after the tag runs) are never filled without this.
-// Dashboard slots mount in waves (sidebar immediately, in-feed after the
-// manifest fetch), so besides the immediate first scan every mount also
-// (re)schedules a trailing scan that picks up later waves. Bounded: at most
-// 3 tag executions per page load, scans at least 4s apart. Safe to call
-// from every slot on mount.
+// The sidebar slot mounts after the manifest fetch, so besides the immediate
+// first scan every mount (re)schedules a trailing scan that picks it up.
+// Bounded: at most 3 tag executions per page load, scans at least 4s apart.
+// Safe to call from every slot on mount.
 let mondiadRescans = 0
 let lastMondiadRescan = 0
 let mondiadRescanTimer = 0
@@ -105,9 +107,8 @@ export function rescanMondiadSlots({ force = false } = {}) {
   } catch {}
 }
 
-// One rescan per rotation boundary even when several slots flip together
-// (dashboard in-feed + sidebar, editor strip + rail). Slots that mount late
-// still get the non-forced initial scan with its trailing sweep.
+// One rescan per rotation boundary. Slots that mount late still get the
+// non-forced initial scan with its trailing sweep.
 let lastPhaseRescan = 0
 export function rescanMondiadForPhase() {
   const now = Date.now()

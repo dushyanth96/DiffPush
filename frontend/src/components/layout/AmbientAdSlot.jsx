@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import {
-  MONDIAD_VERTICAL_BANNER_ID, MONDIAD_DASHBOARD_BANNER_ID, MONDIAD_SIDEBAR_BANNER_ID,
+  MONDIAD_SIDEBAR_BANNER_ID,
   AD_FILL_TIMEOUT_MS, HYBRID_NETWORK_MS, HYBRID_HOUSE_MS,
-  AADS_SQUARE_ID, AADS_INFEED_ID, AADS_RAIL_ID,
+  AADS_SQUARE_ID,
   isAdTest, isPresentMode, rescanMondiadSlots, rescanMondiadForPhase, HOUSE_PROMO,
 } from '../../data/ads.js'
 import { loadDeals, pickDeal } from '../../data/deals.js'
@@ -277,65 +277,10 @@ function useHybridPhase(enabled, networkMs = HYBRID_NETWORK_MS, houseMs = HYBRID
   return enabled ? phase : 'house'
 }
 
-// Vertical banner for the collapsed coach rail (160x600 class). Serves the
-// Mondiad AI-chat banner slot: head-loaded banner.js fills div[data-mndbanid].
-// Crash-safe by construction: after initial mount React only toggles
-// classNames inside the frame — it never inserts/removes nodes there, so the
-// tag tearing down the slot node can't break reconciliation.
-export function VerticalAdSlot({ network = true, mondiad = true, networkMs, houseMs } = {}) {
-  const { frameRef, slotRef, showMondiad, showAads, aadsMounted, showHouse, markAadsLoaded } = useHybridSlot({ network, mondiad, networkMs, houseMs, mondiadId: MONDIAD_VERTICAL_BANNER_ID })
-
-  return (
-    <div data-ad className="card p-2 w-full h-full min-h-0 flex flex-col" style={{ contain: 'layout' }} aria-label="Partner picks">
-      <p className="eyebrow text-center mb-1.5 shrink-0">PARTNER PICKS</p>
-      <div ref={frameRef} className="flex-1 min-h-[140px] rounded-md bg-raised hairline overflow-hidden flex flex-col items-center justify-between gap-3 py-4">
-        <div ref={slotRef} data-mndbanid={MONDIAD_VERTICAL_BANNER_ID} className={`w-full h-full min-h-[120px]${showMondiad ? '' : ' hidden'}`} />
-        {aadsMounted ? (
-          <AadsUnit unitId={AADS_RAIL_ID} size="160x600" capHeight onLoad={markAadsLoaded} hidden={!showAads} />
-        ) : null}
-        <div data-house="1" className={showHouse ? 'contents' : 'hidden'}>
-          <HousePromo vertical category="productivity" />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// In-feed Mondiad leaderboard for the dashboard curriculum list.
-// Serves MONDIAD_DASHBOARD_BANNER_ID: head-loaded banner.js fills
-// div[data-mndbanid]. Hybrid rotation by default (paid network 60s →
-// in-house 60s); pass network={false} for in-house-only placement.
-// Same crash-safe contract as VerticalAdSlot — the slot div mounts once
-// and is never reconciled; the fallback promo is always mounted and only
-// toggled via className. Fixed frame, zero layout shift.
-export function DashboardBannerSlot({ network = true, mondiad = true, networkMs, houseMs } = {}) {
-  const { frameRef, slotRef, showMondiad, showAads, aadsMounted, showHouse, markAadsLoaded } = useHybridSlot({ network, mondiad, networkMs, houseMs, mondiadId: MONDIAD_DASHBOARD_BANNER_ID })
-
-  return (
-    <div
-      ref={frameRef}
-      data-ad
-      className="mx-auto overflow-hidden rounded-md bg-surface hairline h-[50px] w-full max-w-[320px] sm:h-[90px] sm:max-w-[728px] my-1"
-      style={{ contain: 'layout' }}
-      aria-label="Partner picks"
-    >
-      <div ref={slotRef} data-mndbanid={MONDIAD_DASHBOARD_BANNER_ID} className={`w-full h-full flex items-center justify-center${showMondiad ? '' : ' hidden'}`} />
-      {aadsMounted ? (
-        <AadsUnit unitId={AADS_INFEED_ID} size="728x90" onLoad={markAadsLoaded} hidden={!showAads} className="w-full h-full flex items-center justify-center" />
-      ) : null}
-      <div data-house="1" className={showHouse ? 'contents' : 'hidden'}>
-        <HousePromo category="productivity" className="hidden sm:flex items-center justify-center gap-3 h-full px-4" />
-        <HousePromo category="productivity" className="flex sm:hidden items-center justify-center h-full px-3 gap-2" />
-      </div>
-    </div>
-  )
-}
-
 // Sidebar Mondiad banner for the dashboard command-center rail.
-// Serves MONDIAD_SIDEBAR_BANNER_ID: head-loaded banner.js fills
-// div[data-mndbanid]. Same frame as AmbientAdSlot (300x250 desktop,
-// 320x50 mobile, contain:layout). Hybrid rotation by default; pass
-// network={false} for in-house-only placement.
+// Serves MONDIAD_SIDEBAR_BANNER_ID: banner.js fills div[data-mndbanid].
+// Desktop only: below lg the one mobile sticky placement takes over, and
+// this component is not mounted at all. Fixed frame (300x250), zero CLS.
 export function SidebarBannerSlot({ network = true, mondiad = true, networkMs, houseMs } = {}) {
   const { frameRef, slotRef, showMondiad, showAads, aadsMounted, showHouse, markAadsLoaded } = useHybridSlot({ network, mondiad, networkMs, houseMs, mondiadId: MONDIAD_SIDEBAR_BANNER_ID })
 

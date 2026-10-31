@@ -11,7 +11,6 @@ import { useRoomLive } from '../../hooks/useRoomLive.js'
 import { markSolve } from '../../data/solve.js'
 import { fetchRoomMeta, LOBBY_CODE } from '../../data/rooms.js'
 import { defineObsidian } from '../workspace/Workspace.jsx'
-import { DashboardBannerSlot } from '../layout/AmbientAdSlot.jsx'
 import { useNarrow } from '../../hooks/useNarrow.js'
 import { VictoryModal } from '../modals/VictoryModal.jsx'
 import { RoomChat } from './RoomChat.jsx'
@@ -242,11 +241,6 @@ function ArenaInner({ code, tracker, github, onBack }) {
 
   return (
     <div className="min-h-screen lg:h-screen flex flex-col pb-16 lg:pb-0">
-      {/* top leaderboard strip — sits between browser chrome and nav controls
-          (no navbar renders on arena routes, so no pt-16 offset here) */}
-        <div data-ad className="shrink-0 border-b border-border px-2 sm:px-4 py-1 flex justify-center overflow-hidden">
-        <DashboardBannerSlot />
-      </div>
       <div className="shrink-0 border-b border-border bg-canvas px-3 sm:px-4 py-2.5 flex items-center gap-2 sm:gap-3 flex-wrap">
         <button onClick={onBack} className="flex items-center gap-1 text-[13px] text-slate-400 hover:text-slate-100">
           <ArrowLeft size={15} /> Hub
