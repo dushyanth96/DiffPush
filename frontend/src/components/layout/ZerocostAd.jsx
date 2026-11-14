@@ -4,7 +4,7 @@ import { zc } from '../../zerocost.js'
 export function ZerocostAd({ placementId = 'inline', className = '' }) {
   const [ad, setAd] = useState(null)
   const [loading, setLoading] = useState(true)
-  const debug = Boolean(zc.getConfig()?.debug)
+  const debug = Boolean(zc.core?.getConfig?.()?.debug ?? zc.userConfig?.debug)
 
   useEffect(() => {
     let cancelled = false
