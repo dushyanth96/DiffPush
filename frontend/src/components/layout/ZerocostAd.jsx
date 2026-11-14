@@ -3,20 +3,38 @@ import { zc } from '../../zerocost.js'
 
 export function ZerocostAd({ placementId = 'inline', className = '' }) {
   const [ad, setAd] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const debug = Boolean(zc.getConfig()?.debug)
 
   useEffect(() => {
     let cancelled = false
     zc.ads.requestAd(placementId)
       .then((a) => {
-        if (cancelled || !a) return
-        setAd(a)
-        zc.track.impression(a.id, placementId).catch(() => {})
+        if (cancelled) return
+        if (a) {
+          setAd(a)
+          zc.track.impression(a.id, placementId).catch(() => {})
+        }
       })
       .catch(() => {})
+      .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [placementId])
 
-  if (!ad) return null
+  if (loading) {
+    return debug ? (
+      <div className={`rounded-md border border-dashed border-white/10 px-3 py-2 text-[11px] font-mono text-slate-600 ${className}`}>
+        Ad slot: {placementId} (loading…)
+      </div>
+    ) : null
+  }
+  if (!ad) {
+    return debug ? (
+      <div className={`rounded-md border border-dashed border-white/10 px-3 py-2 text-[11px] font-mono text-slate-600 ${className}`}>
+        Ad slot: {placementId} (no ad / consent pending)
+      </div>
+    ) : null
+  }
 
   const onClick = async () => {
     try { await zc.track.click(ad.id, placementId) } catch {}
