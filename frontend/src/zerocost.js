@@ -26,4 +26,7 @@ export const zc = new ZerocostSDK({
 
 zc.identify('guest', { role: 'free' });
 
+zc.widget.autoInject = async () => {}
+zc.widget.autoInjectWithConfig = async () => {}
+
 zc.init().catch(console.error);
