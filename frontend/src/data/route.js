@@ -42,6 +42,7 @@ export function parseRoute() {
   const rm = path.match(/^\/room\/([\w-]+)\/?$/)
   if (rm) return { name: 'room', code: rm[1], query: window.location.search ?? '' }
   if (path === '/review') return { name: 'review' }
+  if (path === '/foundations') return { name: 'foundations' }
   const m = path.match(/^\/solve\/([\w-]+)$/)
   if (m) return { name: 'solve', slug: m[1] }
   return path === '/' ? { name: 'hub' } : { name: 'notfound' }

@@ -10,6 +10,7 @@ import { ShieldsNotice } from './components/layout/ShieldsNotice.jsx'
 import { CurriculumDirectory } from './components/dashboard/CurriculumDirectory.jsx'
 import { ResumeCard } from './components/dashboard/ResumeCard.jsx'
 import { PlatformIntro } from './components/dashboard/PlatformIntro.jsx'
+import { FoundationsPage } from './components/foundations/FoundationsPage.jsx'
 import { ViewSwitcher } from './components/dashboard/ViewSwitcher.jsx'
 import { CompanyView } from './components/dashboard/CompanyView.jsx'
 import { ImportedSheetsView } from './components/dashboard/ImportedSheetsView.jsx'
@@ -237,6 +238,8 @@ export default function App() {
     ) : (
       <LandingPage onConnect={() => setAuthOpen(true)} onStart={startSolving} />
     )
+  } else if (route.name === 'foundations') {
+    content = <FoundationsPage onBack={goHub} />
   } else if (route.name === 'arena') {
     content = <ArenaView code={route.code} tracker={tracker} github={github} onBack={goHub} />
   } else if (route.name === 'rooms' || route.name === 'room') {

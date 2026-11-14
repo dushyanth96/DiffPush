@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Search, Flame, Github, RefreshCw, LogOut, ExternalLink, Zap, Users, Star, MessageSquareHeart } from 'lucide-react'
+import { Search, Flame, Github, RefreshCw, LogOut, ExternalLink, Zap, Users, Star, MessageSquareHeart, BookOpen } from 'lucide-react'
 import { Logo } from './Logo.jsx'
 import { HelpMenu } from './HelpMenu.jsx'
 import { REPO_URL } from '../../data/repo.js'
@@ -92,6 +92,14 @@ export function Navbar({ tracker, github, onPalette, onConnect, onFeedback }) {
           >
             <MessageSquareHeart size={15} />
           </button>
+          <a
+            href="/foundations"
+            title="Step 0: Foundations"
+            aria-label="Step 0 Foundations"
+            className="hidden sm:flex items-center justify-center w-7 h-7 rounded-md text-slate-400 hover:text-slate-100 hover:bg-raised transition-colors"
+          >
+            <BookOpen size={15} />
+          </a>
           <HelpMenu onFeedback={onFeedback} />
 
           {github.connected ? (
