@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import Editor from '@monaco-editor/react'
 import {
   ArrowLeft, Play, RotateCcw, Check, Circle, Star, Send,
   Cpu, MessageSquareText, BookOpen, FileText, ChevronRight, KeyRound, X,
@@ -8,6 +7,20 @@ import {
 import { getProblemMeta, loadManifest } from '../../data/curriculum.js'
 import { LANGUAGES, loadCode, saveCode, starterFor } from '../../data/languages.js'
 import { useRunner, ENGINES } from '../../hooks/useRunner.js'
+
+// Lazy: the editor (~250KB gz with language grammars) must not load on the
+// landing page or dashboard — only solve/arena routes pay for it.
+const CodeEditor = React.lazy(() => import('./CodeEditor.jsx'))
+const EditorSuspense = ({ children }) => (
+  <React.Suspense fallback={(
+    <div className="h-full flex items-center justify-center font-mono text-[12px] text-slate-600">
+      Loading editor…
+    </div>
+  )}>
+    {children}
+  </React.Suspense>
+)
+
 import {
   getProviders, getSettings, saveProvider, saveKey, saveModel, resolveModel,
   askAI, buildMentorSystem,
@@ -25,32 +38,6 @@ const DIFF_STYLE = {
   Baseline: 'text-diff-emerald border-diff-emerald/30 bg-diff-emerald/10',
   'Standard Bar': 'text-diff-amber border-diff-amber/30 bg-diff-amber/10',
   'DiffPush Tier': 'text-diff-rose border-diff-rose/30 bg-diff-rose/10',
-}
-
-export function defineObsidian(monaco) {
-  monaco.editor.defineTheme('obsidian', {
-    base: 'vs-dark',
-    inherit: true,
-    rules: [
-      { token: 'comment', foreground: '7D8B9F' },
-      { token: 'keyword', foreground: '8B7CF6' },
-      { token: 'string', foreground: '34D399' },
-      { token: 'number', foreground: 'FBBF24' },
-      { token: 'type', foreground: '7DD3FC' },
-      { token: 'identifier', foreground: 'E6EAF2' },
-    ],
-    colors: {
-      'editor.background': '#07090E',
-      'editor.foreground': '#E6EAF2',
-      'editor.lineHighlightBackground': '#0D111A',
-      'editorLineNumber.foreground': '#7D8B9F',
-      'editorLineNumber.activeForeground': '#8B94A7',
-      'editorCursor.foreground': '#10B981',
-      'editor.selectionBackground': '#1E3A32',
-      'editorWidget.background': '#131A26',
-      'editorWidget.border': '#FFFFFF14',
-    },
-  })
 }
 
 const MENTOR_REPLIES = {
@@ -106,7 +93,6 @@ export function Workspace({ slug, tracker, github, onBack }) {
   const pushedTried = useRef(new Set())
   const openedSlugRef = useRef(null)
 
-  const editorRef = useRef(null)
   const chatScrollRef = useRef(null)
   const narrow = useNarrow()
   const { run: codeRun } = useRunner()
@@ -190,6 +176,24 @@ export function Workspace({ slug, tracker, github, onBack }) {
     setRunResult(null)
     setActiveCase(0)
   }
+
+  // Draft autosave: debounced write per keystroke so navigating away never
+  // loses work (previously drafts only saved on language switch). Flushed on
+  // unmount / slug change with the latest buffer via refs.
+  const saveTimerRef = useRef(null)
+  const codeRef = useRef('')
+  codeRef.current = code
+  const problemRef = useRef(null)
+  problemRef.current = problem
+  const onCodeChange = (v) => {
+    setCode(v)
+    clearTimeout(saveTimerRef.current)
+    saveTimerRef.current = setTimeout(() => saveCode(slug, langPick.id, v), 400)
+  }
+  useEffect(() => () => {
+    clearTimeout(saveTimerRef.current)
+    if (problemRef.current && codeRef.current) saveCode(slug, langPick.id, codeRef.current)
+  }, [slug, langPick.id])
 
   const run = async () => {
     if (!problem || running || victoryOpen) return
@@ -609,16 +613,15 @@ export function Workspace({ slug, tracker, github, onBack }) {
             </select>
           </div>
           <div className="h-[52vh] min-h-[300px] lg:h-auto lg:flex-1 lg:min-h-0">
-            <Editor
-              height="100%"
-              language={langPick.mode ?? 'python'}
-              value={code}
-              onChange={(v) => setCode(v ?? '')}
-              beforeMount={defineObsidian}
-              theme="obsidian"
-              options={{ fontSize, fontFamily: 'JetBrains Mono, monospace', minimap: { enabled: false }, padding: { top: 12 }, scrollBeyondLastLine: false, automaticLayout: true, wordWrap: narrow ? 'on' : 'off' }}
-              onMount={(ed) => { editorRef.current = ed }}
-            />
+            <EditorSuspense>
+              <CodeEditor
+                value={code}
+                onChange={onCodeChange}
+                language={langPick.mode ?? 'python'}
+                fontSize={fontSize}
+                wordWrap={narrow}
+              />
+            </EditorSuspense>
           </div>
           {/* execution drawer */}
           <div className="shrink-0 border-t border-border max-h-[38vh] lg:max-h-[42%] flex flex-col min-h-0">

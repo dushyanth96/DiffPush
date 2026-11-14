@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import Editor from '@monaco-editor/react'
 import {
   ArrowLeft, Play, RotateCcw, Check, Circle, Users,
   BookOpen, FileText, ListOrdered,
@@ -10,8 +9,18 @@ import { useRunner, ENGINES } from '../../hooks/useRunner.js'
 import { useRoomLive } from '../../hooks/useRoomLive.js'
 import { markSolve } from '../../data/solve.js'
 import { fetchRoomMeta, LOBBY_CODE } from '../../data/rooms.js'
-import { defineObsidian } from '../workspace/Workspace.jsx'
 import { useNarrow } from '../../hooks/useNarrow.js'
+
+const CodeEditor = React.lazy(() => import('../workspace/CodeEditor.jsx'))
+const EditorSuspense = ({ children }) => (
+  <React.Suspense fallback={(
+    <div className="h-full flex items-center justify-center font-mono text-[12px] text-slate-600">
+      Loading editor…
+    </div>
+  )}>
+    {children}
+  </React.Suspense>
+)
 import { VictoryModal } from '../modals/VictoryModal.jsx'
 import { RoomChat } from './RoomChat.jsx'
 
@@ -392,15 +401,15 @@ function ArenaInner({ code, tracker, github, onBack }) {
           {problem ? (
           <>
           <div className="h-[52vh] min-h-[280px] lg:h-auto lg:flex-1 lg:min-h-0">
-            <Editor
-              height="100%"
-              language={langById(langId).mode ?? 'python'}
-              value={codeText}
-              onChange={(v) => setCodeText(v ?? '')}
-              beforeMount={defineObsidian}
-              theme="obsidian"
-              options={{ fontSize: 13, fontFamily: 'JetBrains Mono, monospace', minimap: { enabled: false }, padding: { top: 12 }, scrollBeyondLastLine: false, automaticLayout: true, wordWrap: narrow ? 'on' : 'off' }}
-            />
+            <EditorSuspense>
+              <CodeEditor
+                value={codeText}
+                onChange={(v) => setCodeText(v ?? '')}
+                language={langById(langId).mode ?? 'python'}
+                fontSize={13}
+                wordWrap={narrow}
+              />
+            </EditorSuspense>
           </div>
           <div className="shrink-0 border-t border-border max-h-[36vh] lg:max-h-[38%] flex flex-col min-h-0">
             <div className="flex items-center gap-2 px-3 h-9 shrink-0">

@@ -69,7 +69,7 @@ export function ReviewView({ tracker, onBack }) {
   // Skips when focus is in text entry or an open dialog (palette, modals) —
   // otherwise typing "1" in palette search would rate cards, and Esc with the
   // palette open would abandon the drill instead of just closing the palette.
-  const inTextEntry = (t) => t?.closest?.('input, textarea, select, [contenteditable="true"], [role="dialog"], .monaco-editor')
+  const inTextEntry = (t) => t?.closest?.('input, textarea, select, [contenteditable="true"], [role="dialog"], .monaco-editor, .cm-content, .cm-editor')
   useEffect(() => {
     const h = (e) => {
       if (inTextEntry(e.target)) return
