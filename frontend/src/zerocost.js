@@ -11,8 +11,7 @@ export const zc = new ZerocostSDK({
   debug: true,
   // No LLM data selling; ads never attach to the AI coach route.
   consent: {
-    showSettingsButton: true,
-    buttonPosition: 'bottom-right',
+    showSettingsButton: false,
   },
   ads: {
     // Manual placement only — auto-inject is never called.

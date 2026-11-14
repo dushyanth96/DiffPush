@@ -93,12 +93,22 @@ export default function App() {
 
   useEffect(() => {
     loadManifest().then(() => setManifestReady(true)).catch((e) => setManifestError(e.message))
-    // Zerocost: prompt for consent once per session so inline ads can serve.
-    // (Ads never render without an explicit consent record.)
+    // Zerocost: grant ads-only consent silently (no popup). Usage data and
+    // AI interactions stay off.
     try {
-      if (!zc.consent.get() && !sessionStorage.getItem('zc:prompted')) {
-        sessionStorage.setItem('zc:prompted', '1')
-        zc.consent.open().catch(() => {})
+      if (!zc.consent.get()) {
+        const userId = localStorage.getItem('zerocost-user-id') || 'guest'
+        zc.consent.restore({
+          userId,
+          appId: zc.getConfig().appId,
+          ads: true,
+          usageData: false,
+          aiInteractions: false,
+          timestamp: new Date().toISOString(),
+          version: '1.1',
+          method: 'confirmed',
+          ipRegion: 'OTHER',
+        })
       }
     } catch {}
   }, [])
