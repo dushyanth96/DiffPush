@@ -98,7 +98,7 @@ export default function App() {
     try {
       if (!zc.consent.get()) {
         const userId = localStorage.getItem('zerocost-user-id') || 'guest'
-        zc.consent.restore({
+        const record = {
           userId,
           appId: zc.getConfig().appId,
           ads: true,
@@ -108,7 +108,9 @@ export default function App() {
           version: '1.1',
           method: 'confirmed',
           ipRegion: 'OTHER',
-        })
+        }
+        zc.consent.restore(record)
+        zc.consent.submitToServer(record).catch(() => {})
       }
     } catch {}
   }, [])
