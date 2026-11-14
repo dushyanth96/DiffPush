@@ -61,3 +61,4 @@ coverage/
 
 # ── Browser automation artifacts ──
 .playwright-mcp/
+launch videos/
