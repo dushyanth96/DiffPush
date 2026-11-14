@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { loadManifest } from './data/curriculum.js'
 import './zerocost.js'
+import { zc } from './zerocost.js'
 import { useTracker } from './hooks/useTracker.js'
 import { useGitHub } from './hooks/useGitHub.js'
 import { Navbar } from './components/layout/Navbar.jsx'
@@ -92,6 +93,14 @@ export default function App() {
 
   useEffect(() => {
     loadManifest().then(() => setManifestReady(true)).catch((e) => setManifestError(e.message))
+    // Zerocost: prompt for consent once per session so inline ads can serve.
+    // (Ads never render without an explicit consent record.)
+    try {
+      if (!zc.consent.get() && !sessionStorage.getItem('zc:prompted')) {
+        sessionStorage.setItem('zc:prompted', '1')
+        zc.consent.open().catch(() => {})
+      }
+    } catch {}
   }, [])
 
   // Full-tab OAuth return: /auth/callback stashes the code in sessionStorage
