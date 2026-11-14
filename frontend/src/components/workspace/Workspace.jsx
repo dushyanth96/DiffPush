@@ -32,6 +32,7 @@ import { fetchPushedSolution } from '../../hooks/useGitHub.js'
 import { useNarrow } from '../../hooks/useNarrow.js'
 import { useSeo, SITE_URL } from '../../hooks/useSeo.js'
 import { track } from '../../lib/analytics.js'
+import { ConstraintSidebar } from './ConstraintSidebar.jsx'
 import { VictoryModal, LanguageRequestModal, nextUnsolvedInTopic } from '../modals/VictoryModal.jsx'
 import { CommitConfirm } from '../modals/CommitConfirm.jsx'
 const DIFF_STYLE = {
@@ -563,6 +564,7 @@ export function Workspace({ slug, tracker, github, onBack }) {
                 </div>
               ))}
             </div>
+            <ConstraintSidebar problem={problem} meta={meta} />
             </div>
           </div>
         </section>
