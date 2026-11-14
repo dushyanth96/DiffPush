@@ -32,6 +32,7 @@ import { resumeTarget } from './data/resume.js'
 import { WeeklyReport } from './components/modals/WeeklyReport.jsx'
 import { GuestPromptModal } from './components/modals/GuestPromptModal.jsx'
 import { FeedbackModal } from './components/modals/FeedbackModal.jsx'
+import { ZerocostAd } from './components/layout/ZerocostAd.jsx'
 import { LandingPage } from './components/marketing/LandingPage.jsx'
 import { PrivacyPage } from './components/marketing/PrivacyPage.jsx'
 import { NotFoundPage } from './components/marketing/NotFoundPage.jsx'
@@ -272,6 +273,7 @@ export default function App() {
                 <RecallCard tracker={tracker} />
                 <SafetyCard tracker={tracker} />
                 <SupportCard />
+                <ZerocostAd placementId="sidebar" />
               </div>
                 </div>
               )}

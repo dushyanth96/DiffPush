@@ -1,31 +1,30 @@
 import { ZerocostSDK } from '@zerocost/sdk';
 
 // DiffPush — Zerocost (zero-cost ad + consent) SDK.
-// Text/inline placements only; the SDK renders within our theme and never
-// interrupts a focus session (no sticky bars, no modals over the editor).
+// Text/inline placements only; rendered in our own slots so nothing pops over
+// the editor or interrupts an AI coach session.
 export const zc = new ZerocostSDK({
   appId: '68c7dcb4-874a-42a3-935f-c9017e7bc912',
-  // TODO: replace with the real key from https://zerocost.app/
-  apiKey: 'zc_live_YOUR_KEY_HERE',
+  apiKey: 'zc_test_5518c5c996144be0afc3ad87',
   appName: 'DiffPush',
+  environment: 'development',
   debug: true,
-  llm: {
-    // AI coach lives in the solve workspace; anonymized LLM-data selling
-    // (opt-in) is scoped to that route.
-    llmPath: '/solve',
-  },
+  // No LLM data selling; ads never attach to the AI coach route.
   consent: {
     showSettingsButton: true,
+    buttonPosition: 'bottom-right',
   },
   ads: {
+    // Manual placement only — auto-inject is never called.
+    enabled: true,
+    placements: [],
     roleTargeting: {
-      enabled: false,
+      enabled: false, // everyone is free tier
       allowedRoles: ['free', 'basic'],
     },
   },
 });
 
-// Optional identity hook — flip roleTargeting.enabled to true to use it.
-zc.identify('user_123', { role: 'free' });
+zc.identify('guest', { role: 'free' });
 
 zc.init().catch(console.error);
