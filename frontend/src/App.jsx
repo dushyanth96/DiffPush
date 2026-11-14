@@ -12,6 +12,7 @@ import { ResumeCard } from './components/dashboard/ResumeCard.jsx'
 import { PlatformIntro } from './components/dashboard/PlatformIntro.jsx'
 import { ViewSwitcher } from './components/dashboard/ViewSwitcher.jsx'
 import { CompanyView } from './components/dashboard/CompanyView.jsx'
+import { ImportedSheetsView } from './components/dashboard/ImportedSheetsView.jsx'
 import { IdentityCard } from './components/dashboard/IdentityCard.jsx'
 import { TopicRadar } from './components/dashboard/TopicRadar.jsx'
 import { AchievementsCard } from './components/dashboard/AchievementsCard.jsx'
@@ -274,7 +275,7 @@ export default function App() {
                       <ArenaCard github={github} />
                     </div>
                     <ViewSwitcher active={view} onChange={setView} />
-                    {view === 'companies' ? <CompanyView tracker={tracker} /> : (
+                    {view === 'companies' ? <CompanyView tracker={tracker} /> : view === 'sheets' ? <ImportedSheetsView /> : (
                       <>
                         <ResumeCard tracker={tracker} />
                         <DailyChallengeCard tracker={tracker} />

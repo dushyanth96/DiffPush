@@ -4,6 +4,7 @@ import { Lock } from 'lucide-react'
 const VIEWS = [
   { id: 'curriculum', label: 'Core Curriculum', locked: false },
   { id: 'companies', label: 'Company Prep', locked: false },
+  { id: 'sheets', label: 'My Sheets', locked: false },
   { id: 'marketplace', label: 'Marketplace', locked: true },
 ]
 

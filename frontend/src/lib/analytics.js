@@ -17,6 +17,7 @@ const EVENTS = {
   feedback_open: [],
   feedback_submitted: [],
   feedback_failed: [],
+  sheet_imported: [],
 }
 
 function cleanValue(value) {
