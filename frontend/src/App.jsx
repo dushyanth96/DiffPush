@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { loadManifest } from './data/curriculum.js'
-import './zerocost.js'
-import { zc } from './zerocost.js'
 import { useTracker } from './hooks/useTracker.js'
 import { useGitHub } from './hooks/useGitHub.js'
 import { Navbar } from './components/layout/Navbar.jsx'
@@ -33,7 +31,6 @@ import { resumeTarget } from './data/resume.js'
 import { WeeklyReport } from './components/modals/WeeklyReport.jsx'
 import { GuestPromptModal } from './components/modals/GuestPromptModal.jsx'
 import { FeedbackModal } from './components/modals/FeedbackModal.jsx'
-import { ZerocostAd } from './components/layout/ZerocostAd.jsx'
 import { LandingPage } from './components/marketing/LandingPage.jsx'
 import { PrivacyPage } from './components/marketing/PrivacyPage.jsx'
 import { NotFoundPage } from './components/marketing/NotFoundPage.jsx'
@@ -93,15 +90,6 @@ export default function App() {
 
   useEffect(() => {
     loadManifest().then(() => setManifestReady(true)).catch((e) => setManifestError(e.message))
-    // Zerocost requires server-registered consent before serving ads.
-    // Show the (minimal, one-time) consent prompt on first visit; ads are
-    // pre-enabled, usage data + AI interactions stay off.
-    try {
-      if (!zc.consent.get() && !sessionStorage.getItem('zc:prompted')) {
-        sessionStorage.setItem('zc:prompted', '1')
-        zc.consent.open().catch(() => {})
-      }
-    } catch {}
   }, [])
 
   // Full-tab OAuth return: /auth/callback stashes the code in sessionStorage
@@ -283,7 +271,6 @@ export default function App() {
                 <RecallCard tracker={tracker} />
                 <SafetyCard tracker={tracker} />
                 <SupportCard />
-                <ZerocostAd placementId="sidebar" />
               </div>
                 </div>
               )}

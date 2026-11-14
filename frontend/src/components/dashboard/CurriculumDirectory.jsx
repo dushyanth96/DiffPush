@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useEffect, Fragment } from 'react'
 import { Check, ChevronDown, ChevronRight, Star, Circle, Search, X } from 'lucide-react'
 import { getTopics, getByTopic, getProblemMeta } from '../../data/curriculum.js'
-import { ZerocostAd } from '../layout/ZerocostAd.jsx'
 import { FIRST_BLOOD_PATHS, GOALS } from '../../hooks/useTracker.js'
 import { PrepWorkCard } from './PrepWorkCard.jsx'
 
@@ -331,12 +330,9 @@ export function CurriculumDirectory({ tracker }) {
       </div>
       <div className="space-y-2.5">
         <PrepWorkCard />
-        {shownTopics.map((t, idx) => (
+        {shownTopics.map((t) => (
           <Fragment key={t.id}>
             <TopicAccordion topic={t} tracker={tracker} filter={{ q: query, diff }} />
-            {(idx + 1) % 2 === 0 && idx + 1 < shownTopics.length && (
-              <ZerocostAd key={`zc-${idx}`} placementId="inline" />
-            )}
           </Fragment>
         ))}
         {shownTopics.length === 0 && (
