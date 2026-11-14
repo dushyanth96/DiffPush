@@ -14,6 +14,9 @@ const EVENTS = {
   commit_failed: [],
   help_open: ['entry'],
   backup_restore: [],
+  feedback_open: [],
+  feedback_submitted: [],
+  feedback_failed: [],
 }
 
 function cleanValue(value) {

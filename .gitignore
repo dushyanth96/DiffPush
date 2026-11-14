@@ -29,6 +29,8 @@ build/
 *.log
 rooms.db
 rooms.db-*
+feedback.db
+feedback.db-*
 *.sqlite
 *.sqlite3
 server.log

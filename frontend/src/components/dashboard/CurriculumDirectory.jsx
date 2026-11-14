@@ -67,7 +67,11 @@ export function ProblemRow({ p, tracker }) {
   const starred = tracker.starredIds.includes(p.id)
   const due = !solved && tracker.reviewQueue.includes(p.id)
   return (
-    <div className="flex items-center gap-3 px-3 py-1.5 rounded-md hover:bg-raised transition-colors group">
+    <div
+      className={`flex items-center gap-3 px-3 py-1.5 rounded-md hover:bg-raised transition-colors group ${
+        solved ? 'bg-diff-emerald/[0.05]' : ''
+      }`}
+    >
       <span className="shrink-0 w-4 flex justify-center" title={solved ? 'Solved' : due ? 'Due for recall' : 'Unsolved'}>
         {solved
           ? <Check size={15} className="text-diff-emerald" strokeWidth={3} />
@@ -76,7 +80,14 @@ export function ProblemRow({ p, tracker }) {
             : <Circle size={14} className="text-slate-600" />}
       </span>
       <div className="flex-1 min-w-0">
-        <a href={`/solve/${p.id}`} className="block text-[13px] font-medium text-slate-200 truncate hover:text-diff-emerald transition-colors">
+        <a
+          href={`/solve/${p.id}`}
+          className={`block text-[13px] font-medium truncate transition-colors ${
+            solved
+              ? 'text-slate-500 line-through decoration-slate-600 hover:text-diff-emerald hover:decoration-diff-emerald'
+              : 'text-slate-200 hover:text-diff-emerald'
+          }`}
+        >
           {p.canonicalTitle ?? p.id}
         </a>
         <p className="text-[11px] text-slate-500 line-clamp-2 leading-snug">{p.title}</p>
@@ -296,18 +307,26 @@ export function CurriculumDirectory({ tracker }) {
           )}
         </div>
       </div>
-      <div className="flex items-center gap-1.5 mb-3 overflow-x-auto">
-        {TABS.map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`shrink-0 px-3 h-8 rounded-md text-[13px] font-medium transition-colors ${
-              tab === t ? 'bg-raised text-slate-100 hairline' : 'text-slate-500 hover:text-slate-300'
-            }`}
-          >
-            {t}
-          </button>
-        ))}
+      <div className="relative mb-3">
+        <div className="flex items-center gap-1.5 overflow-x-auto">
+          {TABS.map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`shrink-0 px-3 h-8 rounded-md text-[13px] font-medium transition-colors ${
+                tab === t ? 'bg-raised text-slate-100 hairline' : 'text-slate-500 hover:text-slate-300'
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+        {/* Edge fade signals horizontal scroll on narrow screens. Hidden from
+            pointer events and clipped away once there is nothing to scroll. */}
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 w-8 hidden md:block bg-gradient-to-l from-[#07090E] to-transparent"
+          aria-hidden="true"
+        />
       </div>
       <div className="space-y-2.5">
         <PrepWorkCard />

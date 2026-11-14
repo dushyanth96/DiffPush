@@ -33,6 +33,7 @@ import { resumeTarget } from './data/resume.js'
 import { isPresentMode } from './data/ads.js'
 import { WeeklyReport } from './components/modals/WeeklyReport.jsx'
 import { GuestPromptModal } from './components/modals/GuestPromptModal.jsx'
+import { FeedbackModal } from './components/modals/FeedbackModal.jsx'
 import { LandingPage } from './components/marketing/LandingPage.jsx'
 import { PrivacyPage } from './components/marketing/PrivacyPage.jsx'
 import { NotFoundPage } from './components/marketing/NotFoundPage.jsx'
@@ -66,6 +67,7 @@ export default function App() {
   const [guestPrompt, setGuestPrompt] = useState(false)
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [reportOpen, setReportOpen] = useState(false)
+  const [feedbackOpen, setFeedbackOpen] = useState(false)
   const [view, setView] = useState('curriculum')
   const [guest, setGuest] = useState(() => {
     try { return localStorage.getItem(GUEST_KEY) === '1' } catch { return false }
@@ -157,15 +159,18 @@ export default function App() {
     const onPaletteEvent = () => setPaletteOpen(true)
     const onConnectEvent = () => setAuthOpen(true)
     const onReportEvent = () => setReportOpen(true)
+    const onFeedbackEvent = () => setFeedbackOpen(true)
     window.addEventListener('keydown', onKey)
     window.addEventListener('builtdiff:palette', onPaletteEvent)
     window.addEventListener('builtdiff:connect', onConnectEvent)
     window.addEventListener('builtdiff:report', onReportEvent)
+    window.addEventListener('builtdiff:feedback', onFeedbackEvent)
     return () => {
       window.removeEventListener('keydown', onKey)
       window.removeEventListener('builtdiff:palette', onPaletteEvent)
       window.removeEventListener('builtdiff:connect', onConnectEvent)
       window.removeEventListener('builtdiff:report', onReportEvent)
+      window.removeEventListener('builtdiff:feedback', onFeedbackEvent)
     }
   }, [])
 
@@ -251,7 +256,7 @@ export default function App() {
       <RouteSeo route={route} />
       {chrome === 'hub' ? (
         <>
-          <Navbar tracker={tracker} github={github} onPalette={() => setPaletteOpen(true)} onConnect={() => setAuthOpen(true)} />
+          <Navbar tracker={tracker} github={github} onPalette={() => setPaletteOpen(true)} onConnect={() => setAuthOpen(true)} onFeedback={() => setFeedbackOpen(true)} />
           <main className="pt-16">
             <div className="max-w-[1400px] mx-auto px-4 py-5">
               {!manifestReady ? (
@@ -303,6 +308,7 @@ export default function App() {
       )}
       {paletteOpen && <CommandPalette tracker={tracker} github={github} onClose={() => setPaletteOpen(false)} />}
       {reportOpen && <WeeklyReport tracker={tracker} onClose={() => setReportOpen(false)} />}
+      {feedbackOpen && <FeedbackModal onClose={() => setFeedbackOpen(false)} />}
       {chrome === 'hub' && tracker.ready && !tracker.goal && !tracker.goalPrompted && (
         <GoalPicker onPick={(g) => tracker.setGoal(g)} onSkip={tracker.dismissGoalPrompt} />
       )}

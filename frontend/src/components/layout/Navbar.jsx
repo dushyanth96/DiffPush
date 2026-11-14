@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Search, Flame, Github, RefreshCw, LogOut, ExternalLink, Zap, Users, Star } from 'lucide-react'
+import { Search, Flame, Github, RefreshCw, LogOut, ExternalLink, Zap, Users, Star, MessageSquareHeart } from 'lucide-react'
 import { Logo } from './Logo.jsx'
 import { HelpMenu } from './HelpMenu.jsx'
 import { REPO_URL } from '../../data/repo.js'
@@ -7,7 +7,7 @@ import { navigate } from '../../data/route.js'
 
 const MOD_KEY = typeof navigator !== 'undefined' && /mac/i.test(navigator.platform ?? '') ? 'Cmd' : 'Ctrl'
 
-export function Navbar({ tracker, github, onPalette, onConnect }) {
+export function Navbar({ tracker, github, onPalette, onConnect, onFeedback }) {
   const { stats, getCompletionStats } = tracker
   const completion = getCompletionStats()
   const total = 369
@@ -84,7 +84,15 @@ export function Navbar({ tracker, github, onPalette, onConnect }) {
           >
             <Users size={15} />
           </a>
-          <HelpMenu />
+          <button
+            onClick={onFeedback}
+            title="Send feedback"
+            aria-label="Send feedback"
+            className="hidden sm:flex items-center justify-center w-7 h-7 rounded-md text-slate-400 hover:text-diff-emerald hover:bg-raised transition-colors"
+          >
+            <MessageSquareHeart size={15} />
+          </button>
+          <HelpMenu onFeedback={onFeedback} />
 
           {github.connected ? (
             <div className="relative" ref={profileRef}>

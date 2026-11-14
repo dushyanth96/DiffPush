@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { HelpCircle, ExternalLink, Bug, Mail, BookOpen, ShieldCheck, Keyboard } from 'lucide-react'
+import { HelpCircle, ExternalLink, Bug, Mail, BookOpen, ShieldCheck, Keyboard, MessageSquareHeart } from 'lucide-react'
 import { REPO_URL } from '../../data/repo.js'
 import { CONTACT_EMAIL } from '../../data/support.js'
 import { track } from '../../lib/analytics.js'
@@ -33,7 +33,7 @@ const SHORTCUTS = [
   ['Esc', 'Close dialogs'],
 ]
 
-export function HelpMenu() {
+export function HelpMenu({ onFeedback }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
@@ -67,6 +67,14 @@ export function HelpMenu() {
       {open && (
         <div className="absolute right-0 top-9 w-72 card !bg-popover p-2 z-50">
           <p className="px-2.5 pt-1 pb-1.5 font-mono text-[10px] uppercase tracking-wider text-slate-600">Help</p>
+          {onFeedback && (
+            <button
+              className={item}
+              onClick={() => { setOpen(false); track('help_open', { entry: 'feedback' }); onFeedback() }}
+            >
+              <MessageSquareHeart size={14} className="text-diff-emerald shrink-0" /> Send feedback
+            </button>
+          )}
           <a href="/faq/" className={item} onClick={() => setOpen(false)}>
             <BookOpen size={14} className="text-diff-emerald shrink-0" /> Student FAQ
             <ExternalLink size={11} className="ml-auto text-slate-600" />

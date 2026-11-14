@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { getProblems } from '../data/curriculum.js'
 
 const KEY = 'builtdiff:tracker:v1'
@@ -101,6 +101,11 @@ function load() {
 export function useTracker() {
   const [state, setState] = useState(emptyState)
   const [ready, setReady] = useState(false)
+  // Mirror of state for event-style callbacks (markSolved) that must never
+  // compute from a stale render snapshot — otherwise back-to-back solves in
+  // one tick read the old streak/solvedMap and the counter visibly resets.
+  const stateRef = useRef(state)
+  useEffect(() => { stateRef.current = state }, [state])
 
   useEffect(() => {
     setState(load())
@@ -191,7 +196,7 @@ export function useTracker() {
   }, [state.reviewQueue, state.boxState])
 
   const markSolved = useCallback((id, meta = {}) => {
-    const prev = state
+    const prev = stateRef.current
     const now = Date.now()
     if (prev.solvedMap[id]) {
       update((p) => ({ ...p, solvedMap: { ...p.solvedMap, [id]: { ...p.solvedMap[id], ...meta } } }))
@@ -272,12 +277,13 @@ export function useTracker() {
     }
     update(() => next)
     try { localStorage.setItem(KEY, JSON.stringify(next)) } catch {}
+    stateRef.current = next
     return {
       firstSolve: true,
       breakdown: { base, streakBonus, comboBonus, multiplier, comboCount, gained, streak, freezeUsed, freezes },
       tierUp, newAchievements: fresh.map((aid) => ({ id: aid, ...ACHIEVEMENTS[aid] })),
     }
-  }, [update, state])
+  }, [update])
 
   const unmarkSolved = useCallback((id) => {
     update((prev) => {

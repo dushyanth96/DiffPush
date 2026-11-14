@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.routers import auth, sync, rooms, chat
+from app.routers import auth, sync, rooms, chat, feedback
 
 app = FastAPI(title="DiffPush API", version="0.1.0")
 
@@ -17,6 +17,12 @@ app.include_router(auth.router)
 app.include_router(sync.router)
 app.include_router(rooms.router)
 app.include_router(chat.router)
+app.include_router(feedback.router)
+
+
+@app.on_event("startup")
+async def startup():
+    feedback_db.init()
 
 
 @app.get("/api/health")
