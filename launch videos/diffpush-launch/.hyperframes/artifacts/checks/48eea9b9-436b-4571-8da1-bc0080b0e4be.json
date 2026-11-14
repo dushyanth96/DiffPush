@@ -1,0 +1,419 @@
+{
+  "ok": false,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "duration": 2.1,
+    "samples": [
+      0.117,
+      0.35,
+      0.583,
+      0.817,
+      1.05,
+      1.283,
+      1.517,
+      1.75,
+      1.983
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 0,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": false,
+    "errorCount": 1,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "error",
+        "message": "Contrast is 2.92:1; WCAG AA requires 3:1.",
+        "text": "DP",
+        "fg": "rgb(230,234,242)",
+        "bg": "rgb(32,149,172)",
+        "ratio": 2.92,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(61,62,65)",
+        "large": true,
+        "selector": "div > div > div:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 457.5375061035156,
+          "y": 24.537506103515625,
+          "width": 164.92501831054688,
+          "height": 164.92498779296875
+        },
+        "time": 0.583,
+        "times": [
+          0.583,
+          1.05,
+          1.517,
+          1.983
+        ]
+      }
+    ],
+    "enabled": true,
+    "samples": [
+      0.117,
+      0.583,
+      1.05,
+      1.517,
+      1.983
+    ],
+    "checked": 22,
+    "passed": 18
+  },
+  "craft": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 5,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "first_frame_empty",
+        "severity": "warning",
+        "message": "Frame 0 shows only the background, and the first frame is the thumbnail on social players: have the title or key image already on screen at 0 s instead of entering from nothing; see references/review.md.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "The film's last line \"DP\" (1 word) is on screen 1.96 s (±0.01 s), under the 2.00 s a closing line needs: hold it about 0.5 s + 0.3 s a word and at least 2 s before the film ends; see references/motion.md.",
+        "text": "DP",
+        "selector": "div.logo",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 514.26,
+          "y": 83.92,
+          "width": 51.460000000000036,
+          "height": 46.15999999999998
+        },
+        "time": 0.139,
+        "words": 1,
+        "seconds": 1.964,
+        "floorSeconds": 2,
+        "measured": [
+          {
+            "time": 0,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 0.124,
+            "opacity": 0.41,
+            "heightPx": 24
+          },
+          {
+            "time": 0.247,
+            "opacity": 0.78,
+            "heightPx": 46
+          },
+          {
+            "time": 0.371,
+            "opacity": 1,
+            "heightPx": 59
+          },
+          {
+            "time": 0.494,
+            "opacity": 1,
+            "heightPx": 63
+          },
+          {
+            "time": 0.618,
+            "opacity": 1,
+            "heightPx": 65
+          },
+          {
+            "time": 1.606,
+            "opacity": 1,
+            "heightPx": 59
+          },
+          {
+            "time": 1.729,
+            "opacity": 1,
+            "heightPx": 59
+          },
+          {
+            "time": 1.853,
+            "opacity": 1,
+            "heightPx": 59
+          },
+          {
+            "time": 1.976,
+            "opacity": 1,
+            "heightPx": 59
+          }
+        ]
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "The film's last line \"DiffPush Launch\" (2 words) is on screen 1.43 s (±0.01 s), under the 2.00 s a closing line needs: hold it about 0.5 s + 0.3 s a word and at least 2 s before the film ends; see references/motion.md.",
+        "text": "DiffPush Launch",
+        "selector": "div.hero > h1:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 314.89,
+          "y": 269.29,
+          "width": 450.22,
+          "height": 68
+        },
+        "time": 0.672,
+        "words": 2,
+        "seconds": 1.432,
+        "floorSeconds": 2,
+        "measured": [
+          {
+            "time": 0.371,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 0.494,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 0.618,
+            "opacity": 0.33,
+            "heightPx": 68
+          },
+          {
+            "time": 0.741,
+            "opacity": 0.64,
+            "heightPx": 68
+          },
+          {
+            "time": 0.865,
+            "opacity": 0.8,
+            "heightPx": 68
+          },
+          {
+            "time": 0.988,
+            "opacity": 0.93,
+            "heightPx": 68
+          },
+          {
+            "time": 1.112,
+            "opacity": 0.98,
+            "heightPx": 68
+          },
+          {
+            "time": 1.606,
+            "opacity": 1,
+            "heightPx": 68
+          },
+          {
+            "time": 1.729,
+            "opacity": 1,
+            "heightPx": 68
+          },
+          {
+            "time": 1.853,
+            "opacity": 1,
+            "heightPx": 68
+          },
+          {
+            "time": 1.976,
+            "opacity": 1,
+            "heightPx": 68
+          }
+        ]
+      },
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 5 text elements stay under it for 0.5 s or more, the smallest \"Covering 16 topics\" at 16 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "Covering 16 topics",
+        "selector": "div.features > div:nth-of-type(1) > p:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 188.17,
+          "y": 526.76,
+          "width": 139.66,
+          "height": 20
+        },
+        "time": 1.359,
+        "times": [
+          1.112,
+          1.359,
+          1.359,
+          1.482,
+          1.482
+        ],
+        "fontPx": 16,
+        "floorPx": 28,
+        "seconds": 0.741,
+        "elements": [
+          {
+            "selector": "div.features > div:nth-of-type(1) > p:nth-of-type(1)",
+            "text": "Covering 16 topics",
+            "fontPx": 16,
+            "time": 1.359,
+            "seconds": 0.741
+          },
+          {
+            "selector": "div.features > div:nth-of-type(2) > p:nth-of-type(1)",
+            "text": "Python & JS run locally",
+            "fontPx": 16,
+            "time": 1.482,
+            "seconds": 0.618
+          },
+          {
+            "selector": "div.features > div:nth-of-type(1) > h3:nth-of-type(1)",
+            "text": "369 Problems",
+            "fontPx": 18.72,
+            "time": 1.359,
+            "seconds": 0.741
+          },
+          {
+            "selector": "div.features > div:nth-of-type(2) > h3:nth-of-type(1)",
+            "text": "Zero Latency",
+            "fontPx": 18.72,
+            "time": 1.482,
+            "seconds": 0.618
+          },
+          {
+            "selector": "p.subtitle",
+            "text": "369 A2Z DSA Problems in Your Browser",
+            "fontPx": 24,
+            "time": 1.112,
+            "seconds": 0.988
+          }
+        ]
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "The film's last line \"Reviewed commits to your repo\" (5 words) is on screen 0.44 s (±0.01 s), under the 2.00 s a closing line needs: hold it about 0.5 s + 0.3 s a word and at least 2 s before the film ends; see references/motion.md.",
+        "text": "Reviewed commits to your repo",
+        "selector": "div.features > div:nth-of-type(3) > p:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 722.48,
+          "y": 533.95,
+          "width": 199.01999999999998,
+          "height": 40
+        },
+        "time": 1.668,
+        "words": 5,
+        "seconds": 0.436,
+        "floorSeconds": 2,
+        "measured": [
+          {
+            "time": 1.359,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 1.482,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 1.606,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 1.729,
+            "opacity": 0.71,
+            "heightPx": 40
+          },
+          {
+            "time": 1.853,
+            "opacity": 1,
+            "heightPx": 40
+          },
+          {
+            "time": 1.976,
+            "opacity": 1,
+            "heightPx": 40
+          }
+        ]
+      }
+    ],
+    "enabled": true,
+    "step": 0.12399999999999989,
+    "samples": 17
+  },
+  "audio": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 1,
+    "findings": [
+      {
+        "code": "audio_none",
+        "severity": "info",
+        "message": "The film has no sound: no clip in it plays audio.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      }
+    ]
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

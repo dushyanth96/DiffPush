@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiffPush Launch Video</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #07090e;
+            color: #e6eaf2;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .composition {
+            width: 100vw;
+            height: 1080px;
+            position: relative;
+        }
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            height: 100%;
+        }
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            /* Ensure proper contrast */
+            color: #e6eaf2;
+        }
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #b6c2d2;
+            font-weight: 400;
+            /* Ensure proper contrast */
+            color: #b6c2d2;
+        }
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 200px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1.1rem; /* Increased font size for better readability */
+            /* Ensure proper contrast */
+            color: #e6eaf2;
+        }
+        .feature-card h3 {
+            color: #10b981;
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+        .logo {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            /* Ensure proper contrast */
+            color: #ffffff;
+        }
+        /* Ensure text is readable */
+        .feature-card p {
+            font-size: 1.1rem;
+            color: #e6eaf2;
+            margin: 0.5rem 0 0 0;
+            /* Ensure minimum readability */
+            min-height: 1.4em;
+        }
+        /* Make sure the first frame has visible content */
+        .hero > * {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        /* Ensure all elements are visible from the start */
+        .composition > * {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="composition" data-composition-id="diffpush-launch" data-width="1080" data-height="1080">
+        <div class="hero">
+            <div class="logo">DP</div>
+            <h1>DiffPush Launch</h1>
+            <p class="subtitle">369 A2Z DSA Problems in Your Browser</p>
+            <div class="features">
+                <div class="feature-card">
+                    <h3>369 Problems</h3>
+                    <p>Covering 16 topics</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Zero Latency</h3>
+                    <p>Python & JS run locally</p>
+                </div>
+                <div class="feature-card">
+                    <h3>GitHub Commit</h3>
+                    <p>Reviewed commits to your repo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize GSAP timeline
+        const root = document.querySelector("[data-composition-id]");
+        const compositionId = root.dataset.compositionId;
+        const tl = gsap.timeline({ paused: true });
+        
+        // Animate hero elements with proper timing to ensure text stays visible longer
+        tl.from(".logo", {
+            scale: 0,
+            opacity: 0,
+            duration: 1,
+            ease: "back.out(1.7)"
+        })
+        .from("h1", {
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.out"
+        }, "-=0.5")
+        .from(".subtitle", {
+            y: 30,
+            opacity: 0,
+            duration: 0.6,
+            ease: "power2.out"
+        }, "-=0.4")
+        .from(".feature-card", {
+            y: 50,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.2,
+            ease: "back.out(1.7)"
+        }, "-=0.3");
+        
+        // Add a long duration to ensure the video runs for at least 30 seconds
+        tl.to({}, {duration: 30});
+        
+        // Register timeline
+        window.__timelines = window.__timelines || {};
+        window.__timelines[compositionId] = tl;
+    </script>
+</body>
+</html>
